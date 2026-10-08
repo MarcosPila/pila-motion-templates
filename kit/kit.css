@@ -1,0 +1,141 @@
+/* Pila motion kit: the mechanics behind the data-attribute effects in kit.js.
+   Looks (colours, fonts, spacing) live in each site's own <style>; this file only
+   makes the effects work. Sites define --paper, --ink, --ink-2, --accent, --line, --card. */
+
+/* Nothing an animation moves sideways may widen the page (overflow: clip keeps sticky working) */
+html { overflow-x: clip; }
+
+/* Lenis' own stylesheet (lenis@1.3.26/dist/lenis.css), inlined to save a request */
+html.lenis, html.lenis body { height: auto; }
+.lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
+.lenis [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
+/* Hide animated things only until kit.js has set their start state; if the scripts
+   never arrive, the inline head script drops .js after 4s and everything shows. */
+.js:not(.kit-ready) [data-reveal], .js:not(.kit-ready) [data-reveal-group] > *,
+.js:not(.kit-ready) [data-split], .js:not(.kit-ready) [data-hide-until-ready] { visibility: hidden; }
+
+.sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.skip { position: absolute; left: 12px; top: -60px; z-index: 1000; padding: 10px 16px; background: var(--ink); color: var(--paper); font-weight: 700; text-decoration: none; border-radius: 6px; }
+.skip:focus { top: 12px; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* Placeholder art (art.js) fills its box */
+[data-art] { position: relative; overflow: hidden; background: var(--line); }
+[data-art] > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* Scroll progress bar */
+[data-progress] { position: fixed; inset: 0 0 auto; height: 3px; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); z-index: 200; pointer-events: none; }
+
+/* Smart header */
+[data-header] { transition: background-color .3s, box-shadow .3s, border-color .3s; }
+
+/* Marquee */
+[data-marquee] { overflow: hidden; display: flex; }
+[data-marquee] .mq-track { display: flex; flex: none; gap: var(--mq-gap, 48px); padding-right: var(--mq-gap, 48px); align-items: center; will-change: transform; }
+
+/* Rotating words */
+[data-rotate] { display: inline-grid; vertical-align: bottom; overflow: hidden; }
+[data-rotate] .rw { grid-area: 1 / 1; white-space: nowrap; justify-self: start; }
+
+/* Before / after */
+[data-compare] { position: relative; overflow: hidden; touch-action: pan-y; user-select: none; --pos: 50%; }
+[data-compare] .cmp-before, [data-compare] .cmp-after { position: absolute; inset: 0; }
+[data-compare] .cmp-after { clip-path: inset(0 0 0 var(--pos)); }
+[data-compare] .cmp-handle { position: absolute; top: 0; bottom: 0; left: var(--pos); width: 0; z-index: 2; pointer-events: none; }
+[data-compare] .cmp-handle::before { content: ''; position: absolute; inset: 0 -1.5px; background: #fff; box-shadow: 0 0 0 1px rgb(0 0 0 / .2); }
+[data-compare] .cmp-handle span { position: absolute; top: 50%; left: 0; width: 48px; height: 48px; margin: -24px 0 0 -24px; border-radius: 50%; background: #fff; color: #111; display: grid; place-items: center; font: 700 16px/1 system-ui, sans-serif; box-shadow: 0 6px 20px rgb(0 0 0 / .25); pointer-events: auto; cursor: ew-resize; }
+[data-compare] input[type="range"] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; margin: 0; z-index: 1; }
+[data-compare] .cmp-label { position: absolute; bottom: 12px; z-index: 1; padding: 4px 10px; background: rgb(0 0 0 / .6); color: #fff; font: 600 12px/1.4 system-ui, sans-serif; letter-spacing: .06em; text-transform: uppercase; border-radius: 4px; pointer-events: none; }
+[data-compare] .cmp-label.l { left: 12px; } [data-compare] .cmp-label.r { right: 12px; }
+[data-compare]:has(input:focus-visible) .cmp-handle span { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* Drag carousel: scrolls natively until kit.js takes over */
+[data-carousel] { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+[data-carousel]::-webkit-scrollbar { display: none; }
+[data-carousel] .car-track { display: flex; gap: var(--car-gap, 20px); width: max-content; }
+[data-carousel] .car-track > * { scroll-snap-align: start; }
+.kit-ready [data-carousel].is-drag { overflow: hidden; cursor: grab; touch-action: pan-y; }
+.kit-ready [data-carousel].is-drag:active { cursor: grabbing; }
+
+/* Horizontal pinned scroll: plain swipe row until pinned */
+[data-hscroll] { overflow: hidden; }
+[data-hscroll] .hs-track { display: flex; gap: var(--hs-gap, 24px); width: max-content; will-change: transform; }
+html:not(.kit-ready) [data-hscroll], .kit-reduce [data-hscroll] { overflow-x: auto; }
+
+/* Scroll stack: CSS sticky does the stacking, kit.js adds the scale-down */
+[data-stack] .stack-card { position: sticky; top: calc(var(--stack-top, 96px) + var(--i, 0) * var(--stack-step, 14px)); transform-origin: 50% 0; will-change: transform; }
+
+/* Accordion on native <details> */
+[data-accordion] details > summary { cursor: pointer; list-style: none; }
+[data-accordion] details > summary::-webkit-details-marker { display: none; }
+[data-accordion] .acc-body { overflow: hidden; }
+
+/* Multi-step form */
+[data-step][hidden], [data-steps-done][hidden] { display: none; }
+[data-steps] fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+[data-steps-bar] { height: 4px; background: var(--line); border-radius: 4px; overflow: hidden; }
+[data-steps-bar] i { display: block; height: 100%; background: var(--accent); transform-origin: 0 50%; transform: scaleX(var(--p, .33)); transition: transform .5s cubic-bezier(.65, 0, .35, 1); }
+
+/* Cursor follower */
+.kit-cursor { position: fixed; left: 0; top: 0; z-index: 9999; pointer-events: none; display: grid; place-items: center; border-radius: 50%; translate: -50% -50%; }
+.kit-cursor.ring { width: 36px; height: 36px; border: 1.5px solid var(--cursor, var(--accent)); transition: width .3s, height .3s, background-color .3s, border-color .3s; }
+.kit-cursor.ring.is-hover { width: 64px; height: 64px; background: color-mix(in srgb, var(--cursor, var(--accent)) 14%, transparent); }
+.kit-cursor.ring.is-label { width: 92px; height: 92px; background: var(--cursor, var(--accent)); border-color: transparent; }
+.kit-cursor.ring b { font: 700 12px/1 system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--cursor-ink, #fff); opacity: 0; transition: opacity .2s; }
+.kit-cursor.ring.is-label b { opacity: 1; }
+.kit-cursor.dot { width: 8px; height: 8px; background: var(--cursor, var(--accent)); }
+@media (hover: none), (pointer: coarse) { .kit-cursor { display: none; } }
+
+/* Click sparks */
+.kit-sparks { position: fixed; inset: 0; z-index: 9998; pointer-events: none; }
+
+/* Image trail */
+[data-trail] { position: relative; }
+[data-trail] .trail-items { display: none; }
+.trail-tile { position: absolute; z-index: 1; pointer-events: none; width: var(--trail-w, 180px); aspect-ratio: 4 / 5; translate: -50% -50%; overflow: hidden; border-radius: var(--trail-r, 4px); box-shadow: 0 18px 40px rgb(0 0 0 / .35); }
+
+/* Hover-reveal list preview */
+.kit-peek { position: fixed; left: 0; top: 0; z-index: 90; width: var(--peek-w, 260px); aspect-ratio: 4 / 5; pointer-events: none; overflow: hidden; border-radius: var(--peek-r, 6px); translate: -50% -50%; opacity: 0; box-shadow: 0 24px 60px rgb(0 0 0 / .3); }
+.kit-peek > div { position: absolute; inset: 0; }
+
+/* Spotlight cards */
+[data-spotlight] { position: relative; }
+[data-spotlight]::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .35s; background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), var(--spot, rgb(255 255 255 / .14)), transparent 65%); }
+[data-spotlight]:hover::after { opacity: 1; }
+
+/* Tilt glare */
+[data-tilt] { transform-style: preserve-3d; }
+[data-tilt] .kit-glare { position: absolute; inset: 0; z-index: 3; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s; background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgb(255 255 255 / .38), transparent 55%); mix-blend-mode: overlay; }
+[data-tilt]:hover .kit-glare { opacity: 1; }
+
+/* Circular text badge */
+[data-circle-text] svg { width: 100%; height: 100%; display: block; overflow: visible; }
+
+/* Star border: a light that runs round the edge */
+@property --sb { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+.star-border { position: relative; isolation: isolate; }
+.star-border::before { content: ''; position: absolute; inset: -2px; border-radius: inherit; z-index: -1; background: conic-gradient(from var(--sb), transparent 0 70%, var(--star, var(--accent)) 85%, transparent 100%); animation: kit-sb 3.2s linear infinite; }
+.star-border::after { content: ''; position: absolute; inset: 1px; border-radius: inherit; z-index: -1; background: inherit; }
+@keyframes kit-sb { to { --sb: 360deg; } }
+
+/* Shiny text sweep */
+.shiny { background: linear-gradient(110deg, currentColor 40%, var(--shine, #fff) 50%, currentColor 60%) 0 0 / 250% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: kit-shine 3.4s linear infinite; }
+@keyframes kit-shine { from { background-position: 125% 0; } to { background-position: -125% 0; } }
+
+/* Motion toggle */
+[data-motion-toggle] { cursor: pointer; }
+[data-motion-toggle][disabled] { cursor: not-allowed; opacity: .6; }
+
+/* Vanta host: give it its own empty box behind the content; the box's own background
+   is the fallback when WebGL is off, motion is reduced, or the visitor saves data */
+.vanta-canvas { animation: kit-fadein 1.4s ease both; }
+@keyframes kit-fadein { from { opacity: 0; } }
+
+/* Less motion: CSS loops stop too */
+.kit-reduce .star-border::before, .kit-reduce .shiny { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .star-border::before, .shiny { animation: none; }
+  *, *::before, *::after { scroll-behavior: auto !important; }
+}

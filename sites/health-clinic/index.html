@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Harbourview Family Clinic · Sample clinic site</title>
+<meta name="description" content="Sample website template for a family medical clinic in Halifax: services, doctors, your visit, and appointment requests. Made-up business.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0b3b39">
+<script>document.documentElement.classList.add('js');setTimeout(function(){var d=document.documentElement;if(!d.classList.contains('kit-ready'))d.classList.remove('js')},4000)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
+<link rel="stylesheet" href="../../kit/kit.css">
+<style>
+:root {
+  --paper: #f7fbfa; --card: #ffffff; --ink: #10302f; --ink-2: #4b6463; --line: #d9e7e4;
+  --accent: #0f766e; --mint: #ccfbf1; --sand: #fdf6ec; --deep: #0b3b39;
+  --display: 'Source Serif 4', Georgia, serif; --body: 'Figtree', system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 18px/1.65 var(--body); overflow-x: clip; }
+a { color: var(--accent); }
+h1, h2, h3 { font-family: var(--display); font-weight: 600; margin: 0; line-height: 1.1; color: var(--ink); }
+h2 { font-size: clamp(2rem, 1.4rem + 2.4vw, 3.2rem); }
+h3 { font-size: 1.3rem; font-family: var(--body); font-weight: 700; }
+p { margin: 0; }
+.wrap { width: min(1160px, 100% - 32px); margin-inline: auto; }
+.eyebrow { font: 600 14px/1 var(--body); color: var(--accent); letter-spacing: .04em; }
+section { padding: clamp(72px, 9vw, 120px) 0; }
+.btn { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 24px; border-radius: 12px; font: 600 17px/1 var(--body); text-decoration: none; border: 2px solid var(--accent); cursor: pointer; background: var(--accent); color: #fff; transition: background-color .2s, color .2s; }
+.btn:hover { background: var(--deep); border-color: var(--deep); }
+.btn-out { background: transparent; color: var(--accent); }
+.btn-out:hover { background: var(--mint); color: var(--deep); border-color: var(--accent); }
+.notice { background: #fff4e5; color: #6b3d00; font-size: 15px; padding: 10px 0; border-bottom: 1px solid #f3d9b1; }
+.notice .wrap { display: flex; gap: 10px; align-items: center; }
+
+.top { position: sticky; top: 0; z-index: 50; background: rgb(247 251 250 / .94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 24px; min-height: 72px; }
+.logo { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font: 600 1.25rem/1.1 var(--display); }
+.logo svg { width: 36px; height: 36px; }
+.nav { display: flex; gap: 24px; margin-left: auto; }
+.nav a { color: var(--ink); text-decoration: none; font-weight: 500; }
+.nav a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }
+.mtoggle { font: 600 14px var(--body); padding: 8px 12px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--card); color: var(--ink); }
+.mtoggle[aria-pressed="true"]::before { content: '● '; color: var(--accent); }
+.menu-btn { display: none; margin-left: auto; font: 600 16px var(--body); padding: 10px 14px; border-radius: 10px; border: 1.5px solid var(--ink); background: var(--card); color: var(--ink); cursor: pointer; }
+@media (max-width: 899px) {
+  .menu-btn { display: block; } .top .mtoggle { display: none; }
+  .nav { position: fixed; inset: 0; z-index: -1; flex-direction: column; justify-content: center; padding: 0 30px; gap: 20px; background: var(--paper); visibility: hidden; opacity: 0; transition: opacity .25s, visibility .25s; }
+  .nav.is-open { visibility: visible; opacity: 1; }
+  .nav a { font: 600 2rem/1.2 var(--display); }
+}
+
+/* Hero over calm Vanta waves */
+.hero { position: relative; overflow: hidden; background: linear-gradient(160deg, #0e4f4b, #0b3b39); color: #e9f7f5; padding: clamp(70px, 9vw, 120px) 0; }
+.waves { position: absolute; inset: 0; }
+.hero .wrap { position: relative; z-index: 1; display: grid; grid-template-columns: 1.2fr .8fr; gap: 40px; align-items: center; }
+.hero h1 { color: #fff; font-size: clamp(2.4rem, 1.4rem + 3.6vw, 4.2rem); margin: 16px 0 20px; }
+.hero .eyebrow { color: var(--mint); }
+.hero p.lede { font-size: 1.15rem; max-width: 46ch; color: #cfe9e5; }
+.hero .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.hero .btn-out { color: #fff; border-color: #8fd3c9; }
+.hero .btn-out:hover { background: rgb(255 255 255 / .1); color: #fff; }
+.slot { background: var(--card); color: var(--ink); border-radius: 22px; padding: 26px; box-shadow: 0 30px 60px rgb(0 0 0 / .25); }
+.slot .label { font-size: 14px; color: var(--ink-2); }
+.slot .time { font: 600 2rem/1.1 var(--display); margin: 6px 0 14px; color: var(--accent); }
+.slot ul { list-style: none; padding: 0; margin: 0 0 18px; display: grid; gap: 8px; font-size: 16px; }
+.slot li { display: flex; gap: 10px; align-items: center; }
+.slot li::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #22c55e; flex: none; }
+@media (max-width: 899px) { .hero .wrap { grid-template-columns: 1fr; } }
+
+/* Services with self-drawing icons */
+.svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 40px; }
+.svc { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 26px; display: grid; gap: 10px; align-content: start; --spot: rgb(15 118 110 / .08); }
+.svc svg { width: 52px; height: 52px; }
+.svc svg * { fill: none; stroke: var(--accent); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.svc p { color: var(--ink-2); font-size: 16px; }
+@media (max-width: 899px) { .svc-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .svc-grid { grid-template-columns: 1fr; } }
+
+/* Your visit: vertical timeline */
+.visit { background: var(--sand); }
+.visit .wrap { display: grid; grid-template-columns: .8fr 1.2fr; gap: 56px; }
+.tl { position: relative; padding-left: 56px; }
+.tl .rail { position: absolute; left: 17px; top: 10px; bottom: 10px; width: 4px; background: var(--line); border-radius: 2px; }
+.tl .fill { position: absolute; inset: 0; background: var(--accent); border-radius: 2px; transform-origin: 50% 0; transform: scaleY(0); }
+.tstep { position: relative; padding-bottom: 40px; }
+.tstep:last-child { padding-bottom: 0; }
+.tstep .dot { position: absolute; left: -56px; top: 0; width: 38px; height: 38px; border-radius: 50%; background: var(--card); border: 3px solid var(--line); display: grid; place-items: center; font: 700 15px var(--body); color: var(--ink-2); transition: background-color .3s, border-color .3s, color .3s; }
+.tstep.on .dot { background: var(--accent); border-color: var(--accent); color: #fff; }
+.tstep h3 { margin-bottom: 6px; padding-top: 4px; }
+.tstep p { color: var(--ink-2); }
+.kit-reduce .tl .fill { transform: none; }
+@media (max-width: 899px) { .visit .wrap { grid-template-columns: 1fr; } }
+
+/* Numbers */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.stats div { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 22px; }
+.stats b { display: block; font: 600 2.4rem/1.1 var(--display); color: var(--accent); font-variant-numeric: tabular-nums; }
+.stats span { color: var(--ink-2); font-size: 16px; }
+@media (max-width: 899px) { .stats { grid-template-columns: 1fr 1fr; } }
+
+/* Doctors with language filter */
+.langs { display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 8px; }
+.langs button { font: 600 15px var(--body); padding: 9px 16px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
+.langs button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.doc-status { font-size: 15px; color: var(--ink-2); min-height: 1.5em; }
+.docs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 14px; }
+.doc { display: flex; gap: 16px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 16px; }
+.doc [data-art] { flex: none; width: 76px; height: 76px; border-radius: 50%; }
+.doc h3 { font-size: 1.1rem; }
+.doc p { font-size: 15px; color: var(--ink-2); }
+.doc .new { display: inline-block; margin-top: 6px; font-size: 13px; font-weight: 700; color: #166534; background: #dcfce7; padding: 3px 8px; border-radius: 6px; }
+@media (max-width: 899px) { .docs { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .docs { grid-template-columns: 1fr; } }
+
+/* FAQ + request */
+.req { background: var(--card); border-top: 1px solid var(--line); }
+.req .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary { padding: 18px 0; font: 600 1.1rem var(--body); display: flex; justify-content: space-between; gap: 14px; }
+.faq summary::after { content: '+'; font-size: 1.4rem; color: var(--accent); line-height: 1; transition: transform .3s; }
+.faq details.is-open summary::after { transform: rotate(45deg); }
+.faq .acc-body p { padding-bottom: 18px; color: var(--ink-2); }
+.rf { background: var(--paper); border: 1px solid var(--line); border-radius: 22px; padding: clamp(22px, 4vw, 36px); }
+.rf legend { font: 600 1.6rem/1.2 var(--display); padding: 0; margin-bottom: 16px; }
+.rf .meta { display: flex; justify-content: space-between; font-size: 15px; color: var(--ink-2); margin-bottom: 10px; }
+.opts { display: grid; gap: 8px; }
+.opts label { display: flex; gap: 12px; align-items: center; padding: 14px 16px; background: var(--card); border: 1.5px solid var(--line); border-radius: 14px; cursor: pointer; font-weight: 500; }
+.opts input { width: 20px; height: 20px; accent-color: var(--accent); }
+.opts label:has(input:checked) { border-color: var(--accent); background: #effaf8; }
+.fd { display: grid; gap: 6px; margin-bottom: 14px; }
+.fd label { font-weight: 600; font-size: 16px; }
+.fd input, .fd select { font: inherit; padding: 12px 14px; border-radius: 12px; border: 1.5px solid #9fb8b5; background: var(--card); color: var(--ink); width: 100%; }
+.fd .hint { font-size: 14px; color: var(--ink-2); }
+.rf .rr { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+.privacy { margin-top: 14px; font-size: 14px; color: var(--ink-2); padding: 10px 12px; background: var(--card); border-radius: 10px; border-left: 3px solid var(--accent); }
+.done h3 { font: 600 2rem var(--display); color: var(--accent); }
+@media (max-width: 899px) { .req .wrap { grid-template-columns: 1fr; } }
+
+footer { background: var(--deep); color: #cfe9e5; padding: 50px 0 36px; font-size: 16px; }
+footer .wrap { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 30px; }
+footer h3 { color: #fff; font-size: 1rem; margin-bottom: 10px; }
+footer a { color: #fff; }
+footer .fine { grid-column: 1 / -1; border-top: 1px solid #1d5a56; padding-top: 18px; font-size: 14px; display: flex; flex-wrap: wrap; gap: 12px 30px; justify-content: space-between; }
+footer button { font: inherit; font-size: 14px; color: #fff; background: transparent; border: 1px solid #2d7a74; border-radius: 10px; padding: 6px 12px; }
+@media (max-width: 799px) { footer .wrap { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="notice" role="note"><div class="wrap">⚠ <span>In an emergency, call <b>911</b> or go to the nearest emergency department. This site can't help in an emergency.</span></div></div>
+
+<header class="top" data-header>
+  <div class="wrap">
+    <a class="logo" href="#top"><svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="10" fill="#0f766e"/><path d="M18 9v18M9 18h18" stroke="#fff" stroke-width="4" stroke-linecap="round"/><path d="M6 27c4-3 8-3 12 0s8 3 12 0" stroke="#ccfbf1" stroke-width="2" fill="none"/></svg>Harbourview<br>Family Clinic</a>
+    <nav class="nav" id="nav" aria-label="Main"><a href="#services">Services</a><a href="#visit">Your visit</a><a href="#doctors">Doctors</a><a href="#request">Book</a></nav>
+    <button class="mtoggle" type="button" data-motion-toggle data-on-text="Animations on" data-off-text="Animations off">Animations on</button>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle>Menu</button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="waves" id="waves" aria-hidden="true"></div>
+    <div class="wrap">
+      <div>
+        <span class="eyebrow" data-reveal="fade" data-now>Family medicine · Halifax, Nova Scotia</span>
+        <h1 data-split="words" data-split-anim="fade" data-now data-delay=".1">Care for every age, close to home.</h1>
+        <p class="lede" data-reveal="up" data-now data-delay=".4">Six family doctors, two nurse practitioners and a pharmacist under one roof. Same-day appointments every weekday, in English and French.</p>
+        <div class="ctas" data-reveal="up" data-now data-delay=".55"><a class="btn" href="#request">Request an appointment</a><a class="btn btn-out" href="#doctors">Find a doctor</a></div>
+      </div>
+      <aside class="slot" aria-label="Next available appointment" data-reveal="up" data-now data-delay=".6">
+        <p class="label">Next same-day opening</p>
+        <p class="time" id="nextSlot">Today, 3:40 pm</p>
+        <ul><li>Accepting new patients (2 doctors)</li><li>Virtual visits available</li><li>Wheelchair accessible, free parking</li></ul>
+        <a class="btn" href="#request" style="width:100%;justify-content:center">Book this time</a>
+      </aside>
+    </div>
+  </section>
+
+  <section id="services" aria-labelledby="svc-h">
+    <div class="wrap">
+      <span class="eyebrow">What we offer</span>
+      <h2 id="svc-h" style="margin-top:10px" data-split="words" data-split-anim="fade">Services</h2>
+      <div class="svc-grid" data-reveal-group="up" data-stagger=".06">
+        <article class="svc" data-spotlight><svg viewBox="0 0 52 52" aria-hidden="true" data-draw><path d="M14 8v14a10 10 0 0 0 20 0V8"/><path d="M24 32v4a10 10 0 0 0 20 0v-6"/><circle cx="44" cy="26" r="4"/></svg><h3>Family check-ups</h3><p>Yearly physicals, screening and ongoing care for chronic conditions.</p></article>
+        <article class="svc" data-spotlight><svg viewBox="0 0 52 52" aria-hidden="true" data-draw><circle cx="26" cy="16" r="8"/><path d="M12 44c2-10 8-14 14-14s12 4 14 14"/><path d="M20 15c2 2 10 2 12 0"/></svg><h3>Children &amp; babies</h3><p>Well-baby visits, vaccines on schedule, growth and development.</p></article>
+        <article class="svc" data-spotlight><svg viewBox="0 0 52 52" aria-hidden="true" data-draw><path d="M34 8l10 10M38 12L18 32l-6 2l2-6L34 8z"/><path d="M12 40l-4 4M22 26l4 4"/></svg><h3>Vaccines &amp; travel</h3><p>Flu and COVID shots, plus travel vaccines and advice before you go.</p></article>
+        <article class="svc" data-spotlight><svg viewBox="0 0 52 52" aria-hidden="true" data-draw><path d="M26 44S8 32 8 19a9 9 0 0 1 18-3a9 9 0 0 1 18 3c0 13-18 25-18 25z"/><path d="M14 24h7l3-6l4 12l3-6h7"/></svg><h3>Heart health</h3><p>Blood pressure, cholesterol and ECGs done in the clinic.</p></article>
+        <article class="svc" data-spotlight><svg viewBox="0 0 52 52" aria-hidden="true" data-draw><path d="M26 10c-8 0-14 6-14 13c0 5 3 8 3 12v5h14v-6c6 0 9-4 9-9v-3c0-7-5-12-12-12z"/><path d="M24 20c3 0 4 2 4 4"/></svg><h3>Mental health</h3><p>Counselling referrals, medication reviews and a social worker on site.</p></article>
+        <article class="svc" data-spotlight><svg viewBox="0 0 52 52" aria-hidden="true" data-draw><rect x="10" y="14" width="32" height="26" rx="4"/><path d="M18 14v-4h16v4M26 21v12M20 27h12"/></svg><h3>Women's health</h3><p>Pap tests, contraception, pregnancy care and menopause support.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="visit" id="visit" aria-labelledby="visit-h">
+    <div class="wrap">
+      <div><span class="eyebrow">Your visit</span><h2 id="visit-h" style="margin-top:10px" data-split="words" data-split-anim="fade">What to expect</h2><p style="margin-top:16px;color:var(--ink-2)">Most appointments take 15 to 20 minutes. Bring your health card and a list of your medications.</p></div>
+      <div class="tl" id="tl">
+        <span class="rail" aria-hidden="true"><span class="fill" id="tlFill"></span></span>
+        <ol style="list-style:none;margin:0;padding:0">
+        <li class="tstep"><span class="dot" aria-hidden="true">1</span><h3>Book online or by phone</h3><p>Pick a time that suits you. Same-day spots open at 8 am.</p></li>
+        <li class="tstep"><span class="dot" aria-hidden="true">2</span><h3>Check in at the kiosk</h3><p>Tap your health card. You'll get a text when your room is ready.</p></li>
+        <li class="tstep"><span class="dot" aria-hidden="true">3</span><h3>See your doctor</h3><p>Time for your questions. We'll explain any next steps in plain words.</p></li>
+        <li class="tstep"><span class="dot" aria-hidden="true">4</span><h3>Follow-up, sorted</h3><p>Prescriptions go straight to your pharmacy. Results arrive in your patient portal.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section aria-label="The clinic in numbers" style="padding-bottom:0">
+    <div class="wrap stats" data-reveal-group="up">
+      <div><b data-count="9200" data-suffix="+">9,200+</b><span>patients cared for</span></div>
+      <div><b data-count="22">22</b><span>years in Halifax</span></div>
+      <div><b data-count="5">5</b><span>languages spoken</span></div>
+      <div><b data-count="96" data-suffix="%">96%</b><span>would recommend us</span></div>
+    </div>
+  </section>
+
+  <section id="doctors" aria-labelledby="doc-h">
+    <div class="wrap" data-filter>
+      <span class="eyebrow">Our team</span>
+      <h2 id="doc-h" style="margin-top:10px" data-split="words" data-split-anim="fade">Find a doctor</h2>
+      <div class="langs" role="group" aria-label="Filter by language">
+        <button type="button" data-filter-btn="all" aria-pressed="true">All</button>
+        <button type="button" data-filter-btn="fr" aria-pressed="false">Français</button>
+        <button type="button" data-filter-btn="ar" aria-pressed="false">العربية</button>
+        <button type="button" data-filter-btn="zh" aria-pressed="false">中文</button>
+        <button type="button" data-filter-btn="new" aria-pressed="false">Accepting patients</button>
+      </div>
+      <p class="doc-status" data-filter-status aria-live="polite"></p>
+      <div class="docs" data-reveal-group="up" data-stagger=".05">
+        <article class="doc" data-tags="fr new"><div data-art="portrait" data-seed="81" data-palette="#ccfbf1,#99e1d6,#0f766e,#d9a07e"></div><div><h3>Dr. Claire Boudreau</h3><p>Family medicine · EN, FR</p><span class="new">Accepting new patients</span></div></article>
+        <article class="doc" data-tags="ar"><div data-art="portrait" data-seed="86" data-palette="#e0f2fe,#bae6fd,#10302f,#8a5a3c"></div><div><h3>Dr. Omar Haddad</h3><p>Family medicine · EN, AR</p></div></article>
+        <article class="doc" data-tags="zh new"><div data-art="portrait" data-seed="92" data-palette="#fdf6ec,#f5e1c8,#0f766e,#e0b08f"></div><div><h3>Dr. Mei Chen</h3><p>Children's health · EN, ZH</p><span class="new">Accepting new patients</span></div></article>
+        <article class="doc" data-tags=""><div data-art="portrait" data-seed="97" data-palette="#ccfbf1,#99e1d6,#10302f,#c68b59"></div><div><h3>Dr. Sarah MacLeod</h3><p>Women's health · EN</p></div></article>
+        <article class="doc" data-tags="fr"><div data-art="portrait" data-seed="103" data-palette="#e0f2fe,#bae6fd,#0f766e,#6f4a35"></div><div><h3>Dr. Jean-Luc Arsenault</h3><p>Family medicine · EN, FR</p></div></article>
+        <article class="doc" data-tags=""><div data-art="portrait" data-seed="108" data-palette="#fdf6ec,#f5e1c8,#10302f,#d9a07e"></div><div><h3>Priya Nair, NP</h3><p>Nurse practitioner · EN</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="req" id="request" aria-labelledby="req-h">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Appointments</span>
+        <h2 id="req-h" style="margin:10px 0 20px" data-split="words" data-split-anim="fade">Request an appointment</h2>
+        <div class="faq" data-accordion>
+          <details><summary>Do I need a health card?</summary><div class="acc-body"><p>Yes, a valid Nova Scotia health card. Visitors from other provinces can be seen; we'll bill your home province.</p></div></details>
+          <details><summary>Can I get a virtual visit?</summary><div class="acc-body"><p>Yes, by phone or video for many concerns, like prescription renewals and test results.</p></div></details>
+          <details><summary>How do I get my test results?</summary><div class="acc-body"><p>Through the patient portal, usually within three business days. We call you if anything needs attention.</p></div></details>
+          <details><summary>Is parking free?</summary><div class="acc-body"><p>Yes, with accessible spots by the main door.</p></div></details>
+        </div>
+      </div>
+      <div class="rf" data-reveal="up">
+        <form data-steps action="#" aria-label="Appointment request">
+          <div class="meta"><span data-steps-count>Step 1 of 3</span><span>About 1 minute</span></div>
+          <div data-steps-bar style="margin-bottom:22px"><i></i></div>
+          <fieldset data-step><legend>What kind of visit?</legend>
+            <div class="opts"><label><input type="radio" name="kind" value="same" required> Same-day, in person</label><label><input type="radio" name="kind" value="booked"> Booked visit, in person</label><label><input type="radio" name="kind" value="virtual"> Virtual (phone or video)</label></div>
+            <div class="rr"><button class="btn" data-next>Continue</button></div>
+          </fieldset>
+          <fieldset data-step><legend>When suits you?</legend>
+            <div class="fd"><label for="h-date">Preferred day</label><input id="h-date" type="date" name="date" required></div>
+            <div class="fd"><label for="h-part">Time of day</label><select id="h-part" name="part"><option>Morning</option><option>Afternoon</option><option>No preference</option></select></div>
+            <div class="rr"><button class="btn btn-out" data-back>Back</button><button class="btn" data-next>Continue</button></div>
+          </fieldset>
+          <fieldset data-step><legend>Contact details</legend>
+            <div class="fd"><label for="h-name">Full name</label><input id="h-name" name="name" required autocomplete="name"></div>
+            <div class="fd"><label for="h-phone">Phone</label><input id="h-phone" type="tel" name="phone" required autocomplete="tel"><span class="hint">We'll call to confirm.</span></div>
+            <div class="rr"><button class="btn btn-out" data-back>Back</button><button class="btn" type="submit">Send request</button></div>
+            <p class="privacy">Please don't include medical details here. Your doctor will ask at the visit. Sample form: nothing is sent.</p>
+          </fieldset>
+        </form>
+        <div class="done" data-steps-done hidden><h3>Request received</h3><p style="margin-top:8px;color:var(--ink-2)">On a real site, the front desk would call you within one business day.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><h3>Harbourview Family Clinic</h3><p>Barrington Street, Halifax, NS<br><a href="tel:+19025550150">(902) 555-0150</a></p></div>
+    <div><h3>Hours</h3><p>Mon–Fri 8 am – 6 pm<br>Saturday 9 am – 1 pm</p></div>
+    <div><h3>After hours</h3><p>Call 811 for nurse advice, any time.</p></div>
+    <div class="fine"><span>© <span data-year>2026</span> · Sample business: names, doctors and details are made up.</span><button type="button" data-motion-toggle data-on-text="Animations on" data-off-text="Animations off">Animations on</button></div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Flip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/DrawSVGPlugin.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>window.KIT = {
+  ease: 'power2.out', dur: 0.8, stagger: 0.05, smooth: { lerp: 0.1 }, anchorOffset: 90,
+  vanta: { el: '#waves', effect: 'WAVES', options: { color: 0x0e4f4b, shininess: 22, waveHeight: 11, waveSpeed: 0.45, zoom: 0.9 } },
+};</script>
+<script src="../../kit/art.js"></script>
+<script src="../../kit/kit.js"></script>
+<script>
+(() => {
+  const K = window.KIT;
+  if (!window.gsap) return;
+
+  // Next opening: a sample time later today, or tomorrow morning after hours.
+  const now = new Date(), slot = document.getElementById('nextSlot');
+  const m = Math.ceil((now.getHours() * 60 + now.getMinutes() + 50) / 20) * 20;
+  slot.textContent = m < 17.5 * 60 && now.getDay() % 6 ? `Today, ${((Math.floor(m / 60) + 11) % 12) + 1}:${String(m % 60).padStart(2, '0')} ${m >= 720 ? 'pm' : 'am'}` : 'Tomorrow, 8:20 am';
+
+  // Visit timeline: the rail fills with scroll, each step lights up as the fill reaches it.
+  const steps = [...document.querySelectorAll('.tstep')];
+  if (K.reduce) { steps.forEach((s) => s.classList.add('on')); return; }
+  gsap.to('#tlFill', { scaleY: 1, ease: 'none', scrollTrigger: { trigger: '#tl', start: 'top 65%', end: 'bottom 65%', scrub: 0.5,
+    onUpdate: (self) => steps.forEach((s, i) => s.classList.toggle('on', self.progress >= i / steps.length + 0.02)) } });
+  steps.forEach((s) => gsap.from(s.querySelectorAll('h3, p'), { autoAlpha: 0, x: 20, duration: 0.6, stagger: 0.08, scrollTrigger: { trigger: s, start: 'top 75%', once: true } }));
+})();
+</script>
+</body>
+</html>

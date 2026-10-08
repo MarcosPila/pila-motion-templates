@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ironclad Fitness · Sample gym site</title>
+<meta name="description" content="Sample website template for a strength and conditioning gym in Calgary: classes, programs, coaches and memberships. Made-up business.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#070707">
+<script>document.documentElement.classList.add('js');setTimeout(function(){var d=document.documentElement;if(!d.classList.contains('kit-ready'))d.classList.remove('js')},4000)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../../kit/kit.css">
+<style>
+:root {
+  --paper: #070707; --card: #121212; --ink: #f4f4f0; --ink-2: #9a9a94; --line: #242424;
+  --accent: #d7ff3a; --hot: #ff4d2e;
+  --display: 'Unbounded', system-ui, sans-serif; --body: 'Space Grotesk', system-ui, sans-serif;
+  --cursor: #d7ff3a; --cursor-ink: #070707; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.6 var(--body); overflow-x: clip; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); margin: 0; line-height: .95; text-transform: uppercase; letter-spacing: -0.02em; }
+h2 { font-size: clamp(2.4rem, 1.2rem + 4.6vw, 5.2rem); font-weight: 900; }
+h3 { font-size: 1.3rem; font-weight: 700; }
+p { margin: 0; }
+.wrap { width: min(1240px, 100% - 32px); margin-inline: auto; }
+.chip { display: inline-block; font: 700 12px/1 var(--body); letter-spacing: .16em; text-transform: uppercase; color: var(--paper); background: var(--accent); padding: 7px 10px; }
+section { padding: clamp(80px, 10vw, 130px) 0; position: relative; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 56px; padding: 0 28px; font: 700 14px/1 var(--display); letter-spacing: .04em; text-transform: uppercase; text-decoration: none; border-radius: 999px; background: var(--accent); color: var(--paper); border: 0; cursor: pointer; }
+.btn-ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 2px var(--ink); }
+.btn-ghost:hover { box-shadow: inset 0 0 0 2px var(--accent); color: var(--accent); }
+
+.top { position: fixed; inset: 0 0 auto; z-index: 50; padding: 14px 0; }
+.top.is-scrolled { background: rgb(7 7 7 / .85); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 26px; }
+.logo { font: 900 1.15rem/1 var(--display); text-transform: uppercase; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+.logo i { width: 14px; height: 14px; background: var(--accent); border-radius: 3px; transform: rotate(45deg); }
+.nav { display: flex; gap: 26px; margin-left: auto; }
+.nav a { font-weight: 500; text-decoration: none; }
+.nav a:hover { color: var(--accent); }
+.top .btn { min-height: 44px; padding: 0 20px; font-size: 12px; }
+.menu-btn { display: none; margin-left: auto; width: 48px; height: 48px; border-radius: 50%; border: 0; background: var(--accent); color: var(--paper); font: 900 18px var(--display); cursor: pointer; }
+@media (max-width: 899px) {
+  .menu-btn { display: block; } .top .btn { display: none; }
+  .nav { position: fixed; inset: 0; z-index: -1; flex-direction: column; justify-content: center; padding: 0 28px; gap: 16px; background: var(--accent); color: var(--paper); visibility: hidden; opacity: 0; transition: opacity .2s, visibility .2s; }
+  .nav.is-open { visibility: visible; opacity: 1; }
+  .nav a { font: 900 2.6rem/1 var(--display); text-transform: uppercase; }
+}
+
+/* Hero */
+.hero { min-height: 100svh; padding: 120px 0 40px; display: grid; align-content: center; overflow: hidden; }
+.hero h1 { font-size: clamp(3rem, 0.6rem + 10vw, 10.5rem); font-weight: 900; line-height: .86; }
+.hero h1 .lime { color: var(--accent); }
+.hero .row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 30px; margin-top: 34px; }
+.hero p { max-width: 44ch; color: var(--ink-2); font-size: 1.1rem; }
+.ecg { width: 100%; height: 120px; margin-top: 30px; display: block; overflow: visible; }
+.ecg path { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; filter: drop-shadow(0 0 6px rgb(215 255 58 / .6)); }
+.bpm { display: flex; align-items: baseline; gap: 10px; font: 900 clamp(2.4rem, 1.8rem + 2vw, 3.6rem)/1 var(--display); font-variant-numeric: tabular-nums; }
+.bpm small { font: 700 13px var(--body); letter-spacing: .16em; color: var(--ink-2); }
+.bpm .heart { width: 22px; height: 22px; color: var(--hot); align-self: center; }
+
+/* Zoom-through word */
+.zoom { height: 100svh; padding: 0; display: grid; place-items: center; overflow: hidden; background: var(--paper); }
+.zoom-word { font: 900 clamp(2.6rem, .5rem + 11vw, 16rem)/1 var(--display); color: var(--accent); text-transform: uppercase; white-space: nowrap; will-change: transform; }
+.zoom-after { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 20px; color: var(--paper); opacity: 0; }
+.zoom-after h2 { font-size: clamp(2rem, 1rem + 4vw, 4.6rem); max-width: 16ch; }
+
+/* Schedule */
+.days { display: flex; flex-wrap: wrap; gap: 8px; margin: 34px 0 10px; }
+.days button { font: 700 14px var(--display); text-transform: uppercase; padding: 12px 16px; border-radius: 999px; border: 0; background: var(--card); color: var(--ink); cursor: pointer; }
+.days button[aria-pressed="true"] { background: var(--accent); color: var(--paper); }
+.sched-status { color: var(--ink-2); font-size: 14px; min-height: 1.4em; }
+.classes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+.cls { padding: 20px; background: var(--card); border-radius: 18px; display: grid; gap: 10px; border: 1px solid var(--line); }
+.cls .t { font: 900 1.6rem/1 var(--display); color: var(--accent); font-variant-numeric: tabular-nums; }
+.cls .meta { font-size: 14px; color: var(--ink-2); }
+.cls .int { display: flex; gap: 4px; }
+.cls .int i { width: 18px; height: 6px; border-radius: 3px; background: var(--line); }
+.cls .int i.on { background: var(--hot); }
+@media (max-width: 899px) { .classes { grid-template-columns: 1fr 1fr; } }
+
+/* Programs: pinned sideways, cards swing in 3D */
+.progs { padding-bottom: 0; }
+.progs .hs-track { padding-inline: max(16px, (100vw - 1240px) / 2); perspective: 1200px; align-items: center; }
+.prog { width: min(420px, 78vw); height: min(520px, 62svh); border-radius: 28px; padding: 30px; display: flex; flex-direction: column; justify-content: space-between; background: var(--card); border: 1px solid var(--line); position: relative; overflow: hidden; }
+.prog [data-art] { position: absolute; inset: 0; opacity: .5; }
+.prog > * { position: relative; }
+.prog .n { font: 900 4rem/1 var(--display); color: transparent; -webkit-text-stroke: 1.5px var(--accent); }
+.prog h3 { font-size: 1.8rem; margin-bottom: 10px; }
+.prog p { color: #cfcfca; }
+.prog .wk { margin-top: 14px; font-weight: 700; color: var(--accent); }
+.hs-bar { height: 4px; background: var(--line); margin-top: 26px; }
+.hs-bar i { display: block; height: 100%; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); }
+.progs .after { padding-bottom: clamp(80px, 10vw, 130px); }
+
+/* Numbers with bars */
+.meters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.meter { padding: 26px; border-radius: 22px; background: var(--card); border: 1px solid var(--line); }
+.meter b { display: block; font: 900 clamp(2.6rem, 2rem + 2vw, 4rem)/1 var(--display); font-variant-numeric: tabular-nums; }
+.meter .bar { height: 10px; border-radius: 5px; background: var(--line); margin-top: 18px; overflow: hidden; }
+.meter .bar i { display: block; height: 100%; width: var(--w); background: var(--accent); border-radius: 5px; transform-origin: 0 50%; }
+@media (max-width: 899px) { .meters { grid-template-columns: 1fr; } }
+
+/* Coaches with glitch names */
+.coaches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 44px; }
+.coach { border-radius: 20px; overflow: hidden; background: var(--card); }
+.coach [data-art] { aspect-ratio: 4 / 5; filter: grayscale(1) contrast(1.1); transition: filter .3s; }
+.coach:hover [data-art] { filter: grayscale(1) contrast(1.2) sepia(1) hue-rotate(30deg) saturate(4); }
+.coach .cap { padding: 14px 16px 18px; }
+.coach h3 { position: relative; display: inline-block; }
+.coach:hover h3 { animation: glitch .35s steps(2) 2; }
+@keyframes glitch { 0% { text-shadow: 3px 0 var(--hot), -3px 0 #2ee6ff; transform: translateX(2px); } 50% { text-shadow: -3px 0 var(--hot), 3px 0 #2ee6ff; transform: translateX(-2px); } 100% { text-shadow: none; transform: none; } }
+.coach span { display: block; color: var(--ink-2); font-size: 14px; margin-top: 4px; }
+@media (max-width: 899px) { .coaches { grid-template-columns: 1fr 1fr; } }
+
+/* Memberships */
+.bill { display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--card); margin-top: 26px; }
+.bill button { font: 700 14px var(--body); border: 0; border-radius: 999px; padding: 10px 18px; background: transparent; color: var(--ink); cursor: pointer; }
+.bill button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 30px; }
+.tier { padding: 30px; border-radius: 26px; background: var(--card); display: flex; flex-direction: column; gap: 14px; }
+.tier.star-border { --star: var(--accent); background: #10140a; }
+.tier .amt { font: 900 3.4rem/1 var(--display); font-variant-numeric: tabular-nums; }
+.tier .amt small { font: 500 15px var(--body); color: var(--ink-2); }
+.tier ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; color: #cfcfca; }
+.tier li::before { content: '+ '; color: var(--accent); font-weight: 700; }
+.tier .btn { margin-top: auto; }
+@media (max-width: 899px) { .tiers { grid-template-columns: 1fr; } }
+
+/* Trial form */
+.trial .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+.tf { background: var(--card); border-radius: 28px; padding: clamp(22px, 4vw, 40px); border: 1px solid var(--line); }
+.tf legend { font: 900 1.6rem/1.1 var(--display); text-transform: uppercase; padding: 0; margin-bottom: 18px; }
+.tf .meta { display: flex; justify-content: space-between; font-size: 13px; color: var(--ink-2); margin-bottom: 10px; }
+.goals { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.goals label { position: relative; }
+.goals input { position: absolute; inset: 0; opacity: 0; }
+.goals span { display: block; padding: 16px; border-radius: 16px; background: var(--paper); border: 2px solid var(--line); font-weight: 700; cursor: pointer; }
+.goals input:checked + span { border-color: var(--accent); color: var(--accent); }
+.goals input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
+.ff { display: grid; gap: 6px; margin-bottom: 12px; }
+.ff label { font-size: 14px; font-weight: 700; }
+.ff input, .ff select { font: inherit; padding: 13px 14px; border-radius: 14px; border: 2px solid var(--line); background: var(--paper); color: var(--ink); width: 100%; }
+.tf .rr { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+.done h3 { font-size: 2.6rem; color: var(--accent); }
+@media (max-width: 899px) { .trial .wrap { grid-template-columns: 1fr; } }
+
+footer { border-top: 1px solid var(--line); padding: 36px 0; color: var(--ink-2); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px; align-items: center; }
+footer button { font: inherit; background: var(--card); color: var(--ink); border: 0; border-radius: 999px; padding: 8px 14px; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div data-progress></div>
+
+<header class="top" data-header data-header-hide>
+  <div class="wrap">
+    <a class="logo" href="#top"><i></i>Ironclad</a>
+    <nav class="nav" id="nav" aria-label="Main"><a href="#classes">Classes</a><a href="#programs">Programs</a><a href="#join">Join</a></nav>
+    <a class="btn" href="#trial" data-magnet="0.3">Free week</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle aria-label="Menu">≡</button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="wrap">
+      <span class="chip" data-reveal="pop" data-now>Calgary · Open 5 am – 11 pm</span>
+      <h1 style="margin-top:22px"><span data-split="chars" data-split-anim="flip" data-now data-delay=".1" data-stagger=".03" style="display:block">Train</span><span class="lime" data-split="chars" data-split-anim="flip" data-now data-delay=".35" data-stagger=".03" style="display:block">harder.</span><span data-split="chars" data-split-anim="flip" data-now data-delay=".6" data-stagger=".03" style="display:block">Recover smarter.</span></h1>
+      <svg class="ecg" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true"><path id="ecg" d="M0 60H220l20-10l14 10h40l16-48l22 96l18-58l14 10H560l20-10l14 10h40l16-48l22 96l18-58l14 10H900l20-10l14 10h40l16-48l22 96l18-58l14 10H1200"/></svg>
+      <div class="row">
+        <p data-reveal="up" data-now data-delay=".9">Coached strength, conditioning and spin classes. Every workout is planned, every lift is checked, and nobody gets left behind.</p>
+        <div class="bpm" aria-hidden="true"><svg class="heart" viewBox="0 0 24 24"><path fill="currentColor" d="M12 21s-8-5.2-8-11a4.6 4.6 0 0 1 8-3a4.6 4.6 0 0 1 8 3c0 5.8-8 11-8 11z"/></svg><span id="bpm">72</span><small>BPM<br>scroll faster</small></div>
+        <a class="btn" href="#trial" data-magnet="0.3" data-reveal="pop" data-now data-delay="1.1">Claim a free week</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="zoom" aria-label="Iron">
+    <div class="zoom-word" id="zoomWord" aria-hidden="true">IRON<span id="zo">C</span>LAD</div>
+    <div class="zoom-after" id="zoomAfter"><h2>No mirrors-only lifting. Real coaching, every session.</h2></div>
+  </section>
+
+  <section id="classes" aria-labelledby="cl-h">
+    <div class="wrap" data-filter>
+      <span class="chip">This week</span>
+      <h2 id="cl-h" style="margin-top:16px" data-split="chars" data-split-anim="flip" data-stagger=".02">Class schedule</h2>
+      <div class="days" role="group" aria-label="Pick a day">
+        <button type="button" data-filter-btn="all" aria-pressed="true">All</button>
+        <button type="button" data-filter-btn="mon" aria-pressed="false">Mon</button><button type="button" data-filter-btn="tue" aria-pressed="false">Tue</button><button type="button" data-filter-btn="wed" aria-pressed="false">Wed</button><button type="button" data-filter-btn="thu" aria-pressed="false">Thu</button><button type="button" data-filter-btn="fri" aria-pressed="false">Fri</button><button type="button" data-filter-btn="sat" aria-pressed="false">Sat</button>
+      </div>
+      <p class="sched-status" data-filter-status aria-live="polite"></p>
+      <div class="classes" data-reveal-group="up" data-stagger=".04">
+        <article class="cls" data-tags="mon wed fri"><span class="t">6:00</span><h3>Strength 101</h3><span class="meta">Coach Dev · 50 min</span><span class="int" aria-label="Intensity 3 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></article>
+        <article class="cls" data-tags="mon thu"><span class="t">7:15</span><h3>HIIT Burn</h3><span class="meta">Coach Sam · 40 min</span><span class="int" aria-label="Intensity 5 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></article>
+        <article class="cls" data-tags="tue thu sat"><span class="t">9:00</span><h3>Spin</h3><span class="meta">Coach Riya · 45 min</span><span class="int" aria-label="Intensity 4 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></article>
+        <article class="cls" data-tags="tue fri"><span class="t">12:00</span><h3>Lunch Lift</h3><span class="meta">Coach Dev · 30 min</span><span class="int" aria-label="Intensity 3 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></article>
+        <article class="cls" data-tags="wed sat"><span class="t">10:30</span><h3>Mobility</h3><span class="meta">Coach Ana · 45 min</span><span class="int" aria-label="Intensity 1 of 5"><i class="on"></i><i></i><i></i><i></i><i></i></span></article>
+        <article class="cls" data-tags="mon wed"><span class="t">18:00</span><h3>Boxing</h3><span class="meta">Coach Marcus · 50 min</span><span class="int" aria-label="Intensity 4 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></article>
+        <article class="cls" data-tags="tue thu"><span class="t">19:15</span><h3>Olympic Lifts</h3><span class="meta">Coach Dev · 60 min</span><span class="int" aria-label="Intensity 4 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></article>
+        <article class="cls" data-tags="fri sat"><span class="t">8:00</span><h3>Team WOD</h3><span class="meta">Coach Sam · 60 min</span><span class="int" aria-label="Intensity 5 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="progs" id="programs" data-hscroll-pin aria-labelledby="pg-h">
+    <div class="wrap" style="margin-bottom:34px"><span class="chip">Programs</span><h2 id="pg-h" style="margin-top:16px" data-split="chars" data-split-anim="flip" data-stagger=".02">Pick a goal</h2></div>
+    <div data-hscroll id="progTrack">
+      <div class="hs-track">
+        <article class="prog"><div data-art="gym" data-seed="2"></div><span class="n">01</span><div><h3>Get strong</h3><p>Squat, bench, deadlift. Coached technique, steady progress, logged every week.</p><p class="wk">12 weeks · 3× a week</p></div></article>
+        <article class="prog"><div data-art="gym" data-seed="5" data-palette="#111111,#262626,#ff4d2e,#555555"></div><span class="n">02</span><div><h3>Lean out</h3><p>Conditioning plus strength, and a coach who checks your food log.</p><p class="wk">8 weeks · 4× a week</p></div></article>
+        <article class="prog"><div data-art="gym" data-seed="8" data-palette="#111111,#262626,#2ee6ff,#555555"></div><span class="n">03</span><div><h3>Run better</h3><p>Leg strength and engine work for the Calgary Marathon crowd.</p><p class="wk">10 weeks · 3× a week</p></div></article>
+        <article class="prog"><div data-art="gym" data-seed="11"></div><span class="n">04</span><div><h3>Start here</h3><p>Never lifted? Four private sessions before you join a class.</p><p class="wk">2 weeks · 2× a week</p></div></article>
+        <article class="prog"><div data-art="gym" data-seed="14" data-palette="#111111,#262626,#ff4d2e,#555555"></div><span class="n">05</span><div><h3>Over 50</h3><p>Strength and balance, smaller groups, joint-friendly lifts.</p><p class="wk">Ongoing · 2× a week</p></div></article>
+      </div>
+    </div>
+    <div class="wrap after"><div class="hs-bar"><i data-hs-bar></i></div></div>
+  </section>
+
+  <section style="padding-top:0" aria-label="Ironclad in numbers">
+    <div class="wrap meters" data-reveal-group="up">
+      <div class="meter"><b data-count="1400" data-suffix="+">1,400+</b>members training</div>
+      <div class="meter"><b data-count="94" data-suffix="%">94%</b>still training after a year<div class="bar"><i style="--w:94%"></i></div></div>
+      <div class="meter"><b data-count="38">38</b>classes every week<div class="bar"><i style="--w:76%"></i></div></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="co-h">
+    <div class="wrap">
+      <span class="chip">Coaches</span>
+      <h2 id="co-h" style="margin-top:16px" data-split="chars" data-split-anim="flip" data-stagger=".02">The crew</h2>
+      <div class="coaches" data-reveal-group="up" data-stagger=".06">
+        <article class="coach"><div data-art="portrait" data-seed="61" data-palette="#2a2a2a,#111111,#d7ff3a,#c58c6b"></div><div class="cap"><h3>Dev</h3><span>Head coach · strength</span></div></article>
+        <article class="coach"><div data-art="portrait" data-seed="66" data-palette="#2a2a2a,#111111,#ff4d2e,#8a5a3c"></div><div class="cap"><h3>Sam</h3><span>Conditioning</span></div></article>
+        <article class="coach"><div data-art="portrait" data-seed="71" data-palette="#2a2a2a,#111111,#2ee6ff,#d9a07e"></div><div class="cap"><h3>Riya</h3><span>Spin · endurance</span></div></article>
+        <article class="coach"><div data-art="portrait" data-seed="77" data-palette="#2a2a2a,#111111,#f4f4f0,#6f4a35"></div><div class="cap"><h3>Marcus</h3><span>Boxing</span></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="join" aria-labelledby="join-h" style="padding-top:0">
+    <div class="wrap">
+      <span class="chip">Memberships</span>
+      <h2 id="join-h" style="margin-top:16px" data-split="chars" data-split-anim="flip" data-stagger=".02">Pick your plan</h2>
+      <div class="bill" role="group" aria-label="Billing"><button type="button" aria-pressed="true" data-bill="m">Monthly</button><button type="button" aria-pressed="false" data-bill="y">Yearly · 2 months free</button></div>
+      <div class="tiers" data-reveal-group="up">
+        <div class="tier"><h3>Open gym</h3><p class="amt">$<span data-m="49" data-y="41">49</span><small> / month</small></p><ul><li>5 am – 11 pm access</li><li>Lockers and towels</li><li>One coach check-in a month</li></ul><a class="btn btn-ghost" href="#trial">Start</a></div>
+        <div class="tier star-border"><h3>Unlimited classes</h3><p class="amt">$<span data-m="139" data-y="116">139</span><small> / month</small></p><ul><li>Every class, every day</li><li>Open gym included</li><li>Quarterly progress test</li><li>Free guest pass monthly</li></ul><a class="btn" href="#trial" data-magnet="0.3">Start</a></div>
+        <div class="tier"><h3>Personal</h3><p class="amt">$<span data-m="299" data-y="249">299</span><small> / month</small></p><ul><li>Four 1-on-1 sessions</li><li>Custom program</li><li>Food coaching</li></ul><a class="btn btn-ghost" href="#trial">Start</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="trial" id="trial" aria-labelledby="tr-h" style="padding-top:0">
+    <div class="wrap">
+      <div><span class="chip">Free week</span><h2 id="tr-h" style="margin-top:16px" data-split="chars" data-split-anim="flip" data-stagger=".02">Try us for 7 days</h2><p style="margin-top:18px;color:var(--ink-2);max-width:42ch">No contract, no card. Come to any class, and a coach will meet you at the door the first time.</p></div>
+      <div class="tf" data-reveal="up">
+        <form data-steps action="#" aria-label="Free week sign-up">
+          <div class="meta"><span data-steps-count>Step 1 of 3</span><span>1 minute</span></div>
+          <div data-steps-bar style="margin-bottom:22px"><i></i></div>
+          <fieldset data-step><legend>Main goal</legend>
+            <div class="goals"><label><input type="radio" name="goal" value="strength" required><span>Get strong</span></label><label><input type="radio" name="goal" value="lean"><span>Lean out</span></label><label><input type="radio" name="goal" value="run"><span>Run better</span></label><label><input type="radio" name="goal" value="start"><span>Just start</span></label></div>
+            <div class="rr"><button class="btn" data-next>Next</button></div>
+          </fieldset>
+          <fieldset data-step><legend>Best time</legend>
+            <div class="ff"><label for="g-time">I usually train</label><select id="g-time" name="time"><option>Early (5–8 am)</option><option>Lunch</option><option>After work</option><option>Weekends</option></select></div>
+            <div class="ff"><label for="g-start">Start date</label><input id="g-start" type="date" name="start" required></div>
+            <div class="rr"><button class="btn btn-ghost" data-back>Back</button><button class="btn" data-next>Next</button></div>
+          </fieldset>
+          <fieldset data-step><legend>Your details</legend>
+            <div class="ff"><label for="g-name">Name</label><input id="g-name" name="name" required autocomplete="name"></div>
+            <div class="ff"><label for="g-mail">Email</label><input id="g-mail" type="email" name="email" required autocomplete="email"></div>
+            <div class="rr"><button class="btn btn-ghost" data-back>Back</button><button class="btn" type="submit">Claim my week</button></div>
+            <p style="font-size:13px;color:var(--ink-2);margin-top:12px">Sample form: nothing is sent.</p>
+          </fieldset>
+        </form>
+        <div class="done" data-steps-done hidden><h3>Week unlocked.</h3><p style="margin-top:10px;color:var(--ink-2)">On a real site, your pass would land in your inbox.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><span>Ironclad Fitness · Calgary, AB · <span data-year>2026</span></span><span>Sample business: everything here is made up.</span><button type="button" data-motion-toggle>Motion: on</button></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Flip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/DrawSVGPlugin.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>window.KIT = { ease: 'power4.out', dur: 0.65, stagger: 0.04, smooth: { lerp: 0.14 }, anchorOffset: 70, cursor: 'ring', spark: { color: '#d7ff3a', selector: '.btn, .days button, .goals span', count: 12 } };</script>
+<script src="../../kit/art.js"></script>
+<script src="../../kit/kit.js"></script>
+<script>
+(() => {
+  const K = window.KIT;
+  if (!window.gsap) return;
+
+  // Membership prices roll to the new number when billing changes.
+  const amts = [...document.querySelectorAll('[data-m]')];
+  document.querySelectorAll('[data-bill]').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('[data-bill]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    amts.forEach((a) => {
+      const to = +a.dataset[b.dataset.bill];
+      if (K.reduce) { a.textContent = to; return; }
+      const o = { v: +a.textContent };
+      gsap.to(o, { v: to, duration: 0.6, ease: 'power2.out', onUpdate: () => (a.textContent = Math.round(o.v)) });
+      gsap.fromTo(a, { yPercent: -30, opacity: 0.4 }, { yPercent: 0, opacity: 1, duration: 0.4 });
+    });
+  }));
+
+  if (K.reduce) return;
+
+  // Heartbeat: the trace draws on a loop; BPM follows scroll speed.
+  gsap.fromTo('#ecg', { drawSVG: '0% 0%' }, { drawSVG: '0% 100%', duration: 2.2, ease: 'none', repeat: -1, repeatDelay: 0.2 });
+  const bpm = document.getElementById('bpm'), heart = document.querySelector('.bpm .heart');
+  let shown = 72, beat = 0;
+  gsap.ticker.add((t, dt) => {
+    const target = 72 + Math.min(Math.abs(K.velocity) / 14, 118);
+    shown += (target - shown) * 0.05;
+    bpm.textContent = Math.round(shown);
+    beat += dt / 1000;
+    if (beat > 60 / shown) { beat = 0; gsap.fromTo(heart, { scale: 1.35 }, { scale: 1, duration: 0.25, ease: 'power2.out' }); }
+  });
+
+  // Zoom-through: pin, scale into the C until lime fills the screen, then the message lands.
+  const word = document.getElementById('zoomWord'), zo = document.getElementById('zo');
+  const mm = gsap.matchMedia();
+  mm.add('(min-width: 0px)', () => {
+    const origin = () => { const w = word.getBoundingClientRect(), r = zo.getBoundingClientRect(); return `${((r.left + r.width * 0.3 - w.left) / w.width) * 100}% ${((r.top + r.height / 2 - w.top) / w.height) * 100}%`; };
+    gsap.set(word, { transformOrigin: origin() });
+    gsap.timeline({ scrollTrigger: { trigger: '.zoom', start: 'top top', end: '+=160%', pin: true, scrub: 0.6, refreshPriority: 1, onRefresh: () => gsap.set(word, { transformOrigin: origin() }) } })
+      .to(word, { scale: 60, ease: 'power2.in', duration: 1 })
+      .to('.zoom', { backgroundColor: '#d7ff3a', duration: 0.05 }, 0.95)
+      .to('#zoomAfter', { opacity: 1, duration: 0.3 }, 1)
+      .from('#zoomAfter h2', { y: 60, duration: 0.3 }, 1);
+  });
+
+  // Programs: cards swing in 3D as they pass through the middle.
+  const hs = document.getElementById('progTrack')._hs;
+  if (hs) document.querySelectorAll('.prog').forEach((c) => gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { containerAnimation: hs, trigger: c, start: 'left right', end: 'right left', scrub: true } })
+    .fromTo(c, { rotateY: -28, scale: 0.88 }, { rotateY: 0, scale: 1 })
+    .to(c, { rotateY: 28, scale: 0.88 }));
+
+  // Meter bars fill with scroll.
+  document.querySelectorAll('.meter .bar i').forEach((i) => gsap.from(i, { scaleX: 0, ease: 'none', scrollTrigger: { trigger: i, start: 'top 95%', end: 'top 55%', scrub: true } }));
+})();
+</script>
+</body>
+</html>

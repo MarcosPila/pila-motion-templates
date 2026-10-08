@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Velvet &amp; Vine · Sample hair salon site</title>
+<meta name="description" content="Sample website template for a hair and beauty salon in Oakville: services, stylists, lookbook and booking. Made-up business.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#2a0f22">
+<script>document.documentElement.classList.add('js');setTimeout(function(){var d=document.documentElement;if(!d.classList.contains('kit-ready'))d.classList.remove('js')},4000)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Jost:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="../../kit/kit.css">
+<style>
+:root {
+  --paper: #f8eee9; --card: #fffaf7; --ink: #3b1630; --ink-2: #7a5a6d; --line: #ead6cf;
+  --accent: #8e2c5c; --gold: #c49a6c; --night: #2a0f22;
+  --display: 'Cormorant Garamond', Georgia, serif; --body: 'Jost', system-ui, sans-serif;
+  --cursor: #8e2c5c; --peek-w: 240px; --peek-r: 140px 140px 12px 12px; color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 300 18px/1.7 var(--body); overflow-x: clip; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); font-weight: 500; margin: 0; line-height: 1; }
+h2 { font-size: clamp(2.8rem, 1.6rem + 4.6vw, 5.6rem); letter-spacing: -0.01em; }
+h2 em, h1 em { font-style: italic; color: var(--accent); }
+h3 { font-size: 1.9rem; }
+p { margin: 0; }
+.wrap { width: min(1160px, 100% - 32px); margin-inline: auto; }
+.over { font: 400 12px/1 var(--body); letter-spacing: .32em; text-transform: uppercase; color: var(--ink-2); }
+section { padding: clamp(90px, 12vw, 160px) 0; }
+.btn { display: inline-flex; align-items: center; gap: 12px; min-height: 54px; padding: 0 30px; border-radius: 999px; font: 400 14px/1 var(--body); letter-spacing: .2em; text-transform: uppercase; text-decoration: none; border: 1px solid currentColor; background: transparent; color: inherit; cursor: pointer; transition: background-color .4s, color .4s; }
+.btn:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.btn-solid { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+.top { position: fixed; inset: 0 0 auto; z-index: 50; padding: 20px 0; color: #f8e6ee; transition: color .4s, background-color .4s, padding .4s; }
+.top.is-scrolled { background: rgb(248 238 233 / .92); backdrop-filter: blur(12px); color: var(--ink); padding: 12px 0; }
+.top .wrap { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 20px; }
+.nav { display: flex; gap: 30px; }
+.nav a { font-size: 13px; letter-spacing: .24em; text-transform: uppercase; text-decoration: none; }
+.logo { font: italic 600 1.9rem/1 var(--display); text-decoration: none; }
+.top .btn { justify-self: end; min-height: 44px; padding: 0 22px; }
+.menu-btn { display: none; background: none; border: 1px solid currentColor; color: inherit; border-radius: 999px; padding: 10px 16px; font: 400 12px var(--body); letter-spacing: .2em; text-transform: uppercase; cursor: pointer; justify-self: start; }
+@media (max-width: 899px) {
+  .top .wrap { grid-template-columns: auto 1fr auto; }
+  .menu-btn { display: block; } .logo { justify-self: center; }
+  .nav { position: fixed; inset: 0; z-index: -1; flex-direction: column; justify-content: center; align-items: center; gap: 20px; background: var(--night); color: #f8e6ee; visibility: hidden; opacity: 0; transition: opacity .4s, visibility .4s; }
+  .nav.is-open { visibility: visible; opacity: 1; }
+  .nav a { font: italic 500 2.8rem/1.1 var(--display); letter-spacing: 0; text-transform: none; }
+  .top .btn { padding: 0 16px; letter-spacing: .12em; }
+}
+
+/* Hero: halo */
+.hero { position: relative; min-height: 100svh; background: radial-gradient(circle at 50% 55%, #6d2350 0, #2a0f22 60%); color: #f8e6ee; display: grid; place-items: center; text-align: center; overflow: hidden; padding: 0; }
+.halo { position: absolute; inset: 0; }
+.hero::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse 60% 50% at 50% 50%, rgb(42 15 34 / .55), transparent 75%); }
+.hero-in { position: relative; z-index: 2; padding: 120px 16px 80px; }
+.hero .over { color: #e2bfd0; }
+.hero h1 { font-size: clamp(2.6rem, 1rem + 8.4vw, 10rem); line-height: .92; margin: 26px 0 30px; }
+.hero h1 em { color: var(--gold); }
+.hero p { max-width: 42ch; margin: 0 auto 34px; color: #e2bfd0; }
+.scroll-cue { position: absolute; left: 50%; bottom: 28px; z-index: 2; width: 1px; height: 64px; background: linear-gradient(#f8e6ee, transparent); }
+
+/* Intro */
+.intro { position: relative; z-index: 3; margin-top: -48px; border-radius: 48px 48px 0 0; background: var(--paper); text-align: center; }
+.intro p.big { font: italic 500 clamp(1.8rem, 1.2rem + 2.2vw, 3rem)/1.3 var(--display); max-width: 30ch; margin: 22px auto 0; }
+
+/* Services list with floating peek */
+.svc { border-top: 1px solid var(--ink); margin-top: 50px; }
+.svc li { list-style: none; display: grid; grid-template-columns: 1fr 1.2fr auto; gap: 24px; align-items: baseline; padding: 30px 0; border-bottom: 1px solid var(--line); transition: padding .5s cubic-bezier(.2, .7, .2, 1), color .4s; }
+.svc li:hover { padding-left: 18px; color: var(--accent); }
+.svc h3 { font-size: clamp(2rem, 1.4rem + 2vw, 3.2rem); }
+.svc p { color: var(--ink-2); font-size: 16px; }
+.svc .price { font: italic 500 1.8rem var(--display); }
+.svc ul { padding: 0; margin: 0; }
+@media (max-width: 799px) { .svc li { grid-template-columns: 1fr auto; } .svc p { grid-column: 1 / -1; grid-row: 2; } }
+
+/* Lookbook: three columns drift at different speeds */
+.look { background: var(--night); color: #f8e6ee; overflow: hidden; }
+.look h2 em { color: var(--gold); }
+.look .over { color: #e2bfd0; }
+.cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 60px; }
+.col { display: grid; gap: 18px; align-content: start; }
+.col:nth-child(2) { margin-top: 90px; }
+.col [data-art] { aspect-ratio: 3 / 4; border-radius: 200px 200px 14px 14px; }
+.col figure { margin: 0; }
+.col figcaption { margin-top: 10px; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: #e2bfd0; }
+@media (max-width: 699px) { .cols { grid-template-columns: 1fr 1fr; } .col:nth-child(3) { display: none; } }
+
+/* Team */
+.team { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin-top: 60px; }
+.member { position: relative; text-align: center; padding: 30px 24px 34px; border-radius: 28px; background: var(--card); }
+.member .pic { position: relative; width: 78%; margin: 0 auto 20px; aspect-ratio: 1; }
+.member .pic svg.blob { position: absolute; inset: -6%; width: 112%; height: 112%; }
+.member .pic [data-art] { position: absolute; inset: 8%; border-radius: 50%; }
+.member h3 { font-size: 2rem; }
+.member .role { font-size: 13px; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-2); margin-top: 6px; }
+.member p.bio { margin-top: 14px; font-size: 16px; color: var(--ink-2); }
+@media (max-width: 899px) { .team { grid-template-columns: 1fr; max-width: 420px; margin-inline: auto; } }
+
+/* Quote */
+.quote { text-align: center; background: var(--card); }
+.quote blockquote { margin: 0 auto; max-width: 24ch; font: italic 500 clamp(2.2rem, 1.4rem + 3.4vw, 4.4rem)/1.1 var(--display); }
+.quote .shiny { --shine: #f1d3a6; color: var(--accent); }
+.quote cite { display: block; margin-top: 26px; font: 400 13px var(--body); letter-spacing: .24em; text-transform: uppercase; color: var(--ink-2); font-style: normal; }
+
+/* Book */
+.book .wrap { display: grid; grid-template-columns: .9fr 1.1fr; gap: 60px; align-items: start; }
+.bform { background: var(--card); border-radius: 32px; padding: clamp(24px, 4vw, 44px); }
+.bform legend { font: italic 500 2.4rem/1 var(--display); padding: 0; margin-bottom: 20px; }
+.bmeta { display: flex; justify-content: space-between; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 10px; }
+.choose { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.choose label { position: relative; }
+.choose input { position: absolute; inset: 0; opacity: 0; }
+.choose span { display: block; padding: 16px; border-radius: 18px; border: 1px solid var(--line); cursor: pointer; transition: border-color .3s, background-color .3s; }
+.choose span b { display: block; font: 500 1.4rem var(--display); }
+.choose span small { color: var(--ink-2); font-size: 14px; }
+.choose input:checked + span { border-color: var(--accent); background: #f6e4ea; }
+.choose input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
+.fi { display: grid; gap: 6px; margin-bottom: 14px; }
+.fi label { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); }
+.fi input, .fi select { font: inherit; font-weight: 400; padding: 13px 16px; border-radius: 14px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); width: 100%; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.brow { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+.tiny { font-size: 14px; color: var(--ink-2); margin-top: 14px; }
+.hours { margin-top: 30px; display: grid; gap: 6px; font-size: 16px; }
+.hours div { display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); padding: 8px 0; }
+.gift { margin-top: 34px; padding: 28px; border-radius: 26px; background: var(--night); color: #f8e6ee; }
+.gift h3 { font-size: 2rem; margin-bottom: 8px; }
+.gift .btn { margin-top: 18px; border-color: transparent; --star: #f1d3a6; background: var(--night); color: #f8e6ee; }
+.done { text-align: center; padding: 30px 0; }
+.done h3 { font: italic 500 3rem var(--display); color: var(--accent); }
+@media (max-width: 899px) { .book .wrap { grid-template-columns: 1fr; } .choose { grid-template-columns: 1fr; } }
+
+footer { background: var(--night); color: #e2bfd0; padding: 60px 0 40px; text-align: center; }
+footer .logo { color: #f8e6ee; font-size: 3rem; }
+footer p { margin-top: 14px; font-size: 15px; }
+footer button { margin-top: 18px; font: inherit; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; background: none; color: #f8e6ee; border: 1px solid #6d2350; border-radius: 999px; padding: 8px 16px; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top" data-header>
+  <div class="wrap">
+    <nav class="nav" id="nav" aria-label="Main"><a href="#services">Services</a><a href="#look">Lookbook</a><a href="#team">Stylists</a></nav>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle>Menu</button>
+    <a class="logo" href="#top">Velvet &amp; Vine</a>
+    <a class="btn" href="#book">Book</a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="halo" id="halo" aria-hidden="true"></div>
+    <div class="hero-in">
+      <span class="over" data-reveal="fade" data-now data-delay=".3" data-dur="2">Hair · Colour · Bridal · Oakville</span>
+      <h1 data-split="lines" data-now data-delay=".5" data-dur="1.6">Hair that feels<br>like <em>you</em>, only<br>more so.</h1>
+      <p data-reveal="blur" data-now data-delay="1.3" data-dur="1.6">An appointment-only studio on Lakeshore Road. Four chairs, no rush, and a stylist who listens before the scissors come out.</p>
+      <a class="btn" href="#book" data-magnet="0.3" data-reveal="fade" data-now data-delay="1.6">Reserve a chair</a>
+    </div>
+    <span class="scroll-cue" aria-hidden="true"></span>
+  </section>
+
+  <section class="intro" aria-labelledby="intro-h">
+    <div class="wrap">
+      <span class="over">The studio</span>
+      <h2 id="intro-h" class="sr-only">About the studio</h2>
+      <p class="big" data-split="words" data-split-anim="blur" data-stagger=".04">A quiet room, good light, real coffee, and two hours that are entirely about you.</p>
+    </div>
+  </section>
+
+  <section id="services" style="padding-top:0" aria-labelledby="svc-h">
+    <div class="wrap">
+      <span class="over">Services</span>
+      <h2 id="svc-h" style="margin-top:16px" data-split="lines">The <em>menu</em></h2>
+      <ul class="svc" data-peek-list data-reveal-group="fade" data-stagger=".12">
+        <li data-peek="portrait" data-peek-seed="3" data-peek-palette="#f6e4ea,#e8bccc,#3b1630,#d8a383"><h3>Cut &amp; style</h3><p>Consultation, wash, precision cut and blow-dry.</p><span class="price">$85+</span></li>
+        <li data-peek="portrait" data-peek-seed="8" data-peek-palette="#f1d3a6,#e2b07a,#8e2c5c,#c68b59"><h3>Colour</h3><p>Single process, gloss or root touch-up, with Olaplex.</p><span class="price">$140+</span></li>
+        <li data-peek="portrait" data-peek-seed="14" data-peek-palette="#e9d5c4,#d1a98b,#6d2350,#e0b08f"><h3>Balayage</h3><p>Hand-painted, lived-in colour. Three to four hours.</p><span class="price">$260+</span></li>
+        <li data-peek="portrait" data-peek-seed="22" data-peek-palette="#f6e4ea,#d8b4c4,#2a0f22,#c99a76"><h3>Blowout</h3><p>Wash and a smooth, bouncy finish that lasts the week.</p><span class="price">$55</span></li>
+        <li data-peek="portrait" data-peek-seed="27" data-peek-palette="#fbefe6,#f1d3a6,#8e2c5c,#d9a07e"><h3>Bridal</h3><p>Trial, the day itself, and touch-ups for the party.</p><span class="price">$220+</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="look" id="look" aria-labelledby="look-h">
+    <div class="wrap">
+      <span class="over">Lookbook</span>
+      <h2 id="look-h" style="margin-top:16px" data-split="lines">Recent <em>favourites</em></h2>
+      <div class="cols" aria-hidden="true">
+        <div class="col" data-parallax="-0.18">
+          <figure><div data-art="portrait" data-seed="4" data-palette="#4a1a3c,#2a0f22,#c49a6c,#d9a07e" data-reveal="clip"></div><figcaption>Copper gloss</figcaption></figure>
+          <figure><div data-art="portrait" data-seed="11" data-palette="#6d2350,#3b1630,#f1d3a6,#c68b59" data-reveal="clip"></div><figcaption>Soft layers</figcaption></figure>
+        </div>
+        <div class="col" data-parallax="0.12">
+          <figure><div data-art="portrait" data-seed="17" data-palette="#5a2048,#2a0f22,#e8bccc,#e0b08f" data-reveal="clip"></div><figcaption>Bridal updo</figcaption></figure>
+          <figure><div data-art="portrait" data-seed="24" data-palette="#3b1630,#1d0816,#c49a6c,#8b5a3c" data-reveal="clip"></div><figcaption>Curly cut</figcaption></figure>
+        </div>
+        <div class="col" data-parallax="-0.08">
+          <figure><div data-art="portrait" data-seed="30" data-palette="#7a2c5a,#3b1630,#f6e4ea,#d9a07e" data-reveal="clip"></div><figcaption>Honey balayage</figcaption></figure>
+          <figure><div data-art="portrait" data-seed="35" data-palette="#4a1a3c,#2a0f22,#f1d3a6,#c99a76" data-reveal="clip"></div><figcaption>Sleek bob</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="team" aria-labelledby="team-h">
+    <div class="wrap">
+      <span class="over">Stylists</span>
+      <h2 id="team-h" style="margin-top:16px" data-split="lines">Meet the <em>chairs</em></h2>
+      <div class="team" data-reveal-group="up" data-stagger=".15">
+        <article class="member" data-tilt="8" data-glare>
+          <div class="pic"><svg class="blob" viewBox="0 0 200 200" aria-hidden="true"><path class="bp" fill="#f1d3a6" d="M100 20C140 20 180 50 178 100C176 150 140 182 98 180C52 178 22 146 22 98C22 54 58 20 100 20Z"/></svg><div data-art="portrait" data-seed="5" data-palette="#f6e4ea,#e8bccc,#3b1630,#d8a383"></div></div>
+          <h3>Isabelle Roy</h3><p class="role">Owner · Colour</p><p class="bio">Fifteen years in Toronto and Paris. Lives for a good balayage.</p>
+        </article>
+        <article class="member" data-tilt="8" data-glare>
+          <div class="pic"><svg class="blob" viewBox="0 0 200 200" aria-hidden="true"><path class="bp" fill="#e8bccc" d="M104 16C150 26 186 64 172 112C160 156 124 186 84 176C40 166 14 128 24 86C34 44 62 8 104 16Z"/></svg><div data-art="portrait" data-seed="13" data-palette="#fbefe6,#f1d3a6,#6d2350,#8b5a3c"></div></div>
+          <h3>Nadia Haddad</h3><p class="role">Cuts · Curls</p><p class="bio">Curly-hair specialist. Cuts dry, shape by shape.</p>
+        </article>
+        <article class="member" data-tilt="8" data-glare>
+          <div class="pic"><svg class="blob" viewBox="0 0 200 200" aria-hidden="true"><path class="bp" fill="#d8c3e0" d="M92 24C132 12 176 44 182 92C188 140 150 186 104 184C60 182 18 154 20 104C22 62 52 36 92 24Z"/></svg><div data-art="portrait" data-seed="19" data-palette="#f6e4ea,#d8b4c4,#2a0f22,#e0b08f"></div></div>
+          <h3>Grace Liu</h3><p class="role">Bridal · Styling</p><p class="bio">Over 300 weddings. Calm on the busiest mornings.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote" aria-label="A client's words">
+    <div class="wrap">
+      <blockquote data-reveal="blur" data-dur="1.8">“I left feeling like <span class="shiny">myself again</span>.”</blockquote>
+      <cite>Amelia, client since 2019</cite>
+    </div>
+  </section>
+
+  <section class="book" id="book" aria-labelledby="book-h">
+    <div class="wrap">
+      <div>
+        <span class="over">Reservations</span>
+        <h2 id="book-h" style="margin-top:16px" data-split="lines">Reserve a <em>chair</em></h2>
+        <div class="hours" data-reveal-group="fade"><div><span>Tue – Fri</span><span>10 am – 8 pm</span></div><div><span>Saturday</span><span>9 am – 5 pm</span></div><div><span>Sun – Mon</span><span>Closed</span></div><div><span>Phone</span><a href="tel:+19055550177">(905) 555-0177</a></div></div>
+        <div class="gift" data-reveal="up"><h3>Gift cards</h3><p style="color:#e2bfd0">From $50, sent by email or wrapped in velvet at the front desk.</p><a class="btn star-border" href="#book">Give a gift</a></div>
+      </div>
+      <div class="bform" data-reveal="up">
+        <form data-steps action="#" aria-label="Appointment request">
+          <div class="bmeta"><span data-steps-count>Step 1 of 3</span><span>Two minutes</span></div>
+          <div data-steps-bar style="margin-bottom:26px"><i></i></div>
+          <fieldset data-step><legend>What are we doing?</legend>
+            <div class="choose">
+              <label><input type="radio" name="svc" value="cut" required><span><b>Cut &amp; style</b><small>About 1 hour</small></span></label>
+              <label><input type="radio" name="svc" value="colour"><span><b>Colour</b><small>About 2 hours</small></span></label>
+              <label><input type="radio" name="svc" value="balayage"><span><b>Balayage</b><small>3 to 4 hours</small></span></label>
+              <label><input type="radio" name="svc" value="bridal"><span><b>Bridal</b><small>Let's talk</small></span></label>
+            </div>
+            <div class="brow"><button class="btn btn-solid" data-next>Continue</button></div>
+          </fieldset>
+          <fieldset data-step><legend>With whom, and when?</legend>
+            <div class="fi"><label for="s-who">Stylist</label><select id="s-who" name="who"><option>No preference</option><option>Isabelle</option><option>Nadia</option><option>Grace</option></select></div>
+            <div class="pair"><div class="fi"><label for="s-date">Date</label><input id="s-date" type="date" name="date" required></div><div class="fi"><label for="s-time">Time</label><select id="s-time" name="time"><option>Morning</option><option>Afternoon</option><option>Evening</option></select></div></div>
+            <div class="brow"><button class="btn" data-back>Back</button><button class="btn btn-solid" data-next>Continue</button></div>
+          </fieldset>
+          <fieldset data-step><legend>And you are?</legend>
+            <div class="fi"><label for="s-name">Name</label><input id="s-name" name="name" required autocomplete="name"></div>
+            <div class="fi"><label for="s-mail">Email</label><input id="s-mail" type="email" name="email" required autocomplete="email"></div>
+            <div class="brow"><button class="btn" data-back>Back</button><button class="btn btn-solid" type="submit">Request</button></div>
+            <p class="tiny">Sample form: nothing is sent.</p>
+          </fieldset>
+        </form>
+        <div class="done" data-steps-done hidden><h3>Thank you.</h3><p style="margin-top:12px;color:var(--ink-2)">On a real site, the studio would confirm by email within the day.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <a class="logo" href="#top">Velvet &amp; Vine</a>
+  <p>Lakeshore Road, Oakville · <span data-year>2026</span> · Sample business, everything here is made up.</p>
+  <button type="button" data-motion-toggle>Motion: on</button>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/MorphSVGPlugin.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>window.KIT = {
+  ease: 'expo.out', dur: 1.5, stagger: 0.09, smooth: { lerp: 0.07 }, anchorOffset: 70, cursor: 'ring',
+  vanta: { el: '#halo', effect: 'HALO', options: { backgroundColor: 0x2a0f22, baseColor: 0x8e2c5c, amplitudeFactor: 1.4, size: 1.3, xOffset: 0, yOffset: 0.05 } },
+};</script>
+<script src="../../kit/art.js"></script>
+<script src="../../kit/kit.js"></script>
+<script>
+(() => {
+  const K = window.KIT;
+  if (!window.gsap || K.reduce) return;
+
+  // Hero sinks and softens as the studio intro slides over it.
+  gsap.to('.hero-in', { yPercent: 28, scale: 0.92, autoAlpha: 0, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+  gsap.fromTo('.scroll-cue', { scaleY: 0, transformOrigin: '50% 0' }, { scaleY: 1, duration: 1.4, repeat: -1, ease: 'power2.inOut', yoyo: true });
+
+  // Blobs behind the stylists keep changing shape.
+  const B = [
+    'M100 20C140 20 180 50 178 100C176 150 140 182 98 180C52 178 22 146 22 98C22 54 58 20 100 20Z',
+    'M104 16C150 26 186 64 172 112C160 156 124 186 84 176C40 166 14 128 24 86C34 44 62 8 104 16Z',
+    'M92 24C132 12 176 44 182 92C188 140 150 186 104 184C60 182 18 154 20 104C22 62 52 36 92 24Z',
+    'M110 22C156 30 184 76 174 120C164 162 120 186 80 174C38 162 16 120 28 80C38 46 70 16 110 22Z',
+  ];
+  document.querySelectorAll('.bp').forEach((p, i) => {
+    const tl = gsap.timeline({ repeat: -1, delay: i * 0.6 });
+    [1, 2, 3, 0].forEach((k) => tl.to(p, { morphSVG: B[(k + i) % 4], duration: 2.6, ease: 'sine.inOut' }));
+    gsap.to(p, { rotation: 360, svgOrigin: '100 100', duration: 30 + i * 6, repeat: -1, ease: 'none' });
+  });
+})();
+</script>
+</body>
+</html>

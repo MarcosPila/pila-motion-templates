@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sprout &amp; Pot · Sample online plant shop</title>
+<meta name="description" content="Sample website template for an online plant shop in Victoria, BC: shop grid, cart, bestsellers and a plant-finder quiz. Made-up business.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#fff8ee">
+<script>document.documentElement.classList.add('js');setTimeout(function(){var d=document.documentElement;if(!d.classList.contains('kit-ready'))d.classList.remove('js')},4000)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="../../kit/kit.css">
+<style>
+:root {
+  --paper: #fff8ee; --card: #ffffff; --ink: #1f3a2d; --ink-2: #5b6f63; --line: #efe2cf;
+  --accent: #c2365f; --leaf: #2d6a4f; --butter: #ffe066; --sky: #bde0fe; --peach: #ffd6c2;
+  --display: 'Fredoka', system-ui, sans-serif; --body: 'Nunito', system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.6 var(--body); overflow-x: clip; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); font-weight: 600; margin: 0; line-height: 1.02; letter-spacing: -0.01em; }
+h2 { font-size: clamp(2.3rem, 1.4rem + 3.4vw, 4.2rem); }
+h3 { font-size: 1.25rem; }
+p { margin: 0; }
+.wrap { width: min(1200px, 100% - 32px); margin-inline: auto; }
+.pill { display: inline-flex; align-items: center; gap: 8px; font: 700 13px var(--body); padding: 7px 12px; border-radius: 999px; background: var(--butter); }
+section { padding: clamp(70px, 9vw, 120px) 0; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 50px; padding: 0 24px; border-radius: 999px; font: 600 17px/1 var(--display); text-decoration: none; border: 0; background: var(--leaf); color: #fff; cursor: pointer; transition: transform .25s cubic-bezier(.34, 1.56, .64, 1), background-color .2s; }
+.btn:hover { transform: translateY(-2px) scale(1.03); }
+.btn-pink { background: var(--accent); }
+.btn-soft { background: var(--card); color: var(--ink); box-shadow: inset 0 0 0 2px var(--line); }
+
+.top { position: sticky; top: 0; z-index: 60; background: rgb(255 248 238 / .92); backdrop-filter: blur(10px); }
+.top.is-scrolled { box-shadow: 0 6px 20px rgb(31 58 45 / .06); }
+.top .wrap { display: flex; align-items: center; gap: 24px; min-height: 74px; }
+.logo { font: 700 1.5rem/1 var(--display); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+.logo span { color: var(--accent); }
+.nav { display: flex; gap: 24px; margin-left: auto; }
+.nav a { text-decoration: none; font-weight: 700; }
+.nav a:hover { color: var(--accent); }
+.cart-btn { position: relative; width: 50px; height: 50px; border-radius: 50%; border: 0; background: var(--card); box-shadow: inset 0 0 0 2px var(--line); cursor: pointer; display: grid; place-items: center; color: var(--ink); }
+.cart-btn svg { width: 24px; height: 24px; }
+.cart-btn .count { position: absolute; top: -4px; right: -4px; min-width: 22px; height: 22px; border-radius: 11px; background: var(--accent); color: #fff; font: 700 12px/22px var(--body); text-align: center; padding: 0 5px; }
+.menu-btn { display: none; background: var(--card); border: 0; box-shadow: inset 0 0 0 2px var(--line); border-radius: 999px; padding: 12px 16px; font: 600 15px var(--display); color: var(--ink); cursor: pointer; }
+@media (max-width: 899px) {
+  .menu-btn { display: block; margin-left: auto; }
+  .nav { position: fixed; inset: 0; z-index: -1; flex-direction: column; justify-content: center; align-items: center; gap: 16px; background: var(--butter); visibility: hidden; opacity: 0; transition: opacity .25s, visibility .25s; }
+  .nav.is-open { visibility: visible; opacity: 1; }
+  .nav a { font: 700 2.6rem/1.1 var(--display); }
+}
+
+/* Hero with floating plants */
+.hero { padding: 50px 0 80px; overflow: hidden; }
+.hero .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center; }
+.hero h1 { font-size: clamp(2.8rem, 1.4rem + 5vw, 5.6rem); margin: 18px 0 20px; }
+.hero h1 .u { color: var(--accent); }
+.hero .lede { font-size: 1.15rem; color: var(--ink-2); max-width: 42ch; }
+.hero .ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+.stage { position: relative; aspect-ratio: 1; max-width: 520px; width: 100%; margin-inline: auto; }
+.blob { position: absolute; inset: 8%; border-radius: 46% 54% 52% 48% / 52% 44% 56% 48%; background: var(--peach); }
+.float { position: absolute; border-radius: 28px; overflow: hidden; box-shadow: 0 24px 50px rgb(31 58 45 / .15); }
+.float [data-art] { position: absolute; inset: 0; }
+.f1 { width: 50%; aspect-ratio: 4 / 5; left: 8%; top: 14%; }
+.f2 { width: 38%; aspect-ratio: 1; right: 4%; top: 6%; }
+.f3 { width: 40%; aspect-ratio: 1; right: 10%; bottom: 6%; }
+.tagdot { position: absolute; z-index: 2; left: 2%; bottom: 14%; background: var(--card); padding: 10px 14px; border-radius: 16px; box-shadow: 0 12px 30px rgb(31 58 45 / .12); font-weight: 700; font-size: 15px; }
+.tagdot b { color: var(--accent); }
+@media (max-width: 899px) { .hero .wrap { grid-template-columns: 1fr; } .stage { max-width: 380px; } }
+
+.perks { background: var(--leaf); color: #fff; padding: 16px 0; }
+.perks .mq-track span { font: 600 1.2rem var(--display); white-space: nowrap; }
+
+/* Shop grid */
+.shop-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 18px; }
+.tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 28px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips button { font: 700 15px var(--body); padding: 9px 16px; border-radius: 999px; border: 0; background: var(--card); box-shadow: inset 0 0 0 2px var(--line); color: var(--ink); cursor: pointer; }
+.chips button[aria-pressed="true"] { background: var(--ink); color: #fff; box-shadow: none; }
+.sort { margin-left: auto; display: flex; gap: 8px; align-items: center; font-weight: 700; }
+.sort select { font: inherit; padding: 9px 12px; border-radius: 12px; border: 2px solid var(--line); background: var(--card); color: var(--ink); }
+.status { font-size: 15px; color: var(--ink-2); margin-top: 10px; min-height: 1.4em; }
+.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 16px; }
+.prod { background: var(--card); border-radius: 24px; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+.prod .ph { position: relative; aspect-ratio: 1; border-radius: 18px; overflow: hidden; }
+.prod .ph [data-art] { position: absolute; inset: 0; }
+.prod .flag { position: absolute; z-index: 1; left: 10px; top: 10px; font: 700 12px var(--body); background: var(--butter); padding: 4px 9px; border-radius: 999px; }
+.prod .row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 0 4px; }
+.prod .price { font: 600 1.2rem var(--display); color: var(--accent); }
+.prod p { font-size: 14px; color: var(--ink-2); padding: 0 4px; }
+.prod .btn { min-height: 44px; font-size: 15px; margin-top: auto; }
+@media (max-width: 999px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 699px) { .grid { grid-template-columns: 1fr 1fr; gap: 12px; } .prod .btn { padding: 0 12px; } .sort { margin-left: 0; } }
+
+/* Cart drawer */
+.drawer { position: fixed; inset: 0; z-index: 100; visibility: hidden; }
+.drawer.open { visibility: visible; }
+.drawer .shade { position: absolute; inset: 0; background: rgb(31 58 45 / .35); opacity: 0; }
+.drawer .panel { position: absolute; top: 0; right: 0; bottom: 0; width: min(420px, 100%); background: var(--paper); padding: 24px; display: flex; flex-direction: column; gap: 16px; transform: translateX(100%); }
+.drawer .head { display: flex; justify-content: space-between; align-items: center; }
+.drawer .x { width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--card); box-shadow: inset 0 0 0 2px var(--line); cursor: pointer; font-size: 18px; color: var(--ink); }
+.free { background: var(--card); border-radius: 16px; padding: 14px; font-size: 15px; }
+.free .bar { height: 10px; border-radius: 5px; background: var(--line); margin-top: 8px; overflow: hidden; }
+.free .bar i { display: block; height: 100%; width: 100%; background: var(--leaf); transform-origin: 0 50%; transform: scaleX(0); }
+.lines { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; overflow: auto; flex: 1; align-content: start; }
+.line { display: grid; grid-template-columns: 60px 1fr auto; gap: 12px; align-items: center; background: var(--card); padding: 10px; border-radius: 16px; }
+.line .th { width: 60px; height: 60px; border-radius: 12px; position: relative; overflow: hidden; }
+.line .th [data-art], .line .th svg { position: absolute; inset: 0; }
+.line .qty { display: flex; align-items: center; gap: 6px; }
+.line .qty button { width: 30px; height: 30px; border-radius: 50%; border: 0; background: var(--paper); cursor: pointer; font-weight: 700; color: var(--ink); }
+.empty { color: var(--ink-2); text-align: center; padding: 30px 0; }
+.total { display: flex; justify-content: space-between; font: 600 1.3rem var(--display); }
+.flyer { position: fixed; z-index: 120; width: 70px; height: 70px; border-radius: 16px; overflow: hidden; pointer-events: none; box-shadow: 0 10px 30px rgb(31 58 45 / .25); }
+.flyer svg { width: 100%; height: 100%; }
+
+/* Bestsellers */
+.best { background: var(--sky); }
+.best-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; }
+.arrows { display: flex; gap: 8px; }
+.arrows button { width: 52px; height: 52px; border-radius: 50%; border: 0; background: var(--card); cursor: pointer; font-size: 20px; color: var(--ink); }
+.rail { margin-top: 36px; padding-left: max(16px, (100vw - 1200px) / 2); --car-gap: 18px; }
+.bcard { width: min(300px, 70vw); background: var(--card); border-radius: 26px; padding: 14px; user-select: none; }
+.bcard [data-art] { aspect-ratio: 1; border-radius: 18px; }
+.bcard h3 { margin: 12px 4px 2px; }
+.bcard p { padding: 0 4px; color: var(--ink-2); font-size: 15px; }
+.stars { color: #f4a300; letter-spacing: 2px; padding: 0 4px; }
+
+/* Quiz */
+.quiz .wrap { display: grid; grid-template-columns: .9fr 1.1fr; gap: 56px; align-items: start; }
+.qz { background: var(--card); border-radius: 30px; padding: clamp(22px, 4vw, 40px); }
+.qz legend { font: 600 1.7rem/1.1 var(--display); padding: 0; margin-bottom: 18px; }
+.qz .meta { display: flex; justify-content: space-between; font-weight: 700; font-size: 14px; color: var(--ink-2); margin-bottom: 10px; }
+.cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.cards3 label { position: relative; }
+.cards3 input { position: absolute; inset: 0; opacity: 0; }
+.cards3 span { display: grid; gap: 6px; justify-items: center; text-align: center; padding: 18px 10px; border-radius: 20px; background: var(--paper); box-shadow: inset 0 0 0 2px var(--line); cursor: pointer; font-weight: 700; transition: transform .25s cubic-bezier(.34, 1.56, .64, 1); }
+.cards3 span i { font-style: normal; font-size: 2rem; }
+.cards3 input:checked + span { box-shadow: inset 0 0 0 3px var(--leaf); background: #eaf6ef; transform: scale(1.04); }
+.cards3 input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
+.qz .rr { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+.result { text-align: center; display: grid; gap: 12px; justify-items: center; }
+.result .pic { width: 180px; height: 180px; border-radius: 30px; position: relative; overflow: hidden; }
+.result .pic svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+@media (max-width: 899px) { .quiz .wrap { grid-template-columns: 1fr; } .cards3 { grid-template-columns: 1fr 1fr 1fr; } }
+
+/* Newsletter */
+.news { background: var(--butter); text-align: center; }
+.news form { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 24px; }
+.news input { font: inherit; padding: 14px 18px; border-radius: 999px; border: 2px solid var(--ink); min-width: min(320px, 100%); background: #fff; color: var(--ink); }
+.news .msg { margin-top: 14px; font-weight: 700; min-height: 1.5em; }
+
+footer { padding: 36px 0; font-size: 15px; color: var(--ink-2); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: center; }
+footer button { font: inherit; background: var(--card); color: var(--ink); border: 0; box-shadow: inset 0 0 0 2px var(--line); border-radius: 999px; padding: 7px 14px; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top" data-header>
+  <div class="wrap">
+    <a class="logo" href="#top">🌱 Sprout <span>&amp;</span> Pot</a>
+    <nav class="nav" id="nav" aria-label="Main"><a href="#shop">Shop</a><a href="#best">Bestsellers</a><a href="#quiz">Plant finder</a></nav>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle>Menu</button>
+    <button class="cart-btn" type="button" id="cartBtn" aria-label="Cart, 0 items" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14l-1.5 12h-11z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg><span class="count" id="count">0</span></button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div>
+        <span class="pill" data-reveal="pop" data-now>🚚 Free delivery in Victoria over $50</span>
+        <h1 data-split="words" data-split-anim="wave" data-now data-delay=".1">Plants that don't need a <span class="u">babysitter.</span></h1>
+        <p class="lede" data-reveal="up" data-now data-delay=".5">Hardy, happy houseplants grown on Vancouver Island, potted and delivered with a care card written in plain words.</p>
+        <div class="ctas" data-reveal-group="pop" data-now data-delay=".7"><a class="btn btn-pink" href="#shop" data-magnet="0.3">Shop plants</a><a class="btn btn-soft" href="#quiz">Find my plant</a></div>
+      </div>
+      <div class="stage" id="stage" aria-hidden="true">
+        <span class="blob" id="blob"></span>
+        <div class="float f1" data-depth="30"><div data-art="plant" data-seed="4" data-palette="#fdf0d5,#f7d6bf,#e07a5f,#2d6a4f"></div></div>
+        <div class="float f2" data-depth="55"><div data-art="plant" data-seed="9" data-palette="#e3f2fd,#bde0fe,#c2365f,#40916c"></div></div>
+        <div class="float f3" data-depth="80"><div data-art="plant" data-seed="15" data-palette="#fff3b0,#ffe066,#1f3a2d,#52b788"></div></div>
+        <span class="tagdot">Monstera mini <b>$34</b></span>
+      </div>
+    </div>
+  </section>
+
+  <div class="perks" data-marquee data-marquee-speed="50" style="--mq-gap:40px" aria-hidden="true"><div class="mq-track"><span>🌿 Grown on the Island</span><span>📦 Plastic-free packing</span><span>💧 Care card with every plant</span><span>🐾 Pet-safe picks marked</span><span>↩ 30-day happy-plant promise</span></div></div>
+
+  <section id="shop" aria-labelledby="shop-h">
+    <div class="wrap" data-filter>
+      <div class="shop-head"><div><span class="pill">The shop</span><h2 id="shop-h" style="margin-top:14px" data-split="words" data-split-anim="wave">Fresh from the greenhouse</h2></div></div>
+      <div class="tools">
+        <div class="chips" role="group" aria-label="Filter plants"><button type="button" data-filter-btn="all" aria-pressed="true">All</button><button type="button" data-filter-btn="easy" aria-pressed="false">Easy care</button><button type="button" data-filter-btn="pet" aria-pressed="false">Pet-safe</button><button type="button" data-filter-btn="low" aria-pressed="false">Low light</button><button type="button" data-filter-btn="big" aria-pressed="false">Big statement</button></div>
+        <label class="sort">Sort <select id="sort"><option value="pop">Most loved</option><option value="lo">Price: low to high</option><option value="hi">Price: high to low</option></select></label>
+      </div>
+      <p class="status" data-filter-status aria-live="polite"></p>
+      <div class="grid" id="grid" data-reveal-group="pop" data-stagger=".05">
+        <article class="prod" data-tags="easy low" data-price="28" data-pop="1" data-name="Snake plant" data-art-kind="plant" data-art-seed="21" data-art-pal="#fdf0d5,#f7d6bf,#1f3a2d,#52b788"><div class="ph"><span class="flag">Best seller</span><div data-art="plant" data-seed="21" data-palette="#fdf0d5,#f7d6bf,#1f3a2d,#52b788"></div></div><div class="row"><h3>Snake plant</h3><span class="price">$28</span></div><p>Thrives on neglect. Water monthly.</p><button class="btn" type="button" data-add>Add to cart</button></article>
+        <article class="prod" data-tags="pet easy" data-price="22" data-pop="2" data-name="Calathea" data-art-kind="plant" data-art-seed="26" data-art-pal="#ffe5ec,#ffc2d1,#c2365f,#2d6a4f"><div class="ph"><span class="flag">Pet-safe</span><div data-art="plant" data-seed="26" data-palette="#ffe5ec,#ffc2d1,#c2365f,#2d6a4f"></div></div><div class="row"><h3>Calathea</h3><span class="price">$22</span></div><p>Leaves fold up at night. Very dramatic.</p><button class="btn" type="button" data-add>Add to cart</button></article>
+        <article class="prod" data-tags="big" data-price="68" data-pop="3" data-name="Fiddle leaf fig" data-art-kind="plant" data-art-seed="31" data-art-pal="#e3f2fd,#bde0fe,#e07a5f,#40916c"><div class="ph"><div data-art="plant" data-seed="31" data-palette="#e3f2fd,#bde0fe,#e07a5f,#40916c"></div></div><div class="row"><h3>Fiddle leaf fig</h3><span class="price">$68</span></div><p>Four feet of attitude. Bright spot only.</p><button class="btn" type="button" data-add>Add to cart</button></article>
+        <article class="prod" data-tags="easy low pet" data-price="18" data-pop="4" data-name="Spider plant" data-art-kind="plant" data-art-seed="36" data-art-pal="#fff3b0,#ffe066,#1f3a2d,#74c69d"><div class="ph"><span class="flag">Pet-safe</span><div data-art="plant" data-seed="36" data-palette="#fff3b0,#ffe066,#1f3a2d,#74c69d"></div></div><div class="row"><h3>Spider plant</h3><span class="price">$18</span></div><p>Makes babies you can give away.</p><button class="btn" type="button" data-add>Add to cart</button></article>
+        <article class="prod" data-tags="easy low" data-price="24" data-pop="5" data-name="ZZ plant" data-art-kind="plant" data-art-seed="41" data-art-pal="#fdf0d5,#ffd6c2,#3d405b,#2d6a4f"><div class="ph"><div data-art="plant" data-seed="41" data-palette="#fdf0d5,#ffd6c2,#3d405b,#2d6a4f"></div></div><div class="row"><h3>ZZ plant</h3><span class="price">$24</span></div><p>Shiny, tough, happy in a dark hallway.</p><button class="btn" type="button" data-add>Add to cart</button></article>
+        <article class="prod" data-tags="big" data-price="54" data-pop="6" data-name="Bird of paradise" data-art-kind="plant" data-art-seed="46" data-art-pal="#e8f5e9,#c8e6c9,#c2365f,#1b4332"><div class="ph"><span class="flag">New</span><div data-art="plant" data-seed="46" data-palette="#e8f5e9,#c8e6c9,#c2365f,#1b4332"></div></div><div class="row"><h3>Bird of paradise</h3><span class="price">$54</span></div><p>Big tropical leaves for a sunny corner.</p><button class="btn" type="button" data-add>Add to cart</button></article>
+        <article class="prod" data-tags="pet" data-price="16" data-pop="7" data-name="Peperomia" data-art-kind="plant" data-art-seed="51" data-art-pal="#fef3c7,#fde68a,#e07a5f,#40916c"><div class="ph"><span class="flag">Pet-safe</span><div data-art="plant" data-seed="51" data-palette="#fef3c7,#fde68a,#e07a5f,#40916c"></div></div><div class="row"><h3>Peperomia</h3><span class="price">$16</span></div><p>Small, round leaves. Perfect desk buddy.</p><button class="btn" type="button" data-add>Add to cart</button></article>
+        <article class="prod" data-tags="easy" data-price="32" data-pop="8" data-name="Pothos, hanging" data-art-kind="plant" data-art-seed="56" data-art-pal="#e0f2fe,#bae6fd,#1f3a2d,#95d5b2"><div class="ph"><div data-art="plant" data-seed="56" data-palette="#e0f2fe,#bae6fd,#1f3a2d,#95d5b2"></div></div><div class="row"><h3>Pothos, hanging</h3><span class="price">$32</span></div><p>Trails three feet. Forgives everything.</p><button class="btn" type="button" data-add>Add to cart</button></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="best" id="best" data-carousel-wrap aria-labelledby="best-h">
+    <div class="wrap best-head"><div><span class="pill">Bestsellers</span><h2 id="best-h" style="margin-top:14px" data-split="words" data-split-anim="wave">Customer favourites</h2></div><div class="arrows"><button type="button" data-car-prev aria-label="Previous">←</button><button type="button" data-car-next aria-label="Next">→</button></div></div>
+    <div class="rail" data-carousel>
+      <div class="car-track">
+        <article class="bcard"><div data-art="plant" data-seed="61" data-palette="#fdf0d5,#f7d6bf,#e07a5f,#2d6a4f"></div><h3>Monstera mini</h3><span class="stars" aria-label="5 stars">★★★★★</span><p>“Two new leaves in a month.” · Nadia</p></article>
+        <article class="bcard"><div data-art="plant" data-seed="66" data-palette="#ffe5ec,#ffc2d1,#3d405b,#52b788"></div><h3>Snake plant</h3><span class="stars" aria-label="5 stars">★★★★★</span><p>“I forgot it for six weeks. Fine.” · Rob</p></article>
+        <article class="bcard"><div data-art="plant" data-seed="71" data-palette="#e3f2fd,#bde0fe,#c2365f,#40916c"></div><h3>Calathea</h3><span class="stars" aria-label="4 stars">★★★★☆</span><p>“Fussy but gorgeous.” · Priya</p></article>
+        <article class="bcard"><div data-art="plant" data-seed="76" data-palette="#fff3b0,#ffe066,#1f3a2d,#74c69d"></div><h3>Spider plant</h3><span class="stars" aria-label="5 stars">★★★★★</span><p>“My cat ignores it. Win.” · Leo</p></article>
+        <article class="bcard"><div data-art="plant" data-seed="81" data-palette="#e8f5e9,#c8e6c9,#e07a5f,#1b4332"></div><h3>Pothos</h3><span class="stars" aria-label="5 stars">★★★★★</span><p>“Took over my bookshelf.” · Sam</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="quiz" id="quiz" aria-labelledby="quiz-h">
+    <div class="wrap">
+      <div><span class="pill">Plant finder</span><h2 id="quiz-h" style="margin-top:14px" data-split="words" data-split-anim="wave">Three questions, one perfect plant.</h2><p style="margin-top:16px;color:var(--ink-2)">Tell us about your space and we'll pick a plant that'll actually thrive there.</p></div>
+      <div class="qz" data-reveal="up">
+        <form data-steps action="#" aria-label="Plant finder quiz" id="quizForm">
+          <div class="meta"><span data-steps-count>Step 1 of 3</span><span>30 seconds</span></div>
+          <div data-steps-bar style="margin-bottom:22px"><i></i></div>
+          <fieldset data-step><legend>How much light?</legend>
+            <div class="cards3"><label><input type="radio" name="light" value="low" required><span><i>🌑</i>Not much</span></label><label><input type="radio" name="light" value="mid"><span><i>⛅</i>Some</span></label><label><input type="radio" name="light" value="bright"><span><i>☀️</i>Lots</span></label></div>
+            <div class="rr"><button class="btn" data-next>Next</button></div>
+          </fieldset>
+          <fieldset data-step><legend>Any pets?</legend>
+            <div class="cards3"><label><input type="radio" name="pets" value="yes" required><span><i>🐱</i>Yes</span></label><label><input type="radio" name="pets" value="no"><span><i>🙅</i>No</span></label><label><input type="radio" name="pets" value="soon"><span><i>🐶</i>Soon</span></label></div>
+            <div class="rr"><button class="btn btn-soft" data-back>Back</button><button class="btn" data-next>Next</button></div>
+          </fieldset>
+          <fieldset data-step><legend>Time for plant care?</legend>
+            <div class="cards3"><label><input type="radio" name="time" value="min" required><span><i>⏱</i>Barely</span></label><label><input type="radio" name="time" value="some"><span><i>🪴</i>A bit</span></label><label><input type="radio" name="time" value="lots"><span><i>💚</i>Love it</span></label></div>
+            <div class="rr"><button class="btn btn-soft" data-back>Back</button><button class="btn btn-pink" type="submit">Show my plant</button></div>
+          </fieldset>
+        </form>
+        <div class="result" data-steps-done hidden id="result"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="news" aria-labelledby="news-h">
+    <div class="wrap">
+      <h2 id="news-h" data-split="words" data-split-anim="wave">Get 10% off your first plant</h2>
+      <form id="newsForm" aria-label="Newsletter"><label class="sr-only" for="news-mail">Email</label><input id="news-mail" type="email" required placeholder="you@example.com" autocomplete="email"><button class="btn btn-pink" type="submit">Sign me up</button></form>
+      <p class="msg" id="newsMsg" aria-live="polite"></p>
+    </div>
+  </section>
+</main>
+
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="cart-h">
+  <div class="shade" id="shade"></div>
+  <div class="panel" id="panel">
+    <div class="head"><h2 id="cart-h" style="font-size:1.8rem">Your cart</h2><button class="x" type="button" id="closeCart" aria-label="Close cart">✕</button></div>
+    <div class="free"><span id="freeMsg">Add $50 for free delivery</span><div class="bar"><i id="freeBar"></i></div></div>
+    <ul class="lines" id="lines"></ul>
+    <div class="total"><span>Total</span><span id="total">$0</span></div>
+    <button class="btn btn-pink" type="button" id="checkout">Checkout</button>
+    <p style="font-size:13px;color:var(--ink-2);text-align:center">Sample shop: nothing is charged or sent.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap"><span>🌱 Sprout &amp; Pot · Victoria, BC · <span data-year>2026</span></span><span>Sample shop: products, prices and reviews are made up.</span><button type="button" data-motion-toggle>Motion: on</button></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Flip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/MotionPathPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Draggable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/InertiaPlugin.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>window.KIT = { ease: 'back.out(1.7)', dur: 0.7, stagger: 0.05, smooth: { lerp: 0.12 }, anchorOffset: 84, spark: { color: ['#c2365f', '#ffe066', '#2d6a4f', '#bde0fe'], selector: '.chips button, .cards3 span' } };</script>
+<script src="../../kit/art.js"></script>
+<script src="../../kit/kit.js"></script>
+<script>
+(() => {
+  const K = window.KIT;
+  if (!window.gsap) return;
+  const $ = (id) => document.getElementById(id);
+  const money = (n) => '$' + n.toFixed(n % 1 ? 2 : 0);
+
+  // Sort: reorder the cards, Flip animates the move.
+  const grid = $('grid');
+  $('sort').addEventListener('change', (e) => {
+    const cards = [...grid.children], state = Flip.getState(cards);
+    const key = e.target.value;
+    cards.sort((a, b) => (key === 'lo' ? a.dataset.price - b.dataset.price : key === 'hi' ? b.dataset.price - a.dataset.price : a.dataset.pop - b.dataset.pop)).forEach((c) => grid.appendChild(c));
+    if (!K.reduce) Flip.from(state, { duration: 0.7, ease: 'power3.inOut', stagger: 0.02 });
+  });
+
+  // Cart: lines keyed by name; drawer with a free-delivery bar.
+  const cart = new Map(), lines = $('lines'), drawer = $('drawer'), panel = $('panel'), shade = $('shade');
+  const render = () => {
+    const items = [...cart.values()], n = items.reduce((s, i) => s + i.q, 0), sum = items.reduce((s, i) => s + i.q * i.price, 0);
+    $('count').textContent = n;
+    $('cartBtn').setAttribute('aria-label', `Cart, ${n} item${n === 1 ? '' : 's'}`);
+    $('total').textContent = money(sum);
+    $('freeMsg').textContent = sum >= 50 ? 'Free delivery unlocked 🎉' : `Add ${money(50 - sum)} for free delivery`;
+    gsap.to('#freeBar', { scaleX: Math.min(1, sum / 50), duration: K.reduce ? 0 : 0.6, ease: 'power3.out' });
+    lines.innerHTML = items.length ? items.map((i) => `<li class="line" data-name="${i.name}"><div class="th">${window.ART ? ART.svg(i.kind, i.pal, i.seed) : ''}</div><div><b>${i.name}</b><div class="qty"><button type="button" data-dec aria-label="One less ${i.name}">−</button><span>${i.q}</span><button type="button" data-inc aria-label="One more ${i.name}">+</button></div></div><b>${money(i.q * i.price)}</b></li>`).join('') : '<li class="empty">Your cart is empty. The plants are waiting.</li>';
+  };
+  lines.addEventListener('click', (e) => {
+    const li = e.target.closest('.line'); if (!li) return;
+    const it = cart.get(li.dataset.name);
+    if (e.target.closest('[data-inc]')) it.q++;
+    if (e.target.closest('[data-dec]')) { it.q--; if (!it.q) cart.delete(it.name); }
+    render();
+  });
+  let lastFocus = null;
+  const openCart = () => { lastFocus = document.activeElement; drawer.classList.add('open'); K.lenis?.stop(); gsap.to(panel, { x: 0, xPercent: 0, duration: K.reduce ? 0 : 0.5, ease: 'power3.out' }); gsap.to(shade, { opacity: 1, duration: K.reduce ? 0 : 0.3 }); $('closeCart').focus(); };
+  const closeCart = () => { gsap.to(panel, { xPercent: 100, duration: K.reduce ? 0 : 0.4, ease: 'power3.in', onComplete: () => drawer.classList.remove('open') }); gsap.to(shade, { opacity: 0, duration: K.reduce ? 0 : 0.3 }); K.lenis?.start(); lastFocus?.focus(); };
+  gsap.set(panel, { xPercent: 100 });
+  $('cartBtn').addEventListener('click', openCart);
+  $('closeCart').addEventListener('click', closeCart);
+  shade.addEventListener('click', closeCart);
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && drawer.classList.contains('open')) closeCart(); });
+  $('checkout').addEventListener('click', (e) => { const r = e.target.getBoundingClientRect(); K.burst(r.left + r.width / 2, r.top, { kind: 'confetti', color: ['#c2365f', '#ffe066', '#2d6a4f', '#bde0fe'] }); $('freeMsg').textContent = 'Sample shop: checkout would open here.'; });
+
+  // Add to cart: a copy of the product art flies in an arc to the cart, the badge pops.
+  document.querySelectorAll('[data-add]').forEach((b) => b.addEventListener('click', () => {
+    const p = b.closest('.prod'), name = p.dataset.name;
+    const it = cart.get(name) || { name, price: +p.dataset.price, q: 0, kind: p.dataset.artKind, seed: +p.dataset.artSeed, pal: p.dataset.artPal.split(',') };
+    it.q++; cart.set(name, it);
+    const done = () => { render(); if (!K.reduce) gsap.fromTo('#count', { scale: 1.8 }, { scale: 1, duration: 0.5, ease: 'elastic.out(1, .4)' }); };
+    b.textContent = 'Added ✓'; setTimeout(() => (b.textContent = 'Add to cart'), 1400);
+    if (K.reduce || !window.MotionPathPlugin) return done();
+    const from = p.querySelector('.ph').getBoundingClientRect(), to = $('cartBtn').getBoundingClientRect();
+    const fly = document.body.appendChild(Object.assign(document.createElement('div'), { className: 'flyer', innerHTML: ART.svg(it.kind, it.pal, it.seed) }));
+    fly.setAttribute('aria-hidden', 'true');
+    const x0 = from.left + from.width / 2 - 35, y0 = from.top + from.height / 2 - 35, x1 = to.left + to.width / 2 - 35, y1 = to.top + to.height / 2 - 35;
+    gsap.set(fly, { x: x0, y: y0 });
+    gsap.timeline({ onComplete: () => { fly.remove(); done(); } })
+      .to(fly, { motionPath: { path: [{ x: x0, y: y0 }, { x: (x0 + x1) / 2, y: Math.min(y0, y1) - 160 }, { x: x1, y: y1 }], curviness: 1.4 }, duration: 0.9, ease: 'power2.in' })
+      .to(fly, { scale: 0.2, rotate: 25, duration: 0.9, ease: 'power2.in' }, 0);
+  }));
+  render();
+
+  // Quiz: the kit runs the steps; this fills in the answer.
+  const PICKS = {
+    low: { pet: ['Spider plant', 36, '#fff3b0,#ffe066,#1f3a2d,#74c69d'], any: ['ZZ plant', 41, '#fdf0d5,#ffd6c2,#3d405b,#2d6a4f'] },
+    mid: { pet: ['Calathea', 26, '#ffe5ec,#ffc2d1,#c2365f,#2d6a4f'], any: ['Pothos, hanging', 56, '#e0f2fe,#bae6fd,#1f3a2d,#95d5b2'] },
+    bright: { pet: ['Peperomia', 51, '#fef3c7,#fde68a,#e07a5f,#40916c'], any: ['Bird of paradise', 46, '#e8f5e9,#c8e6c9,#c2365f,#1b4332'] },
+  };
+  $('quizForm').addEventListener('submit', () => {
+    const f = new FormData($('quizForm')), light = f.get('light') || 'mid', pets = f.get('pets') !== 'no';
+    let [name, seed, pal] = PICKS[light][pets ? 'pet' : 'any'];
+    if (f.get('time') === 'min' && !pets) [name, seed, pal] = ['Snake plant', 21, '#fdf0d5,#f7d6bf,#1f3a2d,#52b788'];
+    $('result').innerHTML = `<p class="pill">Your match</p><div class="pic">${ART.svg('plant', pal.split(','), seed)}</div><h3 style="font-size:2rem">${name}</h3><p style="color:var(--ink-2);max-width:34ch">Based on your light${pets ? ', your pets' : ''} and your schedule, this one will be happy with you.</p><a class="btn btn-pink" href="#shop">Find it in the shop</a>`;
+  });
+
+  // Newsletter: confetti on sign-up.
+  $('newsForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!e.target.checkValidity()) return e.target.reportValidity();
+    const r = e.target.querySelector('button').getBoundingClientRect();
+    K.burst(r.left + r.width / 2, r.top + r.height / 2, { kind: 'confetti', color: ['#c2365f', '#2d6a4f', '#ffffff', '#bde0fe'] });
+    $('newsMsg').textContent = 'You\'re in! (Sample form: nothing was sent.)';
+    e.target.reset();
+  });
+
+  if (K.reduce) return;
+
+  // Hero: plants bob, and lean toward the cursor by depth.
+  const floats = [...document.querySelectorAll('.float')];
+  floats.forEach((f, i) => gsap.to(f, { y: '+=14', rotate: i % 2 ? 3 : -3, duration: 2.2 + i * 0.4, repeat: -1, yoyo: true, ease: 'sine.inOut' }));
+  gsap.to('#blob', { borderRadius: '58% 42% 40% 60% / 44% 58% 42% 56%', duration: 5, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+  if (K.fine) {
+    const movers = floats.map((f) => ({ d: +f.dataset.depth, x: gsap.quickTo(f, 'x', { duration: 0.8, ease: 'power3.out' }) }));
+    $('stage').closest('.hero').addEventListener('pointermove', (e) => { const nx = e.clientX / innerWidth - 0.5; movers.forEach((m) => m.x(nx * m.d)); });
+  }
+})();
+</script>
+</body>
+</html>

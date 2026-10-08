@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Keystone Realty · Sample real estate site</title>
+<meta name="description" content="Sample website template for a real estate team in Kelowna: listings, featured home, mortgage calculator and neighbourhoods. Made-up business.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0e1b2c">
+<script>document.documentElement.classList.add('js');setTimeout(function(){var d=document.documentElement;if(!d.classList.contains('kit-ready'))d.classList.remove('js')},4000)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter+Tight:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../../kit/kit.css">
+<style>
+:root {
+  --paper: #f4efe6; --card: #fffdf8; --ink: #0e1b2c; --ink-2: #5a6472; --line: #e2d9c8;
+  --accent: #8a6a3a; --brass: #b08d57; --navy: #0e1b2c;
+  --display: 'Playfair Display', Georgia, serif; --body: 'Inter Tight', system-ui, sans-serif;
+  --cursor: #b08d57; --cursor-ink: #0e1b2c; color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.65 var(--body); overflow-x: clip; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); font-weight: 500; margin: 0; line-height: 1.05; }
+h2 { font-size: clamp(2.4rem, 1.4rem + 3.6vw, 4.4rem); }
+h2 em { font-style: italic; color: var(--accent); }
+h3 { font-size: 1.5rem; }
+p { margin: 0; }
+.wrap { width: min(1240px, 100% - 32px); margin-inline: auto; }
+.tag { font: 600 12px/1 var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--accent); }
+section { padding: clamp(80px, 10vw, 130px) 0; }
+.btn { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 26px; font: 600 15px/1 var(--body); letter-spacing: .04em; text-decoration: none; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); cursor: pointer; transition: background-color .3s, color .3s; }
+.btn:hover { background: var(--brass); border-color: var(--brass); color: var(--ink); }
+.btn-out { background: transparent; color: var(--ink); }
+
+.top { position: fixed; inset: 0 0 auto; z-index: 50; padding: 18px 0; color: var(--paper); transition: background-color .4s, color .4s, padding .4s; }
+.top.is-scrolled { background: var(--paper); color: var(--ink); padding: 12px 0; box-shadow: 0 1px 0 var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 30px; }
+.logo { font: 600 1.5rem/1 var(--display); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+.logo svg { width: 28px; height: 28px; }
+.nav { display: flex; gap: 28px; margin-left: auto; }
+.nav a { text-decoration: none; font-weight: 500; font-size: 15px; letter-spacing: .03em; }
+.top .btn { min-height: 44px; background: var(--brass); border-color: var(--brass); color: var(--navy); }
+.menu-btn { display: none; margin-left: auto; background: none; border: 1px solid currentColor; color: inherit; padding: 10px 14px; font: 600 14px var(--body); cursor: pointer; }
+@media (max-width: 899px) {
+  .menu-btn { display: block; } .top .btn { display: none; }
+  .nav { position: fixed; inset: 0; z-index: -1; flex-direction: column; justify-content: center; padding: 0 30px; gap: 18px; background: var(--navy); color: var(--paper); visibility: hidden; opacity: 0; transition: opacity .3s, visibility .3s; }
+  .nav.is-open { visibility: visible; opacity: 1; }
+  .nav a { font: 500 2.6rem/1.1 var(--display); }
+}
+
+/* Hero over Vanta topology */
+.hero { position: relative; min-height: 100svh; background: var(--navy); color: var(--paper); display: grid; align-items: center; overflow: hidden; padding: 120px 0 80px; }
+.topo { position: absolute; inset: 0; background: radial-gradient(circle at 70% 40%, #1b3150, #0e1b2c 70%); }
+.hero .wrap { position: relative; z-index: 1; }
+.hero .tag { color: var(--brass); }
+.hero h1 { font-size: clamp(3rem, 1.4rem + 6vw, 7rem); max-width: 14ch; margin: 18px 0 26px; }
+.hero h1 em { color: var(--brass); }
+.search { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; background: var(--card); color: var(--ink); padding: 10px 10px 10px 22px; max-width: 640px; }
+.search .q { flex: 1; min-width: 220px; font-size: 1.1rem; }
+.search .q b { font-weight: 600; color: var(--accent); }
+.hero .quick { display: flex; gap: 26px; margin-top: 30px; color: #c9cfd8; font-size: 15px; flex-wrap: wrap; }
+.hero .quick b { display: block; color: var(--paper); font: 500 1.8rem var(--display); }
+
+/* Featured: the card grows to full screen */
+.feat { padding: 0; background: var(--paper); }
+.feat-pin { height: 100svh; position: relative; overflow: hidden; display: grid; place-items: center; }
+.feat-img { position: absolute; inset: 0; clip-path: inset(26% 22% 12% 22% round 24px); }
+.feat-img [data-art] { position: absolute; inset: 0; }
+.feat-info { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; color: #fff; padding: 0 0 40px; background: linear-gradient(transparent, rgb(14 27 44 / .85)); padding-top: 120px; }
+.feat-info .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 24px; }
+.feat-info .tag { color: var(--brass); }
+.feat-info h2 { font-size: clamp(2rem, 1.4rem + 2.4vw, 3.4rem); margin-top: 10px; }
+.specs { display: flex; gap: 28px; font-size: 14px; letter-spacing: .1em; text-transform: uppercase; color: #d7dbe2; }
+.specs b { display: block; font: 500 2rem var(--display); color: #fff; letter-spacing: 0; text-transform: none; font-variant-numeric: tabular-nums; }
+.price-tag { font: 500 2.2rem var(--display); }
+.feat-label { position: absolute; top: 9%; left: 0; right: 0; text-align: center; z-index: 1; }
+.feat-label h2 { font-size: clamp(2rem, 1.2rem + 3vw, 3.6rem); }
+@media (max-width: 699px) { .feat-img { clip-path: inset(30% 8% 18% 8% round 18px); } .feat-label { top: 12%; } .specs { gap: 18px; } }
+
+/* Listings */
+.list-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 20px; }
+.ctrl { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 30px; }
+.ctrl button { font: 500 14px var(--body); padding: 10px 16px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
+.ctrl button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.ctrl .sep { flex: 1; }
+.l-status { font-size: 14px; color: var(--ink-2); margin-top: 10px; min-height: 1.4em; }
+.homes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 18px; }
+.home { background: var(--card); display: grid; grid-template-rows: auto 1fr; text-decoration: none; overflow: hidden; }
+.home .ph { position: relative; aspect-ratio: 4 / 3; overflow: hidden; }
+.home .ph [data-art] { position: absolute; inset: 0; transition: transform 1.2s cubic-bezier(.2, .7, .2, 1); }
+.home:hover .ph [data-art] { transform: scale(1.06); }
+.home .badge { position: absolute; left: 12px; top: 12px; z-index: 1; font: 600 11px var(--body); letter-spacing: .14em; text-transform: uppercase; background: var(--card); padding: 6px 10px; }
+.home .badge.sold { background: var(--ink); color: var(--paper); }
+.home .body { padding: 18px 20px 22px; display: grid; gap: 6px; }
+.home .pr { font: 500 1.6rem var(--display); }
+.home .meta { font-size: 14px; color: var(--ink-2); }
+.homes.as-list { grid-template-columns: 1fr; }
+.homes.as-list .home { grid-template-columns: 280px 1fr; grid-template-rows: auto; }
+.homes.as-list .home .ph { aspect-ratio: auto; min-height: 180px; }
+.homes.as-list .home .body { align-content: center; padding: 22px 30px; }
+@media (max-width: 899px) { .homes { grid-template-columns: 1fr 1fr; } .homes.as-list .home { grid-template-columns: 140px 1fr; } }
+@media (max-width: 560px) { .homes { grid-template-columns: 1fr; } }
+
+/* Calculator */
+.calc { background: var(--navy); color: var(--paper); }
+.calc .tag { color: var(--brass); }
+.calc h2 em { color: var(--brass); }
+.calc .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.sliders { display: grid; gap: 26px; margin-top: 30px; }
+.sl label { display: flex; justify-content: space-between; font-size: 15px; color: #c9cfd8; margin-bottom: 8px; }
+.sl label output { color: var(--paper); font-weight: 600; font-variant-numeric: tabular-nums; }
+.sl input[type="range"] { width: 100%; accent-color: var(--brass); height: 28px; }
+.result { background: #13253b; padding: clamp(24px, 4vw, 44px); border: 1px solid #22385a; }
+.result .big { font: 500 clamp(3rem, 2rem + 4vw, 5.4rem)/1 var(--display); color: var(--brass); font-variant-numeric: tabular-nums; }
+.result p { color: #c9cfd8; margin-top: 10px; }
+.result .rows { margin-top: 24px; display: grid; gap: 10px; font-size: 15px; }
+.result .rows div { display: flex; justify-content: space-between; border-bottom: 1px solid #22385a; padding-bottom: 8px; }
+.result small { display: block; margin-top: 16px; color: #8d97a6; font-size: 13px; }
+@media (max-width: 899px) { .calc .wrap { grid-template-columns: 1fr; } }
+
+/* Neighbourhood map */
+.hoods .wrap { display: grid; grid-template-columns: .8fr 1.2fr; gap: 50px; align-items: center; }
+.mapbox { position: relative; background: #e9e1d1; aspect-ratio: 5 / 4; overflow: hidden; }
+.mapbox svg { width: 100%; height: 100%; display: block; }
+.mapbox .pin { cursor: pointer; }
+.mapbox .pin circle.halo { fill: var(--brass); opacity: .25; }
+.pin:focus-visible { outline: none; }
+.pin:focus-visible circle.core { stroke: var(--ink); stroke-width: 4; }
+.hood-card { margin-top: 26px; padding: 22px; background: var(--card); min-height: 140px; }
+.hood-card h3 { margin-bottom: 6px; }
+.hood-card p { color: var(--ink-2); }
+.hood-card .avg { margin-top: 10px; font: 500 1.4rem var(--display); color: var(--accent); }
+@media (max-width: 899px) { .hoods .wrap { grid-template-columns: 1fr; } }
+
+/* Agent + contact */
+.agent .wrap { display: grid; grid-template-columns: .9fr 1.1fr; gap: 60px; align-items: start; }
+.agent-card [data-art] { aspect-ratio: 4 / 5; }
+.agent-card .cap { padding: 20px 0; }
+.quotes { display: grid; margin-top: 20px; }
+.quotes blockquote { grid-area: 1 / 1; margin: 0; font: italic 500 1.3rem/1.5 var(--display); color: var(--ink-2); }
+.quotes cite { display: block; margin-top: 8px; font: 500 14px var(--body); font-style: normal; color: var(--ink); }
+.cf { background: var(--card); padding: clamp(22px, 4vw, 40px); border: 1px solid var(--line); }
+.cf legend { font: 500 2rem/1.1 var(--display); padding: 0; margin-bottom: 18px; }
+.cf .meta { display: flex; justify-content: space-between; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 10px; }
+.cf [data-steps-bar] i { background: var(--brass); }
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.seg label { position: relative; }
+.seg input { position: absolute; inset: 0; opacity: 0; }
+.seg span { display: block; padding: 20px; border: 1px solid var(--line); text-align: center; font: 500 1.3rem var(--display); cursor: pointer; }
+.seg input:checked + span { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+.seg input:focus-visible + span { outline: 3px solid var(--brass); outline-offset: 2px; }
+.fz { display: grid; gap: 6px; margin-bottom: 14px; }
+.fz label { font-size: 14px; font-weight: 600; }
+.fz input, .fz select { font: inherit; padding: 12px 14px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); width: 100%; }
+.cf .rr { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+.done h3 { font: italic 500 2.4rem var(--display); color: var(--accent); }
+@media (max-width: 899px) { .agent .wrap { grid-template-columns: 1fr; } }
+
+footer { background: var(--navy); color: #c9cfd8; padding: 44px 0; font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px; align-items: center; }
+footer button { font: inherit; color: var(--paper); background: none; border: 1px solid #22385a; padding: 7px 12px; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top" data-header>
+  <div class="wrap">
+    <a class="logo" href="#top"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M3 14L14 4l11 10v11H3z" fill="none" stroke="#b08d57" stroke-width="2.4"/><path d="M11 25v-7h6v7" fill="none" stroke="#b08d57" stroke-width="2.4"/></svg>Keystone</a>
+    <nav class="nav" id="nav" aria-label="Main"><a href="#listings">Listings</a><a href="#calc">Mortgage</a><a href="#hoods">Neighbourhoods</a><a href="#contact">Contact</a></nav>
+    <a class="btn" href="#contact">Book a valuation</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle>Menu</button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="topo" id="topo" aria-hidden="true"></div>
+    <div class="wrap">
+      <span class="tag" data-reveal="fade" data-now>Kelowna &amp; the Okanagan · since 2006</span>
+      <h1 data-split="lines" data-now data-delay=".15" data-dur="1.4">Homes with a view of <em>what's next.</em></h1>
+      <div class="search" data-reveal="up" data-now data-delay=".7" role="search">
+        <span class="q">Homes in <b data-rotate="Kelowna|Lake Country|West Kelowna|Peachland">Kelowna</b></span>
+        <a class="btn" href="#listings">Search listings</a>
+      </div>
+      <div class="quick" data-reveal-group="up" data-now data-delay=".9"><span><b>$1.4B</b>sold since 2006</span><span><b>21 days</b>average time to sell</span><span><b>102%</b>of asking, on average</span></div>
+    </div>
+  </section>
+
+  <section class="feat" aria-labelledby="feat-h">
+    <div class="feat-pin" id="featPin">
+      <div class="feat-label" id="featLabel"><span class="tag">Featured</span><h2 style="margin-top:10px">This week's <em>favourite</em></h2></div>
+      <div class="feat-img" id="featImg" data-cursor="View"><div data-art="house" data-seed="7" data-palette="#9cc7e0,#bcd7a6,#0e1b2c,#b08d57"></div></div>
+      <div class="feat-info" id="featInfo">
+        <div class="wrap">
+          <div><span class="tag">Upper Mission · New listing</span><h2 id="feat-h">412 Vineyard Ridge Court</h2><p class="price-tag" style="margin-top:8px">$1,895,000</p></div>
+          <div class="specs"><span><b>5</b>beds</span><span><b>4</b>baths</span><span><b>4,180</b>sq ft</span><span><b>0.42</b>acres</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="listings" aria-labelledby="lst-h">
+    <div class="wrap" data-filter>
+      <div class="list-head"><div><span class="tag">Listings</span><h2 id="lst-h" style="margin-top:12px" data-split="lines">On the <em>market</em></h2></div><p style="max-width:40ch;color:var(--ink-2)">Every home here is one of ours. Ask for a private showing and we'll be at the door.</p></div>
+      <div class="ctrl" role="group" aria-label="Filter listings">
+        <button type="button" data-filter-btn="all" aria-pressed="true">All</button>
+        <button type="button" data-filter-btn="house" aria-pressed="false">Houses</button>
+        <button type="button" data-filter-btn="condo" aria-pressed="false">Condos</button>
+        <button type="button" data-filter-btn="sold" aria-pressed="false">Recently sold</button>
+        <span class="sep"></span>
+        <button type="button" id="viewGrid" aria-pressed="true">Grid</button><button type="button" id="viewList" aria-pressed="false">List</button>
+      </div>
+      <p class="l-status" data-filter-status aria-live="polite"></p>
+      <div class="homes" id="homes" data-reveal-group="up" data-stagger=".08">
+        <a class="home" href="#contact" data-tags="house" data-cursor="View"><div class="ph"><span class="badge">For sale</span><div data-art="house" data-seed="3"></div></div><div class="body"><span class="pr">$1,149,000</span><h3>Glenmore family home</h3><span class="meta">4 beds · 3 baths · 2,650 sq ft</span></div></a>
+        <a class="home" href="#contact" data-tags="condo" data-cursor="View"><div class="ph"><span class="badge">For sale</span><div data-art="building" data-seed="5"></div></div><div class="body"><span class="pr">$589,000</span><h3>Downtown lake-view condo</h3><span class="meta">2 beds · 2 baths · 1,080 sq ft</span></div></a>
+        <a class="home" href="#contact" data-tags="house sold" data-cursor="View"><div class="ph"><span class="badge sold">Sold in 9 days</span><div data-art="house" data-seed="11" data-palette="#f6c9a0,#cfe8b8,#264653,#e76f51"></div></div><div class="body"><span class="pr">$1,320,000</span><h3>Kettle Valley craftsman</h3><span class="meta">5 beds · 4 baths · 3,400 sq ft</span></div></a>
+        <a class="home" href="#contact" data-tags="condo sold" data-cursor="View"><div class="ph"><span class="badge sold">Sold over asking</span><div data-art="building" data-seed="9" data-palette="#f4d6b0,#7d8b99,#264653,#e9c46a"></div></div><div class="body"><span class="pr">$472,000</span><h3>Pandosy village loft</h3><span class="meta">1 bed · 1 bath · 760 sq ft</span></div></a>
+        <a class="home" href="#contact" data-tags="house" data-cursor="View"><div class="ph"><span class="badge">For sale</span><div data-art="house" data-seed="15" data-palette="#bde0fe,#cfe8b8,#0e1b2c,#b08d57"></div></div><div class="body"><span class="pr">$2,450,000</span><h3>Lakeshore modern</h3><span class="meta">5 beds · 5 baths · 4,900 sq ft</span></div></a>
+        <a class="home" href="#contact" data-tags="condo" data-cursor="View"><div class="ph"><span class="badge">For sale</span><div data-art="room" data-seed="4" data-palette="#efe6da,#c8a27a,#0e1b2c,#b08d57"></div></div><div class="body"><span class="pr">$699,000</span><h3>Mission townhome</h3><span class="meta">3 beds · 3 baths · 1,720 sq ft</span></div></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="calc" id="calc" aria-labelledby="calc-h">
+    <div class="wrap">
+      <div>
+        <span class="tag">Mortgage calculator</span>
+        <h2 id="calc-h" style="margin-top:12px" data-split="lines">What would it <em>cost?</em></h2>
+        <div class="sliders">
+          <div class="sl"><label for="c-price">Home price <output id="o-price">$900,000</output></label><input id="c-price" type="range" min="300000" max="3000000" step="10000" value="900000"></div>
+          <div class="sl"><label for="c-down">Down payment <output id="o-down">20%</output></label><input id="c-down" type="range" min="5" max="50" step="1" value="20"></div>
+          <div class="sl"><label for="c-rate">Interest rate <output id="o-rate">4.5%</output></label><input id="c-rate" type="range" min="2" max="8" step="0.05" value="4.5"></div>
+          <div class="sl"><label for="c-years">Amortization <output id="o-years">25 years</output></label><input id="c-years" type="range" min="15" max="30" step="5" value="25"></div>
+        </div>
+      </div>
+      <div class="result" aria-live="polite">
+        <p style="margin:0">Estimated monthly payment</p>
+        <div class="big" id="pay">$3,980</div>
+        <div class="rows"><div><span>Mortgage amount</span><b id="r-loan">$720,000</b></div><div><span>Default insurance</span><b id="r-ins">$0</b></div><div><span>Total interest over term</span><b id="r-int">$474,000</b></div></div>
+        <small>Estimate only, using Canadian semi-annual compounding and CMHC premiums below 20% down. Ask your lender for real numbers.</small>
+      </div>
+    </div>
+  </section>
+
+  <section class="hoods" id="hoods" aria-labelledby="hood-h">
+    <div class="wrap">
+      <div>
+        <span class="tag">Neighbourhoods</span>
+        <h2 id="hood-h" style="margin-top:12px" data-split="lines">Where to <em>land</em></h2>
+        <p style="margin-top:16px;color:var(--ink-2)">Tap a pin to see what homes cost there right now.</p>
+        <div class="hood-card" id="hoodCard" aria-live="polite"><h3>Downtown</h3><p>Walk to the lake, the wineries' tasting rooms and the hockey arena.</p><p class="avg">Avg. $612,000</p></div>
+      </div>
+      <div class="mapbox" data-reveal="fade">
+        <svg viewBox="0 0 500 400" id="hoodMap" role="group" aria-label="Map of Kelowna neighbourhoods">
+          <rect width="500" height="400" fill="#e9e1d1"/>
+          <path d="M160 0C140 60 190 110 170 170S120 260 150 320S200 400 200 400H90C70 330 110 280 90 220S70 90 110 0z" fill="#a9c8d6"/>
+          <path d="M0 120h70M210 60h290M220 180h280M230 300h270M300 0v400M410 0v400" stroke="#f6f1e6" stroke-width="10"/>
+          <path d="M240 210c30-20 80-10 90 20s-40 50-80 40s-30-50-10-60z" fill="#cfdcb6"/>
+          <g class="pin" tabindex="0" role="button" aria-label="Downtown" data-h="Downtown|Walk to the lake, tasting rooms and the hockey arena.|$612,000"><circle class="halo" cx="215" cy="150" r="20"/><circle class="core" cx="215" cy="150" r="9" fill="#0e1b2c"/></g>
+          <g class="pin" tabindex="0" role="button" aria-label="Upper Mission" data-h="Upper Mission|Hillside homes, vineyards and big views over the lake.|$1,480,000"><circle class="halo" cx="240" cy="320" r="20"/><circle class="core" cx="240" cy="320" r="9" fill="#0e1b2c"/></g>
+          <g class="pin" tabindex="0" role="button" aria-label="Glenmore" data-h="Glenmore|Family streets, good schools and the Knox Mountain trails.|$1,090,000"><circle class="halo" cx="260" cy="70" r="20"/><circle class="core" cx="260" cy="70" r="9" fill="#0e1b2c"/></g>
+          <g class="pin" tabindex="0" role="button" aria-label="Rutland" data-h="Rutland|The best value in town, close to the college and the airport road.|$780,000"><circle class="halo" cx="420" cy="140" r="20"/><circle class="core" cx="420" cy="140" r="9" fill="#0e1b2c"/></g>
+          <g class="pin" tabindex="0" role="button" aria-label="West Kelowna" data-h="West Kelowna|Across the bridge: wineries, beaches and newer builds.|$945,000"><circle class="halo" cx="60" cy="230" r="20"/><circle class="core" cx="60" cy="230" r="9" fill="#0e1b2c"/></g>
+          <text x="120" y="390" font-family="Playfair Display" font-style="italic" font-size="16" fill="#3d6a80">Okanagan Lake</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="agent" id="contact" aria-labelledby="ag-h" style="padding-top:0">
+    <div class="wrap">
+      <div class="agent-card">
+        <div data-art="portrait" data-seed="114" data-palette="#e2d9c8,#cbbd9f,#0e1b2c,#8a5a3c" data-reveal="zoom"></div>
+        <div class="cap"><h3>Rachel Okafor</h3><p style="color:var(--ink-2)">Managing broker · 18 years in the Okanagan</p>
+          <div class="quotes" id="quotes"><blockquote>“Rachel sold our house in nine days, for more than we asked.”<cite>The Lams, Kettle Valley</cite></blockquote><blockquote>“She talked us out of the wrong condo. Then found the right one.”<cite>Josh &amp; Mira, Pandosy</cite></blockquote></div>
+        </div>
+      </div>
+      <div>
+        <span class="tag">Get in touch</span>
+        <h2 id="ag-h" style="margin:12px 0 26px" data-split="lines">Let's <em>talk</em></h2>
+        <div class="cf" data-reveal="up">
+          <form data-steps action="#" aria-label="Contact Keystone">
+            <div class="meta"><span data-steps-count>Step 1 of 3</span><span>1 minute</span></div>
+            <div data-steps-bar style="margin-bottom:22px"><i></i></div>
+            <fieldset data-step><legend>Are you buying or selling?</legend>
+              <div class="seg"><label><input type="radio" name="side" value="buy" required><span>Buying</span></label><label><input type="radio" name="side" value="sell"><span>Selling</span></label></div>
+              <div class="rr"><button class="btn" data-next>Continue</button></div>
+            </fieldset>
+            <fieldset data-step><legend>When, and where?</legend>
+              <div class="fz"><label for="k-when">Timeline</label><select id="k-when" name="when"><option>Within 3 months</option><option>3 to 6 months</option><option>Just exploring</option></select></div>
+              <div class="fz"><label for="k-area">Neighbourhood</label><select id="k-area" name="area"><option>Anywhere in Kelowna</option><option>Downtown</option><option>Upper Mission</option><option>Glenmore</option><option>West Kelowna</option></select></div>
+              <div class="rr"><button class="btn btn-out" data-back>Back</button><button class="btn" data-next>Continue</button></div>
+            </fieldset>
+            <fieldset data-step><legend>How can we reach you?</legend>
+              <div class="fz"><label for="k-name">Name</label><input id="k-name" name="name" required autocomplete="name"></div>
+              <div class="fz"><label for="k-mail">Email</label><input id="k-mail" type="email" name="email" required autocomplete="email"></div>
+              <div class="rr"><button class="btn btn-out" data-back>Back</button><button class="btn" type="submit">Send</button></div>
+              <p style="font-size:13px;color:var(--ink-2);margin-top:12px">Sample form: nothing is sent.</p>
+            </fieldset>
+          </form>
+          <div class="done" data-steps-done hidden><h3>Thank you.</h3><p style="margin-top:8px;color:var(--ink-2)">On a real site, Rachel would call you within the day.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><span>Keystone Realty · Kelowna, BC · <span data-year>2026</span></span><span>Sample business: listings, prices and people are made up. Not a real brokerage.</span><button type="button" data-motion-toggle>Motion: on</button></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Flip.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>window.KIT = {
+  ease: 'expo.out', dur: 1.2, stagger: 0.07, smooth: { lerp: 0.09 }, anchorOffset: 70, cursor: 'ring',
+  vanta: { el: '#topo', effect: 'TOPOLOGY', options: { color: 0xb08d57, backgroundColor: 0x0e1b2c } },
+};</script>
+<script src="../../kit/art.js"></script>
+<script src="../../kit/kit.js"></script>
+<script>
+(() => {
+  const K = window.KIT;
+  if (!window.gsap) return;
+  const money = (n) => '$' + Math.round(n).toLocaleString('en-CA');
+
+  // Mortgage: Canadian fixed rates compound semi-annually; CMHC premium under 20% down.
+  const $ = (id) => document.getElementById(id);
+  const shown = { pay: 0 };
+  function calc() {
+    const price = +$('c-price').value, down = +$('c-down').value, rate = +$('c-rate').value, years = +$('c-years').value;
+    $('o-price').textContent = money(price); $('o-down').textContent = down + '%'; $('o-rate').textContent = rate.toFixed(2).replace(/0$/, '') + '%'; $('o-years').textContent = years + ' years';
+    const base = price * (1 - down / 100);
+    const prem = down >= 20 || price > 1500000 ? 0 : base * (down < 10 ? 0.04 : down < 15 ? 0.031 : 0.028);
+    const loan = base + prem, n = years * 12, i = Math.pow(1 + rate / 200, 1 / 6) - 1;
+    const pay = (loan * i) / (1 - Math.pow(1 + i, -n));
+    $('r-loan').textContent = money(loan); $('r-ins').textContent = down < 5 || (price > 1500000 && down < 20) ? 'Needs 20% down' : money(prem); $('r-int').textContent = money(pay * n - loan);
+    gsap.to(shown, { pay, duration: K.reduce ? 0 : 0.6, ease: 'power3.out', overwrite: true, onUpdate: () => ($('pay').textContent = money(shown.pay)) });
+  }
+  ['c-price', 'c-down', 'c-rate', 'c-years'].forEach((id) => $(id).addEventListener('input', calc));
+  calc();
+
+  // Listing view: grid or list, animated with Flip.
+  const homes = $('homes');
+  const setView = (list) => {
+    const state = Flip.getState(homes.querySelectorAll('.home, .ph, .body'));
+    homes.classList.toggle('as-list', list);
+    $('viewGrid').setAttribute('aria-pressed', String(!list)); $('viewList').setAttribute('aria-pressed', String(list));
+    if (!K.reduce) Flip.from(state, { duration: 0.8, ease: 'power3.inOut', stagger: 0.03, nested: true, onComplete: () => ScrollTrigger.refresh() });
+    else ScrollTrigger.refresh();
+  };
+  $('viewGrid').addEventListener('click', () => setView(false));
+  $('viewList').addEventListener('click', () => setView(true));
+
+  // Neighbourhood pins: tap (or Enter) to swap the card; pins drop in on arrival.
+  const card = $('hoodCard'), pins = [...document.querySelectorAll('#hoodMap .pin')];
+  const pick = (p) => {
+    const [h, d, a] = p.dataset.h.split('|');
+    card.innerHTML = `<h3>${h}</h3><p>${d}</p><p class="avg">Avg. ${a}</p>`;
+    pins.forEach((x) => x.querySelector('.core').setAttribute('fill', x === p ? '#b08d57' : '#0e1b2c'));
+    if (!K.reduce) gsap.from(card.children, { y: 14, autoAlpha: 0, stagger: 0.06, duration: 0.5 });
+  };
+  pins.forEach((p) => { p.addEventListener('click', () => pick(p)); p.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(p); } }); });
+
+  // Testimonials take turns.
+  const qs = [...document.querySelectorAll('#quotes blockquote')];
+  gsap.set(qs.slice(1), { autoAlpha: 0 });
+  let qi = 0;
+  if (!K.reduce) gsap.delayedCall(5, function next() { const a = qs[qi]; qi = (qi + 1) % qs.length; gsap.to(a, { autoAlpha: 0, duration: 0.6 }); gsap.fromTo(qs[qi], { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.8, delay: 0.4 }); gsap.delayedCall(5, next); });
+
+  if (K.reduce) { gsap.set('#featImg', { clipPath: 'inset(0% 0% 0% 0% round 0px)' }); return; }
+
+  pins.forEach((p, i) => gsap.from(p, { y: -60, opacity: 0, duration: 1, ease: 'bounce.out', delay: i * 0.12, scrollTrigger: { trigger: '#hoodMap', start: 'top 75%', once: true } }));
+  gsap.to('#hoodMap .halo', { attr: { r: 30 }, opacity: 0, duration: 1.6, repeat: -1, ease: 'power2.out', stagger: 0.3 });
+
+  // Featured: pin, the photo grows from a card to full screen, then the details slide up.
+  gsap.set('#featInfo', { yPercent: 100 });
+  gsap.timeline({ scrollTrigger: { trigger: '#featPin', start: 'top top', end: '+=180%', pin: true, scrub: 0.8 } })
+    .to('#featImg', { clipPath: 'inset(0% 0% 0% 0% round 0px)', ease: 'power2.inOut', duration: 1 })
+    .to('#featLabel', { autoAlpha: 0, y: -40, duration: 0.4 }, 0)
+    .from('#featImg [data-art]', { scale: 1.25, duration: 1, ease: 'power2.out' }, 0)
+    .to('#featInfo', { yPercent: 0, duration: 0.5, ease: 'power3.out' }, 0.8);
+})();
+</script>
+</body>
+</html>

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Pila Motion Templates</title>
-<meta name="description" content="Reference templates for motion-heavy websites: a full service-business site, and 3D scroll scenes in seven looks and eight layouts, ready to plug in.">
+<meta name="description" content="Reference templates for motion-heavy websites: twelve full motion sites on GSAP, Lenis and Vanta, a service-business site, and 3D scroll scenes in many looks and layouts, ready to plug in.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap">
@@ -60,6 +60,12 @@ footer { font: 400 13px 'JetBrains Mono', monospace; color: var(--ink-3); border
     </div>
   </section>
 
+  <section aria-labelledby="sites-h">
+    <h2 id="sites-h">Motion websites</h2>
+    <p class="lede" style="margin:-4px 0 20px">Twelve complete one-page sites built on GSAP, Lenis smooth scroll and Vanta backgrounds, each with its own look and its own signature moves. They share one kit in <code>kit/</code>, switched on with data attributes.</p>
+    <div class="cards" id="sites"></div>
+  </section>
+
   <section aria-labelledby="scroll-h">
     <h2 id="scroll-h">3D scroll scenes</h2>
     <div class="filters" id="filters" role="group" aria-label="Filter by look"></div>
@@ -89,9 +95,24 @@ const T = [
   ['interior-design', 'Ink & Oak', 'Interior design', 'A sketchbook: turn the page, read the idea, watch the room get drawn.', 'Sketch', 'Notebook', 'Smooth', '#2f4bb0'],
   ['arcade', 'Pixel Pit', 'Arcade & parties', 'A video game: press start, hop between floating islands, collect coins, unlock achievements.', 'Game', 'Game world', 'Bouncy', '#ff3ea5'],
 ];
+const S = [
+  ['home-services', 'Brightside Home Co.', 'Home services', 'A blueprint house draws itself, a van drives the route, services scroll sideways.', ['Bouncy', 'DrawSVG', 'MotionPath', 'Before/after'], '#ffb703'],
+  ['automotive', 'Redline Auto Works', 'Automotive', 'Speed streaks, a rev counter that follows scroll speed, a pinned service bay.', ['Dark', 'Canvas', 'Pinned steps', 'Scramble'], '#ff2a1a'],
+  ['restaurant-cafe', 'Crumb & Kettle', 'Restaurant & café', 'Morphing steam, a Flip menu filter, stacked "day at the café" cards, a photo trail.', ['Editorial', 'MorphSVG', 'Flip', 'Image trail'], '#b5371f'],
+  ['travel', 'Northbound Trips', 'Travel', 'Vanta clouds, parallax ridges, a plane flies the route while the map camera follows.', ['Vanta clouds', 'MotionPath', 'Drag carousel'], '#0b6e69'],
+  ['salon', 'Velvet & Vine', 'Salon & beauty', 'A Vanta halo, a price list with a floating photo, drifting lookbook columns.', ['Vanta halo', 'Slow', 'Hover peek', 'Blobs'], '#8e2c5c'],
+  ['barbershop', 'Fade Street Barbers', 'Barbershop', 'A spinning pole, razor-cut reveals, Flip cut cards and a swipeable barber deck.', ['Gritty', 'Flip', 'Draggable', 'Velocity text'], '#e0203f'],
+  ['gym', 'Ironclad Fitness', 'Gym', 'A heartbeat that rises with scroll speed, a zoom-through word, 3D program cards.', ['Neon', 'Zoom pin', 'Flip schedule', '3D swing'], '#d7ff3a'],
+  ['health-clinic', 'Harbourview Family Clinic', 'Health & clinics', 'Calm Vanta waves, self-drawing icons, a visit timeline, doctors by language.', ['Calm', 'Vanta waves', 'Accessible', 'Flip filter'], '#0f766e'],
+  ['real-estate', 'Keystone Realty', 'Real estate', 'Vanta topology, a featured home that grows full-screen, a live mortgage calculator.', ['Luxury', 'Vanta topology', 'Flip views', 'Calculator'], '#b08d57'],
+  ['professional-services', 'Ledgerline Accounting', 'Professional services', 'A typed headline over a Vanta net, a drawing chart, a sideways tax-year calendar.', ['Swiss', 'Vanta net', 'TextPlugin', 'Charts'], '#1f7a4d'],
+  ['photography-video', 'Afterglow Studio', 'Photography & video', 'Vanta fog, a photo trail, a film strip, and a Flip lightbox gallery.', ['Film grain', 'Vanta fog', 'Lightbox', 'Image trail'], '#ffb347'],
+  ['online-store', 'Sprout & Pot', 'Online store', 'Floating plants, Flip sort, products fly into the cart, and a plant-finder quiz.', ['Playful', 'Cart', 'MotionPath', 'Quiz'], '#c2365f'],
+];
 const looks = ['All', ...new Set(T.map((t) => t[4]))];
 let look = 'All';
 const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+document.getElementById('sites').innerHTML = S.map(([dir, name, ind, desc, tags, col]) => `<a class="card" href="./sites/${dir}/"><span class="top"><span>${esc(ind)}</span><span class="dot" style="--c:${col}"></span></span><h3>${esc(name)}</h3><p>${esc(desc)}</p><span class="tags">${tags.map((t) => `<span>${esc(t)}</span>`).join('')}</span><span class="go">Open →</span></a>`).join('');
 document.getElementById('scenes').innerHTML = T.map(([dir, name, ind, desc, lk, lay, sp, col]) => `<a class="card" href="./${dir}/" data-look="${lk}"><span class="top"><span>${esc(ind)}</span><span class="dot" style="--c:${col}"></span></span><h3>${esc(name)}</h3><p>${esc(desc)}</p><span class="tags"><span>${lk}</span><span>${lay}</span><span>${sp}</span></span><span class="go">Open →</span></a>`).join('');
 function render() {
   document.getElementById('filters').innerHTML = looks.map((l) => `<button type="button" data-look="${l}" aria-pressed="${l === look}">${l}</button>`).join('');

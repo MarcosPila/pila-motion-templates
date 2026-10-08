@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fade Street Barbers · Sample barbershop site</title>
+<meta name="description" content="Sample website template for a barbershop on Queen Street West, Toronto: cuts, barbers, walk-ins and booking. Made-up business.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0d0d0d">
+<script>document.documentElement.classList.add('js');setTimeout(function(){var d=document.documentElement;if(!d.classList.contains('kit-ready'))d.classList.remove('js')},4000)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../../kit/kit.css">
+<style>
+:root {
+  --paper: #0d0d0d; --card: #171717; --ink: #efe9df; --ink-2: #a39d93; --line: #2b2b2b;
+  --accent: #e0203f; --blue: #2f5aa8; --bone: #efe9df;
+  --display: 'Anton', Impact, sans-serif; --body: 'IBM Plex Mono', ui-monospace, monospace;
+  --cursor: #efe9df; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 16px/1.65 var(--body); overflow-x: clip; }
+body::after { content: ''; position: fixed; inset: 0; z-index: 300; pointer-events: none; opacity: .07; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"); }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; line-height: .9; text-transform: uppercase; }
+h2 { font-size: clamp(3.4rem, 1.6rem + 7vw, 8.6rem); }
+h3 { font-size: 2rem; }
+p { margin: 0; }
+.wrap { width: min(1240px, 100% - 32px); margin-inline: auto; }
+.lab { font: 500 12px/1 var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--accent); }
+section { padding: clamp(80px, 11vw, 140px) 0; position: relative; }
+.btn { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 24px; font: 600 14px/1 var(--body); letter-spacing: .14em; text-transform: uppercase; text-decoration: none; background: var(--bone); color: var(--paper); border: 2px solid var(--bone); cursor: pointer; transition: background-color .15s, color .15s; }
+.btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn-line { background: transparent; color: var(--ink); }
+
+.top { position: fixed; inset: 0 0 auto; z-index: 50; padding: 14px 0; mix-blend-mode: difference; color: #fff; }
+.top .wrap { display: flex; align-items: center; gap: 26px; }
+.logo { font: 400 1.6rem/1 var(--display); text-transform: uppercase; text-decoration: none; letter-spacing: .02em; }
+.nav { display: flex; gap: 26px; margin-left: auto; }
+.nav a { font: 500 13px var(--body); letter-spacing: .14em; text-transform: uppercase; text-decoration: none; }
+.nav a:hover { text-decoration: line-through; }
+.menu-btn { display: none; margin-left: auto; background: none; color: inherit; border: 2px solid currentColor; padding: 8px 12px; font: 600 12px var(--body); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; }
+@media (max-width: 799px) {
+  .menu-btn { display: block; }
+  .nav { position: fixed; inset: 0; z-index: -1; flex-direction: column; justify-content: center; padding: 0 24px; gap: 8px; background: var(--accent); visibility: hidden; opacity: 0; transition: opacity .2s, visibility .2s; }
+  .nav.is-open { visibility: visible; opacity: 1; }
+  .nav a { font: 400 4rem/1 var(--display); letter-spacing: 0; }
+  .top:has(.nav.is-open) { mix-blend-mode: normal; }
+}
+
+/* Hero */
+.hero { min-height: 100svh; padding: 110px 0 50px; display: grid; align-content: end; overflow: hidden; }
+.hero h1 { font-size: clamp(4.6rem, 1rem + 15vw, 15rem); line-height: .84; }
+.hero h1 .red { color: var(--accent); }
+.hero h1 .ol { color: transparent; -webkit-text-stroke: 2px var(--bone); }
+.hero-foot { display: flex; flex-wrap: wrap; gap: 24px 40px; align-items: end; justify-content: space-between; margin-top: 30px; }
+.hero-foot p { max-width: 44ch; color: var(--ink-2); }
+.wait { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border: 2px solid var(--line); }
+.wait i { width: 10px; height: 10px; background: #3ddc84; border-radius: 50%; animation: blink 1s steps(2) infinite; }
+@keyframes blink { 50% { opacity: .2; } }
+.wait b { font: 400 1.8rem/1 var(--display); }
+.pole { position: absolute; right: clamp(16px, 6vw, 90px); top: 110px; width: clamp(54px, 7vw, 86px); height: clamp(220px, 40vh, 380px); }
+.pole .glass { position: absolute; inset: 22px 0; border-radius: 40px; overflow: hidden; border: 3px solid var(--bone); background: #fff; }
+.pole .stripes { position: absolute; left: -50%; right: -50%; top: -100%; bottom: -100%; background: repeating-linear-gradient(-35deg, var(--accent) 0 18px, #fff 18px 36px, var(--blue) 36px 54px, #fff 54px 72px); }
+.pole .cap { position: absolute; left: 6px; right: 6px; height: 26px; background: var(--bone); border-radius: 14px; }
+.pole .cap.t { top: 0; } .pole .cap.b { bottom: 0; }
+.stamp { position: absolute; left: clamp(16px, 50vw, 680px); top: 150px; width: 150px; height: 150px; display: grid; place-items: center; }
+.stamp text { font: 500 13.5px var(--body); letter-spacing: .12em; fill: var(--bone); text-transform: uppercase; }
+.stamp i { position: absolute; font: 400 2.4rem var(--display); font-style: normal; color: var(--accent); }
+@media (max-width: 799px) { .stamp { left: auto; right: 16px; top: auto; bottom: 46%; width: 112px; height: 112px; } .pole { top: 96px; height: 200px; } }
+
+/* Velocity band */
+.band { background: var(--accent); color: #fff; padding: 14px 0; }
+.band .mq-track span { font: 400 clamp(2.4rem, 1.6rem + 3vw, 4.4rem)/1 var(--display); text-transform: uppercase; white-space: nowrap; }
+
+/* Razor-cut sections */
+.cut { background: var(--bone); color: var(--paper); }
+.cut .lab { color: var(--accent); }
+
+/* Cuts grid with Flip expand */
+.cuts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 50px; grid-auto-flow: dense; }
+.cutcard { position: relative; text-align: left; font: inherit; color: inherit; background: #fff; border: 2px solid var(--paper); padding: 0; cursor: pointer; display: grid; grid-template-rows: auto 1fr; overflow: hidden; }
+.cutcard [data-art] { aspect-ratio: 4 / 3; filter: grayscale(1) contrast(1.1); transition: filter .3s; }
+.cutcard:hover [data-art], .cutcard.is-open [data-art] { filter: none; }
+.cutcard .info { padding: 16px 18px 18px; display: grid; gap: 4px; }
+.cutcard .row { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.cutcard .h3 { font: 400 1.8rem/.9 var(--display); text-transform: uppercase; }
+.cutcard [data-art] { display: block; }
+.cutcard .pr { font: 400 1.8rem var(--display); color: var(--accent); }
+.cutcard .more { display: none; color: #4a4640; padding-top: 8px; }
+.cutcard.is-open { grid-column: span 2; grid-row: span 2; }
+.cutcard.is-open .more { display: block; }
+.cutcard.is-open [data-art] { aspect-ratio: 16 / 9; }
+.cutcard .plus { position: absolute; right: 12px; top: 12px; width: 40px; height: 40px; background: var(--paper); color: var(--bone); display: grid; place-items: center; font: 600 20px var(--body); transition: transform .3s, background-color .2s; }
+.cutcard.is-open .plus { transform: rotate(45deg); background: var(--accent); }
+.cutcard:focus-visible { outline: 4px solid var(--accent); outline-offset: 2px; }
+@media (max-width: 799px) { .cuts { grid-template-columns: 1fr 1fr; } .cutcard.is-open { grid-column: span 2; grid-row: auto; } .cutcard .h3 { font-size: 1.4rem; } .cutcard .pr { font-size: 1.4rem; } }
+
+/* Barber deck */
+.crew .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.deck { position: relative; width: min(380px, 100%); aspect-ratio: 3 / 4; margin-inline: auto; touch-action: pan-y; }
+.bcard { position: absolute; inset: 0; background: var(--card); border: 2px solid var(--bone); display: grid; grid-template-rows: 1fr auto; overflow: hidden; user-select: none; cursor: grab; will-change: transform; }
+.bcard:active { cursor: grabbing; }
+.bcard [data-art] { filter: grayscale(1) contrast(1.15); }
+.bcard .cap { padding: 16px 18px; display: flex; justify-content: space-between; align-items: end; gap: 10px; background: var(--bone); color: var(--paper); }
+.bcard h3 { font-size: 2.2rem; }
+.bcard .cap span { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; }
+.deck-ctl { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
+.crew-text p { color: var(--ink-2); margin-top: 18px; }
+.crew-text ul { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 10px; }
+.crew-text li { display: flex; gap: 12px; align-items: baseline; }
+.crew-text li b { color: var(--accent); }
+@media (max-width: 799px) { .crew .wrap { grid-template-columns: 1fr; } .deck { width: min(300px, 86%); } }
+
+/* Hours + book */
+.book { background: var(--bone); color: var(--paper); }
+.book .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+.hrs { margin-top: 30px; border-top: 2px solid var(--paper); }
+.hrs div { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #cfc7ba; }
+.bk { border: 2px solid var(--paper); padding: clamp(20px, 4vw, 36px); background: #fff; }
+.bk legend { font: 400 2.6rem/1 var(--display); text-transform: uppercase; padding: 0; margin-bottom: 18px; }
+.bk .meta { display: flex; justify-content: space-between; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 10px; }
+.bk [data-steps-bar] { background: #e6dfd3; height: 6px; border-radius: 0; }
+.bk [data-steps-bar] i { background: var(--accent); }
+.ch { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ch label { position: relative; }
+.ch input { position: absolute; inset: 0; opacity: 0; }
+.ch span { display: block; padding: 12px 14px; border: 2px solid var(--paper); font-weight: 600; cursor: pointer; text-transform: uppercase; font-size: 13px; letter-spacing: .08em; }
+.ch input:checked + span { background: var(--paper); color: var(--bone); }
+.ch input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
+.fx { display: grid; gap: 6px; margin-bottom: 12px; }
+.fx label { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
+.fx input, .fx select { font: inherit; padding: 12px; border: 2px solid var(--paper); background: var(--bone); color: var(--paper); width: 100%; border-radius: 0; }
+.bk .rw { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+.bk .btn { background: var(--paper); color: var(--bone); border-color: var(--paper); }
+.bk .btn:hover { background: var(--accent); border-color: var(--accent); }
+.bk .btn-line { background: transparent; color: var(--paper); }
+.done h3 { font-size: 4rem; color: var(--accent); }
+@media (max-width: 799px) { .book .wrap { grid-template-columns: 1fr; } }
+
+footer { padding: 60px 0 30px; overflow: hidden; }
+.giant { font: 400 clamp(4rem, 1rem + 17vw, 17rem)/.85 var(--display); text-transform: uppercase; white-space: nowrap; color: transparent; -webkit-text-stroke: 2px var(--line); background: linear-gradient(90deg, var(--bone) 0 50%, transparent 50%) 100% 0 / 200% 100% no-repeat; -webkit-background-clip: text; background-clip: text; }
+.foot-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px; margin-top: 30px; font-size: 13px; color: var(--ink-2); letter-spacing: .06em; text-transform: uppercase; }
+.foot-row button { font: inherit; background: none; color: var(--ink); border: 2px solid var(--line); padding: 6px 12px; text-transform: inherit; letter-spacing: inherit; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top" data-header>
+  <div class="wrap">
+    <a class="logo" href="#top">Fade Street</a>
+    <nav class="nav" id="nav" aria-label="Main"><a href="#cuts">Cuts</a><a href="#crew">Barbers</a><a href="#book">Book</a></nav>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle>Menu</button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="pole" aria-hidden="true"><span class="cap t"></span><div class="glass"><div class="stripes"></div></div><span class="cap b"></span></div>
+    <div class="stamp" data-circle-text="Est. 2016 • Queen St W • Walk-ins • " data-circle-scroll data-circle-speed="10" aria-hidden="true"><i>✂</i></div>
+    <div class="wrap">
+      <span class="lab" data-reveal="fade" data-now>Barbershop · Queen Street West · Toronto</span>
+      <h1 data-split="lines" data-split-anim="slide" data-now data-delay=".1" data-dur=".9">Sharp<br><span class="red">fades.</span><br><span class="ol">No fuss.</span></h1>
+      <div class="hero-foot">
+        <p data-reveal="up" data-now data-delay=".7">Six chairs, hot towels, straight razors and a playlist you'll want to steal. Book ahead or just walk in.</p>
+        <div class="wait" data-reveal="up" data-now data-delay=".85" aria-live="off"><i></i><span>Current wait<br><b id="wait">~20 min</b></span></div>
+        <a class="btn" href="#book" data-magnet="0.3" data-reveal="up" data-now data-delay="1">Book a chair</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="band" data-marquee data-marquee-velocity data-marquee-skew data-marquee-flip data-marquee-speed="90" style="--mq-gap:30px" aria-hidden="true">
+    <div class="mq-track"><span>Walk-ins welcome</span><span>✂</span><span>Hot towel shaves</span><span>✂</span><span>Skin fades</span><span>✂</span><span>Beard trims</span><span>✂</span></div>
+  </div>
+
+  <section class="cut" id="cuts" aria-labelledby="cuts-h" data-cut>
+    <div class="wrap">
+      <span class="lab">The cuts</span>
+      <h2 id="cuts-h" style="margin-top:14px" data-split="lines" data-split-anim="slide">Pick one.</h2>
+      <p style="margin-top:14px;max-width:46ch;color:#4a4640">Tap a cut for the details. Every service ends with a hot towel and a lineup.</p>
+      <div class="cuts" id="cutGrid">
+        <button class="cutcard" type="button" aria-expanded="false"><span data-art="portrait" data-seed="9" data-palette="#e6dfd3,#cfc7ba,#1c1c1c,#b07a55"></span><span class="plus" aria-hidden="true">+</span><span class="info"><span class="row"><span class="h3">Skin fade</span><span class="pr">$45</span></span><span class="more">Down to the skin on the sides, blended by hand. 45 minutes, finished with a razor lineup.</span></span></button>
+        <button class="cutcard" type="button" aria-expanded="false"><span data-art="portrait" data-seed="16" data-palette="#e6dfd3,#cfc7ba,#2a2a2a,#8a5a3c"></span><span class="plus" aria-hidden="true">+</span><span class="info"><span class="row"><span class="h3">Classic cut</span><span class="pr">$38</span></span><span class="more">Scissors on top, clippers on the sides. Washed, styled, out in 35 minutes.</span></span></button>
+        <button class="cutcard" type="button" aria-expanded="false"><span data-art="portrait" data-seed="23" data-palette="#e6dfd3,#cfc7ba,#1c1c1c,#c99a76"></span><span class="plus" aria-hidden="true">+</span><span class="info"><span class="row"><span class="h3">Beard trim</span><span class="pr">$25</span></span><span class="more">Shape, line and oil. Add a hot towel for $10.</span></span></button>
+        <button class="cutcard" type="button" aria-expanded="false"><span data-art="portrait" data-seed="28" data-palette="#e6dfd3,#cfc7ba,#3a3a3a,#6f4a35"></span><span class="plus" aria-hidden="true">+</span><span class="info"><span class="row"><span class="h3">Hot towel shave</span><span class="pr">$40</span></span><span class="more">Straight razor, two hot towels, cold finish. The full ritual, 40 minutes.</span></span></button>
+        <button class="cutcard" type="button" aria-expanded="false"><span data-art="portrait" data-seed="33" data-palette="#e6dfd3,#cfc7ba,#1c1c1c,#d9a07e"></span><span class="plus" aria-hidden="true">+</span><span class="info"><span class="row"><span class="h3">Kids' cut</span><span class="pr">$28</span></span><span class="more">Under 12. Patience included, lollipop optional.</span></span></button>
+        <button class="cutcard" type="button" aria-expanded="false"><span data-art="portrait" data-seed="38" data-palette="#e6dfd3,#cfc7ba,#2a2a2a,#a8714f"></span><span class="plus" aria-hidden="true">+</span><span class="info"><span class="row"><span class="h3">The works</span><span class="pr">$75</span></span><span class="more">Cut, beard, hot towel shave and a scalp massage. Block off an hour and a half.</span></span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="crew" id="crew" aria-labelledby="crew-h">
+    <div class="wrap">
+      <div class="crew-text">
+        <span class="lab">The barbers</span>
+        <h2 id="crew-h" style="margin-top:14px" data-split="lines" data-split-anim="slide">Swipe<br>the crew.</h2>
+        <p data-reveal="up">Drag the top card away, or use the button. Every barber here has at least eight years behind the chair.</p>
+        <ul data-reveal-group="up"><li><b>01</b>Andre opened the shop in 2016 with two chairs and a borrowed clipper.</li><li><b>02</b>We added a chair a year. Six now, and that's enough.</li><li><b>03</b>Saturday mornings are for regulars. Come early.</li></ul>
+      </div>
+      <div>
+        <div class="deck" id="deck" aria-live="polite">
+          <article class="bcard"><div data-art="portrait" data-seed="45" data-palette="#3a3a3a,#1c1c1c,#efe9df,#8a5a3c"></div><div class="cap"><h3>Andre</h3><span>Owner · fades</span></div></article>
+          <article class="bcard"><div data-art="portrait" data-seed="52" data-palette="#3a3a3a,#1c1c1c,#e0203f,#c99a76"></div><div class="cap"><h3>Mo</h3><span>Beards · shaves</span></div></article>
+          <article class="bcard"><div data-art="portrait" data-seed="57" data-palette="#3a3a3a,#1c1c1c,#2f5aa8,#6f4a35"></div><div class="cap"><h3>Lena</h3><span>Scissor work</span></div></article>
+          <article class="bcard"><div data-art="portrait" data-seed="63" data-palette="#3a3a3a,#1c1c1c,#efe9df,#d9a07e"></div><div class="cap"><h3>Jay</h3><span>Designs · kids</span></div></article>
+        </div>
+        <div class="deck-ctl"><button class="btn btn-line" type="button" id="nextBarber">Next barber →</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="book" id="book" aria-labelledby="book-h" data-cut>
+    <div class="wrap">
+      <div>
+        <span class="lab">Book</span>
+        <h2 id="book-h" style="margin-top:14px" data-split="lines" data-split-anim="slide">Lock in<br>a chair.</h2>
+        <div class="hrs" data-reveal-group="left"><div><span>Mon – Fri</span><span>10 am – 8 pm</span></div><div><span>Saturday</span><span>9 am – 6 pm</span></div><div><span>Sunday</span><span>11 am – 4 pm</span></div><div><span>Phone</span><a href="tel:+14165550133">(416) 555-0133</a></div></div>
+      </div>
+      <div class="bk" data-reveal="up">
+        <form data-steps action="#" aria-label="Book a cut">
+          <div class="meta"><span data-steps-count>Step 1 of 3</span><span>60 seconds</span></div>
+          <div data-steps-bar style="margin-bottom:22px"><i></i></div>
+          <fieldset data-step><legend>The cut</legend>
+            <div class="ch"><label><input type="radio" name="cut" value="fade" required><span>Skin fade</span></label><label><input type="radio" name="cut" value="classic"><span>Classic</span></label><label><input type="radio" name="cut" value="beard"><span>Beard</span></label><label><input type="radio" name="cut" value="shave"><span>Shave</span></label><label><input type="radio" name="cut" value="kids"><span>Kids</span></label><label><input type="radio" name="cut" value="works"><span>The works</span></label></div>
+            <div class="rw"><button class="btn" data-next>Next</button></div>
+          </fieldset>
+          <fieldset data-step><legend>Barber &amp; time</legend>
+            <div class="fx"><label for="f-barber">Barber</label><select id="f-barber" name="barber"><option>First available</option><option>Andre</option><option>Mo</option><option>Lena</option><option>Jay</option></select></div>
+            <div class="fx"><label for="f-date">Day</label><input id="f-date" type="date" name="date" required></div>
+            <div class="fx"><label for="f-time">Time</label><select id="f-time" name="time"><option>10:00</option><option>12:30</option><option>3:00</option><option>6:30</option></select></div>
+            <div class="rw"><button class="btn btn-line" data-back>Back</button><button class="btn" data-next>Next</button></div>
+          </fieldset>
+          <fieldset data-step><legend>You</legend>
+            <div class="fx"><label for="f-name">Name</label><input id="f-name" name="name" required autocomplete="name"></div>
+            <div class="fx"><label for="f-tel">Mobile</label><input id="f-tel" type="tel" name="tel" required autocomplete="tel"></div>
+            <div class="rw"><button class="btn btn-line" data-back>Back</button><button class="btn" type="submit">Book it</button></div>
+            <p style="font-size:13px;margin-top:12px;color:#4a4640">Sample form: nothing is sent.</p>
+          </fieldset>
+        </form>
+        <div class="done" data-steps-done hidden><h3>You're in.</h3><p style="margin-top:8px">On a real site you'd get a text with your time.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="giant" id="giant" aria-hidden="true">Fade Street</div>
+  <div class="wrap foot-row"><span>Queen St W, Toronto · <span data-year>2026</span></span><span>Sample business: everything here is made up.</span><button type="button" data-motion-toggle>Motion: on</button></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Flip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Draggable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/InertiaPlugin.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>window.KIT = { ease: 'power4.out', dur: 0.75, stagger: 0.05, smooth: { lerp: 0.15 }, anchorOffset: 60, cursor: 'dot', spark: { color: ['#efe9df', '#e0203f'], selector: '.btn, .cutcard' } };</script>
+<script src="../../kit/art.js"></script>
+<script src="../../kit/kit.js"></script>
+<script>
+(() => {
+  const K = window.KIT;
+  if (!window.gsap) return;
+
+  // Walk-in wait: a believable number for the time of day (sample logic, not live).
+  const h = new Date().getHours(), base = h < 12 ? 10 : h < 17 ? 25 : 35;
+  document.getElementById('wait').textContent = `~${base} min`;
+
+  // Cuts: tap to expand in place; Flip animates the grid re-flow.
+  const grid = document.getElementById('cutGrid'), cards = [...grid.children];
+  cards.forEach((c) => c.addEventListener('click', () => {
+    const open = !c.classList.contains('is-open');
+    const state = Flip.getState(cards, { props: 'filter' });
+    cards.forEach((x) => { x.classList.toggle('is-open', x === c && open); x.setAttribute('aria-expanded', String(x === c && open)); });
+    if (K.reduce) return ScrollTrigger.refresh();
+    Flip.from(state, { duration: 0.6, ease: 'power3.inOut', nested: true, onComplete: () => ScrollTrigger.refresh() });
+    if (open) gsap.from(c.querySelector('.more'), { autoAlpha: 0, y: 12, duration: 0.4, delay: 0.35 });
+  }));
+
+  // Barber deck: throw the top card (drag or button), it goes to the back.
+  const deck = document.getElementById('deck');
+  const layout = (instant) => [...deck.children].forEach((c, i, all) => {
+    const depth = all.length - 1 - i;
+    gsap.to(c, { x: 0, y: depth * -12, rotation: depth ? (depth % 2 ? -3 : 3) * depth * 0.6 : 0, scale: 1 - depth * 0.04, zIndex: i, duration: instant || K.reduce ? 0 : 0.5, ease: 'power3.out' });
+    c.setAttribute('aria-hidden', String(i !== all.length - 1));
+  });
+  const throwTop = (dir = 1) => {
+    const top = deck.lastElementChild;
+    gsap.to(top, { x: dir * 700, rotation: dir * 30, duration: K.reduce ? 0 : 0.45, ease: 'power2.in', onComplete: () => { deck.prepend(top); layout(); bind(); } });
+  };
+  let drag;
+  const bind = () => {
+    drag?.kill();
+    if (!window.Draggable) return;
+    const top = deck.lastElementChild;
+    drag = Draggable.create(top, { type: 'x,y', zIndexBoost: false,
+      onDrag() { gsap.set(top, { rotation: this.x / 14 }); },
+      onRelease() { if (Math.abs(this.x) > 110) throwTop(Math.sign(this.x)); else gsap.to(top, { x: 0, y: 0, rotation: 0, duration: 0.6, ease: 'elastic.out(1, .5)' }); } })[0];
+  };
+  layout(true); bind();
+  document.getElementById('nextBarber').addEventListener('click', () => throwTop(1));
+
+  if (K.reduce) return;
+
+  // Pole stripes run forever; the stamp spins (kit) and speeds up with scroll.
+  gsap.to('.pole .stripes', { y: 102, duration: 1.4, repeat: -1, ease: 'none' });
+
+  // Razor-cut sections: a diagonal slash opens them as they arrive.
+  document.querySelectorAll('[data-cut]').forEach((s) => gsap.fromTo(s, { clipPath: 'polygon(0% 18%, 100% 0%, 100% 100%, 0% 100%)' }, { clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)', ease: 'none', scrollTrigger: { trigger: s, start: 'top bottom', end: 'top 40%', scrub: true } }));
+
+  // Footer word fills in as you reach the bottom.
+  gsap.to('#giant', { backgroundPosition: '0% 0', ease: 'none', scrollTrigger: { trigger: 'footer', start: 'top bottom', end: 'bottom bottom', scrub: true } });
+})();
+</script>
+</body>
+</html>

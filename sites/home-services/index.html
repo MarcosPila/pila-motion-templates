@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Brightside Home Co. · Sample home services site</title>
+<meta name="description" content="Sample website template for a home repair company: plumbing, electrical, heating and roofing in Hamilton. Made-up business.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#fff8ec">
+<script>document.documentElement.classList.add('js');setTimeout(function(){var d=document.documentElement;if(!d.classList.contains('kit-ready'))d.classList.remove('js')},4000)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,400..700&display=swap">
+<link rel="stylesheet" href="../../kit/kit.css">
+<style>
+:root {
+  --paper: #fff8ec; --card: #ffffff; --ink: #14213d; --ink-2: #44506a; --line: #ecdcc0;
+  --accent: #c2410c; --sun: #ffb703; --coral: #fb5607; --sky: #8ecae6; --leaf: #2a9d8f;
+  --display: 'Bricolage Grotesque', system-ui, sans-serif; --body: 'DM Sans', system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.6 var(--body); overflow-x: clip; }
+img, svg { max-width: 100%; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); line-height: 1; margin: 0; letter-spacing: -0.02em; }
+h2 { font-size: clamp(2.2rem, 1.4rem + 3.4vw, 4rem); font-weight: 800; }
+h3 { font-size: 1.45rem; font-weight: 700; }
+p { margin: 0; }
+.wrap { width: min(1200px, 100% - 32px); margin-inline: auto; }
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; font: 700 13px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.eyebrow::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--sun); box-shadow: 0 0 0 3px var(--ink); }
+section { padding: clamp(72px, 10vw, 128px) 0; }
+.lede { font-size: 1.15rem; color: var(--ink-2); max-width: 56ch; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 24px; border-radius: 999px; border: 2.5px solid var(--ink); font: 700 16px/1 var(--body); text-decoration: none; cursor: pointer; transition: box-shadow .25s, transform .25s; }
+.btn-sun { background: var(--sun); color: var(--ink); box-shadow: 4px 4px 0 var(--ink); }
+.btn-sun:hover { box-shadow: 7px 7px 0 var(--ink); }
+.btn-line { background: var(--card); color: var(--ink); }
+.btn-ink { background: var(--ink); color: var(--paper); }
+
+/* Header */
+.top { position: fixed; inset: 0 0 auto; z-index: 50; padding: 14px 0; }
+.top.is-scrolled { background: rgb(255 248 236 / .92); backdrop-filter: blur(10px); box-shadow: 0 1px 0 var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 24px; }
+.logo { display: flex; align-items: center; gap: 10px; font: 800 1.35rem/1 var(--display); text-decoration: none; }
+.logo svg { width: 38px; height: 38px; }
+.nav { display: flex; gap: 26px; margin-left: auto; }
+.nav a { font-weight: 600; text-decoration: none; padding: 6px 0; background: linear-gradient(var(--sun), var(--sun)) 0 100% / 0 3px no-repeat; transition: background-size .3s; }
+.nav a:hover { background-size: 100% 3px; }
+.top .btn { min-height: 44px; padding: 0 18px; }
+.menu-btn { display: none; margin-left: auto; width: 46px; height: 46px; border-radius: 50%; border: 2.5px solid var(--ink); background: var(--card); cursor: pointer; }
+.menu-btn span { display: block; width: 18px; height: 2.5px; background: var(--ink); margin: 4px auto; transition: transform .3s; }
+.menu-btn[aria-expanded="true"] span:first-child { transform: translateY(3.25px) rotate(45deg); }
+.menu-btn[aria-expanded="true"] span:last-child { transform: translateY(-3.25px) rotate(-45deg); }
+@media (max-width: 899px) {
+  .menu-btn { display: block; }
+  .top .btn-call { display: none; }
+  .nav { position: fixed; inset: 0; z-index: -1; flex-direction: column; justify-content: center; align-items: center; gap: 18px; background: var(--sun); visibility: hidden; opacity: 0; transition: opacity .3s, visibility .3s; }
+  .nav.is-open { visibility: visible; opacity: 1; }
+  .nav a { font: 800 2.2rem/1.1 var(--display); }
+}
+
+/* Hero */
+.hero { padding: 132px 0 40px; position: relative; }
+.hero .wrap { display: grid; grid-template-columns: 1.05fr 1fr; gap: 40px; align-items: center; }
+.hero h1 { font-size: clamp(3rem, 1.6rem + 6vw, 6.4rem); font-weight: 800; letter-spacing: -0.035em; margin: 18px 0 22px; }
+.hero h1 .hl { color: var(--accent); }
+.hero .ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+.trust { display: flex; flex-wrap: wrap; gap: 22px; margin-top: 30px; font-size: 15px; color: var(--ink-2); }
+.trust b { color: var(--ink); font-size: 1.2rem; font-family: var(--display); }
+.house { position: relative; }
+.house svg { width: 100%; height: auto; display: block; overflow: visible; }
+.house .ln { fill: none; stroke: var(--ink); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+.house .thin { stroke-width: 1.5; stroke: #b9a98c; }
+.sticker { position: absolute; width: 64px; height: 64px; border-radius: 50%; background: var(--card); border: 2.5px solid var(--ink); display: grid; place-items: center; box-shadow: 3px 3px 0 var(--ink); }
+.sticker svg { width: 32px; height: 32px; }
+.s1 { left: 2%; top: 46%; } .s2 { right: 0; top: 18%; } .s3 { left: 46%; bottom: -2%; }
+.badge { position: absolute; right: 4%; bottom: 6%; width: 128px; height: 128px; display: grid; place-items: center; }
+.badge text { font: 700 15px var(--body); letter-spacing: .1em; fill: var(--ink); text-transform: uppercase; }
+.badge i { position: absolute; width: 54px; height: 54px; border-radius: 50%; background: var(--coral); display: grid; place-items: center; color: #fff; font: 800 13px/1 var(--display); font-style: normal; }
+@media (max-width: 899px) { .hero .wrap { grid-template-columns: 1fr; } .house { max-width: 520px; margin: 0 auto; width: 100%; } .badge { width: 104px; height: 104px; } }
+
+/* Marquee */
+.band-wrap { overflow: hidden; padding: 30px 0; }
+.band { background: var(--ink); color: var(--paper); padding: 18px 0; border-block: 3px solid var(--ink); transform: rotate(-1.2deg); margin: 0 -10px; }
+.band .mq-track span { font: 800 clamp(1.4rem, 1rem + 1.6vw, 2.2rem)/1 var(--display); white-space: nowrap; }
+.band .mq-track span:nth-child(even) { color: var(--sun); }
+
+/* Services, pinned sideways */
+.services { padding-bottom: 0; }
+.svc-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 36px; }
+.hs-wrap { padding-bottom: clamp(72px, 10vw, 128px); }
+.services .hs-track { padding-inline: max(16px, (100vw - 1200px) / 2); }
+.svc { width: min(400px, 78vw); min-height: 440px; padding: 30px; border-radius: 28px; border: 2.5px solid var(--ink); background: var(--card); box-shadow: 6px 6px 0 var(--ink); display: flex; flex-direction: column; gap: 14px; }
+.svc .ico { width: 72px; height: 72px; border-radius: 20px; display: grid; place-items: center; background: var(--c); border: 2.5px solid var(--ink); }
+.svc .ico svg { width: 40px; height: 40px; }
+.svc ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; color: var(--ink-2); }
+.svc li::before { content: '✓'; color: var(--leaf); font-weight: 800; margin-right: 8px; }
+.svc .price { margin-top: auto; padding-top: 16px; border-top: 2px dashed var(--line); font-weight: 700; display: flex; justify-content: space-between; }
+.svc .price b { font: 800 1.5rem/1 var(--display); color: var(--accent); }
+.hs-bar-wrap { height: 6px; background: var(--line); border-radius: 6px; margin-top: 30px; overflow: hidden; }
+.hs-bar-wrap i { display: block; height: 100%; background: var(--sun); transform-origin: 0 50%; transform: scaleX(0); }
+
+/* Before / after */
+.ba { background: var(--card); border-block: 2.5px solid var(--ink); }
+.ba .wrap { display: grid; grid-template-columns: .8fr 1.2fr; gap: 48px; align-items: center; }
+.ba-frame { aspect-ratio: 4 / 3; border-radius: 24px; border: 2.5px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); }
+.ba-frame .cmp-before, .ba-frame .cmp-after { border-radius: 0; }
+.ba .points { display: grid; gap: 12px; margin-top: 24px; padding: 0; list-style: none; }
+.ba .points li { padding: 12px 16px; border-radius: 14px; background: var(--paper); border: 2px solid var(--line); }
+@media (max-width: 899px) { .ba .wrap { grid-template-columns: 1fr; } }
+
+/* How it works: the van drives the route */
+.how-steps { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; margin-top: 56px; }
+.route { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+.route .base { fill: none; stroke: var(--line); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 2 14; }
+.route .done { fill: none; stroke: var(--sun); stroke-width: 6; stroke-linecap: round; }
+.step { position: relative; text-align: center; padding-top: 4px; }
+.step .dot { width: 84px; height: 84px; margin: 0 auto 18px; border-radius: 50%; border: 3px solid var(--ink); background: var(--card); display: grid; place-items: center; font: 800 1.8rem/1 var(--display); position: relative; z-index: 1; transition: background-color .4s, transform .4s cubic-bezier(.34, 1.56, .64, 1); }
+.step.is-on .dot { background: var(--sun); transform: scale(1.12); }
+.step p { color: var(--ink-2); margin-top: 8px; }
+#van { pointer-events: none; }
+@media (max-width: 899px) { .how-steps { grid-template-columns: 1fr; gap: 44px; } .step { text-align: left; display: grid; grid-template-columns: 84px 1fr; gap: 4px 20px; align-items: center; } .step .dot { margin: 0; grid-row: span 2; } }
+
+/* Numbers */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.stat { padding: 26px; border-radius: 24px; background: var(--sky); border: 2.5px solid var(--ink); }
+.stat:nth-child(2) { background: var(--sun); } .stat:nth-child(3) { background: #ffd6c2; } .stat:nth-child(4) { background: #bfe6df; }
+.stat b { display: block; font: 800 clamp(2.4rem, 1.8rem + 2vw, 3.6rem)/1 var(--display); font-variant-numeric: tabular-nums; }
+@media (max-width: 899px) { .stats { grid-template-columns: 1fr 1fr; } }
+
+/* About */
+.about .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+.about-art { position: relative; aspect-ratio: 1; }
+.about-art [data-art] { position: absolute; border-radius: 28px; border: 2.5px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); }
+.about-art .a1 { inset: 0 22% 22% 0; } .about-art .a2 { inset: 42% 0 0 46%; }
+.about p + p { margin-top: 16px; }
+.about .sig { margin-top: 24px; font: 700 1.1rem var(--display); }
+@media (max-width: 899px) { .about .wrap { grid-template-columns: 1fr; } }
+
+/* Reviews */
+.reviews { background: var(--ink); color: var(--paper); overflow: hidden; }
+.reviews h2 { color: var(--paper); }
+.rv-rows { display: grid; gap: 18px; margin-top: 44px; }
+.rv { width: 360px; padding: 22px; border-radius: 22px; background: #1f2e52; white-space: normal; }
+.rv .stars { color: var(--sun); letter-spacing: 3px; }
+.rv p { margin: 10px 0 12px; }
+.rv small { color: #aeb9d4; }
+
+/* Plans */
+.plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; align-items: stretch; }
+.plan { padding: 32px; border-radius: 28px; background: var(--card); border: 2.5px solid var(--ink); display: flex; flex-direction: column; gap: 14px; }
+.plan.pop { background: var(--sun); box-shadow: 8px 8px 0 var(--ink); }
+.plan .amt { font: 800 3rem/1 var(--display); }
+.plan .amt small { font: 600 1rem var(--body); }
+.plan ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.plan li::before { content: '→ '; font-weight: 800; }
+.plan .btn { margin-top: auto; }
+@media (max-width: 899px) { .plans-grid { grid-template-columns: 1fr; } }
+
+/* FAQ */
+.faq .wrap { display: grid; grid-template-columns: .8fr 1.2fr; gap: 48px; }
+.faq details { border-bottom: 2px solid var(--line); }
+.faq summary { display: flex; justify-content: space-between; gap: 16px; padding: 22px 0; font: 700 1.2rem/1.3 var(--display); }
+.faq summary::after { content: '+'; flex: none; width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--ink); display: grid; place-items: center; transition: transform .35s, background-color .35s; }
+.faq details.is-open summary::after { transform: rotate(45deg); background: var(--sun); }
+.faq .acc-body p { padding: 0 0 22px; color: var(--ink-2); }
+@media (max-width: 899px) { .faq .wrap { grid-template-columns: 1fr; } }
+
+/* Quote form */
+.quote { background: var(--sun); border-top: 2.5px solid var(--ink); }
+.quote .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+.qcard { background: var(--card); border: 2.5px solid var(--ink); border-radius: 28px; padding: clamp(22px, 4vw, 36px); box-shadow: 8px 8px 0 var(--ink); }
+.qcard legend { font: 800 1.5rem/1.1 var(--display); margin-bottom: 18px; padding: 0; }
+.qmeta { display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chips label { position: relative; }
+.chips input { position: absolute; opacity: 0; inset: 0; }
+.chips span { display: inline-block; padding: 10px 16px; border-radius: 999px; border: 2px solid var(--ink); font-weight: 600; cursor: pointer; transition: background-color .2s; }
+.chips input:checked + span { background: var(--ink); color: var(--paper); }
+.chips input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 3px; }
+.field { display: grid; gap: 6px; margin-bottom: 14px; }
+.field label { font-weight: 700; font-size: 15px; }
+.field input, .field select, .field textarea { font: inherit; padding: 12px 14px; border-radius: 14px; border: 2px solid var(--ink); background: var(--paper); color: var(--ink); width: 100%; }
+.row-btns { display: flex; gap: 12px; margin-top: 22px; }
+.note { font-size: 14px; color: var(--ink-2); margin-top: 14px; }
+.done { text-align: center; padding: 20px 0; }
+.done .big { font: 800 2.4rem/1 var(--display); margin-bottom: 10px; }
+.contact-list { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 10px; font-weight: 600; }
+@media (max-width: 899px) { .quote .wrap { grid-template-columns: 1fr; } }
+
+footer { background: var(--ink); color: #d5dcec; padding: 56px 0 40px; font-size: 15px; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 24px 40px; justify-content: space-between; align-items: center; }
+footer .logo { color: var(--paper); }
+footer button { font: inherit; color: var(--ink); background: var(--sun); border: 0; border-radius: 999px; padding: 8px 14px; font-weight: 700; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div data-progress></div>
+
+<header class="top" data-header data-header-hide>
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Brightside Home Co., back to top">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="22" r="10" fill="#ffb703" stroke="#14213d" stroke-width="2.5"/><path d="M4 30h32M20 4v5M8 10l3.5 3.5M32 10l-3.5 3.5" stroke="#14213d" stroke-width="2.5" stroke-linecap="round"/></svg>
+      Brightside
+    </a>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="#services">Services</a><a href="#how">How it works</a><a href="#plans">Plans</a><a href="#faq">FAQ</a><a href="#quote">Get a quote</a>
+    </nav>
+    <a class="btn btn-sun btn-call" href="tel:+19055550142" data-magnet="0.3">(905) 555-0142</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle><span></span><span></span><span class="sr-only">Menu</span></button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow" data-reveal="fade" data-now data-delay=".1">Hamilton &amp; Burlington · since 2012</span>
+        <h1 data-split="chars" data-split-anim="wave" data-now data-delay=".2">Fixed right. <span class="hl">Fixed bright.</span></h1>
+        <p class="lede" data-reveal="up" data-now data-delay=".7">Plumbing, electrical, heating and roofing from one friendly crew. We show up when we say, price the job before we start, and clean up after.</p>
+        <div class="ctas" data-reveal-group="pop" data-now data-delay=".9">
+          <a class="btn btn-sun" href="#quote" data-magnet>Get a free quote</a>
+          <a class="btn btn-line" href="#services">See what we fix</a>
+        </div>
+        <div class="trust" data-reveal-group="up" data-now data-delay="1.1">
+          <span><b>4.9★</b> from 640 reviews</span><span><b>2 h</b> average reply</span><span><b>Licensed</b> &amp; insured</span>
+        </div>
+      </div>
+      <div class="house" aria-hidden="true">
+        <svg viewBox="0 0 520 460" id="houseSvg">
+          <g class="thin ln" id="grid"><path d="M20 120h480M20 200h480M20 280h480M20 360h480M100 40v360M200 40v360M300 40v360M400 40v360"/></g>
+          <circle class="fill" cx="86" cy="86" r="30" fill="#ffb703"/><g class="ln"><circle cx="86" cy="86" r="30"/><path d="M86 38v-14M86 148v-14M38 86h-14M148 86h-14M52 52l-10-10M120 52l10-10"/></g>
+          <path class="fill" d="M120 210h280v190H120z" fill="#fff"/>
+          <path class="fill" d="M96 216L260 86l164 130z" fill="#fb5607"/>
+          <path class="fill" d="M332 112h36v58h-36z" fill="#c2410c"/>
+          <path class="fill" d="M236 300h48v100h-48z" fill="#ffb703"/>
+          <path class="fill" d="M146 244h68v58h-68zM306 244h68v58h-68z" fill="#8ecae6"/>
+          <circle class="fill" cx="260" cy="168" r="22" fill="#8ecae6"/>
+          <circle class="fill" cx="466" cy="300" r="40" fill="#2a9d8f"/>
+          <g class="ln">
+            <path d="M96 216L260 86l164 130"/><path d="M332 136v-24h36v54"/><path d="M120 216v184h280V216"/>
+            <path d="M236 400V300h48v100"/><circle cx="273" cy="352" r="3"/>
+            <path d="M146 244h68v58h-68zM180 244v58M146 273h68"/><path d="M306 244h68v58h-68zM340 244v58M306 273h68"/>
+            <circle cx="260" cy="168" r="22"/><path d="M238 168h44M260 146v44"/>
+            <path d="M466 340v60"/><circle cx="466" cy="300" r="40"/>
+            <path d="M20 400h480"/>
+          </g>
+          <g class="ln thin" id="dims"><path d="M120 430h280M120 422v16M400 422v16"/><path d="M450 86v130M442 86h16M442 216h16"/></g>
+          <text x="260" y="452" text-anchor="middle" font-family="DM Sans" font-size="14" font-weight="700" fill="#44506a" id="dimLabel">14.2 m</text>
+        </svg>
+        <span class="sticker s1"><svg viewBox="0 0 32 32"><path d="M16 4c5 7 8 11 8 15a8 8 0 0 1-16 0c0-4 3-8 8-15z" fill="#8ecae6" stroke="#14213d" stroke-width="2.5" stroke-linejoin="round"/></svg></span>
+        <span class="sticker s2"><svg viewBox="0 0 32 32"><path d="M18 3L7 18h8l-2 11l11-15h-8z" fill="#ffb703" stroke="#14213d" stroke-width="2.5" stroke-linejoin="round"/></svg></span>
+        <span class="sticker s3"><svg viewBox="0 0 32 32"><path d="M21 4a7 7 0 0 0-6.6 9.3L5 22.7L9.3 27l9.4-9.4A7 7 0 0 0 28 11l-4 4l-4-1l-1-4z" fill="#fff" stroke="#14213d" stroke-width="2.5" stroke-linejoin="round"/></svg></span>
+        <div class="badge" data-circle-text="Same-week service • Licensed &amp; insured • " data-circle-scroll><i>Since<br>2012</i></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="band-wrap"><div class="band" data-marquee data-marquee-velocity data-marquee-skew style="--mq-gap: 36px">
+    <div class="mq-track"><span>Plumbing</span><span>✦</span><span>Electrical</span><span>✦</span><span>Heating &amp; cooling</span><span>✦</span><span>Roofing</span><span>✦</span><span>Carpentry</span><span>✦</span><span>Painting</span><span>✦</span></div>
+  </div></div>
+
+  <section class="services" id="services" data-hscroll-pin>
+    <div class="wrap svc-head">
+      <div>
+        <span class="eyebrow">What we fix</span>
+        <h2 data-split="words" data-split-anim="wave" style="margin-top:14px">Six trades, one van.</h2>
+      </div>
+      <p class="lede" style="max-width:40ch">Every price below is the starting point. You get the full price before any work begins, in writing.</p>
+    </div>
+    <div class="hs-wrap">
+      <div data-hscroll>
+        <div class="hs-track">
+          <article class="svc" style="--c:#8ecae6"><div class="ico"><svg viewBox="0 0 40 40" fill="none" stroke="#14213d" stroke-width="2.5" stroke-linejoin="round"><path d="M20 6c6 9 10 14 10 19a10 10 0 0 1-20 0c0-5 4-10 10-19z" fill="#fff"/></svg></div><h3>Plumbing</h3><p>Leaks, clogs, water heaters and new fixtures.</p><ul><li>Leaky taps and toilets</li><li>Drain clearing</li><li>Water heater swaps</li><li>Sump pump checks</li></ul><p class="price">Service call <b>$129</b></p></article>
+          <article class="svc" style="--c:#ffb703"><div class="ico"><svg viewBox="0 0 40 40" fill="#fff" stroke="#14213d" stroke-width="2.5" stroke-linejoin="round"><path d="M23 4L9 23h10l-3 13l15-19H21z"/></svg></div><h3>Electrical</h3><p>Licensed electricians for safe, tidy work.</p><ul><li>Panel upgrades</li><li>Pot lights and fixtures</li><li>EV charger installs</li><li>Outlets and GFCIs</li></ul><p class="price">Service call <b>$149</b></p></article>
+          <article class="svc" style="--c:#ffd6c2"><div class="ico"><svg viewBox="0 0 40 40" fill="#fff" stroke="#14213d" stroke-width="2.5" stroke-linejoin="round"><path d="M20 5c2 7 10 10 10 19a10 10 0 0 1-20 0c0-5 3-8 5-10c0 4 2 6 4 6c0-6-2-10 1-15z"/></svg></div><h3>Heating &amp; cooling</h3><p>Furnaces, AC and heat pumps, serviced or replaced.</p><ul><li>Furnace tune-ups</li><li>AC repair</li><li>Heat pump installs</li><li>Thermostats</li></ul><p class="price">Tune-up <b>$139</b></p></article>
+          <article class="svc" style="--c:#bfe6df"><div class="ico"><svg viewBox="0 0 40 40" fill="#fff" stroke="#14213d" stroke-width="2.5" stroke-linejoin="round"><path d="M4 22L20 8l16 14M9 18v16h22V18"/><path d="M16 34v-9h8v9"/></svg></div><h3>Roofing</h3><p>Repairs, flashing and full re-roofs.</p><ul><li>Leak tracing</li><li>Shingle repairs</li><li>Eavestroughs</li><li>Free roof check</li></ul><p class="price">Inspection <b>Free</b></p></article>
+          <article class="svc" style="--c:#e9d8a6"><div class="ico"><svg viewBox="0 0 40 40" fill="#fff" stroke="#14213d" stroke-width="2.5" stroke-linejoin="round"><path d="M8 32l14-14M20 8l8 8l-4 4l-8-8zM26 6l8 8"/></svg></div><h3>Carpentry</h3><p>Doors, trim, decks and the little jobs.</p><ul><li>Door hanging</li><li>Trim and baseboards</li><li>Deck repairs</li><li>Shelving</li></ul><p class="price">Hourly <b>$95</b></p></article>
+          <article class="svc" style="--c:#cdb4db"><div class="ico"><svg viewBox="0 0 40 40" fill="#fff" stroke="#14213d" stroke-width="2.5" stroke-linejoin="round"><path d="M6 8h24v8H6zM30 12h4v10H18v6M16 28h4v8h-4z"/></svg></div><h3>Painting</h3><p>Rooms, ceilings and touch-ups, done clean.</p><ul><li>Single rooms</li><li>Ceilings</li><li>Trim and doors</li><li>Colour advice</li></ul><p class="price">Per room <b>$420</b></p></article>
+        </div>
+      </div>
+      <div class="wrap"><div class="hs-bar-wrap"><i data-hs-bar></i></div></div>
+    </div>
+  </section>
+
+  <section class="ba" aria-labelledby="ba-h">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Before &amp; after</span>
+        <h2 id="ba-h" style="margin-top:14px" data-split="words" data-split-anim="wave">Drag to see the difference.</h2>
+        <ul class="points" data-reveal-group="left">
+          <li><b>Kitchen refresh, Westdale.</b> New tap, lights and paint in three days.</li>
+          <li><b>Fixed price:</b> $6,800, agreed before we started.</li>
+        </ul>
+      </div>
+      <div class="ba-frame" data-compare data-reveal="scale">
+        <div class="cmp-before" data-art="kitchen" data-seed="4" data-palette="#d9d5cc,#b9b2a4,#8f8a80,#9c9480"></div>
+        <div class="cmp-after" data-art="kitchen" data-seed="4" data-palette="#f6efe3,#e3d4bd,#1f4e5f,#e0a43a"></div>
+        <span class="cmp-label l">Before</span><span class="cmp-label r">After</span>
+        <div class="cmp-handle"><span aria-hidden="true">⇆</span></div>
+        <input type="range" min="0" max="100" value="50" aria-label="Slide to compare the kitchen before and after">
+      </div>
+    </div>
+  </section>
+
+  <section id="how" aria-labelledby="how-h">
+    <div class="wrap">
+      <span class="eyebrow">How it works</span>
+      <h2 id="how-h" style="margin-top:14px" data-split="words" data-split-anim="wave">From call to clean-up.</h2>
+      <div class="how-steps" id="steps">
+        <svg class="route" id="route" aria-hidden="true"><path class="base" id="routeBase"/><path class="done" id="routeDone"/>
+          <g id="van"><rect x="-26" y="-22" width="40" height="24" rx="5" fill="#fff" stroke="#14213d" stroke-width="2.5"/><path d="M14 -16h8l8 8v10H14z" fill="#ffb703" stroke="#14213d" stroke-width="2.5" stroke-linejoin="round"/><circle cx="-14" cy="4" r="6" fill="#14213d"/><circle cx="20" cy="4" r="6" fill="#14213d"/><path d="M-20 -12h22" stroke="#fb5607" stroke-width="4"/></g>
+        </svg>
+        <div class="step"><span class="dot">1</span><h3>Call or click</h3><p>Tell us what's wrong. A real person replies within two hours.</p></div>
+        <div class="step"><span class="dot">2</span><h3>Fixed quote</h3><p>We look, then give you one price in writing. No surprises.</p></div>
+        <div class="step"><span class="dot">3</span><h3>We fix it</h3><p>On time, shoes off, and tidy. Most jobs take one visit.</p></div>
+        <div class="step"><span class="dot">4</span><h3>One-year promise</h3><p>If our work fails within a year, we come back free.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0" aria-label="Brightside in numbers">
+    <div class="wrap stats" data-reveal-group="pop">
+      <div class="stat"><b data-count="1200" data-suffix="+">1,200+</b>jobs a year</div>
+      <div class="stat"><b data-count="4.9" data-decimals="1">4.9</b>average rating</div>
+      <div class="stat"><b data-count="2" data-suffix=" h">2 h</b>average reply</div>
+      <div class="stat"><b data-count="12">12</b>years in Hamilton</div>
+    </div>
+  </section>
+
+  <section class="about" aria-labelledby="about-h">
+    <div class="wrap">
+      <div class="about-art" aria-hidden="true">
+        <div class="a1" data-art="portrait" data-seed="12" data-palette="#ffd6a5,#ffb703,#2a9d8f,#c68b59" data-reveal="pop"></div>
+        <div class="a2" data-art="house" data-seed="5" data-reveal="pop" data-delay=".2"></div>
+      </div>
+      <div>
+        <span class="eyebrow">About us</span>
+        <h2 id="about-h" style="margin:14px 0 22px" data-split="words" data-split-anim="wave">One van, then nine.</h2>
+        <p data-reveal="up">Dana Ortega started Brightside in 2012 with a borrowed van and a promise: show up when you say, and leave the place cleaner than you found it.</p>
+        <p data-reveal="up">Twelve years later we have nine vans, fourteen licensed trades people, and the same promise painted on every door. We still answer the phone ourselves.</p>
+        <p class="sig" data-reveal="up">Dana Ortega, owner</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reviews" aria-labelledby="rv-h">
+    <div class="wrap"><span class="eyebrow">Reviews</span><h2 id="rv-h" style="margin-top:14px" data-split="words" data-split-anim="wave">Neighbours say it best.</h2></div>
+    <div class="rv-rows">
+      <div data-marquee data-marquee-speed="40" data-marquee-pause style="--mq-gap:18px"><div class="mq-track">
+        <figure class="rv" style="margin:0"><span class="stars" aria-label="5 stars">★★★★★</span><p>Furnace died on a Sunday in January. Heat was back on by 4 pm.</p><small>Priya S., Ancaster</small></figure>
+        <figure class="rv" style="margin:0"><span class="stars" aria-label="5 stars">★★★★★</span><p>The quote was the bill. Not a dollar more. That never happens.</p><small>Mark T., Dundas</small></figure>
+        <figure class="rv" style="margin:0"><span class="stars" aria-label="5 stars">★★★★★</span><p>They put shoe covers on without being asked. Small thing, big deal.</p><small>Helen W., Westdale</small></figure>
+      </div></div>
+      <div data-marquee data-marquee-speed="34" data-marquee-dir="right" data-marquee-pause style="--mq-gap:18px"><div class="mq-track">
+        <figure class="rv" style="margin:0"><span class="stars" aria-label="5 stars">★★★★★</span><p>Pot lights in the whole basement in one day. Spotless after.</p><small>Jordan L., Stoney Creek</small></figure>
+        <figure class="rv" style="margin:0"><span class="stars" aria-label="4 stars">★★★★☆</span><p>Busy week so we waited two days, but the roof repair is perfect.</p><small>Ana P., Burlington</small></figure>
+        <figure class="rv" style="margin:0"><span class="stars" aria-label="5 stars">★★★★★</span><p>Our go-to now. The club pays for itself with the furnace check.</p><small>Sam K., Hamilton</small></figure>
+      </div></div>
+    </div>
+  </section>
+
+  <section id="plans" aria-labelledby="plans-h">
+    <div class="wrap">
+      <span class="eyebrow">Plans</span>
+      <h2 id="plans-h" style="margin-top:14px" data-split="words" data-split-anim="wave">Pay per fix, or join the club.</h2>
+      <div class="plans-grid" data-reveal-group="tilt">
+        <div class="plan" data-tilt="6"><h3>One-off fix</h3><p class="amt">$129<small> to start</small></p><ul><li>First 30 minutes included</li><li>Fixed quote before work</li><li>One-year promise</li></ul><a class="btn btn-line" href="#quote">Book a visit</a></div>
+        <div class="plan pop" data-tilt="6"><h3>Home Care Club</h3><p class="amt">$19<small> / month</small></p><ul><li>Yearly furnace and AC tune-up</li><li>Priority booking</li><li>10% off every job</li><li>No call-out fees</li></ul><a class="btn btn-ink" href="#quote" data-magnet>Join the club</a></div>
+        <div class="plan" data-tilt="6"><h3>Bigger project</h3><p class="amt">Free<small> quote</small></p><ul><li>Kitchens, bathrooms, basements</li><li>One project lead</li><li>Weekly photo updates</li></ul><a class="btn btn-line" href="#quote">Ask for a quote</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq" id="faq" aria-labelledby="faq-h" style="padding-top:0">
+    <div class="wrap">
+      <div><span class="eyebrow">FAQ</span><h2 id="faq-h" style="margin-top:14px" data-split="words" data-split-anim="wave">Good questions.</h2></div>
+      <div data-accordion data-reveal-group="up">
+        <details><summary>Do you charge to come out?</summary><div class="acc-body"><p>The $129 service call covers the trip and the first 30 minutes. Club members pay no call-out fee.</p></div></details>
+        <details><summary>Will the price change once you start?</summary><div class="acc-body"><p>No. You get one written price before we start. If we find something new, we stop and ask first.</p></div></details>
+        <details><summary>What areas do you cover?</summary><div class="acc-body"><p>Hamilton, Burlington, Ancaster, Dundas, Stoney Creek and Grimsby.</p></div></details>
+        <details><summary>Are you licensed and insured?</summary><div class="acc-body"><p>Yes. Our electricians are licensed through the ESA, our gas fitters through TSSA, and we carry $5 million in liability insurance.</p></div></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote" id="quote" aria-labelledby="quote-h">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow" style="color:var(--ink)">Free quote</span>
+        <h2 id="quote-h" style="margin:14px 0 18px" data-split="words" data-split-anim="wave">Tell us what broke.</h2>
+        <p class="lede" style="color:var(--ink)">Three quick steps. We reply within two hours on weekdays.</p>
+        <ul class="contact-list"><li>☎ <a href="tel:+19055550142">(905) 555-0142</a></li><li>✉ <a href="mailto:hello@brightsidehome.example">hello@brightsidehome.example</a></li><li>⏱ Mon–Sat, 7 am – 7 pm</li></ul>
+      </div>
+      <div class="qcard" data-reveal="up">
+        <form data-steps action="#" aria-label="Quote request">
+          <div class="qmeta"><span data-steps-count>Step 1 of 3</span><span>About 1 minute</span></div>
+          <div data-steps-bar style="margin-bottom:24px"><i></i></div>
+          <fieldset data-step><legend>What needs fixing?</legend>
+            <div class="chips">
+              <label><input type="radio" name="trade" value="plumbing" required><span>Plumbing</span></label>
+              <label><input type="radio" name="trade" value="electrical"><span>Electrical</span></label>
+              <label><input type="radio" name="trade" value="heating"><span>Heating &amp; cooling</span></label>
+              <label><input type="radio" name="trade" value="roofing"><span>Roofing</span></label>
+              <label><input type="radio" name="trade" value="other"><span>Something else</span></label>
+            </div>
+            <div class="field" style="margin-top:18px"><label for="q-desc">A few words about it</label><textarea id="q-desc" name="desc" rows="3" placeholder="The kitchen tap drips, even when it's off"></textarea></div>
+            <div class="row-btns"><button class="btn btn-sun" data-next>Next</button></div>
+          </fieldset>
+          <fieldset data-step><legend>Where and when?</legend>
+            <div class="field"><label for="q-postal">Postal code</label><input id="q-postal" name="postal" required autocomplete="postal-code" pattern="[A-Za-z]\d[A-Za-z] ?\d[A-Za-z]\d" placeholder="L8P 4R5"></div>
+            <div class="field"><label for="q-when">How soon?</label><select id="q-when" name="when"><option>As soon as possible</option><option>This week</option><option>This month</option><option>Just planning</option></select></div>
+            <div class="row-btns"><button class="btn btn-line" data-back>Back</button><button class="btn btn-sun" data-next>Next</button></div>
+          </fieldset>
+          <fieldset data-step><legend>How do we reach you?</legend>
+            <div class="field"><label for="q-name">Name</label><input id="q-name" name="name" required autocomplete="name"></div>
+            <div class="field"><label for="q-phone">Phone or email</label><input id="q-phone" name="contact" required autocomplete="tel"></div>
+            <div class="row-btns"><button class="btn btn-line" data-back>Back</button><button class="btn btn-sun" type="submit">Send request</button></div>
+            <p class="note">This is a sample form. It doesn't send anything.</p>
+          </fieldset>
+        </form>
+        <div class="done" data-steps-done hidden><p class="big">Got it!</p><p>On a real site, Dana's team would reply within two hours.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="logo" href="#top">Brightside Home Co.</a>
+    <span>Hamilton, Ontario · <span data-year>2026</span></span>
+    <span>Sample business: names, prices and reviews are made up.</span>
+    <button type="button" data-motion-toggle>Motion: on</button>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/DrawSVGPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/MotionPathPlugin.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>window.KIT = { ease: 'back.out(1.4)', dur: 0.8, smooth: { lerp: 0.12 }, anchorOffset: 76, spark: { color: ['#ffb703', '#fb5607', '#2a9d8f'], selector: '.btn, .chips span' } };</script>
+<script src="../../kit/art.js"></script>
+<script src="../../kit/kit.js"></script>
+<script>
+(() => {
+  const K = window.KIT;
+  if (!window.gsap) return;
+
+  // Hero: the blueprint draws itself, colour floods in, then the stickers pop on.
+  const house = document.getElementById('houseSvg');
+  const lines = house.querySelectorAll('g.ln:not(#grid) path, g.ln:not(#grid) circle');
+  const fills = house.querySelectorAll('.fill');
+  const stickers = document.querySelectorAll('.sticker');
+  if (!K.reduce) {
+    gsap.timeline({ delay: 0.3 })
+      .from('#grid path', { drawSVG: '0%', duration: 0.8, stagger: 0.04, ease: 'power2.out' })
+      .from(lines, { drawSVG: '50% 50%', duration: 1.1, stagger: 0.03, ease: 'power2.inOut' }, '-=0.5')
+      .from('#dimLabel', { autoAlpha: 0, y: 8, duration: 0.4 }, '-=0.4')
+      .from(fills, { opacity: 0, scale: 0.9, transformOrigin: '50% 100%', duration: 0.6, stagger: 0.08, ease: 'back.out(2)' }, '-=0.3')
+      .from(stickers, { scale: 0, rotate: -40, duration: 0.6, stagger: 0.12, ease: 'back.out(3)' }, '-=0.4')
+      .from('.badge', { scale: 0, duration: 0.7, ease: 'back.out(2.5)' }, '-=0.5');
+    stickers.forEach((s, i) => gsap.to(s, { y: i % 2 ? 10 : -10, rotate: i % 2 ? 6 : -6, duration: 1.6 + i * 0.3, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 2 }));
+    gsap.to('#houseSvg', { y: 60, rotate: -2, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+  }
+
+  // How it works: a route through the four step dots, and a van that drives it with the scroll.
+  const box = document.getElementById('steps'), svg = document.getElementById('route');
+  const base = document.getElementById('routeBase'), done = document.getElementById('routeDone'), van = document.getElementById('van');
+  const steps = [...box.querySelectorAll('.step')];
+  let drive;
+  function build() {
+    const b = box.getBoundingClientRect();
+    svg.setAttribute('viewBox', `0 0 ${b.width} ${b.height}`);
+    const pts = steps.map((s) => { const r = s.querySelector('.dot').getBoundingClientRect(); return [r.left - b.left + r.width / 2, r.top - b.top + r.height / 2]; });
+    let d = `M${pts[0][0]},${pts[0][1]}`;
+    for (let i = 1; i < pts.length; i++) {
+      const [x0, y0] = pts[i - 1], [x1, y1] = pts[i], vertical = Math.abs(x1 - x0) < 10;
+      const bend = (i % 2 ? -1 : 1) * (vertical ? 36 : 70);
+      d += vertical ? ` C${x0 + bend},${y0 + (y1 - y0) / 3} ${x1 + bend},${y1 - (y1 - y0) / 3} ${x1},${y1}` : ` C${x0 + (x1 - x0) / 3},${y0 + bend} ${x1 - (x1 - x0) / 3},${y1 + bend} ${x1},${y1}`;
+    }
+    base.setAttribute('d', d);
+    done.setAttribute('d', d);
+    drive?.scrollTrigger?.kill();
+    drive?.kill();
+    if (K.reduce) { gsap.set(done, { drawSVG: '100%' }); gsap.set(van, { autoAlpha: 0 }); steps.forEach((s) => s.classList.add('is-on')); return; }
+    gsap.set(van, { motionPath: { path: base, align: base, alignOrigin: [0.5, 0.7], start: 0, end: 0 } });
+    drive = gsap.timeline({ scrollTrigger: { trigger: box, start: 'top 70%', end: 'bottom 55%', scrub: 1,
+      onUpdate: (self) => steps.forEach((s, i) => s.classList.toggle('is-on', self.progress >= i / (steps.length - 1) - 0.02)) } })
+      .fromTo(done, { drawSVG: '0%' }, { drawSVG: '100%', ease: 'none' }, 0)
+      .to(van, { motionPath: { path: base, align: base, alignOrigin: [0.5, 0.7], autoRotate: !matchMedia('(max-width: 899px)').matches }, ease: 'none' }, 0);
+  }
+  build();
+  let t;
+  addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => { build(); ScrollTrigger.refresh(); }, 200); });
+  document.fonts?.ready.then(build);
+})();
+</script>
+</body>
+</html>

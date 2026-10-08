@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Afterglow Studio · Sample photography and video site</title>
+<meta name="description" content="Sample website template for a photo and video studio in Montréal: weddings, portraits and brand films. Made-up business.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0c0b0a">
+<script>document.documentElement.classList.add('js');setTimeout(function(){var d=document.documentElement;if(!d.classList.contains('kit-ready'))d.classList.remove('js')},4000)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="../../kit/kit.css">
+<style>
+:root {
+  --paper: #0c0b0a; --card: #161412; --ink: #f3ece2; --ink-2: #a89e91; --line: #2a2622;
+  --accent: #ffb347; --rose: #e86a5c;
+  --display: 'Instrument Serif', Georgia, serif; --body: 'Outfit', system-ui, sans-serif;
+  --cursor: #ffb347; --cursor-ink: #0c0b0a; --trail-w: 220px; --trail-r: 2px; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 300 17px/1.65 var(--body); overflow-x: clip; }
+body::after { content: ''; position: fixed; inset: -50%; z-index: 300; pointer-events: none; opacity: .06; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E"); animation: grain 1s steps(4) infinite; }
+@keyframes grain { 25% { transform: translate(-5%, 3%); } 50% { transform: translate(4%, -4%); } 75% { transform: translate(-2%, 5%); } }
+.kit-reduce body::after { animation: none; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; line-height: .95; }
+h2 { font-size: clamp(3rem, 1.6rem + 5vw, 6.4rem); letter-spacing: -0.01em; }
+h2 em, h1 em { color: var(--accent); }
+h3 { font-size: 2rem; }
+p { margin: 0; }
+.wrap { width: min(1280px, 100% - 32px); margin-inline: auto; }
+.cap { font: 500 12px/1 var(--body); letter-spacing: .24em; text-transform: uppercase; color: var(--ink-2); }
+section { padding: clamp(90px, 11vw, 150px) 0; position: relative; }
+.btn { display: inline-flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 26px; border-radius: 999px; font: 500 15px/1 var(--body); letter-spacing: .04em; text-decoration: none; border: 1px solid var(--ink); color: var(--ink); background: transparent; cursor: pointer; transition: background-color .3s, color .3s; }
+.btn:hover { background: var(--ink); color: var(--paper); }
+.btn-amber { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+
+.top { position: fixed; inset: 0 0 auto; z-index: 60; padding: 18px 0; }
+.top.is-scrolled { background: rgb(12 11 10 / .8); backdrop-filter: blur(10px); }
+.top .wrap { display: flex; align-items: center; gap: 30px; }
+.logo { font: italic 400 1.8rem/1 var(--display); text-decoration: none; }
+.nav { display: flex; gap: 28px; margin-left: auto; }
+.nav a { text-decoration: none; font-weight: 400; font-size: 15px; letter-spacing: .06em; }
+.rec { display: inline-flex; align-items: center; gap: 8px; font: 500 13px var(--body); letter-spacing: .1em; font-variant-numeric: tabular-nums; }
+.rec i { width: 9px; height: 9px; border-radius: 50%; background: var(--rose); animation: rec 1.2s steps(2) infinite; }
+@keyframes rec { 50% { opacity: 0; } }
+.menu-btn { display: none; margin-left: auto; background: none; border: 1px solid var(--ink); color: var(--ink); border-radius: 999px; padding: 9px 16px; font: 500 14px var(--body); cursor: pointer; }
+@media (max-width: 899px) {
+  .menu-btn { display: block; } .top .rec { display: none; }
+  .nav { position: fixed; inset: 0; z-index: -1; flex-direction: column; justify-content: center; align-items: center; gap: 14px; background: var(--paper); visibility: hidden; opacity: 0; transition: opacity .3s, visibility .3s; }
+  .nav.is-open { visibility: visible; opacity: 1; }
+  .nav a { font: italic 400 3rem/1.1 var(--display); letter-spacing: 0; }
+}
+
+/* Hero: fog + image trail */
+.hero { min-height: 100svh; padding: 0; display: grid; align-items: end; overflow: hidden; }
+.fog { position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 70%, #3a2414, #0c0b0a 70%); }
+.hero-in { position: relative; z-index: 2; padding: 0 0 70px; pointer-events: none; }
+.hero-in a { pointer-events: auto; }
+.hero h1 { font-size: clamp(4.4rem, 1rem + 14vw, 15rem); line-height: .82; letter-spacing: -0.02em; }
+.hero-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 24px; margin-top: 30px; }
+.hero-row p { max-width: 40ch; color: var(--ink-2); }
+.hero .trail-layer { z-index: 1 !important; }
+.hint { position: absolute; z-index: 2; top: 120px; right: max(16px, (100vw - 1280px) / 2); font: 500 12px var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--ink-2); }
+@media (hover: none), (pointer: coarse) { .hint { display: none; } }
+
+/* Film strip */
+.film { padding: 0; overflow: hidden; }
+.film-pin { min-height: 100svh; display: grid; grid-template-columns: minmax(0, 1fr); align-content: center; gap: 40px; padding: 90px 0 60px; }
+.strip-wrap { transform: rotate(-3deg); margin-inline: -4vw; }
+.strip { background: #050505; padding: 26px 0; position: relative; }
+.strip::before, .strip::after { content: ''; position: absolute; left: 0; right: 0; height: 12px; background: repeating-linear-gradient(90deg, transparent 0 14px, #2a2622 14px 30px); }
+.strip::before { top: 7px; } .strip::after { bottom: 7px; }
+.strip .hs-track { --hs-gap: 10px; padding-inline: 4vw; }
+.frame { width: clamp(240px, 30vw, 420px); aspect-ratio: 3 / 2; position: relative; }
+.frame [data-art] { position: absolute; inset: 0; }
+.frame span { position: absolute; left: 10px; bottom: -22px; font: 500 11px var(--body); letter-spacing: .14em; color: var(--accent); }
+@media (max-width: 699px) { .strip-wrap { transform: rotate(-2deg); } }
+
+/* Gallery: filter + Flip lightbox */
+.g-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 20px; }
+.g-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 30px; }
+.g-tabs button { font: 400 15px var(--body); padding: 9px 16px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; }
+.g-tabs button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.g-status { font-size: 14px; color: var(--ink-2); margin-top: 8px; min-height: 1.4em; }
+.gallery { columns: 3 260px; column-gap: 14px; margin-top: 20px; }
+.shot { display: block; width: 100%; margin: 0 0 14px; padding: 0; border: 0; background: none; cursor: zoom-in; break-inside: avoid; position: relative; overflow: hidden; border-radius: 4px; }
+.shot [data-art] { display: block; width: 100%; aspect-ratio: var(--ar, 4 / 5); }
+.shot .lbl { position: absolute; left: 12px; bottom: 10px; z-index: 1; font: 500 12px var(--body); letter-spacing: .14em; text-transform: uppercase; color: #fff; text-shadow: 0 1px 8px rgb(0 0 0 / .6); opacity: 0; transform: translateY(8px); transition: opacity .3s, transform .3s; }
+.shot:hover .lbl, .shot:focus-visible .lbl { opacity: 1; transform: none; }
+.lightbox { position: fixed; inset: 0; z-index: 200; display: none; place-items: center; background: rgb(12 11 10 / .94); padding: 70px 16px 30px; }
+.lightbox.open { display: grid; }
+.lightbox .big { width: min(1000px, 100%); max-height: 80svh; aspect-ratio: 3 / 2; position: relative; border-radius: 4px; overflow: hidden; }
+.lightbox .big [data-art] { position: absolute; inset: 0; }
+.lightbox .close { position: absolute; top: 18px; right: 18px; width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--ink); background: transparent; color: var(--ink); font-size: 20px; cursor: pointer; }
+.lightbox .lb-cap { margin-top: 14px; color: var(--ink-2); text-align: center; }
+
+/* Packages */
+.pkgs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 50px; }
+.pkg { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 30px; display: flex; flex-direction: column; gap: 12px; }
+.pkg .price { font: 400 3.4rem/1 var(--display); color: var(--accent); }
+.pkg ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; color: var(--ink-2); }
+.pkg li::before { content: '— '; color: var(--accent); }
+.pkg .btn { margin-top: auto; justify-content: center; }
+@media (max-width: 899px) { .pkgs { grid-template-columns: 1fr; } }
+
+/* Behind the scenes */
+.bts .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.bts-pics { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.bts-pics [data-art] { aspect-ratio: 1; border-radius: 50%; }
+.bts-pics [data-art]:nth-child(2) { border-radius: 4px; margin-top: 50px; }
+.bts p { color: var(--ink-2); margin-top: 18px; }
+@media (max-width: 899px) { .bts .wrap { grid-template-columns: 1fr; } }
+
+/* Book */
+.book .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+.bf { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: clamp(22px, 4vw, 40px); }
+.bf legend { font: italic 400 2.4rem/1 var(--display); padding: 0; margin-bottom: 18px; }
+.bf .meta { display: flex; justify-content: space-between; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 10px; }
+.bf [data-steps-bar] { background: var(--line); }
+.types { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.types label { position: relative; }
+.types input { position: absolute; inset: 0; opacity: 0; }
+.types span { display: block; padding: 16px; border-radius: 12px; border: 1px solid var(--line); cursor: pointer; font-weight: 500; }
+.types input:checked + span { border-color: var(--accent); color: var(--accent); }
+.types input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
+.fb { display: grid; gap: 6px; margin-bottom: 14px; }
+.fb label { font-size: 14px; color: var(--ink-2); }
+.fb input, .fb select { font: inherit; padding: 13px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); width: 100%; }
+.bf .rr { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+.done h3 { font: italic 400 3rem var(--display); color: var(--accent); }
+@media (max-width: 899px) { .book .wrap { grid-template-columns: 1fr; } }
+
+footer { border-top: 1px solid var(--line); padding: 40px 0; color: var(--ink-2); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px; align-items: center; }
+footer button { font: inherit; background: none; color: var(--ink); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top" data-header data-header-hide>
+  <div class="wrap">
+    <a class="logo" href="#top">Afterglow</a>
+    <span class="rec" aria-hidden="true"><i></i><span id="tc">00:00:00:00</span></span>
+    <nav class="nav" id="nav" aria-label="Main"><a href="#work">Work</a><a href="#packages">Packages</a><a href="#book">Book</a></nav>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle>Menu</button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top" data-trail="120">
+    <div class="fog" id="fog" aria-hidden="true"></div>
+    <div class="trail-items" aria-hidden="true">
+      <div data-art="portrait" data-seed="201" data-palette="#3a2414,#1a120c,#e86a5c,#d9a07e" data-art-grain></div>
+      <div data-art="landscape" data-seed="22" data-palette="#f6b48f,#3a2414,#1a120c,#ffb347" data-art-grain></div>
+      <div data-art="city" data-seed="9" data-palette="#1d1a2b,#e86a5c,#0c0b0a,#ffb347" data-art-grain></div>
+      <div data-art="portrait" data-seed="215" data-palette="#2b2622,#14110f,#f3ece2,#c68b59" data-art-grain></div>
+      <div data-art="abstract" data-seed="31" data-palette="#1a120c,#ffb347,#e86a5c,#6d3b2a" data-art-grain></div>
+      <div data-art="landscape" data-seed="41" data-palette="#2c3e50,#f6b48f,#1a120c,#ffd166" data-art-grain></div>
+    </div>
+    <span class="hint" aria-hidden="true">Move your cursor ↘</span>
+    <div class="wrap hero-in">
+      <span class="cap" data-reveal="fade" data-now>Photo &amp; film · Montréal · since 2014</span>
+      <h1 style="margin-top:18px"><span data-split="chars" data-split-anim="blur" data-now data-delay=".2" data-stagger=".05" style="display:block">Light,</span><em data-split="chars" data-split-anim="blur" data-now data-delay=".5" data-stagger=".05" style="display:block">kept.</em></h1>
+      <div class="hero-row">
+        <p data-reveal="up" data-now data-delay="1">Weddings, portraits and short films for people and brands who'd rather feel something than pose for it.</p>
+        <a class="btn btn-amber" href="#book" data-magnet="0.3" data-reveal="up" data-now data-delay="1.1">Check a date</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="film" aria-labelledby="film-h" data-hscroll-pin>
+    <div class="film-pin">
+      <div class="wrap"><span class="cap">Roll 07</span><h2 id="film-h" style="margin-top:12px">Contact <em>sheet</em></h2></div>
+      <div class="strip-wrap">
+        <div class="strip" data-hscroll aria-label="A roll of recent frames" role="group">
+          <div class="hs-track">
+            <div class="frame"><div data-art="landscape" data-seed="51" data-palette="#f6b48f,#f7e1c4,#3a2414,#ffb347" data-art-grain></div><span>07A</span></div>
+            <div class="frame"><div data-art="portrait" data-seed="222" data-palette="#e8d5c4,#c9a68b,#3a2e2a,#d9a07e" data-art-grain></div><span>08A</span></div>
+            <div class="frame"><div data-art="city" data-seed="12" data-palette="#2b2140,#e86a5c,#0c0b0a,#ffd166" data-art-grain></div><span>09A</span></div>
+            <div class="frame"><div data-art="room" data-seed="6" data-palette="#3a2a20,#6d4c3d,#e86a5c,#ffb347" data-art-grain></div><span>10A</span></div>
+            <div class="frame"><div data-art="portrait" data-seed="230" data-palette="#2b2622,#14110f,#ffb347,#8a5a3c" data-art-grain></div><span>11A</span></div>
+            <div class="frame"><div data-art="landscape" data-seed="63" data-palette="#5d7f8c,#c9dde3,#22423c,#f6dcc0" data-art-grain></div><span>12A</span></div>
+            <div class="frame"><div data-art="food" data-seed="2" data-palette="#3a2414,#efe3d0,#ffffff,#e86a5c" data-art-grain></div><span>13A</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work" aria-labelledby="work-h">
+    <div class="wrap" data-filter>
+      <div class="g-head"><div><span class="cap">Selected work</span><h2 id="work-h" style="margin-top:12px" data-split="words" data-split-anim="blur">The <em>archive</em></h2></div><p style="max-width:36ch;color:var(--ink-2)">Tap any frame to see it large. Every placeholder here becomes one of your photos.</p></div>
+      <div class="g-tabs" role="group" aria-label="Filter the work"><button type="button" data-filter-btn="all" aria-pressed="true">All</button><button type="button" data-filter-btn="wed" aria-pressed="false">Weddings</button><button type="button" data-filter-btn="por" aria-pressed="false">Portraits</button><button type="button" data-filter-btn="brand" aria-pressed="false">Brands</button></div>
+      <p class="g-status" data-filter-status aria-live="polite"></p>
+      <div class="gallery" id="gallery">
+        <button class="shot" type="button" data-tags="wed" data-cursor="View" style="--ar:4/5"><span data-art="portrait" data-seed="240" data-palette="#f3e3d3,#d9b99b,#3a2414,#d9a07e" data-art-grain></span><span class="lbl">Old Port wedding</span></button>
+        <button class="shot" type="button" data-tags="brand" data-cursor="View" style="--ar:1/1"><span data-art="product" data-seed="3" data-palette="#1a120c,#3a2414,#ffb347,#e86a5c" data-art-grain></span><span class="lbl">Maison Tisane, launch</span></button>
+        <button class="shot" type="button" data-tags="por" data-cursor="View" style="--ar:3/4"><span data-art="portrait" data-seed="251" data-palette="#2b2622,#14110f,#e86a5c,#c68b59" data-art-grain></span><span class="lbl">Studio portrait</span></button>
+        <button class="shot" type="button" data-tags="wed" data-cursor="View" style="--ar:3/2"><span data-art="landscape" data-seed="77" data-palette="#f6b48f,#3a2414,#1a120c,#ffb347" data-art-grain></span><span class="lbl">Golden hour, Mont-Royal</span></button>
+        <button class="shot" type="button" data-tags="brand" data-cursor="View" style="--ar:4/5"><span data-art="room" data-seed="13" data-palette="#efe6da,#c8a27a,#3a2414,#e86a5c" data-art-grain></span><span class="lbl">Café Sauvage interiors</span></button>
+        <button class="shot" type="button" data-tags="por" data-cursor="View" style="--ar:1/1"><span data-art="portrait" data-seed="263" data-palette="#e8d5c4,#c9a68b,#14110f,#8a5a3c" data-art-grain></span><span class="lbl">Headshots, team day</span></button>
+        <button class="shot" type="button" data-tags="wed" data-cursor="View" style="--ar:3/4"><span data-art="city" data-seed="21" data-palette="#1d1a2b,#ffb347,#0c0b0a,#f3ece2" data-art-grain></span><span class="lbl">Plateau after-party</span></button>
+        <button class="shot" type="button" data-tags="brand" data-cursor="View" style="--ar:3/2"><span data-art="food" data-seed="8" data-palette="#3a2414,#efe3d0,#fffaf2,#e86a5c" data-art-grain></span><span class="lbl">Bistro menu shoot</span></button>
+        <button class="shot" type="button" data-tags="por" data-cursor="View" style="--ar:4/5"><span data-art="portrait" data-seed="274" data-palette="#3a2414,#1a120c,#ffb347,#d9a07e" data-art-grain></span><span class="lbl">Musician, album cover</span></button>
+      </div>
+    </div>
+  </section>
+
+  <div class="lightbox" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer"><button class="close" type="button" id="lbClose" aria-label="Close">✕</button><div><div class="big" id="lbBig"></div><p class="lb-cap" id="lbCap"></p></div></div>
+
+  <section id="packages" aria-labelledby="pk-h">
+    <div class="wrap">
+      <span class="cap">Packages</span>
+      <h2 id="pk-h" style="margin-top:12px" data-split="words" data-split-anim="blur">Ways to <em>work together</em></h2>
+      <div class="pkgs" data-reveal-group="up" data-stagger=".1">
+        <div class="pkg" data-tilt="7" data-glare><h3>Portrait</h3><p class="price">$450</p><ul><li>Two hours, one location</li><li>40 edited photos</li><li>Online gallery for a year</li></ul><a class="btn" href="#book">Book portrait</a></div>
+        <div class="pkg" data-tilt="7" data-glare><h3>Wedding</h3><p class="price">$3,800</p><ul><li>Eight hours, two shooters</li><li>600+ edited photos</li><li>Three-minute highlight film</li><li>Printed album</li></ul><a class="btn btn-amber" href="#book">Check your date</a></div>
+        <div class="pkg" data-tilt="7" data-glare><h3>Brand film</h3><p class="price">$5,200</p><ul><li>Half-day shoot</li><li>60-second film plus 3 cutdowns</li><li>30 stills for social</li></ul><a class="btn" href="#book">Start a brief</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bts" aria-labelledby="bts-h">
+    <div class="wrap">
+      <div class="bts-pics" aria-hidden="true"><div data-art="portrait" data-seed="281" data-palette="#3a2414,#1a120c,#f3ece2,#c68b59" data-art-grain data-reveal="iris"></div><div data-art="portrait" data-seed="286" data-palette="#2b2622,#14110f,#e86a5c,#d9a07e" data-art-grain data-reveal="iris" data-delay=".2"></div></div>
+      <div>
+        <span class="cap">The studio</span>
+        <h2 id="bts-h" style="margin-top:12px;font-size:clamp(2.6rem,1.6rem + 3.6vw,4.8rem)" data-split="words" data-split-anim="blur">Two people, <em>one van</em>, a lot of film.</h2>
+        <p data-reveal="up">Inès and Théo met assisting on a fashion shoot in 2013 and started Afterglow a year later. She shoots stills, he shoots film, and they both still carry a film camera everywhere.</p>
+        <p data-reveal="up">We take about thirty weddings a year so every couple gets our full attention, and we deliver within six weeks.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="book" id="book" aria-labelledby="bk-h" style="padding-top:0">
+    <div class="wrap">
+      <div><span class="cap">Book</span><h2 id="bk-h" style="margin-top:12px" data-split="words" data-split-anim="blur">Is your <em>date</em> free?</h2><p style="margin-top:18px;color:var(--ink-2)">2026 weekends are going fast. Tell us the basics and we'll reply within a day.</p></div>
+      <div class="bf" data-reveal="up">
+        <form data-steps action="#" aria-label="Check availability">
+          <div class="meta"><span data-steps-count>Step 1 of 3</span><span>A minute</span></div>
+          <div data-steps-bar style="margin-bottom:22px"><i></i></div>
+          <fieldset data-step><legend>What are we shooting?</legend>
+            <div class="types"><label><input type="radio" name="kind" value="wedding" required><span>Wedding</span></label><label><input type="radio" name="kind" value="portrait"><span>Portrait</span></label><label><input type="radio" name="kind" value="brand"><span>Brand film</span></label><label><input type="radio" name="kind" value="other"><span>Something else</span></label></div>
+            <div class="rr"><button class="btn btn-amber" data-next>Next</button></div>
+          </fieldset>
+          <fieldset data-step><legend>When and where?</legend>
+            <div class="fb"><label for="a-date">Date</label><input id="a-date" type="date" name="date" required></div>
+            <div class="fb"><label for="a-where">Location</label><input id="a-where" name="where" placeholder="Montréal, Eastern Townships…"></div>
+            <div class="rr"><button class="btn" data-back>Back</button><button class="btn btn-amber" data-next>Next</button></div>
+          </fieldset>
+          <fieldset data-step><legend>Who are you?</legend>
+            <div class="fb"><label for="a-name">Name(s)</label><input id="a-name" name="name" required autocomplete="name"></div>
+            <div class="fb"><label for="a-mail">Email</label><input id="a-mail" type="email" name="email" required autocomplete="email"></div>
+            <div class="rr"><button class="btn" data-back>Back</button><button class="btn btn-amber" type="submit">Check availability</button></div>
+            <p style="font-size:13px;color:var(--ink-2);margin-top:12px">Sample form: nothing is sent.</p>
+          </fieldset>
+        </form>
+        <div class="done" data-steps-done hidden><h3>Merci!</h3><p style="margin-top:8px;color:var(--ink-2)">On a real site, Inès would write back within a day.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><span>Afterglow Studio · Montréal, QC · <span data-year>2026</span></span><span>Sample business: everything here is made up.</span><button type="button" data-motion-toggle>Motion: on</button></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Flip.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>window.KIT = {
+  ease: 'expo.out', dur: 1.3, stagger: 0.08, smooth: { lerp: 0.08 }, anchorOffset: 70, cursor: 'ring',
+  vanta: { el: '#fog', effect: 'FOG', options: { highlightColor: 0xffb347, midtoneColor: 0x6d3b2a, lowlightColor: 0x2a1a12, baseColor: 0x0c0b0a, blurFactor: 0.6, speed: 0.9, zoom: 0.8 } },
+};</script>
+<script src="../../kit/art.js"></script>
+<script src="../../kit/kit.js"></script>
+<script>
+(() => {
+  const K = window.KIT;
+  if (!window.gsap) return;
+
+  // Timecode in the header: hh:mm:ss:ff at 24 frames a second since the page opened.
+  const tc = document.getElementById('tc'), t0 = performance.now(), pad = (n) => String(n).padStart(2, '0');
+  const tick = () => { const f = Math.floor(((performance.now() - t0) / 1000) * 24); tc.textContent = `${pad(Math.floor(f / 86400))}:${pad(Math.floor(f / 1440) % 60)}:${pad(Math.floor(f / 24) % 60)}:${pad(f % 24)}`; };
+  if (K.reduce) tick(); else gsap.ticker.add(tick);
+
+  // Lightbox: the tapped frame grows into the viewer with Flip, and shrinks back on close.
+  const lb = document.getElementById('lb'), big = document.getElementById('lbBig'), cap = document.getElementById('lbCap'), closeBtn = document.getElementById('lbClose');
+  let from = null;
+  const open = (shot) => {
+    from = shot;
+    const art = shot.querySelector('[data-art]');
+    const state = Flip.getState(art);
+    big.appendChild(art);
+    cap.textContent = shot.querySelector('.lbl').textContent;
+    lb.classList.add('open');
+    K.lenis?.stop();
+    closeBtn.focus();
+    if (!K.reduce) { Flip.from(state, { duration: 0.7, ease: 'power3.inOut', scale: true }); gsap.from(lb, { backgroundColor: 'rgba(12,11,10,0)', duration: 0.5 }); }
+  };
+  const close = () => {
+    if (!from) return;
+    const art = big.querySelector('[data-art]');
+    const state = Flip.getState(art);
+    from.prepend(art);
+    lb.classList.remove('open');
+    K.lenis?.start();
+    if (!K.reduce) Flip.from(state, { duration: 0.6, ease: 'power3.inOut', scale: true });
+    from.focus();
+    from = null;
+  };
+  document.querySelectorAll('.shot').forEach((s) => s.addEventListener('click', () => open(s)));
+  closeBtn.addEventListener('click', close);
+  lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && lb.classList.contains('open')) close(); if (e.key === 'Tab' && lb.classList.contains('open')) { e.preventDefault(); closeBtn.focus(); } });
+
+  if (K.reduce) return;
+
+  // Hero title drifts apart as you scroll away.
+  gsap.to('.hero h1 > span', { xPercent: -12, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+  gsap.to('.hero h1 > em', { xPercent: 14, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+
+  // Frames in the strip develop (desaturated to colour) as they reach the middle.
+  const hs = document.querySelector('.strip')._hs;
+  if (hs) document.querySelectorAll('.frame [data-art]').forEach((a) => gsap.fromTo(a, { filter: 'grayscale(1) brightness(.6)' }, { filter: 'grayscale(0) brightness(1)', ease: 'none', scrollTrigger: { containerAnimation: hs, trigger: a, start: 'left 90%', end: 'left 45%', scrub: true } }));
+})();
+</script>
+</body>
+</html>

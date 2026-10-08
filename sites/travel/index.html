@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Northbound Trips · Sample small-group travel site</title>
+<meta name="description" content="Sample website template for a small-group tour company: BC, the Rockies and the Yukon. Made-up business.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#cfe6ee">
+<script>document.documentElement.classList.add('js');setTimeout(function(){var d=document.documentElement;if(!d.classList.contains('kit-ready'))d.classList.remove('js')},4000)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Manrope:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../../kit/kit.css">
+<style>
+:root {
+  --paper: #f3f6f4; --card: #ffffff; --ink: #0f2a2e; --ink-2: #4a6266; --line: #d5e0dc;
+  --accent: #0b6e69; --sun: #f4a259; --sky: #cfe6ee; --pine: #1f4d3f;
+  --display: 'Syne', system-ui, sans-serif; --body: 'Manrope', system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.65 var(--body); overflow-x: clip; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); margin: 0; line-height: 1; letter-spacing: -0.02em; }
+h2 { font-size: clamp(2.4rem, 1.4rem + 4vw, 4.6rem); font-weight: 800; }
+h3 { font-size: 1.4rem; font-weight: 700; }
+p { margin: 0; }
+.wrap { width: min(1220px, 100% - 32px); margin-inline: auto; }
+.kick { font: 700 12px/1 var(--body); letter-spacing: .22em; text-transform: uppercase; color: var(--accent); }
+section { padding: clamp(80px, 11vw, 140px) 0; }
+.btn { display: inline-flex; align-items: center; gap: 10px; min-height: 54px; padding: 0 28px; border-radius: 16px; font: 700 15px/1 var(--body); text-decoration: none; border: 0; cursor: pointer; background: var(--accent); color: #fff; transition: transform .3s, box-shadow .3s; box-shadow: 0 10px 30px rgb(11 110 105 / .25); }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgb(11 110 105 / .35); }
+.btn-ghost { background: rgb(255 255 255 / .7); color: var(--ink); box-shadow: none; backdrop-filter: blur(8px); }
+
+.top { position: fixed; inset: 0 0 auto; z-index: 50; padding: 16px 0; }
+.top.is-scrolled { background: rgb(243 246 244 / .85); backdrop-filter: blur(14px); box-shadow: 0 1px 0 var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 30px; }
+.logo { display: flex; align-items: center; gap: 10px; font: 800 1.2rem/1 var(--display); text-decoration: none; letter-spacing: .02em; }
+.logo svg { width: 30px; height: 30px; }
+.nav { display: flex; gap: 30px; margin-left: auto; }
+.nav a { font-weight: 500; text-decoration: none; }
+.nav a:hover { color: var(--accent); }
+.menu-btn { display: none; margin-left: auto; width: 48px; height: 48px; border-radius: 14px; border: 0; background: var(--card); cursor: pointer; font-size: 20px; color: var(--ink); }
+@media (max-width: 899px) {
+  .menu-btn { display: block; } .top .btn { display: none; }
+  .nav { position: fixed; inset: 0; z-index: -1; flex-direction: column; justify-content: center; padding: 0 30px; gap: 18px; background: var(--sky); visibility: hidden; opacity: 0; transition: opacity .35s, visibility .35s; }
+  .nav.is-open { visibility: visible; opacity: 1; }
+  .nav a { font: 800 2.4rem/1.1 var(--display); }
+}
+
+/* Hero: Vanta clouds over a painted sky fallback */
+.hero { position: relative; min-height: 100svh; padding: 0; display: grid; overflow: hidden; }
+.sky { position: absolute; inset: 0; background: linear-gradient(#7fb8d6, #cfe6ee 55%, #f6dcc0); }
+.hero-in { position: relative; z-index: 2; align-self: center; padding: 140px 0 220px; text-align: center; }
+.hero h1 { font-size: clamp(3.8rem, 1rem + 12vw, 12rem); font-weight: 800; color: var(--ink); text-shadow: 0 0 60px rgb(255 255 255 / .7); letter-spacing: -0.04em; }
+.hero .lede { max-width: 50ch; margin: 22px auto 0; font-size: 1.15rem; color: var(--ink); background: rgb(255 255 255 / .55); backdrop-filter: blur(6px); padding: 14px 20px; border-radius: 16px; }
+.hero .ctas { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 26px; }
+.ridges { position: absolute; left: 0; right: 0; bottom: 0; height: 46vh; z-index: 1; pointer-events: none; }
+.ridges svg { position: absolute; left: -5%; width: 110%; bottom: 0; height: 100%; }
+@media (max-width: 699px) { .hero-in { padding-bottom: 160px; } .ridges { height: 30vh; } }
+
+/* Route map: the camera follows the plane */
+.route { padding: 0; background: #e8f0ec; }
+.route-pin { height: 100svh; display: grid; grid-template-columns: 1.3fr 1fr; }
+.map { position: relative; overflow: hidden; background: #a9d3df; }
+.map svg { width: 100%; height: 100%; display: block; }
+.map .land { fill: #e9efe0; stroke: #0f2a2e; stroke-width: 2; }
+.map .peak { fill: #c6d3b8; stroke: #0f2a2e; stroke-width: 1.5; }
+.map .lake { fill: #a9d3df; stroke: #0f2a2e; stroke-width: 1.2; }
+.map .track { fill: none; stroke: #0f2a2e; stroke-width: 3; stroke-dasharray: 2 10; stroke-linecap: round; opacity: .35; }
+.map .trail { fill: none; stroke: #e4572e; stroke-width: 4; stroke-linecap: round; }
+.map .stop circle { fill: #fff; stroke: #0f2a2e; stroke-width: 3; }
+.map .stop text { font: 700 18px var(--display); fill: #0f2a2e; paint-order: stroke; stroke: #e9efe0; stroke-width: 6px; }
+.map .stop.on circle { fill: #e4572e; }
+.legs { position: relative; display: grid; align-content: center; padding: 100px clamp(20px, 4vw, 56px) 40px; }
+.legs ol { list-style: none; margin: 0; padding: 0; display: grid; }
+.leg { padding: 22px 0; border-top: 1px solid var(--line); }
+.leg .n { font: 700 12px var(--body); letter-spacing: .2em; color: var(--accent); }
+.leg h3 { margin: 8px 0 6px; font-size: 1.8rem; }
+.leg p { color: var(--ink-2); }
+.is-flying .legs ol .leg { grid-area: 1 / 1; border: 0; }
+.leg-count { font: 700 13px var(--body); letter-spacing: .2em; color: var(--ink-2); margin-top: 24px; }
+@media (max-width: 899px) {
+  .route-pin { grid-template-columns: 1fr; grid-template-rows: 55svh 1fr; height: auto; }
+  .is-flying .route-pin { height: 100svh; }
+  .legs { padding: 20px 20px 30px; align-content: start; }
+  .leg h3 { font-size: 1.4rem; }
+}
+
+/* Trips carousel */
+.trips-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; }
+.arrows { display: flex; gap: 10px; }
+.arrows button { width: 54px; height: 54px; border-radius: 16px; border: 1.5px solid var(--ink); background: transparent; cursor: pointer; font-size: 20px; color: var(--ink); }
+.arrows button:hover { background: var(--ink); color: var(--paper); }
+.trip-rail { margin-top: 44px; padding-left: max(16px, (100vw - 1220px) / 2); --car-gap: 22px; }
+.trip { width: min(380px, 80vw); background: var(--card); border-radius: 26px; overflow: hidden; box-shadow: 0 20px 50px rgb(15 42 46 / .08); user-select: none; }
+.trip [data-art] { aspect-ratio: 5 / 4; }
+.trip .body { padding: 22px 24px 26px; display: grid; gap: 8px; }
+.trip .meta { display: flex; gap: 14px; font-size: 14px; color: var(--ink-2); }
+.trip .price { display: flex; justify-content: space-between; align-items: baseline; margin-top: 8px; padding-top: 14px; border-top: 1px solid var(--line); }
+.trip .price b { font: 800 1.5rem var(--display); color: var(--accent); }
+.trip .tag { justify-self: start; font: 700 11px var(--body); letter-spacing: .14em; text-transform: uppercase; background: var(--sky); padding: 6px 10px; border-radius: 8px; }
+
+/* Parallax band */
+.band { position: relative; height: 80vh; min-height: 460px; overflow: hidden; display: grid; place-items: center; text-align: center; color: #fff; background: #f4a259; }
+.band .layer { position: absolute; left: -5%; width: 110%; bottom: -30%; height: 150%; }
+.band .msg { position: relative; z-index: 5; padding: 0 20px; }
+.band h2 { font-size: clamp(2.6rem, 1.4rem + 5vw, 6rem); text-shadow: 0 6px 30px rgb(15 42 46 / .3); }
+.band p { margin-top: 12px; font-size: 1.1rem; }
+
+.nums { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.nums div { padding: 26px; border-radius: 22px; background: var(--card); }
+.nums b { display: block; font: 800 clamp(2.4rem, 1.8rem + 2vw, 3.6rem)/1 var(--display); color: var(--accent); font-variant-numeric: tabular-nums; }
+.nums span { color: var(--ink-2); }
+@media (max-width: 899px) { .nums { grid-template-columns: 1fr 1fr; } }
+
+/* About + quote */
+.about .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+.about [data-art] { aspect-ratio: 4 / 5; border-radius: 30px; }
+.about p { margin-top: 16px; color: var(--ink-2); }
+.about blockquote { margin: 28px 0 0; padding: 22px 24px; border-radius: 20px; background: var(--card); font: 600 1.15rem/1.4 var(--display); }
+.about cite { display: block; margin-top: 10px; font: 500 14px var(--body); color: var(--ink-2); font-style: normal; }
+@media (max-width: 899px) { .about .wrap { grid-template-columns: 1fr; } }
+
+/* Book + FAQ */
+.book { background: var(--ink); color: #e9f1ef; }
+.book .kick { color: var(--sun); }
+.book .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+.bk { background: #16373c; border-radius: 28px; padding: clamp(22px, 4vw, 40px); }
+.bk legend { font: 800 1.8rem/1.1 var(--display); padding: 0; margin-bottom: 18px; color: #fff; }
+.bk .meta { display: flex; justify-content: space-between; font-size: 14px; color: #a9c2be; margin-bottom: 10px; }
+.bk [data-steps-bar] { background: #2a5157; }
+.bk [data-steps-bar] i { background: var(--sun); }
+.pick { display: grid; gap: 8px; }
+.pick label { position: relative; }
+.pick input { position: absolute; inset: 0; opacity: 0; }
+.pick span { display: flex; justify-content: space-between; padding: 14px 16px; border-radius: 14px; border: 1.5px solid #2a5157; cursor: pointer; }
+.pick span small { color: #a9c2be; }
+.pick input:checked + span { border-color: var(--sun); background: rgb(244 162 89 / .12); }
+.pick input:focus-visible + span { outline: 3px solid var(--sun); outline-offset: 2px; }
+.fl { display: grid; gap: 6px; margin-bottom: 14px; }
+.fl label { font-size: 14px; font-weight: 700; }
+.fl input, .fl select { font: inherit; padding: 13px 14px; border-radius: 12px; border: 1.5px solid #2a5157; background: #0f2a2e; color: #fff; width: 100%; }
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.bk .row { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+.bk .btn-ghost { background: transparent; color: #fff; border: 1.5px solid #2a5157; }
+.bk .note { font-size: 14px; color: #a9c2be; margin-top: 12px; }
+.qa details { border-bottom: 1px solid #2a5157; }
+.qa summary { padding: 18px 0; display: flex; justify-content: space-between; gap: 14px; font: 700 1.1rem var(--display); color: #fff; }
+.qa summary::after { content: '+'; font-size: 1.4rem; transition: transform .3s; }
+.qa details.is-open summary::after { transform: rotate(45deg); }
+.qa .acc-body p { padding-bottom: 18px; color: #a9c2be; }
+.done { text-align: center; padding: 26px 0; }
+.done h3 { font-size: 2.4rem; color: var(--sun); }
+@media (max-width: 899px) { .book .wrap { grid-template-columns: 1fr; } }
+
+footer { background: var(--ink); color: #a9c2be; border-top: 1px solid #2a5157; padding: 36px 0; font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 14px 30px; justify-content: space-between; align-items: center; }
+footer button { font: inherit; color: #fff; background: transparent; border: 1px solid #2a5157; border-radius: 10px; padding: 7px 12px; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div data-progress></div>
+
+<header class="top" data-header data-header-hide>
+  <div class="wrap">
+    <a class="logo" href="#top"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M3 24L12 8l5 8l3-5l7 13z" fill="#0b6e69"/><circle cx="23" cy="7" r="3" fill="#f4a259"/></svg>Northbound</a>
+    <nav class="nav" id="nav" aria-label="Main"><a href="#route">The route</a><a href="#trips">Trips</a><a href="#about">About</a><a href="#book">Book</a></nav>
+    <a class="btn" href="#book" data-magnet="0.25">Plan a trip</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle aria-label="Menu">☰</button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="sky" id="sky" aria-hidden="true"></div>
+    <div class="ridges" aria-hidden="true">
+      <svg viewBox="0 0 1200 400" preserveAspectRatio="none" class="rg" data-depth="0.08"><path d="M0 220L120 150L220 210L360 90L480 190L600 120L720 200L860 70L1000 180L1100 130L1200 190V400H0z" fill="#9fb9c4"/></svg>
+      <svg viewBox="0 0 1200 400" preserveAspectRatio="none" class="rg" data-depth="0.18"><path d="M0 280L160 190L300 270L430 170L560 260L700 180L820 250L980 160L1200 260V400H0z" fill="#5f8a8b"/></svg>
+      <svg viewBox="0 0 1200 400" preserveAspectRatio="none" class="rg" data-depth="0.32"><path d="M0 330L90 300L150 320L210 260L270 320L380 290L470 330L560 280L640 330L760 300L850 340L940 290L1040 330L1120 300L1200 320V400H0z" fill="#1f4d3f"/><path d="M0 400V360h1200v40z" fill="#f3f6f4"/></svg>
+    </div>
+    <div class="wrap hero-in">
+      <span class="kick" style="color:var(--ink)" data-reveal="fade" data-now>Small-group trips · BC, the Rockies &amp; the Yukon</span>
+      <h1 data-split="chars" data-split-anim="blur" data-now data-delay=".2" data-stagger=".06">Go north.</h1>
+      <p class="lede" data-reveal="up" data-now data-delay=".9">Twelve travellers, one local guide, no rush. Rainforest, glaciers and the northern lights, planned down to the last ferry.</p>
+      <div class="ctas" data-reveal-group="up" data-now data-delay="1.1"><a class="btn" href="#trips" data-magnet="0.3">See the trips</a><a class="btn btn-ghost" href="#route">Follow the route</a></div>
+    </div>
+  </section>
+
+  <section class="route" id="route" aria-labelledby="route-h">
+    <div class="route-pin">
+      <div class="map" aria-hidden="true">
+        <svg viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" id="map">
+          <path class="land" d="M180 0H1000V1000H640C600 960 560 930 600 880C640 840 590 800 540 790C500 760 520 720 470 690C440 650 470 610 430 570C390 530 420 490 380 450C350 420 330 360 300 330C260 280 250 220 220 170C200 120 190 60 180 0z"/>
+          <path class="land" d="M360 720C400 700 450 740 470 780C490 820 470 860 430 850C390 840 340 800 330 770C325 745 340 730 360 720z"/>
+          <path class="land" d="M250 420C270 410 290 430 300 460C310 500 300 540 280 540C260 530 240 490 240 460C238 440 240 425 250 420z"/>
+          <g class="peak"><path d="M690 520l30-60l30 60zM740 560l36-72l36 72zM760 640l28-56l28 56zM650 600l24-48l24 48zM820 470l26-52l26 52z"/><path d="M420 120l26-52l26 52zM470 170l22-44l22 44z"/></g>
+          <path class="lake" d="M640 300c40-20 90 0 80 30s-70 30-90 10s-10-30 10-40zM360 230c20-8 40 2 36 16s-30 14-40 6s-4-18 4-22z"/>
+          <path class="track" id="track" d="M560 820C520 830 460 800 420 780C380 740 340 600 300 470C280 380 300 240 330 140C420 160 560 300 720 470C750 540 770 600 780 640"/>
+          <path class="trail" id="trail" d="M560 820C520 830 460 800 420 780C380 740 340 600 300 470C280 380 300 240 330 140C420 160 560 300 720 470C750 540 770 600 780 640"/>
+          <g class="stop"><circle cx="560" cy="820" r="11"/><text x="580" y="850">Vancouver</text></g>
+          <g class="stop"><circle cx="420" cy="780" r="11"/><text x="300" y="770">Tofino</text></g>
+          <g class="stop"><circle cx="300" cy="470" r="11"/><text x="150" y="460">Haida Gwaii</text></g>
+          <g class="stop"><circle cx="330" cy="140" r="11"/><text x="350" y="125">Whitehorse</text></g>
+          <g class="stop"><circle cx="720" cy="470" r="11"/><text x="740" y="455">Jasper</text></g>
+          <g class="stop"><circle cx="780" cy="640" r="11"/><text x="800" y="670">Banff</text></g>
+          <g id="plane"><path d="M-18 0L12-4L22 0L12 4z" fill="#0f2a2e"/><path d="M2-2L-6-16h6L10-2zM2 2L-6 16h6L10 2zM-14-1l-6-8h4l6 8zM-14 1l-6 8h4l6-8z" fill="#0f2a2e"/></g>
+        </svg>
+      </div>
+      <div class="legs">
+        <span class="kick">The route</span>
+        <h2 id="route-h" style="margin:12px 0 24px;font-size:clamp(2rem,1.2rem + 2.6vw,3.4rem)">Six stops, one season.</h2>
+        <ol>
+          <li class="leg"><span class="n">01 · Day 1</span><h3>Vancouver</h3><p>Meet the group, dinner on Granville Island, early night.</p></li>
+          <li class="leg"><span class="n">02 · Days 2–4</span><h3>Tofino</h3><p>Rainforest walks, storm watching and a float-plane hop.</p></li>
+          <li class="leg"><span class="n">03 · Days 5–7</span><h3>Haida Gwaii</h3><p>Totem villages with Haida guides, by boat and on foot.</p></li>
+          <li class="leg"><span class="n">04 · Days 8–10</span><h3>Whitehorse</h3><p>Hot springs by day, northern lights by night.</p></li>
+          <li class="leg"><span class="n">05 · Days 11–12</span><h3>Jasper</h3><p>Icefields Parkway, Maligne Canyon, dark-sky stargazing.</p></li>
+          <li class="leg"><span class="n">06 · Days 13–14</span><h3>Banff</h3><p>Lake Louise at sunrise, a farewell dinner in the mountains.</p></li>
+        </ol>
+        <p class="leg-count" id="legCount" aria-hidden="true"></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="trips" data-carousel-wrap aria-labelledby="trips-h">
+    <div class="wrap trips-head">
+      <div><span class="kick">2026 departures</span><h2 id="trips-h" style="margin-top:12px" data-split="words" data-split-anim="blur">Pick your north.</h2></div>
+      <div class="arrows"><button type="button" data-car-prev aria-label="Previous trip">←</button><button type="button" data-car-next aria-label="Next trip">→</button></div>
+    </div>
+    <div class="trip-rail" data-carousel>
+      <div class="car-track">
+        <article class="trip"><div data-art="landscape" data-seed="3" data-palette="#7fb8d6,#e8f3f6,#1f4d3f,#ffffff"></div><div class="body"><span class="tag">Best seller</span><h3>The Grand North</h3><div class="meta"><span>14 days</span><span>6 stops</span><span>Max 12</span></div><p class="price"><span>From</span><b>$6,490</b></p></div></article>
+        <article class="trip"><div data-art="landscape" data-seed="8" data-palette="#5d7f8c,#c9dde3,#22423c,#f6dcc0"></div><div class="body"><span class="tag">Coast</span><h3>Rainforest &amp; Waves</h3><div class="meta"><span>6 days</span><span>Tofino</span><span>Max 10</span></div><p class="price"><span>From</span><b>$2,890</b></p></div></article>
+        <article class="trip"><div data-art="landscape" data-seed="12" data-palette="#0b1d3a,#1d4e6b,#0f2a2e,#7cf0c5"></div><div class="body"><span class="tag">Winter</span><h3>Northern Lights</h3><div class="meta"><span>5 days</span><span>Yukon</span><span>Max 12</span></div><p class="price"><span>From</span><b>$3,250</b></p></div></article>
+        <article class="trip"><div data-art="landscape" data-seed="5" data-palette="#f6b48f,#f7e1c4,#3d5a6c,#ffd166"></div><div class="body"><span class="tag">Mountains</span><h3>Rockies Slow Road</h3><div class="meta"><span>7 days</span><span>Jasper → Banff</span></div><p class="price"><span>From</span><b>$3,690</b></p></div></article>
+        <article class="trip"><div data-art="landscape" data-seed="17" data-palette="#a3c4bc,#e8f0ec,#2d4a3e,#f4a259"></div><div class="body"><span class="tag">Culture</span><h3>Haida Gwaii</h3><div class="meta"><span>6 days</span><span>Boat + hike</span></div><p class="price"><span>From</span><b>$4,150</b></p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" aria-label="Our promise">
+    <svg class="layer" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true" data-parallax="-0.15"><circle cx="820" cy="210" r="90" fill="#ffe2b8"/></svg>
+    <svg class="layer" viewBox="0 0 1200 600" preserveAspectRatio="none" aria-hidden="true" data-parallax="0.05"><path d="M0 380L180 230L320 340L500 200L700 330L880 220L1200 360V600H0z" fill="#e88a5a"/></svg>
+    <svg class="layer" viewBox="0 0 1200 600" preserveAspectRatio="none" aria-hidden="true" data-parallax="0.12"><path d="M0 460L140 380L260 450L420 360L560 440L700 380L860 460L1000 390L1200 450V600H0z" fill="#b5563a"/></svg>
+    <svg class="layer" viewBox="0 0 1200 600" preserveAspectRatio="none" aria-hidden="true" data-parallax="0.2"><path d="M0 540L100 500L160 520L230 470L300 520L420 490L520 540L640 500L760 540L880 500L1000 540L1100 510L1200 530V600H0z" fill="#0f2a2e"/></svg>
+    <div class="msg"><h2 data-split="words" data-split-anim="blur">Twelve people.<br>Never more.</h2><p data-reveal="up">Small groups go where buses can't, and everyone gets the window seat.</p></div>
+  </section>
+
+  <section aria-label="Northbound in numbers" style="padding-bottom:0">
+    <div class="wrap nums" data-reveal-group="up">
+      <div><b data-count="12">12</b><span>travellers per group, max</span></div>
+      <div><b data-count="140">140</b><span>departures a year</span></div>
+      <div><b data-count="4.9" data-decimals="1">4.9</b><span>average trip rating</span></div>
+      <div><b data-count="11">11</b><span>years guiding the north</span></div>
+    </div>
+  </section>
+
+  <section class="about" id="about" aria-labelledby="about-h">
+    <div class="wrap">
+      <div data-art="portrait" data-seed="40" data-palette="#cfe6ee,#9fb9c4,#1f4d3f,#c99a76" data-reveal="zoom"></div>
+      <div>
+        <span class="kick">About Northbound</span>
+        <h2 id="about-h" style="margin-top:12px" data-split="words" data-split-anim="blur">A guide who stayed.</h2>
+        <p data-reveal="up">Leah Tremblay came to Whitehorse for one summer of guiding in 2015 and never left. She started Northbound to run the kind of trip she wanted to take: small, slow and led by people who live there.</p>
+        <p data-reveal="up">Every guide on our team lives on the route. Half our trips are led with First Nations partners, who set the pace on their own land.</p>
+        <blockquote data-reveal="up">“We saw the lights three nights out of four. Leah knew exactly where to drive.”<cite>Martin &amp; Josée, Northern Lights 2025</cite></blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section class="book" id="book" aria-labelledby="book-h">
+    <div class="wrap">
+      <div>
+        <span class="kick">Plan a trip</span>
+        <h2 id="book-h" style="margin:12px 0 24px;color:#fff" data-split="words" data-split-anim="blur">Hold your seat.</h2>
+        <div class="qa" data-accordion>
+          <details><summary>What's included?</summary><div class="acc-body"><p>Guides, lodging, most meals, all in-trip transport and park fees. Flights to the start city are not included.</p></div></details>
+          <details><summary>How fit do I need to be?</summary><div class="acc-body"><p>If you can walk 8 km on uneven trails, you're fine. Each trip page lists its walking days.</p></div></details>
+          <details><summary>Can I cancel?</summary><div class="acc-body"><p>Full refund up to 60 days before departure, 50% up to 30 days.</p></div></details>
+        </div>
+      </div>
+      <div class="bk" data-reveal="up">
+        <form data-steps action="#" aria-label="Trip enquiry">
+          <div class="meta"><span data-steps-count>Step 1 of 3</span><span>No payment now</span></div>
+          <div data-steps-bar style="margin-bottom:24px"><i></i></div>
+          <fieldset data-step><legend>Which trip?</legend>
+            <div class="pick">
+              <label><input type="radio" name="trip" value="grand" required><span>The Grand North <small>14 days</small></span></label>
+              <label><input type="radio" name="trip" value="coast"><span>Rainforest &amp; Waves <small>6 days</small></span></label>
+              <label><input type="radio" name="trip" value="lights"><span>Northern Lights <small>5 days</small></span></label>
+              <label><input type="radio" name="trip" value="rockies"><span>Rockies Slow Road <small>7 days</small></span></label>
+            </div>
+            <div class="row"><button class="btn" data-next>Next</button></div>
+          </fieldset>
+          <fieldset data-step><legend>When, and how many?</legend>
+            <div class="duo"><div class="fl"><label for="t-month">Month</label><select id="t-month" name="month"><option>June</option><option>July</option><option>August</option><option>September</option><option>February</option></select></div><div class="fl"><label for="t-people">Travellers</label><input id="t-people" name="people" type="number" min="1" max="12" value="2" required></div></div>
+            <div class="row"><button class="btn btn-ghost" data-back>Back</button><button class="btn" data-next>Next</button></div>
+          </fieldset>
+          <fieldset data-step><legend>Where do we write?</legend>
+            <div class="fl"><label for="t-name">Name</label><input id="t-name" name="name" required autocomplete="name"></div>
+            <div class="fl"><label for="t-email">Email</label><input id="t-email" type="email" name="email" required autocomplete="email"></div>
+            <div class="row"><button class="btn btn-ghost" data-back>Back</button><button class="btn" type="submit">Hold my seat</button></div>
+            <p class="note">Sample form: nothing is sent.</p>
+          </fieldset>
+        </form>
+        <div class="done" data-steps-done hidden><h3>Seat held.</h3><p style="margin-top:10px;color:#a9c2be">On a real site, Leah's team would email you within a day.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Northbound Trips · Vancouver &amp; Whitehorse · <span data-year>2026</span></span>
+    <span>Sample business: trips, prices and people are made up.</span>
+    <button type="button" data-motion-toggle>Motion: on</button>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/DrawSVGPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/MotionPathPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Draggable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/InertiaPlugin.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>window.KIT = {
+  ease: 'expo.out', dur: 1.4, stagger: 0.07, smooth: { lerp: 0.07 }, anchorOffset: 0,
+  vanta: { el: '#sky', effect: 'CLOUDS', options: { skyColor: 0x7fb8d6, cloudColor: 0xd7e6ef, cloudShadowColor: 0x2c4a5a, sunColor: 0xffb46b, sunGlareColor: 0xff8a5c, sunlightColor: 0xffc58a, speed: 0.8 } },
+};</script>
+<script src="../../kit/art.js"></script>
+<script src="../../kit/kit.js"></script>
+<script>
+(() => {
+  const K = window.KIT;
+  if (!window.gsap) return;
+
+  // Hero ridges sink at different speeds as you scroll away (down only, so no gaps open up).
+  if (!K.reduce) document.querySelectorAll('.ridges .rg').forEach((r) => gsap.to(r, { y: () => innerHeight * r.dataset.depth, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true, invalidateOnRefresh: true } }));
+
+  // The route: plane flies the track, the trail draws behind it, and the camera (the SVG
+  // viewBox) pans and zooms from stop to stop.
+  const sec = document.querySelector('.route'), map = document.getElementById('map');
+  const legs = [...sec.querySelectorAll('.leg')], stops = [...sec.querySelectorAll('.stop')], count = document.getElementById('legCount');
+  const P = [[560, 820], [420, 780], [300, 470], [330, 140], [720, 470], [780, 640]];
+  const box = ([x, y], s = 520) => `${x - s / 2} ${y - s / 2} ${s} ${s}`;
+  gsap.set('#plane', { motionPath: { path: '#track', align: '#track', alignOrigin: [0.5, 0.5], autoRotate: true, start: 0, end: 0 } });
+  if (K.reduce) { gsap.set('#plane', { autoAlpha: 0 }); stops.forEach((s) => s.classList.add('on')); return; }
+  sec.classList.add('is-flying');
+  gsap.set(legs.slice(1), { autoAlpha: 0, y: 40 });
+  gsap.set('#trail', { drawSVG: '0%' });
+  let active = 0;
+  const setLeg = (i) => {
+    if (i === active) return;
+    const dir = i > active ? 1 : -1;
+    gsap.to(legs[active], { autoAlpha: 0, y: -40 * dir, duration: 0.5, overwrite: true });
+    gsap.fromTo(legs[i], { autoAlpha: 0, y: 40 * dir }, { autoAlpha: 1, y: 0, duration: 0.7, overwrite: true });
+    active = i;
+    count.textContent = `Stop ${i + 1} of ${legs.length}`;
+  };
+  count.textContent = `Stop 1 of ${legs.length}`;
+  const n = P.length - 1;
+  const tl = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: sec, start: 'top top', end: '+=' + n * 90 + '%', pin: true, scrub: 1,
+    onUpdate: (self) => { const i = Math.round(self.progress * n); setLeg(i); stops.forEach((s, k) => s.classList.toggle('on', k <= i)); } } });
+  gsap.set(map, { attr: { viewBox: box(P[0], 460) } });
+  tl.to('#plane', { motionPath: { path: '#track', align: '#track', alignOrigin: [0.5, 0.5], autoRotate: true }, duration: n }, 0)
+    .to('#trail', { drawSVG: '100%', duration: n }, 0);
+  P.slice(1).forEach((p, i) => {
+    const mid = [(P[i][0] + p[0]) / 2, (P[i][1] + p[1]) / 2];
+    tl.to(map, { attr: { viewBox: box(mid, 760) }, duration: 0.5, ease: 'sine.inOut' }, i)
+      .to(map, { attr: { viewBox: box(p, 480) }, duration: 0.5, ease: 'sine.inOut' }, i + 0.5);
+  });
+})();
+</script>
+</body>
+</html>
