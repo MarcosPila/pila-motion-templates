@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pila Motion Templates</title>
+<meta name="description" content="Reference templates for motion-heavy websites: a full service-business site and a 3D room-by-room scroll animation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+:root {
+  --paper: #f2f4f6; --sheet: #ffffff; --ink: #0f1d29; --ink-2: #3a4955; --ink-3: #5a6873;
+  --line-2: #b9c4cd; --grid: rgb(31 79 209 / .07); --grid-2: rgb(31 79 209 / .12); --blue: #1f4fd1; --vis: #ff5b14;
+}
+@media (prefers-color-scheme: dark) { :root {
+  --paper: #0b1a30; --sheet: #10233f; --ink: #eaf1ff; --ink-2: #bccbe2; --ink-3: #92a6c6;
+  --line-2: #2f4b76; --grid: rgb(160 190 255 / .07); --grid-2: rgb(160 190 255 / .12); --blue: #86abff; --vis: #ff7a3d; color-scheme: dark; } }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; background: var(--paper); color: var(--ink); font: 400 17px/1.6 'Source Sans 3', system-ui, sans-serif;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px), linear-gradient(var(--grid-2) 1px, transparent 1px), linear-gradient(90deg, var(--grid-2) 1px, transparent 1px);
+  background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px; }
+main { max-width: 1100px; margin: 0 auto; padding: clamp(48px, 8vw, 96px) clamp(16px, 4vw, 40px); display: grid; gap: 36px; }
+.kicker { font: 500 12.5px/1 'JetBrains Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); }
+h1 { margin: 12px 0 0; font: 860 clamp(2.6rem, 1.2rem + 5vw, 5.4rem)/.95 'Archivo', sans-serif; font-stretch: 118%; letter-spacing: -0.035em; text-transform: uppercase; }
+h1 span { color: var(--vis); }
+.lede { color: var(--ink-2); max-width: 60ch; font-size: 1.15rem; margin: 18px 0 0; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; }
+.card { display: grid; gap: 12px; align-content: start; padding: 26px; background: var(--sheet); border: 1.5px solid var(--ink); color: inherit; text-decoration: none; transition: transform .5s cubic-bezier(.34, 1.56, .64, 1), box-shadow .3s; }
+.card:hover, .card:focus-visible { transform: translateY(-6px); box-shadow: 8px 8px 0 var(--vis); outline: none; }
+.card .no { font: 500 12.5px 'JetBrains Mono', monospace; color: var(--ink-3); }
+.card h2 { margin: 0; font: 840 2rem/1 'Archivo', sans-serif; font-stretch: 114%; text-transform: uppercase; letter-spacing: -0.02em; }
+.card p { margin: 0; color: var(--ink-2); }
+.card ul { margin: 0; padding-left: 1.1em; color: var(--ink-2); font-size: 15.5px; display: grid; gap: 3px; }
+.card .go { font: 700 14px 'Archivo', sans-serif; font-stretch: 110%; letter-spacing: .05em; text-transform: uppercase; color: var(--vis); }
+footer { font: 400 13px 'JetBrains Mono', monospace; color: var(--ink-3); border-top: 2px solid var(--ink); padding-top: 18px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="kicker">Pila Web Co. · motion reference</p>
+    <h1>Motion <span>templates</span></h1>
+    <p class="lede">Reference builds for motion-heavy websites. Both use a made-up renovation company, Plumbline &amp; Co., so the structure and animations can be reused for any business.</p>
+  </header>
+  <section class="cards" aria-label="Templates">
+    <a class="card" href="./plumbline/">
+      <span class="no">01 · Full website</span>
+      <h2>Plumbline</h2>
+      <p>Every section a service business needs, each with its own motion.</p>
+      <ul>
+        <li>Hero drawing that turns into a house as you scroll</li>
+        <li>Sideways-scrolling services, stacking process cards</li>
+        <li>Before/after slider, filterable projects, odometer prices</li>
+        <li>Multi-step quote form with a live estimate</li>
+      </ul>
+      <span class="go">Open the template →</span>
+    </a>
+    <a class="card" href="./room-by-room/">
+      <span class="no">02 · 3D scroll piece</span>
+      <h2>Room by room</h2>
+      <p>Five rooms build themselves material by material on a U-shaped track.</p>
+      <ul>
+        <li>Scroll down to build, scroll up to take apart</li>
+        <li>Blueprint outlines show where each piece goes</li>
+        <li>Neighbouring rooms peek in from the ends of the U</li>
+        <li>Kitchen, bathroom, living room, bedroom, deck</li>
+      </ul>
+      <span class="go">Open the 3D piece →</span>
+    </a>
+  </section>
+  <footer>Plumbline &amp; Co. is a sample business. All names, prices and details are made up.</footer>
+</main>
+</body>
+</html>

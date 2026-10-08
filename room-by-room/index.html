@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="3D scroll animation: rooms build themselves material by material on a U-shaped track.">
+<title>Room by Room</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600&display=swap">
+<style>
+/* Layout: a pinned stage. Rooms ride a U-shaped track; the centre room builds itself as you scroll,
+   its neighbours peek in from the raised ends of the U. Drafting paper by day, blueprint by night. */
+:root {
+  --paper: #f2f4f6; --sheet: #ffffff; --ink: #0f1d29; --ink-2: #3a4955; --ink-3: #5a6873;
+  --line: #d6dde3; --line-2: #b9c4cd; --grid: rgb(31 79 209 / .07); --grid-2: rgb(31 79 209 / .12);
+  --blue: #1f4fd1; --vis: #ff5b14; --vis-ink: #0f1d29;
+  --display: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  --body: 'Source Sans 3', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+  --out: cubic-bezier(.16, 1, .3, 1); --spring: cubic-bezier(.34, 1.56, .64, 1);
+  --gutter: clamp(16px, 4vw, 40px);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #0b1a30; --sheet: #10233f; --ink: #eaf1ff; --ink-2: #bccbe2; --ink-3: #92a6c6;
+  --line: #22395d; --line-2: #2f4b76; --grid: rgb(160 190 255 / .07); --grid-2: rgb(160 190 255 / .12);
+  --blue: #86abff; --vis: #ff7a3d; --vis-ink: #0b1a30; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --paper: #0b1a30; --sheet: #10233f; --ink: #eaf1ff; --ink-2: #bccbe2; --ink-3: #92a6c6;
+  --line: #22395d; --line-2: #2f4b76; --grid: rgb(160 190 255 / .07); --grid-2: rgb(160 190 255 / .12);
+  --blue: #86abff; --vis: #ff7a3d; --vis-ink: #0b1a30; color-scheme: dark; }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.6 var(--body); overflow-x: clip;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px), linear-gradient(var(--grid-2) 1px, transparent 1px), linear-gradient(90deg, var(--grid-2) 1px, transparent 1px);
+  background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px; }
+h1, h2, h3 { margin: 0; font-family: var(--display); line-height: .98; text-wrap: balance; }
+p { margin: 0; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--vis); outline-offset: 3px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.kicker { font: 500 12.5px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--blue); }
+
+/* top bar */
+.top { position: fixed; inset: 0 0 auto; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: calc(14px + env(safe-area-inset-top, 0px)) var(--gutter) 14px; pointer-events: none; }
+.top > * { pointer-events: auto; }
+.logo { display: inline-flex; align-items: center; gap: 10px; font: 850 1.1rem/1 var(--display); font-stretch: 116%; text-transform: uppercase; text-decoration: none; color: var(--ink); }
+.logo svg { width: 22px; height: 30px; }
+.logo line { stroke: var(--ink); stroke-width: 2; }
+.logo path { fill: var(--vis); }
+.theme { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 12px; border: 1.5px solid var(--line-2); background: var(--sheet); cursor: pointer; font: 500 12px/1 var(--mono); text-transform: uppercase; letter-spacing: .08em; }
+.theme i { width: 28px; height: 15px; border-radius: 8px; background: var(--line); position: relative; }
+.theme i::after { content: ''; position: absolute; left: 2px; top: 2px; width: 11px; height: 11px; border-radius: 50%; background: var(--ink); transition: transform .45s var(--spring); }
+:root[data-theme="dark"] .theme i { background: var(--blue); }
+:root[data-theme="dark"] .theme i::after { transform: translateX(13px); }
+
+/* intro */
+.intro { min-height: 86vh; display: grid; align-content: center; padding: 110px var(--gutter) 40px; max-width: 1240px; margin-inline: auto; gap: 22px; }
+.intro h1 { font-size: clamp(2.8rem, 1.2rem + 6vw, 6.6rem); font-weight: 860; font-stretch: 116%; letter-spacing: -0.035em; text-transform: uppercase; }
+.intro h1 span { color: var(--vis); }
+.intro h1 .w { display: inline-block; animation: expand 1.1s var(--out) both; animation-delay: calc(var(--i) * 100ms + 80ms); color: inherit; }
+.intro h1 .w.vis { color: var(--vis); }
+@keyframes expand { from { font-stretch: 62%; opacity: 0; transform: translateY(20px); filter: blur(6px); } }
+.lede { font-size: clamp(1.08rem, 1rem + .4vw, 1.3rem); color: var(--ink-2); max-width: 56ch; }
+.hint { display: inline-flex; gap: 12px; align-items: center; font: 400 13px var(--mono); color: var(--ink-3); }
+.hint i { width: 16px; height: 26px; border: 1.5px solid var(--ink-3); border-radius: 9px; position: relative; }
+.hint i::after { content: ''; position: absolute; left: 50%; top: 5px; width: 2px; height: 6px; margin-left: -1px; background: var(--ink-3); animation: wheel 1.6s ease-in-out infinite; }
+@keyframes wheel { 60% { transform: translateY(7px); opacity: 0; } }
+
+/* stage */
+.stage { position: relative; }
+.sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+#gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hud { position: absolute; inset: 0; pointer-events: none; padding: calc(78px + env(safe-area-inset-top, 0px)) var(--gutter) calc(22px + env(safe-area-inset-bottom, 0px)); display: grid; grid-template-rows: auto 1fr auto; }
+.hud > * { pointer-events: auto; }
+.room-title { display: grid; gap: 8px; max-width: 520px; text-shadow: 0 0 22px var(--paper), 0 0 6px var(--paper), 0 0 2px var(--paper); }
+.room-title .no { font: 500 12.5px var(--mono); color: var(--ink-3); display: flex; gap: 10px; align-items: center; }
+.room-title .no b { padding: 5px 8px; border: 1.5px solid var(--ink); color: var(--ink); font-weight: 500; }
+.room-title h2 { font-size: clamp(2.4rem, 1.3rem + 4vw, 5rem); font-weight: 860; font-stretch: 118%; text-transform: uppercase; letter-spacing: -0.03em; overflow: hidden; }
+.room-title h2 span { display: inline-block; }
+.room-title h2 span.swap { animation: swapIn .7s var(--out) both; }
+.room-title h2 span.swap.back { animation-name: swapBack; }
+@keyframes swapIn { from { transform: translateX(60px); opacity: 0; font-stretch: 62%; } }
+@keyframes swapBack { from { transform: translateX(-60px); opacity: 0; font-stretch: 62%; } }
+.room-title p { color: var(--ink-2); }
+.mid { display: grid; grid-template-columns: 260px 1fr 220px; align-items: end; gap: 20px; min-height: 0; }
+.steps { list-style: none; margin: 0; padding: 14px 16px; display: grid; gap: 4px; align-self: end; background: color-mix(in srgb, var(--sheet) 88%, transparent); border: 1.5px solid var(--ink); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.steps li { display: grid; grid-template-columns: 22px 14px 1fr; gap: 8px; align-items: center; font: 400 13px/1.35 var(--mono); color: var(--ink-3); transition: color .25s; }
+.steps li .n { color: var(--ink-3); }
+.steps li .sw { width: 12px; height: 12px; border: 1px solid rgb(0 0 0 / .25); background: var(--c); }
+.steps li.done { color: var(--ink-2); }
+.steps li.done .t { text-decoration: line-through; text-decoration-color: var(--line-2); }
+.steps li.now { color: var(--ink); font-weight: 500; }
+.steps li.now .n { color: var(--vis); }
+.steps li.now .t::after { content: ' ◂'; color: var(--vis); }
+.meter { justify-self: end; align-self: end; display: grid; gap: 6px; text-align: right; padding: 14px 16px; background: color-mix(in srgb, var(--sheet) 88%, transparent); border: 1.5px solid var(--ink); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); min-width: 200px; }
+.meter small { font: 500 11.5px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+.meter b { font: 860 3rem/1 var(--display); font-stretch: 110%; }
+.meter .now { font: 400 13px var(--mono); color: var(--ink-2); min-height: 2.6em; }
+.meter .now em { font-style: normal; color: var(--vis); }
+.bar { height: 4px; background: var(--line); position: relative; }
+.bar i { position: absolute; inset: 0; transform-origin: 0; transform: scaleX(var(--p, 0)); background: var(--vis); }
+.nav { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 18px; }
+.arrow { width: 46px; height: 46px; border: 1.5px solid var(--ink); background: var(--sheet); cursor: pointer; display: grid; place-items: center; transition: transform .4s var(--spring), background-color .25s, color .25s; }
+.arrow:hover { background: var(--ink); color: var(--paper); }
+.arrow:active { transform: scale(.92); }
+.arrow:disabled { opacity: .35; cursor: default; }
+.arrow svg { width: 18px; height: 18px; }
+.pills { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; max-width: min(720px, calc(100vw - 140px)); }
+.pill { position: relative; flex: none; min-height: 46px; padding: 0 16px; border: 1.5px solid var(--line-2); background: var(--sheet); cursor: pointer; font: 700 12.5px/1 var(--display); font-stretch: 108%; letter-spacing: .06em; text-transform: uppercase; overflow: hidden; isolation: isolate; transition: border-color .25s; }
+.pill::before { content: ''; position: absolute; inset: auto 0 0 0; height: 3px; background: var(--vis); transform-origin: 0; transform: scaleX(var(--p, 0)); z-index: -1; }
+.pill[aria-current="true"] { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+.fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; text-align: center; }
+.fallback[hidden] { display: none; }
+@media (max-width: 480px) { .logo { font-size: .9rem; font-stretch: 104%; } .theme span { display: none; } }
+@media (max-width: 860px) {
+  .mid { grid-template-columns: 1fr; align-items: end; }
+  .steps { display: none; }
+  .meter { justify-self: stretch; text-align: left; min-width: 0; grid-template-columns: auto 1fr; align-items: center; column-gap: 14px; }
+  .meter small { grid-column: 1 / -1; }
+  .meter b { font-size: 2.2rem; }
+  .meter .bar { grid-column: 1 / -1; }
+  .room-title h2 { font-size: clamp(2rem, 1rem + 6vw, 3rem); }
+  .room-title p { font-size: 15px; }
+}
+
+/* outro */
+.outro { padding: clamp(80px, 11vw, 140px) var(--gutter); max-width: 1240px; margin-inline: auto; display: grid; gap: 28px; }
+.outro h2 { font-size: clamp(2.2rem, 1.2rem + 4vw, 4.6rem); font-weight: 860; font-stretch: 116%; text-transform: uppercase; letter-spacing: -0.03em; }
+.rooms-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.rooms-list article { border: 1.5px solid var(--ink); background: var(--sheet); padding: 18px; display: grid; gap: 8px; align-content: start; }
+.rooms-list b { font: 820 1.2rem var(--display); font-stretch: 112%; text-transform: uppercase; }
+.rooms-list ol { margin: 0; padding-left: 1.2em; color: var(--ink-2); font-size: 15px; display: grid; gap: 2px; }
+.btn { display: inline-flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 24px; border: 2px solid var(--vis); background: var(--vis); color: var(--vis-ink); font: 700 15px/1 var(--display); font-stretch: 110%; letter-spacing: .04em; text-transform: uppercase; text-decoration: none; justify-self: start; cursor: pointer; transition: transform .45s var(--spring); }
+.btn:hover { transform: translateY(-3px); }
+footer { border-top: 2px solid var(--ink); padding: 22px var(--gutter) calc(22px + env(safe-area-inset-bottom, 0px)); font: 400 13px var(--mono); color: var(--ink-3); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+}
+</style>
+
+</head>
+<body>
+<div class="top">
+  <a class="logo" href="#top" id="top" aria-label="Plumbline and Co."><svg viewBox="0 0 22 30" aria-hidden="true"><line x1="11" y1="1" x2="11" y2="12"/><path d="M11 10 L17 19 L11 29 L5 19 Z"/></svg>Plumbline &amp; Co.</a>
+  <button class="theme" type="button" id="themeBtn" aria-label="Switch between drafting paper and blueprint colours"><i aria-hidden="true"></i><span id="themeLbl">Blueprint</span></button>
+</div>
+
+<section class="intro" aria-labelledby="intro-h">
+  <p class="kicker">Room by room · sample business</p>
+  <h1 id="intro-h" aria-label="Watch it come together.">
+    <span class="w" style="--i:0" aria-hidden="true">Watch</span> <span class="w" style="--i:1" aria-hidden="true">it</span> <span class="w" style="--i:2" aria-hidden="true">come</span> <span class="w vis" style="--i:3" aria-hidden="true">together.</span>
+  </h1>
+  <p class="lede">Scroll down and each room builds itself, material by material: walls, floors, cabinets, tile, lights. Scroll back up and it comes apart again. The next room is always waiting at the edge.</p>
+  <p class="hint"><i aria-hidden="true"></i>Scroll to start building</p>
+</section>
+
+<section class="stage" id="stage" aria-label="Rooms being built as you scroll">
+  <div class="sticky">
+    <canvas id="gl" aria-hidden="true"></canvas>
+    <div class="fallback" id="fallback" hidden><p class="lede">This animation needs WebGL, which this browser has turned off. The rooms and their materials are listed below.</p></div>
+    <div class="hud">
+      <div class="room-title" aria-live="polite">
+        <p class="no"><b id="sheetNo">A-201</b><span id="roomCount">Room 01 of 05</span></p>
+        <h2><span id="roomName">Kitchen</span></h2>
+        <p id="roomBlurb"></p>
+      </div>
+      <div class="mid">
+        <ol class="steps" id="steps" aria-label="Materials for this room"></ol>
+        <span></span>
+        <div class="meter">
+          <small>Built</small>
+          <b id="pct">0%</b>
+          <p class="now" id="nowText">Scroll to start</p>
+          <div class="bar" id="bar"><i></i></div>
+        </div>
+      </div>
+      <div class="nav">
+        <button class="arrow" type="button" id="prev" aria-label="Previous room"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4"/></svg></button>
+        <div class="pills" id="pills" role="group" aria-label="Rooms"></div>
+        <button class="arrow" type="button" id="next" aria-label="Next room"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4"/></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="outro" aria-labelledby="outro-h">
+  <p class="kicker">Every room, every layer</p>
+  <h2 id="outro-h">Built in the right order.</h2>
+  <p class="lede">The animation follows the real order of work. Here is the same list in plain text.</p>
+  <div class="rooms-list" id="roomsList"></div>
+  <a class="btn" href="#top">Back to the start ↑</a>
+</section>
+<footer>Plumbline &amp; Co. is a sample business for a website template. Rooms, materials and timings are illustrative.</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(() => {
+  'use strict';
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = (s) => document.querySelector(s);
+  const ls = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+
+  /* ===================== ROOM RECIPES =====================
+     Room space: floor top at y = 0, x and z from -2 to 2. Back wall at z = -2, left wall at x = -2.
+     Each step is one material; each piece says how it arrives:
+     drop (falls in), rise (grows up from the floor), growX / growZ (laid from one end), pop (springs in),
+     slide (slides in from the right), hang (lowers from above). */
+  const C = {
+    wall: '#efe9e1', oak: '#c99d6a', oak2: '#b98d5c', navy: '#243b58', quartz: '#f3f1ec', tile: '#e3eaf0', tile2: '#d0dce6',
+    steel: '#c4c9ce', dark: '#2b2f34', gold: '#d4a52a', wood: '#a87b4f', walnut: '#83563a', green: '#3f8a4b', leaf: '#56a35f',
+    pot: '#ebe6de', glass: '#a9c8e8', white: '#fafaf8', grey: '#b8bcc0', grey2: '#a6abb0', membrane: '#e9822c', sage: '#93aa8f',
+    stone: '#8e9093', linen: '#e9e2d7', carpet: '#bdb1a3', duvet: '#2e4b6c', terra: '#c8735a', cedar: '#bb7c4d', cedar2: '#ad7146',
+    joist: '#9c8a6a', concrete: '#a3a4a2', siding: '#e2dacd', grass: '#79a464', fabric: '#cbc5ba', cushion: '#d9d3c8', slate: '#5e7282', black: '#1c1f22',
+  };
+  const ROOMS = [
+    { key: 'kitchen', name: 'Kitchen', sheet: 'A-201', blurb: 'Galley to open plan: navy shaker, quartz and an island that seats two.', build: kitchen },
+    { key: 'bath', name: 'Bathroom', sheet: 'A-202', blurb: 'Waterproofed first, then tile, glass and a floating vanity.', build: bathroom },
+    { key: 'living', name: 'Living room', sheet: 'A-203', blurb: 'Wide-plank floor, a slatted feature wall and a stone fireplace.', build: living },
+    { key: 'bed', name: 'Bedroom', sheet: 'A-204', blurb: 'Sage accent wall, soft carpet and a bed built to sink into.', build: bedroom },
+    { key: 'deck', name: 'Deck', sheet: 'A-205', blurb: 'From footings to string lights: a cedar deck with a pergola.', build: deck },
+  ];
+
+  function kitchen(R) {
+    R.step('Framing & drywall', 'Raising the walls', C.wall);
+    R.box(4.24, 2.5, .12, 0, 0, -2.06, C.wall, 'rise');
+    R.box(.12, 2.5, 4, -2.06, 0, 0, C.wall, 'rise');
+    R.step('Oak flooring', 'Laying oak planks', C.oak);
+    for (let i = 0; i < 8; i++) R.box(4, .04, .48, 0, 0, -1.75 + i * .5, i % 2 ? C.oak2 : C.oak, 'growX');
+    R.step('Base cabinets', 'Installing base cabinets', C.navy);
+    [-1.44, .56].forEach((x) => R.box(.98, .86, .6, x, .04, -1.7, C.navy, 'drop'));
+    [-.88, .14].forEach((z) => R.box(.6, .86, .98, -1.7, .04, z, C.navy, 'drop'));
+    R.step('Quartz countertop', 'Setting the quartz', C.quartz);
+    R.box(3.06, .05, .64, -.44, .9, -1.68, C.quartz, 'drop');
+    R.box(.64, .05, 2.06, -1.68, .9, -.37, C.quartz, 'drop');
+    R.box(.46, .02, .36, -1.68, .95, -.4, '#6b7177', 'pop');
+    R.step('Backsplash tile', 'Tiling the backsplash', C.tile);
+    for (let r = 0; r < 4; r++) for (let c = 0; c < 12; c++) {
+      const x = -1.82 + c * .25 + (r % 2 ? .125 : 0);
+      if (x > 1.05) continue;
+      R.box(.23, .11, .02, x, .97 + r * .13, -1.99, (r + c) % 3 ? C.tile : C.tile2, 'pop');
+    }
+    R.step('Upper cabinets', 'Hanging upper cabinets', C.navy);
+    [-1.44, .56].forEach((x) => R.box(.98, .75, .35, x, 1.55, -1.82, C.navy, 'drop'));
+    R.step('Island', 'Building the island', C.navy);
+    R.box(1.6, .86, .8, .5, .04, .6, C.navy, 'rise');
+    R.box(1.75, .05, .95, .5, .9, .6, C.quartz, 'drop');
+    [.12, .88].forEach((x) => { R.cyl(.025, .025, .58, x, .04, 1.32, C.dark, 'rise'); R.cyl(.17, .17, .05, x, .62, 1.32, C.wood, 'drop'); });
+    R.step('Appliances', 'Fitting appliances', C.steel);
+    R.box(.8, 2, .66, 1.5, .04, -1.67, C.steel, 'slide', { metal: .7, rough: .3 });
+    R.box(.96, .86, .6, -.44, .04, -1.7, C.dark, 'slide', { metal: .4, rough: .4 });
+    R.box(.96, .03, .6, -.44, .9, -1.7, C.black, 'pop');
+    R.box(.7, .32, .4, -.44, 1.75, -1.8, C.steel, 'drop', { metal: .7, rough: .3 });
+    R.box(.24, .43, .24, -.44, 2.07, -1.88, C.steel, 'drop', { metal: .7, rough: .3 });
+    R.step('Pendant lights', 'Wiring the pendants', C.gold);
+    [.15, .85].forEach((x) => { R.cyl(.008, .008, .62, x, 1.88, .6, C.dark, 'hang'); R.cyl(.06, .2, .22, x, 1.66, .6, C.gold, 'hang', { metal: .6, rough: .35 }); R.sph(.055, x, 1.66, .6, '#fff2c2', 'hang', { emissive: '#ffd77a', ei: 1.2 }); });
+    R.step('Finishing touches', 'Adding the finishing touches', C.green);
+    R.box(.04, .95, 1.2, -1.98, 1.15, -.37, C.white, 'pop');
+    R.box(.02, .85, 1.1, -1.96, 1.2, -.37, C.glass, 'pop', { emissive: '#bcd6f0', ei: .35 });
+    [-1.44, .56].forEach((x) => R.box(.2, .02, .02, x, .76, -1.39, C.gold, 'pop', { metal: .8, rough: .3 }));
+    R.cyl(.015, .015, .26, -1.86, .92, -.4, C.steel, 'pop', { metal: .9, rough: .2 });
+    R.cyl(.11, .09, .2, .9, .925, -1.75, C.pot, 'pop'); R.sph(.17, .9, 1.27, -1.75, C.leaf, 'pop');
+    R.cyl(.16, .1, .07, .32, .925, .6, C.white, 'pop');
+    [[.27, .58], [.36, .64], [.33, .54]].forEach(([x, z]) => R.sph(.05, x, 1.02, z, '#f08a2c', 'drop'));
+  }
+
+  function bathroom(R) {
+    R.step('Framing & drywall', 'Raising the walls', C.wall);
+    R.box(4.24, 2.5, .12, 0, 0, -2.06, '#eef0f0', 'rise');
+    R.box(.12, 2.5, 4, -2.06, 0, 0, '#eef0f0', 'rise');
+    R.step('Waterproof membrane', 'Waterproofing the shower', C.membrane);
+    R.box(1.24, 2.2, .01, -1.38, 0, -1.995, C.membrane, 'rise');
+    R.box(.01, 2.2, 1.24, -1.995, 0, -1.38, C.membrane, 'rise');
+    R.box(1.24, .01, 1.24, -1.38, 0, -1.38, C.membrane, 'growX');
+    R.step('Porcelain floor tile', 'Tiling the floor', C.grey);
+    for (let r = 0; r < 5; r++) for (let c = 0; c < 5; c++) R.box(.78, .03, .78, -1.6 + c * .8, 0, -1.6 + r * .8, (r + c) % 2 ? C.grey : C.grey2, 'pop');
+    R.step('Wall tile', 'Tiling the shower walls', C.white);
+    for (let r = 0; r < 5; r++) for (let c = 0; c < 3; c++) {
+      R.box(.39, .41, .02, -1.8 + c * .4, .04 + r * .42, -1.985, C.white, 'pop');
+      R.box(.02, .41, .39, -1.985, .04 + r * .42, -1.8 + c * .4, C.white, 'pop');
+    }
+    R.step('Shower glass', 'Hanging the shower glass', C.glass);
+    R.box(1.15, 2, .02, -1.42, .04, -.8, '#cfe8f2', 'rise', { opacity: .28 });
+    R.box(1.15, .03, .04, -1.42, 2.04, -.8, C.steel, 'drop', { metal: .9, rough: .2 });
+    R.cyl(.12, .12, .02, -1.55, 2.02, -1.55, C.steel, 'hang', { metal: .9, rough: .2 });
+    R.step('Floating vanity', 'Mounting the vanity', C.walnut);
+    R.box(1.3, .5, .5, .9, .45, -1.75, C.walnut, 'slide');
+    R.box(1.34, .05, .52, .9, .95, -1.74, C.white, 'drop');
+    R.cyl(.2, .15, .12, .9, 1, -1.72, C.white, 'pop');
+    R.step('Mirror & sconces', 'Hanging the mirror', '#dfe7ee');
+    R.box(1, .8, .03, .9, 1.25, -1.985, '#dfe7ee', 'pop', { metal: .9, rough: .08 });
+    [.28, 1.52].forEach((x) => R.sph(.07, x, 1.62, -1.94, '#fff2c2', 'pop', { emissive: '#ffd77a', ei: 1.1 }));
+    R.step('Toilet', 'Setting the toilet', C.white);
+    R.box(.18, .45, .48, -1.88, .43, .7, C.white, 'drop');
+    R.cyl(.2, .16, .4, -1.58, .03, .7, C.white, 'rise');
+    R.cyl(.21, .21, .04, -1.58, .43, .7, C.white, 'drop');
+    R.step('Fixtures', 'Fitting the fixtures', C.steel);
+    R.cyl(.015, .015, .22, .9, 1, -1.92, C.steel, 'pop', { metal: .9, rough: .2 });
+    R.box(.5, .02, .03, -.35, 1.35, -1.97, C.steel, 'pop', { metal: .9, rough: .2 });
+    R.box(.44, .55, .03, -.35, .8, -1.95, C.sage, 'hang');
+    R.step('Finishing touches', 'Adding the finishing touches', C.green);
+    R.box(.8, .02, .5, -1.38, .03, -.35, '#9fb7cf', 'growX');
+    R.cyl(.15, .12, .3, 1.65, .03, -.5, C.pot, 'pop'); R.sph(.24, 1.65, .55, -.5, C.leaf, 'pop');
+  }
+
+  function living(R) {
+    R.step('Framing & drywall', 'Raising the walls', C.wall);
+    R.box(4.24, 2.5, .12, 0, 0, -2.06, C.wall, 'rise');
+    R.box(.12, 2.5, 4, -2.06, 0, 0, C.wall, 'rise');
+    R.step('Wide-plank floor', 'Laying wide planks', '#9a6b45');
+    for (let i = 0; i < 6; i++) R.box(4, .04, .65, 0, 0, -1.66 + i * .667, i % 2 ? '#8f6240' : '#9a6b45', 'growX');
+    R.step('Slatted feature wall', 'Fixing the slats', '#b5835a');
+    for (let i = 0; i < 15; i++) R.box(.11, 2.4, .05, -1.85 + i * .265, .04, -1.97, '#b5835a', 'rise');
+    R.step('Stone fireplace', 'Building the fireplace', C.stone);
+    R.box(.45, 1.1, 1.4, -1.77, .04, -.2, C.stone, 'rise');
+    R.box(.02, .45, .8, -1.54, .22, -.2, C.black, 'pop');
+    R.sph(.14, -1.65, .36, -.2, '#ff8a3a', 'pop', { emissive: '#ff6a1a', ei: 2 });
+    R.box(.55, .06, 1.6, -1.73, 1.14, -.2, C.walnut, 'drop');
+    R.step('Media console', 'Placing the console', C.walnut);
+    R.box(1.8, .45, .4, .45, .04, -1.72, C.walnut, 'slide');
+    R.box(1.4, .8, .05, .45, 1, -1.9, C.black, 'pop', { emissive: '#1d3557', ei: .5 });
+    R.step('Sofa', 'Delivering the sofa', C.fabric);
+    R.box(2.2, .4, .9, .4, .04, 1.3, C.fabric, 'drop');
+    R.box(2.2, .48, .22, .4, .44, 1.69, C.fabric, 'drop');
+    [-.6, 1.4].forEach((x) => R.box(.2, .58, .9, x, .04, 1.3, C.fabric, 'drop'));
+    [-.15, .4, .95].forEach((x) => R.box(.52, .14, .62, x, .44, 1.22, C.cushion, 'drop'));
+    R.box(.32, .3, .1, -.25, .56, 1.5, C.membrane, 'drop'); R.box(.32, .3, .1, 1.05, .56, 1.5, C.sage, 'drop');
+    R.step('Wool rug', 'Rolling out the rug', C.slate);
+    R.box(2.4, .02, 1.8, .4, .04, .15, C.slate, 'growX');
+    R.step('Coffee table', 'Placing the table', C.wood);
+    R.cyl(.2, .26, .36, .4, .06, .25, C.dark, 'rise');
+    R.cyl(.46, .46, .05, .4, .42, .25, C.wood, 'drop');
+    R.step('Floor lamp', 'Plugging in the lamp', '#f4ead2');
+    R.cyl(.15, .15, .03, 1.75, .04, .2, C.dark, 'pop');
+    R.cyl(.015, .015, 1.4, 1.75, .07, .2, C.dark, 'rise');
+    R.cyl(.13, .2, .26, 1.75, 1.45, .2, '#f4ead2', 'hang', { emissive: '#ffe1a0', ei: .6 });
+    R.step('Art & plants', 'Hanging the art', C.terra);
+    R.box(.03, .62, .92, -1.98, 1.42, -.2, C.gold, 'pop', { metal: .5, rough: .4 });
+    R.box(.02, .54, .84, -1.96, 1.46, -.2, C.terra, 'pop');
+    R.cyl(.18, .14, .35, -1.6, .04, 1.5, C.pot, 'pop'); R.sph(.34, -1.6, .76, 1.5, C.leaf, 'pop'); R.sph(.24, -1.45, 1.05, 1.42, C.green, 'pop');
+  }
+
+  function bedroom(R) {
+    R.step('Framing & drywall', 'Raising the walls', C.wall);
+    R.box(4.24, 2.5, .12, 0, 0, -2.06, C.wall, 'rise');
+    R.box(.12, 2.5, 4, -2.06, 0, 0, C.wall, 'rise');
+    R.step('Carpet', 'Fitting the carpet', C.carpet);
+    for (let i = 0; i < 4; i++) R.box(4, .04, .99, 0, 0, -1.5 + i * 1, C.carpet, 'growX');
+    R.step('Sage accent wall', 'Painting the accent wall', C.sage);
+    R.box(4.12, 2.5, .01, 0, 0, -1.995, C.sage, 'rise');
+    R.step('Window & curtains', 'Hanging the curtains', C.linen);
+    R.box(.04, 1.2, 1.3, -1.98, .8, .4, C.white, 'pop');
+    R.box(.02, 1.1, 1.2, -1.96, .85, .4, C.glass, 'pop', { emissive: '#bcd6f0', ei: .4 });
+    [-.42, 1.22].forEach((z) => R.box(.06, 2.2, .3, -1.93, .1, z, C.linen, 'hang'));
+    R.step('Bed frame', 'Assembling the bed frame', C.wood);
+    R.box(1.9, .3, 2.2, .3, .04, -.8, C.wood, 'rise');
+    R.step('Mattress & bedding', 'Making the bed', C.duvet);
+    R.box(1.8, .25, 2.1, .3, .34, -.82, C.white, 'drop');
+    R.box(1.86, .08, 1.45, .3, .59, -.45, C.duvet, 'drop');
+    [-.1, .7].forEach((x) => R.box(.66, .14, .4, x, .59, -1.6, C.white, 'drop'));
+    R.step('Upholstered headboard', 'Fixing the headboard', '#c9b79c');
+    R.box(2.1, 1.1, .12, .3, .04, -1.93, '#c9b79c', 'rise');
+    R.step('Nightstands & lamps', 'Placing the nightstands', C.walnut);
+    [-.97, 1.57].forEach((x) => { R.box(.5, .5, .4, x, .04, -1.72, C.walnut, 'drop'); R.cyl(.05, .07, .22, x, .54, -1.72, C.gold, 'pop', { metal: .6, rough: .4 }); R.cyl(.1, .15, .18, x, .76, -1.72, '#f4ead2', 'hang', { emissive: '#ffe1a0', ei: .7 }); });
+    R.step('Wardrobe', 'Building the wardrobe', C.white);
+    R.box(.6, 2.2, 1.3, -1.68, .04, 1.25, C.white, 'rise');
+    [.98, 1.52].forEach((z) => R.box(.02, .3, .02, -1.37, 1.05, z, C.gold, 'pop', { metal: .8, rough: .3 }));
+    R.step('Rug & art', 'Finishing the room', C.terra);
+    R.box(2.4, .02, 1.1, .3, .04, .75, C.terra, 'growX');
+    R.box(.9, .6, .03, .3, 1.55, -1.98, C.gold, 'pop', { metal: .5, rough: .4 });
+    R.box(.82, .52, .02, .3, 1.59, -1.96, '#f2efe9', 'pop');
+  }
+
+  function deck(R) {
+    R.step('House wall', 'Raising the house wall', C.siding);
+    R.box(4.24, 2.5, .12, 0, 0, -2.06, C.siding, 'rise');
+    R.box(1.2, 1.9, .03, -.6, .5, -1.99, C.glass, 'pop', { emissive: '#bcd6f0', ei: .3 });
+    R.step('Concrete footings', 'Pouring the footings', C.concrete);
+    [-1.7, 0, 1.7].forEach((x) => [-1.2, .9].forEach((z) => R.cyl(.09, .12, .3, x, 0, z, C.concrete, 'rise')));
+    R.step('Joists', 'Setting the joists', C.joist);
+    for (let i = 0; i < 6; i++) R.box(.08, .2, 3.7, -1.85 + i * .74, .3, -.15, C.joist, 'growZ');
+    R.step('Cedar decking', 'Laying cedar boards', C.cedar);
+    for (let i = 0; i < 13; i++) R.box(4, .05, .27, 0, .5, -1.84 + i * .29, i % 2 ? C.cedar2 : C.cedar, 'growX');
+    R.step('Steps', 'Building the steps', C.cedar);
+    R.box(1.2, .05, .3, .9, .25, 2.05, C.cedar, 'drop');
+    R.box(1.2, .25, .3, .9, 0, 2.05, C.joist, 'rise');
+    R.step('Railing posts', 'Standing the posts', C.dark);
+    [[-1.95, -1.6], [-1.95, -.3], [-1.95, 1], [-1.95, 1.95], [-.9, 1.95], [.2, 1.95], [1.6, 1.95]].forEach(([x, z]) => R.box(.07, .9, .07, x, .55, z, C.dark, 'rise'));
+    R.step('Glass railing', 'Fitting glass panels', C.glass);
+    [-.95, .35, 1.47].forEach((z) => R.box(.02, .75, 1.2, -1.95, .6, z, '#cfe8f2', 'rise', { opacity: .3 }));
+    R.box(1.0, .75, .02, -1.42, .6, 1.95, '#cfe8f2', 'rise', { opacity: .3 });
+    R.step('Pergola', 'Raising the pergola', C.wood);
+    [[1.7, -1.7], [1.7, .8]].forEach(([x, z]) => R.box(.12, 2.2, .12, x, .55, z, C.wood, 'rise'));
+    R.box(.14, .16, 2.8, 1.7, 2.75, -.45, C.wood, 'drop');
+    for (let i = 0; i < 6; i++) R.box(2.2, .06, .08, .65, 2.91, -1.6 + i * .46, C.wood, 'drop');
+    R.step('Outdoor furniture', 'Setting out the furniture', C.cushion);
+    [[.15, .2], [1.0, .2]].forEach(([x, z]) => { R.box(.55, .2, .9, x, .55, z, C.cushion, 'drop'); R.box(.55, .45, .12, x, .75, z - .4, C.cushion, 'drop'); });
+    R.cyl(.22, .22, .04, .58, .85, 1.05, C.wood, 'drop'); R.cyl(.03, .03, .32, .58, .55, 1.05, C.dark, 'rise');
+    R.step('String lights', 'Hanging the string lights', '#ffd77a');
+    for (let i = 0; i < 9; i++) { const t = i / 8, z = -1.6 + t * 2.4; R.sph(.045, .3 + Math.sin(t * Math.PI) * .2, 2.62 - Math.sin(t * Math.PI) * .28, z, '#fff2c2', 'hang', { emissive: '#ffcf5a', ei: 1.6 }); }
+    R.cyl(.16, .13, .3, -1.6, .55, -1.6, C.pot, 'pop'); R.sph(.26, -1.6, 1.05, -1.6, C.leaf, 'pop');
+  }
+
+  /* ===================== OUTRO LIST (works without WebGL) ===================== */
+  const STEP_LIST = {};
+  ROOMS.forEach((room) => {
+    const names = [];
+    room.build({ step: (n) => names.push(n), box() {}, cyl() {}, sph() {} });
+    STEP_LIST[room.key] = names;
+  });
+  $('#roomsList').innerHTML = ROOMS.map((r) => `<article><span class="kicker">${r.sheet}</span><b>${r.name}</b><ol>${STEP_LIST[r.key].map((s) => `<li>${s}</li>`).join('')}</ol></article>`).join('');
+
+  /* ===================== THEME ===================== */
+  const isDark = () => (document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark';
+  const saved = ls.get('rbr-theme'); if (saved === 'light' || saved === 'dark') document.documentElement.dataset.theme = saved;
+  const syncLbl = () => { $('#themeLbl').textContent = isDark() ? 'Drafting' : 'Blueprint'; };
+  syncLbl();
+
+  /* ===================== WEBGL ===================== */
+  let ok = !!window.THREE;
+  if (ok) { try { const c = document.createElement('canvas'); ok = !!(c.getContext('webgl') || c.getContext('experimental-webgl')); } catch { ok = false; } }
+  if (!ok) { $('#fallback').hidden = false; return; }
+
+  const canvas = $('#gl');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.75));
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.setClearColor(0x000000, 0);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(30, 1, .1, 200);
+  const hemi = new THREE.HemisphereLight(0xffffff, 0xb9a99a, .62); scene.add(hemi);
+  const sun = new THREE.DirectionalLight(0xffffff, 1.05);
+  sun.position.set(6, 10, 7); sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048);
+  Object.assign(sun.shadow.camera, { left: -5, right: 5, top: 5, bottom: -5, near: 1, far: 30 });
+  sun.shadow.bias = -0.0006; sun.shadow.normalBias = .02;
+  scene.add(sun); scene.add(sun.target);
+  scene.add(new THREE.AmbientLight(0xffffff, .12));
+
+  const lin = (hex) => new THREE.Color(hex).convertSRGBToLinear();
+  const matCache = new Map();
+  function mat(hex, o = {}) {
+    const key = [hex, o.metal, o.rough, o.emissive, o.ei, o.opacity].join('|');
+    if (matCache.has(key)) return matCache.get(key);
+    const m = new THREE.MeshStandardMaterial({ color: lin(hex), roughness: o.rough ?? .78, metalness: o.metal ?? 0 });
+    if (o.emissive) { m.emissive = lin(o.emissive); m.emissiveIntensity = o.ei ?? 1; }
+    if (o.opacity) { m.transparent = true; m.opacity = o.opacity; m.depthWrite = false; }
+    matCache.set(key, m); return m;
+  }
+  const ghostMat = new THREE.LineBasicMaterial({ color: 0x1f4fd1, transparent: true, opacity: .42 });
+  const trackMat = new THREE.LineDashedMaterial({ color: 0x1f4fd1, dashSize: .25, gapSize: .2, transparent: true, opacity: .35 });
+  const plinthMat = new THREE.MeshStandardMaterial({ color: lin('#e6e1d9'), roughness: .9 });
+  const plinthEdge = new THREE.MeshStandardMaterial({ color: lin('#c9c2b7'), roughness: .9 });
+  function applyTheme() {
+    const dark = isDark();
+    ghostMat.color.set(dark ? 0x9fbaff : 0x1f4fd1); ghostMat.opacity = dark ? .5 : .42;
+    trackMat.color.set(dark ? 0x9fbaff : 0x1f4fd1);
+    plinthMat.color.copy(lin(dark ? '#1c3557' : '#e6e1d9'));
+    plinthEdge.color.copy(lin(dark ? '#152a47' : '#c9c2b7'));
+    hemi.intensity = dark ? .5 : .62; hemi.groundColor.set(dark ? 0x22395d : 0xb9a99a);
+  }
+
+  // soft contact shadow under each plinth
+  const blobTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d'); const r = g.createRadialGradient(64, 64, 10, 64, 64, 64); r.addColorStop(0, 'rgba(0,0,0,.35)'); r.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = r; g.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c); })();
+  const blobMat = new THREE.MeshBasicMaterial({ map: blobTex, transparent: true, depthWrite: false });
+
+  const ease = (x) => 1 - Math.pow(1 - x, 3);
+  const backOut = (x) => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+  const clamp01 = (x) => (x < 0 ? 0 : x > 1 ? 1 : x);
+
+  /* build each room into a group with timed pieces */
+  const built = ROOMS.map((room) => {
+    const group = new THREE.Group();
+    const inner = new THREE.Group(); inner.rotation.y = -Math.PI / 4; group.add(inner);
+    const plinth = new THREE.Mesh(new THREE.BoxGeometry(4.5, .32, 4.5), [plinthEdge, plinthEdge, plinthMat, plinthEdge, plinthEdge, plinthEdge]);
+    plinth.position.y = -.16; plinth.receiveShadow = true; inner.add(plinth);
+    if (room.key === 'deck') { const g = new THREE.Mesh(new THREE.BoxGeometry(4.5, .02, 4.5), mat(C.grass)); g.position.y = .01; g.receiveShadow = true; inner.add(g); }
+    const blob = new THREE.Mesh(new THREE.PlaneGeometry(9, 9), blobMat); blob.rotation.x = -Math.PI / 2; blob.position.y = -.33; group.add(blob);
+    const pieces = [], steps = [];
+    let cur = null;
+    const add = (geom, dims, x, y, z, color, anim, o) => {
+      const mesh = new THREE.Mesh(geom, mat(color, o || {}));
+      mesh.position.set(x, y, z); mesh.castShadow = !(o && o.opacity); mesh.receiveShadow = true;
+      const ghost = new THREE.LineSegments(new THREE.EdgesGeometry(geom), ghostMat);
+      ghost.position.set(x, y, z);
+      inner.add(mesh); inner.add(ghost);
+      const p = { mesh, ghost, anim, dims, tx: x, ty: y, tz: z, step: steps.length - 1 };
+      pieces.push(p); cur.pieces.push(p);
+    };
+    const R = {
+      step(name, verb, swatch) { cur = { name, verb, swatch, pieces: [] }; steps.push(cur); },
+      box(w, h, d, x, yb, z, color, anim = 'drop', o) { add(new THREE.BoxGeometry(w, h, d), { w, h, d }, x, yb + h / 2, z, color, anim, o); },
+      cyl(rt, rb, h, x, yb, z, color, anim = 'drop', o) { add(new THREE.CylinderGeometry(rt, rb, h, 28), { w: rb * 2, h, d: rb * 2 }, x, yb + h / 2, z, color, anim, o); },
+      sph(r, x, y, z, color, anim = 'pop', o) { add(new THREE.SphereGeometry(r, 22, 16), { w: r * 2, h: r * 2, d: r * 2 }, x, y, z, color, anim, o); },
+    };
+    room.build(R);
+    // timing: each material gets an equal slice; its pieces overlap inside the slice
+    const S = steps.length;
+    steps.forEach((s, si) => {
+      const n = s.pieces.length, span = 1 / S;
+      s.pieces.forEach((p, j) => { p.t0 = si * span + (n > 1 ? (j / (n - 1)) * span * .5 : 0); p.t1 = p.t0 + span * .5; });
+    });
+    scene.add(group);
+    return { room, group, inner, pieces, steps };
+  });
+
+  // dashed U track the rooms ride along
+  const SPACING = 7.8, KY = .028, KZ = .07, KR = .09;
+  const trackPts = [];
+  for (let x = -26; x <= 26; x += .25) trackPts.push(new THREE.Vector3(x, -.4 + KY * x * x, -KZ * x * x));
+  const track = new THREE.Line(new THREE.BufferGeometry().setFromPoints(trackPts), trackMat);
+  track.computeLineDistances(); scene.add(track);
+
+  function placeRoom(b, i, c, time) {
+    const xr = (i - c) * SPACING;
+    const g = b.group;
+    g.position.set(xr, KY * xr * xr, -KZ * xr * xr);
+    g.rotation.y = -xr * KR;
+    g.rotation.z = -xr * .012;
+    const s = 1 - Math.min(.22, Math.abs(xr) * .028);
+    g.scale.setScalar(s);
+    if (!reduce && Math.abs(xr) < .5) g.position.y += Math.sin(time * 1.4) * .035;
+    g.visible = Math.abs(xr) < 22;
+  }
+  function buildRoom(b, a) {
+    for (const p of b.pieces) {
+      let q = (a - p.t0) / (p.t1 - p.t0);
+      q = reduce ? (q > 0 ? 1 : 0) : clamp01(q);
+      const m = p.mesh, d = p.dims;
+      m.visible = q > 0;
+      p.ghost.visible = q < 1;
+      m.position.set(p.tx, p.ty, p.tz); m.scale.set(1, 1, 1); m.rotation.set(0, 0, 0);
+      if (q <= 0 || q >= 1) continue;
+      const e = ease(q);
+      switch (p.anim) {
+        case 'drop': m.position.y += (1 - e) * 2.8; m.rotation.x = (1 - e) * .35; m.rotation.z = (1 - e) * -.25; break;
+        case 'rise': m.scale.y = Math.max(.001, e); m.position.y = p.ty - (d.h / 2) * (1 - e); break;
+        case 'growX': m.scale.x = Math.max(.001, e); m.position.x = p.tx - (d.w / 2) * (1 - e); break;
+        case 'growZ': m.scale.z = Math.max(.001, e); m.position.z = p.tz - (d.d / 2) * (1 - e); break;
+        case 'pop': m.scale.setScalar(Math.max(.001, backOut(q))); break;
+        case 'slide': m.position.x += (1 - e) * 3; m.rotation.y = (1 - e) * .4; break;
+        case 'hang': m.position.y += (1 - backOut(q)) * 1.8; break;
+      }
+    }
+  }
+
+  /* ===================== SCROLL → PROGRESS ===================== */
+  const N = ROOMS.length, DWELL = .72, PMAX = N - 1 + DWELL;
+  const stage = $('#stage');
+  stage.style.height = `${N * 170 + 100}vh`;
+  let target = 0, shown = 0;
+  function readScroll() {
+    const r = stage.getBoundingClientRect(), span = stage.offsetHeight - innerHeight;
+    target = clamp01(-r.top / span) * PMAX;
+  }
+  function state(p) {
+    const i = Math.min(N - 1, Math.floor(p)), f = p - i;
+    const moving = f > DWELL && i < N - 1;
+    let c = i;
+    if (moving) { const k = (f - DWELL) / (1 - DWELL); c = i + (k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2); }
+    const build = (j) => (j < i ? 1 : j > i ? 0 : moving ? 1 : clamp01(f / DWELL));
+    return { i, c, build };
+  }
+  function scrollToRoom(k, built = true) {
+    const span = stage.offsetHeight - innerHeight;
+    const p = Math.min(PMAX, k + (built ? DWELL * .985 : 0));
+    window.scrollTo({ top: stage.offsetTop + (p / PMAX) * span, behavior: reduce ? 'auto' : 'smooth' });
+  }
+
+  /* ===================== HUD ===================== */
+  $('#pills').innerHTML = ROOMS.map((r, k) => `<button class="pill" type="button" data-room="${k}">${r.name}</button>`).join('');
+  const pills = [...document.querySelectorAll('.pill')];
+  let hudRoom = -1, hudStep = -2;
+  function hud(st) {
+    const k = Math.round(st.c), b = built[k], a = st.build(k);
+    if (k !== hudRoom) {
+      const back = k < hudRoom;
+      $('#roomName').textContent = b.room.name;
+      $('#roomName').className = 'swap' + (back ? ' back' : '');
+      void $('#roomName').offsetWidth;
+      $('#sheetNo').textContent = b.room.sheet;
+      $('#roomCount').textContent = `Room ${String(k + 1).padStart(2, '0')} of ${String(N).padStart(2, '0')}`;
+      $('#roomBlurb').textContent = b.room.blurb;
+      $('#steps').innerHTML = b.steps.map((s, si) => `<li data-s="${si}"><span class="n">${String(si + 1).padStart(2, '0')}</span><span class="sw" style="--c:${s.swatch}"></span><span class="t">${s.name}</span></li>`).join('');
+      pills.forEach((p, j) => p.setAttribute('aria-current', String(j === k)));
+      const box = $('#pills'), pk = pills[k];
+      box.scrollTo({ left: pk.offsetLeft - (box.clientWidth - pk.clientWidth) / 2, behavior: reduce ? 'auto' : 'smooth' });
+      $('#prev').disabled = k === 0; $('#next').disabled = k === N - 1;
+      hudRoom = k; hudStep = -2;
+    }
+    const S = b.steps.length;
+    const si = a > .995 ? S : Math.min(S - 1, Math.floor(a * S));
+    if (si !== hudStep) {
+      [...$('#steps').children].forEach((li, j) => { li.className = j < si ? 'done' : j === si ? 'now' : ''; });
+      $('#nowText').innerHTML = a <= 0 ? 'Scroll down to start building' : si >= S ? `<em>${b.room.name} complete.</em> Keep scrolling for the next room` : `${b.steps[si].verb}<br><em>${b.steps[si].name}</em>`;
+      hudStep = si;
+    }
+    $('#pct').textContent = `${Math.round(a * 100)}%`;
+    $('#bar').style.setProperty('--p', a.toFixed(3));
+    pills.forEach((p, j) => p.style.setProperty('--p', st.build(j).toFixed(3)));
+  }
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('button');
+    if (!t) return;
+    if (t.dataset.room) scrollToRoom(+t.dataset.room);
+    else if (t.id === 'prev') scrollToRoom(Math.max(0, hudRoom - 1));
+    else if (t.id === 'next') scrollToRoom(Math.min(N - 1, hudRoom + 1), false);
+    else if (t.id === 'themeBtn') {
+      const next = isDark() ? 'light' : 'dark';
+      const go = () => { document.documentElement.dataset.theme = next; ls.set('rbr-theme', next); syncLbl(); applyTheme(); };
+      document.startViewTransition && !reduce ? document.startViewTransition(go) : go();
+    }
+  });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { syncLbl(); applyTheme(); });
+
+  /* ===================== LOOP ===================== */
+  function resize() {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    renderer.setSize(w, h, false);
+    const aspect = w / h;
+    camera.aspect = aspect;
+    const dist = 15 * Math.max(1, 1.02 / aspect);
+    camera.position.set(0, dist * .5, dist);
+    camera.lookAt(0, aspect < 1 ? .4 : 1.05, 0);
+    camera.updateProjectionMatrix();
+  }
+  addEventListener('resize', resize);
+  let running = false, last = performance.now();
+  function frame(now) {
+    const dt = Math.min(.05, (now - last) / 1000); last = now;
+    shown += (target - shown) * (reduce ? 1 : 1 - Math.exp(-dt * 7));
+    if (Math.abs(target - shown) < .0005) shown = target;
+    const st = state(shown);
+    built.forEach((b, j) => { placeRoom(b, j, st.c, now / 1000); buildRoom(b, st.build(j)); });
+    renderer.render(scene, camera);
+    hud(st);
+    if (running) requestAnimationFrame(frame);
+  }
+  new IntersectionObserver(([en]) => {
+    if (en.isIntersecting && !running) { running = true; last = performance.now(); requestAnimationFrame(frame); }
+    else if (!en.isIntersecting) running = false;
+  }).observe(stage);
+  addEventListener('scroll', readScroll, { passive: true });
+  applyTheme(); resize(); readScroll(); shown = target;
+  frame(performance.now());
+})();
+</script>
+
+</body>
+</html>
