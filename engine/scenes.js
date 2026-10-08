@@ -1,8 +1,9 @@
 /* Scroll-built 3D scenes, plug and play.
    Load three.js r128, set window.SCENES, then load this file. Every look below is a config switch:
 
-   look      'real' | 'toon' | 'clay' | 'lowpoly' | 'neon' | 'flat' | 'sketch'
-   layout    'U' | 'V' | 'dolly' | 'elevator' | 'ring' | 'board' | 'helix' | 'notebook'
+   look      'real' | 'toon' | 'clay' | 'lowpoly' | 'neon' | 'flat' | 'sketch' | 'voxel'
+   layout    'U' | 'V' | 'dolly' | 'elevator' | 'ring' | 'board' | 'helix' | 'notebook' | 'world'
+   base      'square' | 'round' | 'island' (floating island, for layout 'world')
    assembly  'mixed' (each piece says how it arrives) | 'explode' | 'scatter' | 'grow' | 'rise' | 'drop'
    speed     'cinematic' | 'smooth' | 'snappy' | 'bouncy'
    quality   'high' | 'medium' | 'low'
@@ -17,8 +18,8 @@
   if (!CFG) return;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const LOOK = CFG.look || CFG.style || 'real';
-  const TOON = LOOK === 'toon', CLAY = LOOK === 'clay', LOW = LOOK === 'lowpoly', NEON = LOOK === 'neon', FLAT = LOOK === 'flat', REAL = LOOK === 'real', SKETCH = LOOK === 'sketch';
-  const OUTLINED = TOON || FLAT;
+  const TOON = LOOK === 'toon', CLAY = LOOK === 'clay', LOW = LOOK === 'lowpoly', NEON = LOOK === 'neon', FLAT = LOOK === 'flat', REAL = LOOK === 'real', SKETCH = LOOK === 'sketch', VOXEL = LOOK === 'voxel';
+  const OUTLINED = TOON || FLAT || VOXEL;
   const LAYOUT = CFG.layout || CFG.track || 'U';
   const NOTEBOOK = LAYOUT === 'notebook';
   const SPEEDS = { cinematic: { follow: 2.4, dur: .8, stagger: .35 }, smooth: { follow: 5, dur: .55, stagger: .5 }, snappy: { follow: 11, dur: .28, stagger: .7 }, bouncy: { follow: 7, dur: .5, stagger: .5 } };
@@ -26,14 +27,14 @@
   const QUALITY = { high: { pr: 2, shadow: 2048, aa: true }, medium: { pr: 1.5, shadow: 1024, aa: true }, low: { pr: 1, shadow: 0, aa: false } }[CFG.quality || 'medium'];
   const SAT = CFG.saturation ?? 1;
   const ASSEMBLY = CFG.assembly && CFG.assembly !== 'mixed' ? CFG.assembly : null;
-  const BOUNCY = TOON || CLAY || CFG.speed === 'bouncy';
+  const BOUNCY = TOON || CLAY || VOXEL || CFG.speed === 'bouncy';
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const ls = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
   const pad = (n) => String(n).padStart(2, '0');
   const SC = CFG.scenes, N = SC.length, UNIT = CFG.unit || 'Scene';
-  const LOOK_NAME = { real: 'Realistic', toon: 'Cartoon', clay: 'Clay', lowpoly: 'Low-poly', neon: 'Neon', flat: 'Flat illustration', sketch: 'Pencil sketch' }[LOOK];
-  const LAYOUT_NAME = { U: 'U-curve', V: 'V-curve', dolly: 'Dolly forward', elevator: 'Elevator', ring: 'Turntable', board: 'Map board', helix: 'Spiral', notebook: 'Notebook' }[LAYOUT];
+  const LOOK_NAME = { real: 'Realistic', toon: 'Cartoon', clay: 'Clay', lowpoly: 'Low-poly', neon: 'Neon', flat: 'Flat illustration', sketch: 'Pencil sketch', voxel: 'Voxel game' }[LOOK];
+  const LAYOUT_NAME = { U: 'U-curve', V: 'V-curve', dolly: 'Dolly forward', elevator: 'Elevator', ring: 'Turntable', board: 'Map board', helix: 'Spiral', notebook: 'Notebook', world: 'Game world' }[LAYOUT];
   const arrowL = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4"/></svg>';
   const arrowR = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4"/></svg>';
 
@@ -182,7 +183,7 @@
   const ortho = LAYOUT !== 'board' && (CFG.camera === 'ortho' || LOW);
   const camera = ortho ? new THREE.OrthographicCamera(-1, 1, 1, -1, .1, 400) : new THREE.PerspectiveCamera(CFG.fov || 30, 1, .1, 400);
   const LIGHT = {
-    real: [.62, 1.05, .12], toon: [.34, .82, .16], clay: [.75, .7, .25], lowpoly: [.6, 1.0, .15], neon: [0, 0, 0], flat: [.25, .35, .42], sketch: [0, 0, 0],
+    real: [.62, 1.05, .12], toon: [.34, .82, .16], clay: [.75, .7, .25], lowpoly: [.6, 1.0, .15], neon: [0, 0, 0], flat: [.25, .35, .42], sketch: [0, 0, 0], voxel: [.42, .95, .22],
   }[LOOK];
   const hemi = new THREE.HemisphereLight(0xffffff, CLAY ? 0xf0dfe8 : 0xb9a99a, LIGHT[0]); scene.add(hemi);
   const sun = new THREE.DirectionalLight(0xffffff, LIGHT[1]);
@@ -287,7 +288,7 @@
     if (!glowCache.has(hex)) { const c = adjust(hex); c.getHSL(tmpHSL); c.setHSL(tmpHSL.h, Math.min(1, tmpHSL.s * 1.3 + .25), Math.max(.55, tmpHSL.l)); glowCache.set(hex, new THREE.LineBasicMaterial({ color: lin(c), transparent: true, opacity: .95, blending: THREE.AdditiveBlending, depthWrite: false })); }
     return glowCache.get(hex);
   }
-  const ghostMat = TOON || FLAT || SKETCH ? new THREE.LineDashedMaterial({ color: 0x1f4fd1, dashSize: .09, gapSize: .07, transparent: true, opacity: .55 }) : new THREE.LineBasicMaterial({ color: 0x1f4fd1, transparent: true, opacity: NEON ? .16 : .42 });
+  const ghostMat = TOON || FLAT || SKETCH || VOXEL ? new THREE.LineDashedMaterial({ color: 0x1f4fd1, dashSize: .09, gapSize: .07, transparent: true, opacity: .55 }) : new THREE.LineBasicMaterial({ color: 0x1f4fd1, transparent: true, opacity: NEON ? .16 : .42 });
   const trackMat = new THREE.LineDashedMaterial({ color: 0x1f4fd1, dashSize: .25, gapSize: .2, transparent: true, opacity: .35 });
   const outlineMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(T3.outline || '#1b1b1f'), side: THREE.BackSide });
   const plinthTop = OUTLINED ? new THREE.MeshToonMaterial({ color: 0xffffff, gradientMap }) : SKETCH ? new THREE.MeshBasicMaterial({ color: lin(PAPER) }) : NEON ? new THREE.MeshBasicMaterial({ color: 0x0a0b12 }) : new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: .9, flatShading: LOW });
@@ -333,8 +334,8 @@
     }
     return g;
   }
-  const cylSeg = (o) => o.seg ? (LOW ? Math.min(o.seg, 8) : o.seg) : LOW ? 7 : CLAY ? 36 : 28;
-  const sphGeom = (r) => (LOW ? new THREE.IcosahedronGeometry(r, 1) : new THREE.SphereGeometry(r, CLAY ? 32 : 22, CLAY ? 24 : 16));
+  const cylSeg = (o) => o.seg ? (LOW || VOXEL ? Math.min(o.seg, 8) : o.seg) : VOXEL ? 6 : LOW ? 7 : CLAY ? 36 : 28;
+  const sphGeom = (r) => (VOXEL ? new THREE.IcosahedronGeometry(r, 0) : LOW ? new THREE.IcosahedronGeometry(r, 1) : new THREE.SphereGeometry(r, CLAY ? 32 : 22, CLAY ? 24 : 16));
 
   const ease = (x) => 1 - Math.pow(1 - x, 3);
   const easeIO = (x) => (x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
@@ -342,19 +343,25 @@
   const bounceOut = (x) => { const n = 7.5625, d = 2.75; if (x < 1 / d) return n * x * x; if (x < 2 / d) return n * (x -= 1.5 / d) * x + .75; if (x < 2.5 / d) return n * (x -= 2.25 / d) * x + .9375; return n * (x -= 2.625 / d) * x + .984375; };
   const elasticOut = (x) => (x === 0 ? 0 : x === 1 ? 1 : Math.pow(2, -10 * x) * Math.sin((x * 10 - .75) * (2 * Math.PI / 3)) + 1);
   const clamp01 = (x) => (x < 0 ? 0 : x > 1 ? 1 : x);
-  const OUT_T = FLAT ? .016 : .035;
+  const OUT_T = FLAT ? .016 : VOXEL ? .026 : .035;
   const rand = seeded(4242);
 
   /* ---------------- build scenes ---------------- */
   const built = SC.map((s) => {
     const group = new THREE.Group(), inner = new THREE.Group();
     inner.rotation.y = -Math.PI / 4; group.add(inner);
-    const round = (s.base || CFG.base) === 'round';
+    const island = (s.base || CFG.base) === 'island';
+    const round = island || (s.base || CFG.base) === 'round';
     const plinth = round
       ? new THREE.Mesh(new THREE.CylinderGeometry(3.05, 3.05, .34, LOW ? 10 : 64), [plinthSide, plinthTop, plinthSide])
       : new THREE.Mesh(CLAY ? boxGeom(4.5, .32, 4.5) : new THREE.BoxGeometry(4.5, .32, 4.5), CLAY ? plinthTop : [plinthSide, plinthSide, plinthTop, plinthSide, plinthSide, plinthSide]);
     plinth.position.y = round ? -.17 : -.16; plinth.receiveShadow = true; inner.add(plinth);
     if (OUTLINED) { const o = new THREE.Mesh(plinth.geometry, outlineMat); o.scale.set(1 + OUT_T / 3, 1 + OUT_T / .17, 1 + OUT_T / 3); plinth.add(o); }
+    if (island) {
+      const under = new THREE.Mesh(new THREE.CylinderGeometry(2.95, .4, 2.9, VOXEL ? 9 : 24), plinthSide); under.position.y = -.34 - 1.45; inner.add(under);
+      if (OUTLINED) { const o = new THREE.Mesh(under.geometry, outlineMat); o.scale.set(1.012, 1.012, 1.012); under.add(o); }
+      [[-2.2, -1.9, 1.2, .35], [2.0, -2.5, -1.0, .28], [.6, -3.6, 2.0, .22]].forEach(([x, y, z, r]) => { const rock = new THREE.Mesh(new THREE.IcosahedronGeometry(r, 0), plinthSide); rock.position.set(x, y, z); inner.add(rock); if (OUTLINED) { const o = new THREE.Mesh(rock.geometry, outlineMat); o.scale.setScalar(1.1); rock.add(o); } });
+    }
     if (NEON) plinth.add(new THREE.LineSegments(new THREE.EdgesGeometry(plinth.geometry, 25), glowMat(T3.glow || '#7cf7d4')));
     if (SKETCH) plinth.add(new THREE.LineSegments(new THREE.EdgesGeometry(plinth.geometry, 25), pencilMat));
     if (s.ground) {
@@ -362,7 +369,7 @@
       const gm = new THREE.Mesh(gg, makeMat(s.ground.color, { tex: s.ground.tex, rep: [4, 4] }, { w: 4.5, h: .02, d: 4.5 }));
       gm.position.y = .01; gm.receiveShadow = true; inner.add(gm);
     }
-    const blob = new THREE.Mesh(new THREE.PlaneGeometry(9.5, 9.5), blobMat); blob.rotation.x = -Math.PI / 2; blob.position.y = -.35; group.add(blob);
+    const blob = new THREE.Mesh(new THREE.PlaneGeometry(9.5, 9.5), blobMat); blob.rotation.x = -Math.PI / 2; blob.position.y = -.35; blob.visible = !island; group.add(blob);
     const pieces = [], steps = [];
     let cur = null;
     const add = (geom, dims, x, y, z, color, anim, o) => {
@@ -377,7 +384,7 @@
       if (SKETCH) mesh.add(new THREE.LineSegments(new THREE.EdgesGeometry(geom, 25), pencilMat));
       const ghost = new THREE.LineSegments(new THREE.EdgesGeometry(geom, 25), ghostMat);
       ghost.position.copy(mesh.position); ghost.rotation.copy(mesh.rotation); ghost.scale.copy(mesh.scale);
-      if (TOON || FLAT || SKETCH) ghost.computeLineDistances();
+      if (TOON || FLAT || SKETCH || VOXEL) ghost.computeLineDistances();
       inner.add(mesh); inner.add(ghost);
       const away = new THREE.Vector3(x, y - .6, z); if (away.lengthSq() < .01) away.set(0, 1, 0); away.normalize();
       const p = { mesh, ghost, anim: ASSEMBLY || anim, dims, pos: mesh.position.clone(), rot: mesh.rotation.clone(), scl: mesh.scale.clone(), away, rnd: new THREE.Vector3(rand() * 2 - 1, rand() * .8 + .3, rand() * 2 - 1).normalize(), spin: rand() * 2 - 1 };
@@ -389,7 +396,7 @@
       cyl(rt, rb, h, x, yb, z, color, anim = 'drop', o = {}) { add(new THREE.CylinderGeometry(rt, rb, h, cylSeg(o)), { w: Math.max(rt, rb) * 2, h, d: Math.max(rt, rb) * 2 }, x, o.center ? yb : yb + h / 2, z, color, anim, o); },
       cone(r, h, x, yb, z, color, anim = 'drop', o = {}) { add(new THREE.CylinderGeometry(0, r, h, cylSeg(o)), { w: r * 2, h, d: r * 2 }, x, yb + h / 2, z, color, anim, o); },
       sph(r, x, y, z, color, anim = 'pop', o = {}) { add(sphGeom(r), { w: r * 2, h: r * 2, d: r * 2 }, x, y, z, color, anim, o); },
-      torus(r, tube, x, y, z, color, anim = 'pop', o = {}) { add(new THREE.TorusGeometry(r, tube, LOW ? 5 : 12, LOW ? 10 : 36), { w: (r + tube) * 2, h: (r + tube) * 2, d: tube * 2 }, x, y, z, color, anim, o); },
+      torus(r, tube, x, y, z, color, anim = 'pop', o = {}) { add(new THREE.TorusGeometry(r, tube, LOW || VOXEL ? 5 : 12, LOW || VOXEL ? 10 : 36), { w: (r + tube) * 2, h: (r + tube) * 2, d: tube * 2 }, x, y, z, color, anim, o); },
       sign(text, w, h, x, yb, z, bg, fg, anim = 'pop', o = {}) {
         const sideways = o.face === 'x', depth = o.depth || .04;
         const cv = document.createElement('canvas'); cv.width = 512; cv.height = Math.max(64, Math.round(512 * h / w));
@@ -410,12 +417,14 @@
       st.pieces.forEach((p, j) => { p.t0 = si * span + (n > 1 ? (j / (n - 1)) * span * SPEED.stagger : 0); p.t1 = p.t0 + span * SPEED.dur; });
     });
     scene.add(group);
-    return { s, group, pieces, steps };
+    return { s, group, pieces, steps, stepNames: steps.map((x) => x.name) };
   });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => signs.forEach(drawSign));
 
   /* ---------------- layouts: where each scene sits for a carousel position c ---------------- */
   const BOARD_POS = SC.map((_, i) => new THREE.Vector3(i * 8.5, 0, i % 2 ? -4.2 : 0));
+  const WORLD_POS = SC.map((_, i) => new THREE.Vector3(i * 9.5, [0, 2.2, -1.1, 1.6, -.4][i % 5], i % 2 ? -3.2 : 0));
+  const FOLLOW = LAYOUT === 'world' ? WORLD_POS : BOARD_POS;
   const extra = new THREE.Group(); scene.add(extra);
   const dashed = (pts) => { const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), trackMat); l.computeLineDistances(); extra.add(l); return l; };
   let ringDisc = null;
@@ -465,6 +474,9 @@
       g.visible = Math.abs(d) < 2.8;
     } else if (NOTEBOOK) {
       g.position.set(0, 0, 0); g.visible = i === nbVisible;
+    } else if (LAYOUT === 'world') {
+      g.position.copy(WORLD_POS[i]); if (!reduce) g.position.y += Math.sin(t * .8 + i * 1.3) * .12;
+      g.visible = Math.abs(d) < 2.6;
     } else if (LAYOUT === 'board') {
       g.position.copy(BOARD_POS[i]);
       g.visible = Math.abs(d) < 2.5;
@@ -497,6 +509,54 @@
   }
   function buildScene(b, a) {
     for (const p of b.pieces) { let q = (a - p.t0) / (p.t1 - p.t0); q = reduce ? (q > 0 ? 1 : 0) : clamp01(q); animatePiece(p, q); }
+  }
+
+  /* ---------------- game world: a player that hops between islands, coins to collect ---------------- */
+  let avatar = null; const coinSets = [];
+  if (LAYOUT === 'world') {
+    const A = CFG.avatar || {};
+    const tmat = (hex) => OUTLINED ? new THREE.MeshToonMaterial({ color: lin(adjust(hex)), gradientMap }) : new THREE.MeshStandardMaterial({ color: lin(adjust(hex)) });
+    const part = (w, h, d, hex, x, y, z, parent) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), tmat(hex)); m.position.set(x, y, z); m.castShadow = SHADOWS; if (OUTLINED) { const o = new THREE.Mesh(m.geometry, outlineMat); o.scale.set(1 + .05 / w, 1 + .05 / h, 1 + .05 / d); m.add(o); } parent.add(m); return m; };
+    avatar = new THREE.Group();
+    const legs = [part(.16, .3, .16, A.legs || '#2b2350', -.12, .15, 0, avatar), part(.16, .3, .16, A.legs || '#2b2350', .12, .15, 0, avatar)];
+    legs.forEach((l) => { l.geometry.translate(0, -.15, 0); l.position.y = .3; });
+    part(.5, .5, .34, A.body || '#ff3ea5', 0, .55, 0, avatar);
+    part(.46, .42, .42, A.skin || '#ffd7a8', 0, 1.02, 0, avatar);
+    part(.08, .1, .02, '#1b1630', -.1, 1.04, .22, avatar); part(.08, .1, .02, '#1b1630', .1, 1.04, .22, avatar);
+    part(.5, .13, .46, A.cap || '#2de2e6', 0, 1.27, 0, avatar); part(.5, .05, .22, A.cap || '#2de2e6', 0, 1.22, .3, avatar);
+    avatar.userData.legs = legs; avatar.scale.setScalar(1.15); scene.add(avatar);
+    const coinMat = OUTLINED ? new THREE.MeshToonMaterial({ color: lin(adjust('#ffd23f')), gradientMap, emissive: lin(new THREE.Color('#ffb800')), emissiveIntensity: .35 }) : new THREE.MeshStandardMaterial({ color: lin(adjust('#ffd23f')), metalness: .6, roughness: .3 });
+    built.forEach((b) => {
+      const set = [];
+      for (let k = 0; k < 3; k++) {
+        const holder = new THREE.Group(); holder.position.set(-1.2 + k * 1.2, 3.3 + (k % 2) * .35, .4);
+        const coin = new THREE.Mesh(new THREE.CylinderGeometry(.28, .28, .07, VOXEL ? 8 : 24), coinMat); coin.rotation.x = Math.PI / 2;
+        if (OUTLINED) { const o = new THREE.Mesh(coin.geometry, outlineMat); o.scale.set(1.08, 1.5, 1.08); coin.add(o); }
+        holder.add(coin); b.group.add(holder); set.push(holder);
+      }
+      coinSets.push(set);
+    });
+  }
+  const AV_OFF = new THREE.Vector3(1.75, 0, 2.15), avFrom = new THREE.Vector3(), avTo = new THREE.Vector3();
+  function placeWorldExtras(st, t) {
+    if (!avatar) return;
+    const i0 = Math.min(N - 1, Math.floor(st.c + 1e-6)), i1 = Math.min(N - 1, i0 + 1), f = st.c - i0;
+    avFrom.copy(built[i0].group.position).add(AV_OFF); avTo.copy(built[i1].group.position).add(AV_OFF);
+    avatar.position.lerpVectors(avFrom, avTo, f);
+    const jumping = f > .001 && f < .999 && i1 !== i0;
+    avatar.position.y += jumping ? 4 * f * (1 - f) * 3.6 : reduce ? 0 : Math.abs(Math.sin(t * 5)) * .1;
+    avatar.rotation.y = jumping ? f * Math.PI * 2 : reduce ? 0 : Math.sin(t * 1.2) * .35;
+    const swing = jumping ? .9 : reduce ? 0 : Math.sin(t * 10) * .25;
+    avatar.userData.legs[0].rotation.x = swing; avatar.userData.legs[1].rotation.x = -swing;
+    coinSets.forEach((set, j) => {
+      const a = st.build(j);
+      set.forEach((h, k) => {
+        h.visible = a < .995;
+        h.rotation.y = t * 3 + k;
+        const out = Math.max(0, (a - .88) / .115);
+        h.scale.setScalar(Math.max(.001, 1 - out)); h.position.y = 3.3 + (k % 2) * .35 + out * 1.5 + (reduce ? 0 : Math.sin(t * 2 + k) * .1);
+      });
+    });
   }
 
   /* ---------------- scroll ---------------- */
@@ -572,13 +632,13 @@
   const camTarget = new THREE.Vector3();
   function placeCamera(c) {
     const lookY = aspect < 1 ? .4 : 1.05;
-    if (LAYOUT === 'board') {
-      const i0 = Math.floor(c), i1 = Math.min(N - 1, i0 + 1), f = c - i0;
-      camTarget.copy(BOARD_POS[i0]).lerp(BOARD_POS[i1], f);
-      const lift = Math.sin(f * Math.PI) * 5;
-      camera.position.set(camTarget.x, baseDist * .72 + lift, camTarget.z + baseDist * .78 + lift * .6);
-      camera.lookAt(camTarget.x, lookY, camTarget.z);
-      sun.position.set(camTarget.x + 6, 10, camTarget.z + 7); sun.target.position.copy(camTarget);
+    if (LAYOUT === 'board' || LAYOUT === 'world') {
+      const i0 = Math.floor(c), i1 = Math.min(N - 1, i0 + 1), f = c - i0, W = LAYOUT === 'world';
+      camTarget.copy(FOLLOW[i0]).lerp(FOLLOW[i1], W ? easeIO(f) : f);
+      const lift = Math.sin(f * Math.PI) * (W ? 3 : 5);
+      camera.position.set(camTarget.x, camTarget.y + (W ? baseDist * .4 : baseDist * .72) + lift, camTarget.z + (W ? baseDist * .95 : baseDist * .78) + lift * .6);
+      camera.lookAt(camTarget.x, camTarget.y + lookY, camTarget.z);
+      sun.position.set(camTarget.x + 6, camTarget.y + 10, camTarget.z + 7); sun.target.position.copy(camTarget);
       return;
     }
     if (ortho) { camera.position.set(0, 16, 20); camera.lookAt(0, lookY, 0); return; }
@@ -586,6 +646,12 @@
     camera.position.set(0, baseDist * tilt, baseDist); camera.lookAt(0, lookY, 0);
   }
   addEventListener('resize', resize);
+  const evDetail = { c: 0, k: 0, builds: new Array(N).fill(0), si: 0, S: 0, steps: [], name: '' };
+  window.SCENES_API = {
+    count: N, names: SC.map((s) => s.name), codes: SC.map((s) => s.code),
+    positions: LAYOUT === 'world' || LAYOUT === 'board' ? FOLLOW.map((p) => [p.x, p.z]) : null,
+    goTo: scrollToScene, current: () => hudScene, segmentPx: () => (stage.offsetHeight - innerHeight) / PMAX, stage,
+  };
   let running = false, last = performance.now();
   function frame(now) {
     const dt = Math.min(.05, (now - last) / 1000); last = now;
@@ -608,9 +674,13 @@
     }
     built.forEach((b, j) => { place(b, j, st.c, now / 1000); buildScene(b, st.build(j)); });
     if (ringDisc) ringDisc.rotation.y = -st.c * RING_A;
+    placeWorldExtras(st, now / 1000);
     placeCamera(st.c);
     renderer.render(scene, camera);
     hud(st);
+    evDetail.c = st.c; evDetail.k = hudScene; for (let j = 0; j < N; j++) evDetail.builds[j] = st.build(j);
+    evDetail.si = hudStep; evDetail.S = built[hudScene].steps.length; evDetail.steps = built[hudScene].stepNames; evDetail.name = built[hudScene].s.name;
+    document.dispatchEvent(new CustomEvent('scenes:frame', { detail: evDetail }));
     if (running) requestAnimationFrame(frame);
   }
   new IntersectionObserver(([en]) => {

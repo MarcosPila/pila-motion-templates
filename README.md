@@ -29,6 +29,7 @@ Live: https://marcospila.github.io/pila-motion-templates/
 | photography-video | neon | ring | cinematic |
 | online-store | flat | board | bouncy |
 | interior-design | sketch | notebook | smooth |
+| arcade | voxel + game layer | world (floating islands) | bouncy |
 
 ## Plug and play
 
@@ -37,19 +38,24 @@ Change these keys to restyle any page:
 
 | Key | Options |
 | --- | --- |
-| `look` | `real`, `toon`, `clay`, `lowpoly`, `neon`, `flat`, `sketch` |
-| `layout` | `U`, `V`, `dolly`, `elevator`, `ring`, `board`, `helix`, `notebook` |
+| `look` | `real`, `toon`, `clay`, `lowpoly`, `neon`, `flat`, `sketch`, `voxel` |
+| `layout` | `U`, `V`, `dolly`, `elevator`, `ring`, `board`, `helix`, `notebook`, `world` |
 | `assembly` | `mixed` (each piece says how it arrives), `explode`, `scatter`, `grow`, `rise`, `drop` |
 | `speed` | `cinematic`, `smooth`, `snappy`, `bouncy` |
 | `quality` | `high`, `medium`, `low` (pixel density and shadows) |
 | `saturation` | number, `1` as written, lower is muted, higher is vivid |
-| `hud` | `classic`, `minimal`, `side`, `cinema` (ignored by `notebook`) |
-| `base` | `square` or `round` plinths |
+| `hud` | `classic`, `minimal`, `side`, `cinema`, `game` (ignored by `notebook`) |
+| `base` | `square`, `round`, or `island` (floating island) |
+| `avatar` | for `world`: `{ body, skin, cap, legs }` colours of the player who hops between islands |
 | `pattern` | page background: `grid`, `dots`, `lines`, `plain` |
 | `lockTheme` | `dark` or `light` to fix the page to one theme |
 | `three` | 3D colours: `ghost`, `plinth`, `plinthSide` as `[light, dark]`, plus `outline`, `glow`, `paper`, `pencil` |
 
 The page's own colours and fonts are CSS variables in its `<style>` block (`--paper`, `--ink`, `--accent`, `--display`, `--body` and so on). The notebook layout also uses `--page`, `--rule`, `--margin`, `--cover` and `--ring`.
+
+### The game layer
+
+Add `engine/game.css` and `engine/game.js` (after `scenes.js`) and set `hud: 'game'` to get a press-start screen, starfield and grid horizon, player card with level and XP, coin score, quest log, minimap, achievements, combos, 8-bit sound (off until the player switches it on), keyboard controls (arrows or A/D, space, M, P), a pause menu, floating buttons that lean toward the cursor, and a crosshair cursor with a hammer. Configure it with `game: { title, player, questVerb, clearLine, floaters: [{ label, color, pos, hint, title, html, hideSmall }] }`.
 
 ### Writing scenes
 

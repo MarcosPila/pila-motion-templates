@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pixel Pit Arcade</title>
+<meta name="description" content="Video-game style 3D scroll template for an arcade and party venue: floating island levels, a player that jumps between them, quests, coins, achievements and a game cursor.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Chakra+Petch:wght@400;600&family=VT323&display=swap">
+<link rel="stylesheet" href="../engine/scenes.css">
+<link rel="stylesheet" href="../engine/game.css">
+<style>
+:root {
+  --paper: #0b0920; --sheet: #1a1440; --ink: #f4f1ff; --ink-2: #cfc8ef; --ink-3: #9a92c6; --line: #2b2350; --line-2: #463a80;
+  --accent: #ff3ea5; --accent-ink: #ffffff; --accent-text: #ff6fbd; --pat: rgb(45 226 230 / .10);
+  --display: 'Press Start 2P', ui-monospace, monospace; --body: 'Chakra Petch', system-ui, sans-serif; --mono: 'VT323', ui-monospace, monospace;
+  --radius: 0px; --bw: 3px; --hard: 5px; --h-weight: 400; --h-track: 0; color-scheme: dark;
+}
+.intro h1 { font-size: clamp(1.6rem, .7rem + 3.6vw, 3.6rem); line-height: 1.3; text-shadow: 4px 4px 0 var(--g-pink), 8px 8px 0 #000; }
+.intro h1 .hl { color: var(--g-yellow); }
+.outro h2 { font-size: clamp(1.3rem, .7rem + 2.4vw, 2.4rem); line-height: 1.35; }
+.list b { font-size: .95rem; line-height: 1.4; }
+.panel { background: rgb(26 20 64 / .9); }
+</style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const cabinet = (R, x, col) => {
+  R.box(.7, 1.55, .6, x, .03, -1.6, col, 'drop');
+  R.box(.66, .06, .26, x, .86, -1.2, '#1b1630', 'drop');
+  R.box(.5, .38, .03, x, 1.0, -1.29, '#2de2e6', 'pop', { emissive: '#2de2e6', ei: 1.1, rx: -.2 });
+  R.box(.66, .2, .06, x, 1.42, -1.31, '#ffd23f', 'pop', { emissive: '#ffd23f', ei: .8 });
+  R.cyl(.015, .015, .12, x - .14, .89, -1.15, '#1b1630', 'rise'); R.sph(.045, x - .14, 1.03, -1.15, '#ff3ea5', 'pop');
+  R.cyl(.035, .035, .03, x + .05, .9, -1.15, '#3ef08a', 'pop'); R.cyl(.035, .035, .03, x + .17, .9, -1.15, '#ffd23f', 'pop');
+};
+window.SCENES = {
+  key: 'arcade', look: 'voxel', layout: 'world', base: 'island', hud: 'game', speed: 'bouncy', saturation: 1.3, quality: 'medium', lockTheme: 'dark', pattern: 'plain', unit: 'Level', meterLabel: 'XP',
+  brand: { name: 'Pixel Pit Arcade', mark: 'PP' },
+  avatar: { body: '#ff3ea5', skin: '#ffd7a8', cap: '#2de2e6', legs: '#2b2350' },
+  three: { plinth: ['#4cd964', '#4cd964'], plinthSide: ['#8b5a3c', '#8b5a3c'], ghost: ['#2de2e6', '#2de2e6'], outline: '#1b1630' },
+  game: {
+    title: 'PIXEL PIT', player: 'PLAYER 1', questVerb: 'Build the', clearLine: 'The whole venue is open. Game on.',
+    floaters: [
+      { label: 'BOOK A PARTY', color: 'var(--g-pink)', pos: 'left:3%;top:33%', hint: 'Birthdays & teams', title: 'PARTY PACKAGES', html: '<ul><li>Rookie · 10 guests · $249</li><li>Pro · 15 guests · $349</li><li>Legend · 25 guests · $499</li></ul><p>Includes the party room, tokens and cake. Sample prices.</p>' },
+      { label: 'VR SLOTS', color: 'var(--g-green)', pos: 'left:13%;top:52%', hideSmall: true, title: 'VR ARENA', html: '<p>30-minute sessions for up to four players. Walk-ins welcome when a bay is free.</p>' },
+      { label: 'PRICES', color: 'var(--g-cyan)', pos: 'right:3%;top:30%', title: 'TOKENS', html: '<ul><li>20 tokens · $10</li><li>50 tokens · $20</li><li>120 tokens · $40</li></ul><p>Sample prices.</p>' },
+      { label: 'HOURS', color: 'var(--g-yellow)', pos: 'right:12%;top:50%', hideSmall: true, title: 'OPENING HOURS', html: '<ul><li>Mon–Thu · 3pm–10pm</li><li>Fri · 3pm–midnight</li><li>Sat–Sun · 10am–midnight</li></ul>' },
+    ],
+  },
+  intro: { kicker: 'Arcade · VR · parties · snacks', title: 'Press start on a great night out.', highlight: 1, lede: 'Scroll to play. Each level is a corner of the venue, built block by block while our player hops from island to island. Collect the coins, unlock achievements, and book a party when you are ready.', hint: 'Scroll, or press SPACE, to build' },
+  outro: { kicker: 'Level select', title: 'Every level, in order.', lede: 'The same quests, written out.' },
+  scenes: [
+    { code: '1-1', name: 'Arcade corner', blurb: 'Three cabinets, a claw machine and a neon sign.', build(R) {
+      R.step('Neon floor', 'Laying the floor', '#2b2350'); R.tiles(4, '#2b2350', '#352a66');
+      R.step('Walls', 'Raising the walls', '#1f1a3d'); R.walls('#1f1a3d', { h: 2.4 });
+      R.step('Arcade cabinets', 'Plugging in the cabinets', '#ff3ea5'); cabinet(R, -1.35, '#ff3ea5'); cabinet(R, -.5, '#2de2e6'); cabinet(R, .35, '#ffd23f');
+      R.step('Claw machine', 'Loading the claw machine', '#ff3ea5'); R.box(.8, .8, .8, 1.3, .03, -.5, '#ff3ea5', 'rise'); R.box(.8, .9, .8, 1.3, .83, -.5, '#bfe8ff', 'rise', { opacity: .3 }); R.box(.86, .15, .86, 1.3, 1.73, -.5, '#ffd23f', 'drop'); ['#3ef08a', '#2de2e6', '#ffd23f', '#ff3ea5'].forEach((c, i) => R.sph(.12, 1.12 + (i % 2) * .3, .95, -.65 + Math.floor(i / 2) * .28, c, 'pop')); R.cyl(.01, .01, .3, 1.3, 1.43, -.5, '#c9ced3', 'hang'); R.box(.14, .1, .14, 1.3, 1.36, -.5, '#c9ced3', 'hang');
+      R.step('Neon sign', 'Switching on the neon', '#ff3ea5'); R.sign('ARCADE', 1.6, .4, -.5, 1.85, -1.97, '#1b1630', '#ff3ea5', 'pop');
+      R.step('Token machine', 'Filling the token machine', '#2de2e6'); R.box(.4, 1.1, .4, -1.75, .03, .6, '#2de2e6', 'rise'); R.box(.03, .2, .2, -1.54, .75, .6, '#ffd23f', 'pop', { emissive: '#ffd23f', ei: 1 });
+      R.step('Stools', 'Pulling up stools', '#ff3ea5'); [-1.35, -.5, .35].forEach((x) => R.stool(x, -.65, .6, '#ff3ea5', '#1b1630'));
+    } },
+    { code: '1-2', name: 'VR arena', blurb: 'Padded floor, a glowing safety ring and a screen for the crowd.', build(R) {
+      R.step('Padded floor', 'Laying the pads', '#1e3a5f'); R.tiles(4, '#1e3a5f', '#24476e');
+      R.step('Walls', 'Raising the walls', '#141033'); R.walls('#141033', { h: 2.4 });
+      R.step('Safety ring', 'Drawing the safety ring', '#2de2e6'); R.torus(1.25, .05, .2, .06, -.2, '#2de2e6', 'pop', { rx: Math.PI / 2, emissive: '#2de2e6', ei: 1.4 });
+      R.step('Sensor towers', 'Calibrating the sensors', '#3ef08a'); [[-1.5, -1.6], [1.6, -1.6], [-1.5, 1.4], [1.6, 1.4]].forEach(([x, z]) => { R.box(.12, 1.8, .12, x, .03, z, '#1b1630', 'rise'); R.sph(.09, x, 1.9, z, '#3ef08a', 'pop', { emissive: '#3ef08a', ei: 1.4 }); });
+      R.step('Big screen', 'Booting the screen', '#ff3ea5'); R.box(2.2, 1.2, .06, .2, .9, -1.97, '#1b1630', 'pop'); R.sign('PLAYER 1 READY', 2.0, 1.0, .2, 1.0, -1.93, '#ff3ea5', '#ffffff', 'pop');
+      R.step('Player', 'Player suits up', '#3ef08a'); R.figure(.2, -.2, '#3ef08a', '#c68b59', { hair: '#1b1630' }); R.box(.3, .13, .14, .2, .73, -.1, '#1b1630', 'pop');
+      R.step('Beanbags', 'Dropping the beanbags', '#ffd23f'); [[-1.0, 1.3, '#ffd23f'], [1.2, 1.2, '#ff3ea5']].forEach(([x, z, c]) => R.sph(.35, x, .25, z, c, 'drop', { sy: .65 }));
+    } },
+    { code: '1-3', name: 'Party room', blurb: 'Balloons, presents, a cake with candles and a disco ball.', build(R) {
+      R.step('Party floor', 'Polishing the floor', '#ffcf8a'); R.planks(6, '#ffcf8a', '#f4bd6e');
+      R.step('Walls', 'Painting the walls', '#3a1f5c'); R.walls('#3a1f5c', { h: 2.4 });
+      R.step('Party banner', 'Hanging the banner', '#ffd23f'); R.sign('PARTY!', 1.8, .45, .2, 1.8, -1.97, '#ffd23f', '#1b1630', 'pop');
+      R.step('Table & chairs', 'Setting the table', '#ffffff'); R.table(.3, -.6, 1.6, .8, .75, '#ffffff', '#1b1630'); [[-.25, -1.15, 0], [.85, -1.15, 0], [-.25, -.05, Math.PI], [.85, -.05, Math.PI]].forEach(([x, z, r], i) => R.chair(x, z, r, ['#ff3ea5', '#2de2e6', '#3ef08a', '#ffd23f'][i], '#1b1630', .85));
+      R.step('Cake', 'Lighting the candles', '#ff9dbd'); R.cyl(.25, .25, .16, .3, .75, -.6, '#ff9dbd', 'drop'); R.cyl(.18, .18, .14, .3, .91, -.6, '#ffffff', 'drop'); for (let i = 0; i < 4; i++) { const a = i / 4 * Math.PI * 2; R.cyl(.012, .012, .1, .3 + Math.cos(a) * .1, 1.05, -.6 + Math.sin(a) * .1, '#2de2e6', 'rise'); R.sph(.022, .3 + Math.cos(a) * .1, 1.17, -.6 + Math.sin(a) * .1, '#ffd23f', 'pop', { emissive: '#ffb800', ei: 1.6 }); }
+      R.step('Balloons', 'Blowing up balloons', '#ff3ea5'); [[-1.5, 1.7, -1.5, '#ff3ea5'], [-1.2, 1.9, -1.6, '#2de2e6'], [-1.45, 2.05, -1.25, '#ffd23f'], [1.6, 1.8, .9, '#3ef08a'], [1.35, 2.0, 1.1, '#ff3ea5']].forEach(([x, y, z, c]) => { R.cyl(.006, .006, y - .2, x, 0, z, '#ffffff', 'hang'); R.sph(.2, x, y, z, c, 'hang', { sy: 1.2 }); });
+      R.step('Presents', 'Stacking presents', '#2de2e6'); [[1.3, -1.5, '#2de2e6', .4], [1.65, -1.45, '#ff3ea5', .3], [1.45, -1.5, '#ffd23f', .25]].forEach(([x, z, c, s], i) => { R.box(s, s, s, x, i === 2 ? .4 : .03, z, c, 'drop'); R.box(s + .02, .05, .08, x, (i === 2 ? .4 : .03) + s - .02, z, '#ffffff', 'pop'); });
+      R.step('Disco ball', 'Spinning the disco ball', '#e6e6f0'); R.cyl(.008, .008, .35, .3, 2.15, -.6, '#c9ced3', 'hang'); R.sph(.22, .3, 2.0, -.6, '#e6e6f0', 'spin', { emissive: '#9a92c6', ei: .3 });
+    } },
+    { code: '1-4', name: 'Snack bar', blurb: 'Popcorn, slushies and a menu worth pausing for.', build(R) {
+      R.step('Checker floor', 'Laying the checker floor', '#ffffff'); R.box(4, .04, 4, 0, 0, 0, '#f4f1ff', 'growX', { tex: 'checker' });
+      R.step('Walls', 'Raising the walls', '#1f1a3d'); R.walls('#1f1a3d', { h: 2.4 });
+      R.step('Counter', 'Building the counter', '#2de2e6'); R.box(3.0, .9, .6, -.1, .03, -1.5, '#2de2e6', 'rise'); R.box(3.1, .06, .7, -.1, .93, -1.5, '#ffffff', 'drop');
+      R.step('Popcorn machine', 'Popping the corn', '#ff3e5a'); R.box(.6, .3, .45, -1.1, .99, -1.6, '#ff3e5a', 'drop'); R.box(.6, .55, .45, -1.1, 1.29, -1.6, '#fff4cc', 'rise', { opacity: .35 }); for (let i = 0; i < 8; i++) R.sph(.06, -1.3 + (i % 4) * .13, 1.36 + Math.floor(i / 4) * .1, -1.6, '#ffd23f', 'pop'); R.box(.66, .1, .5, -1.1, 1.84, -1.6, '#ff3e5a', 'drop');
+      R.step('Slushie machine', 'Freezing the slushies', '#4aa8ff'); R.box(.7, .15, .45, .4, .99, -1.65, '#c9ced3', 'drop'); [[.25, '#4aa8ff'], [.55, '#ff3ea5']].forEach(([x, c]) => R.cyl(.13, .13, .5, x, 1.14, -1.65, c, 'rise', { opacity: .75 }));
+      R.step('Menu board', 'Writing the menu', '#1b1630'); R.sign('SNACKS', 1.5, .5, -.1, 1.8, -1.97, '#1b1630', '#ffd23f', 'pop');
+      R.step('Stools', 'Lining up stools', '#ffd23f'); [-1.0, -.1, .8].forEach((x) => R.stool(x, -.9, .62, '#ffd23f', '#1b1630'));
+      R.step('Game on', 'Turning on the neon', '#3ef08a'); R.sign('GAME ON', 1.2, .35, -1.97, 1.7, .6, '#1b1630', '#3ef08a', 'pop', { face: 'x' });
+    } },
+    { code: '1-5', name: 'Prize counter', blurb: 'Trade your tickets for plushies, gadgets and the big bear.', build(R) {
+      R.step('Floor', 'Laying the floor', '#352a66'); R.tiles(4, '#352a66', '#2b2350');
+      R.step('Walls', 'Raising the walls', '#1f1a3d'); R.walls('#1f1a3d', { h: 2.4 });
+      R.step('Prize shelves', 'Building the shelves', '#ffd23f'); R.shelf(0, -1.8, 3.2, 1.9, .4, 4, '#ffd23f', {});
+      R.step('Plushies', 'Stocking the plushies', '#ff9dbd'); for (let lv = 0; lv < 3; lv++) for (let i = 0; i < 5; i++) { const x = -1.2 + i * .6, y = .1 + lv * .6, c = ['#ff9dbd', '#2de2e6', '#3ef08a', '#ffd23f', '#c38cff'][(i + lv) % 5]; R.sph(.15, x, y + .16, -1.8, c, 'pop'); R.sph(.05, x - .1, y + .3, -1.8, c, 'pop'); R.sph(.05, x + .1, y + .3, -1.8, c, 'pop'); }
+      R.step('Glass counter', 'Polishing the glass', '#bfe8ff'); R.box(2.4, .5, .55, .2, .03, -.4, '#ff3ea5', 'rise'); R.box(2.4, .45, .55, .2, .53, -.4, '#bfe8ff', 'rise', { opacity: .3 }); ['#ffd23f', '#2de2e6', '#3ef08a', '#ff3ea5'].forEach((c, i) => R.box(.18, .18, .18, -.6 + i * .5, .55, -.4, c, 'pop', { ry: i * .4 }));
+      R.step('Ticket dispenser', 'Loading the tickets', '#ff3e5a'); R.box(.45, 1.0, .4, 1.7, .03, .7, '#ff3e5a', 'rise'); R.box(.3, .04, .5, 1.7, .55, 1.0, '#ffd23f', 'growZ');
+      R.step('Prizes sign', 'Hanging the sign', '#ff3ea5'); R.sign('PRIZES', 1.6, .4, 0, 2.05, -1.97, '#1b1630', '#ff3ea5', 'pop');
+      R.step('The big bear', 'Unboxing the big bear', '#a0714f'); R.sph(.42, -1.5, .45, .9, '#a0714f', 'drop'); R.sph(.3, -1.5, 1.05, .9, '#a0714f', 'drop'); [-1.68, -1.32].forEach((x) => R.sph(.1, x, 1.3, .9, '#a0714f', 'pop')); R.sph(.1, -1.5, 1.0, 1.17, '#ffd7a8', 'pop');
+    } },
+  ],
+};
+</script>
+<script src="../engine/scenes.js"></script>
+<script src="../engine/game.js"></script>
+</body>
+</html>
