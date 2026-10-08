@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ClearLedger Advisory</title>
+<meta name="description" content="Realistic 3D scroll template for a professional services firm: private office, meeting room, reception and team space build themselves as you scroll.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Instrument+Sans:wght@400;600&family=JetBrains+Mono&display=swap">
+<link rel="stylesheet" href="../engine/scenes.css">
+<style>
+:root {
+  --paper: #f2f3ef; --sheet: #ffffff; --ink: #1a2a22; --ink-2: #3c4e45; --ink-3: #5d6f66; --line: #dde2da; --line-2: #bec7bb;
+  --accent: #2f6b4f; --accent-ink: #ffffff; --accent-text: #24563f; --pat: rgb(26 42 34 / .06);
+  --display: 'Instrument Serif', Georgia, serif; --body: 'Instrument Sans', system-ui, sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
+  --radius: 8px; --bw: 1.5px; --hard: 0px; --h-weight: 400; --h-track: -0.01em;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #0f1813; --sheet: #17241d; --ink: #eef4ef; --ink-2: #c4d1c8; --ink-3: #93a598; --line: #22332a; --line-2: #32483c; --accent-text: #7cc3a0; --pat: rgb(238 244 239 / .05); color-scheme: dark; } }
+:root[data-theme="dark"] { --paper: #0f1813; --sheet: #17241d; --ink: #eef4ef; --ink-2: #c4d1c8; --ink-3: #93a598; --line: #22332a; --line-2: #32483c; --accent-text: #7cc3a0; --pat: rgb(238 244 239 / .05); color-scheme: dark; }
+</style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const officeChair = (R, x, z, ry, col) => { R.cyl(.25, .25, .04, x, .04, z, '#2b2f34', 'pop', { metal: .6 }); R.cyl(.03, .03, .38, x, .08, z, '#7a8087', 'rise', { metal: .8 }); R.box(.5, .08, .48, x, .46, z, col, 'drop', { ry, tex: 'fabric' }); const bx = x + Math.sin(ry) * -.22, bz = z + Math.cos(ry) * -.22; R.box(.48, .55, .07, bx, .55, bz, col, 'drop', { ry, tex: 'fabric' }); };
+window.SCENES = {
+  key: 'pro', hud: 'side', look: 'lowpoly', layout: 'V', assembly: 'rise', speed: 'smooth', saturation: .9, quality: 'medium', base: 'square', pattern: 'lines', unit: 'Room', meterLabel: 'Ready',
+  brand: { name: 'ClearLedger Advisory', mark: 'CL' },
+  three: { ghost: ['#2f6b4f', '#7cc3a0'], plinth: ['#e4e6df', '#1d2c24'], plinthSide: ['#c8ccc1', '#142019'] },
+  intro: { kicker: 'Tax · accounting · advisory · planning', title: 'Advice you can act on.', highlight: 3, lede: 'Scroll down and every room of the office gets ready for your meeting. Scroll back up and it is Monday morning, before the coffee.' },
+  outro: { kicker: 'Room by room', title: 'Organised, like your books should be.', lede: 'Same steps, in plain text.' },
+  scenes: [
+    { code: 'OFF-1', name: 'Private office', blurb: 'Walnut panelling, a proper desk and a shelf of well-used references.', build(R) {
+      R.step('Walnut panelling', 'Panelling the walls', '#6e4f37'); R.walls('#6e4f37', { tex: 'wood' });
+      R.step('Carpet', 'Fitting the carpet', '#4b5a52'); R.slab('#4b5a52', { tex: 'carpet' });
+      R.step('Desk', 'Assembling the desk', '#3b2a1e'); R.table(.3, -.9, 1.8, .8, .76, '#3b2a1e', '#1a1d20', { tex: 'wood' });
+      R.step('Chair', 'Rolling in the chair', '#1a2a22'); officeChair(R, .3, -1.6, 0, '#1a2a22');
+      R.step('Monitor & lamp', 'Switching on the screen', '#1a1d20'); R.box(.8, .48, .04, .3, 1.0, -1.15, '#1a1d20', 'pop'); R.box(.74, .42, .02, .3, 1.03, -1.12, '#cfe3d7', 'pop', { emissive: '#9fcfb5', ei: .5 }); R.box(.1, .22, .1, .3, .76, -1.18, '#1a1d20', 'rise'); R.lamp(1.0, -1.0, .76, '#2f6b4f', '#c9a24b');
+      R.step('Bookshelf', 'Shelving the references', '#3b2a1e'); R.shelf(-1.7, .4, .35, 2.0, 1.6, 5, '#3b2a1e', { ry: Math.PI / 2 }); for (let lv = 0; lv < 4; lv++) for (let i = 0; i < 6; i++) R.box(.24, .3, .08, -1.72, .1 + lv * .48, -.25 + i * .22, ['#2f6b4f', '#8a3b2a', '#c9a24b', '#1a2a22', '#e9e2d4'][(i + lv) % 5], 'pop');
+      R.step('Certificate & plant', 'Hanging the certificate', '#c9a24b'); R.box(.6, .45, .04, .3, 1.65, -1.97, '#c9a24b', 'pop', { metal: .6, rough: .35 }); R.box(.5, .35, .02, .3, 1.7, -1.94, '#f6f2e8', 'pop'); R.plant(1.6, .9, 1.4, .04);
+    } },
+    { code: 'OFF-2', name: 'Meeting room', blurb: 'Eight seats, a big screen and a plan everyone can follow.', build(R) {
+      R.step('Walls', 'Painting the walls', '#e8ebe5'); R.walls('#e8ebe5');
+      R.step('Oak floor', 'Laying the floor', '#b99470'); R.planks(8, '#b99470', '#ad8865');
+      R.step('Glass wall', 'Fitting the glass wall', '#cfe8f2'); R.box(.03, 2.2, 3.6, -1.95, .04, .1, '#cfe8f2', 'rise', { opacity: .28 }); R.box(.05, .05, 3.6, -1.95, 2.24, .1, '#1a1d20', 'growZ');
+      R.step('Table', 'Setting the long table', '#f2efe9'); R.table(.4, -.2, 1.0, 2.6, .75, '#f2efe9', '#1a1d20', { tex: 'marble' });
+      R.step('Chairs', 'Placing the chairs', '#2f6b4f'); for (let i = 0; i < 4; i++) { R.chair(-.3, -1.2 + i * .66, Math.PI / 2, '#2f6b4f', '#1a1d20', .9); R.chair(1.1, -1.2 + i * .66, -Math.PI / 2, '#2f6b4f', '#1a1d20', .9); }
+      R.step('Screen', 'Loading the plan', '#1a1d20'); R.box(1.6, .9, .04, .4, 1.1, -1.97, '#1a1d20', 'pop'); R.sign('Q3 PLAN', 1.5, .8, .4, 1.15, -1.93, '#2f6b4f', '#ffffff', 'pop', { depth: .01 });
+      R.step('Lights & water', 'Pouring the water', '#a9d4ff'); [-.6, .4].forEach((z) => R.pendant(.4, z, 1.9, '#1a1d20', '#1a1d20')); for (let i = 0; i < 4; i++) R.cyl(.04, .035, .14, .4 + (i % 2 ? .2 : -.2), .75, -1.0 + i * .55, '#a9d4ff', 'pop', { opacity: .5 });
+    } },
+    { code: 'OFF-3', name: 'Reception', blurb: 'A calm welcome, a logo wall and somewhere comfortable to wait.', build(R) {
+      R.step('Walls', 'Painting the walls', '#e8ebe5'); R.walls('#e8ebe5', { leftColor: '#2f6b4f' });
+      R.step('Stone floor', 'Laying the stone', '#d8d4cc'); R.tiles(4, '#d8d4cc', '#cec9bf', { tex: 'concrete' });
+      R.step('Logo wall', 'Lettering the logo', '#1a2a22'); R.sign('ClearLedger', 2.0, .45, .4, 1.6, -1.97, '#1a2a22', '#e9dcc0', 'pop');
+      R.step('Front desk', 'Building the desk', '#3b2a1e'); R.box(1.8, .95, .55, .4, .04, -1.25, '#3b2a1e', 'rise', { tex: 'wood' }); R.box(1.9, .05, .65, .4, .99, -1.25, '#f2efe9', 'drop', { tex: 'marble' });
+      R.step('Waiting chairs', 'Placing the chairs', '#c9b79c'); [[-1.3, .2], [-1.3, 1.0]].forEach(([x, z]) => { R.box(.7, .38, .7, x, .04, z, '#c9b79c', 'drop', { tex: 'fabric' }); R.box(.14, .45, .7, x - .3, .42, z, '#c9b79c', 'drop', { tex: 'fabric' }); });
+      R.step('Rug & coffee table', 'Setting the coffee table', '#55657d'); R.box(1.8, .02, 1.6, -.6, .04, .6, '#4b5a52', 'growX', { tex: 'carpet' }); R.roundTable(-.4, .6, .35, .4, '#3b2a1e', '#1a1d20'); R.box(.3, .02, .22, -.4, .4, .6, '#e9e2d4', 'drop');
+      R.step('Plant', 'Bringing in the plant', '#4f8a4a'); R.plant(1.6, .4, 1.8, .04);
+    } },
+    { code: 'OFF-4', name: 'Team space', blurb: 'Four desks, good lamps and a whiteboard full of next steps.', build(R) {
+      R.step('Walls', 'Painting the walls', '#eef0ea'); R.walls('#eef0ea');
+      R.step('Carpet tiles', 'Laying carpet tiles', '#5a6a60'); R.tiles(4, '#5a6a60', '#52615a', { tex: 'carpet' });
+      R.step('Desks', 'Assembling the desks', '#e9e2d4'); [[-.5, -.6], [.9, -.6], [-.5, .6], [.9, .6]].forEach(([x, z]) => R.table(x, z, 1.2, .6, .74, '#e9e2d4', '#1a1d20', { tex: 'wood' }));
+      R.step('Chairs', 'Rolling in chairs', '#1a2a22'); [[-.5, -1.15, 0], [.9, -1.15, 0], [-.5, 1.15, Math.PI], [.9, 1.15, Math.PI]].forEach(([x, z, r]) => officeChair(R, x, z, r, '#1a2a22'));
+      R.step('Laptops', 'Opening laptops', '#9aa1a8'); [[-.5, -.55, 0], [.9, -.55, 0], [-.5, .55, Math.PI], [.9, .55, Math.PI]].forEach(([x, z, r]) => { R.box(.36, .02, .25, x, .74, z, '#9aa1a8', 'pop', { ry: r, metal: .7 }); const zb = z + (r ? .12 : -.12); R.box(.36, .24, .02, x, .76, zb, '#9aa1a8', 'pop', { ry: r, rx: r ? .25 : -.25, metal: .7 }); });
+      R.step('Whiteboard', 'Writing next steps', '#ffffff'); R.box(1.8, 1.0, .04, .2, 1.0, -1.97, '#ffffff', 'pop'); [[-.4, 1.25], [.1, 1.05], [.6, 1.3]].forEach(([x, y], i) => R.box(.4, .03, .01, x, y, -1.94, ['#2f6b4f', '#c9a24b', '#8a3b2a'][i], 'growX'));
+      R.step('Acoustic panels & plants', 'Hanging the panels', '#2f6b4f'); for (let i = 0; i < 3; i++) R.box(.04, .7, .7, -1.97, 1.1, -1.2 + i * .9, ['#2f6b4f', '#c9a24b', '#4b5a52'][i], 'pop', { tex: 'fabric' }); R.plant(1.7, 1.6, 1.3, .04);
+    } },
+  ],
+};
+</script>
+<script src="../engine/scenes.js"></script>
+</body>
+</html>

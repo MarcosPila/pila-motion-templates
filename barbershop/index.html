@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sharp Line Barbers</title>
+<meta name="description" content="Cartoon 3D scroll template for a barbershop: the chair, the station, the pole and the waiting area build themselves as you scroll.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Rubik:wght@400;600&family=Space+Mono&display=swap">
+<link rel="stylesheet" href="../engine/scenes.css">
+<style>
+:root {
+  --paper: #f6f1e7; --sheet: #ffffff; --ink: #1b1b1f; --ink-2: #3d3d45; --ink-3: #5e5e68; --line: #e4ddd0; --line-2: #cbbfa9;
+  --accent: #d42f2f; --accent-ink: #ffffff; --accent-text: #b51f1f; --pat: rgb(27 27 31 / .07);
+  --display: 'Bungee', Impact, sans-serif; --body: 'Rubik', system-ui, sans-serif; --mono: 'Space Mono', ui-monospace, monospace;
+  --radius: 6px; --bw: 3px; --hard: 5px; --h-weight: 400; --h-track: 0; --h-case: uppercase;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #121216; --sheet: #1d1d23; --ink: #f6f1e7; --ink-2: #d7cfbf; --ink-3: #a69d8c; --line: #2a2a32; --line-2: #3c3c46; --accent-text: #ff6a6a; --pat: rgb(246 241 231 / .05); color-scheme: dark; } }
+:root[data-theme="dark"] { --paper: #121216; --sheet: #1d1d23; --ink: #f6f1e7; --ink-2: #d7cfbf; --ink-3: #a69d8c; --line: #2a2a32; --line-2: #3c3c46; --accent-text: #ff6a6a; --pat: rgb(246 241 231 / .05); color-scheme: dark; }
+</style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+window.SCENES = {
+  key: 'barber', look: 'toon', layout: 'V', speed: 'snappy', saturation: 1.35, quality: 'medium', base: 'square', pattern: 'lines', unit: 'Spot', meterLabel: 'Ready',
+  brand: { name: 'Sharp Line Barbers', mark: 'SL' },
+  three: { ghost: ['#2f56c9', '#8fa8ff'], plinth: ['#efe6d4', '#2a2a32'], plinthSide: ['#d9cbb0', '#1d1d23'], outline: '#1b1b1f' },
+  intro: { kicker: 'Cuts · fades · shaves · beard trims', title: 'Walk in. Walk out sharp.', highlight: 3, lede: 'Scroll down and the shop sets itself up, chair first. Scroll back up and it is closing time again.' },
+  outro: { kicker: 'Spot by spot', title: 'Clean lines, every time.', lede: 'Same steps, plain text.' },
+  scenes: [
+    { code: 'SPOT-1', name: 'The chair', blurb: 'Chrome, red leather and a pump that still lifts like new.', build(R) {
+      R.step('Checker floor', 'Laying the checker floor', '#ffffff'); R.box(4, .04, 4, 0, 0, 0, '#f4f1ea', 'growX', { tex: 'checker' }); R.walls('#d9e4ef', { h: 2.3 });
+      R.step('Chrome base', 'Bolting down the base', '#c9ced3'); R.cyl(.38, .42, .08, .2, .04, -.3, '#c9ced3', 'pop'); R.cyl(.1, .1, .4, .2, .12, -.3, '#c9ced3', 'rise'); R.box(.16, .04, .3, .5, .08, -.1, '#c9ced3', 'pop');
+      R.step('Seat', 'Fitting the red seat', '#d42f2f'); R.box(.66, .18, .62, .2, .52, -.3, '#d42f2f', 'drop');
+      R.step('Backrest', 'Fitting the backrest', '#d42f2f'); R.box(.66, .8, .14, .2, .7, -.62, '#d42f2f', 'drop'); R.box(.36, .2, .12, .2, 1.55, -.64, '#d42f2f', 'drop');
+      R.step('Armrests & footrest', 'Polishing the chrome', '#c9ced3'); [-.18, .58].forEach((x) => R.box(.08, .08, .55, x, .78, -.3, '#c9ced3', 'pop')); R.box(.5, .04, .2, .2, .22, .1, '#c9ced3', 'pop');
+      R.step('Client takes a seat', 'Seating the client', '#2f56c9'); R.figure(.2, -.35, '#2f56c9', '#c68b59', { yb: .5, hair: '#1b1b1f', s: .95 });
+      R.step('Barber steps in', 'Barber on deck', '#1b1b1f'); R.figure(1.1, .2, '#1b1b1f', '#e8b98f', { hair: '#6b3e1f' }); R.box(.3, .32, .02, 1.1, .2, .38, '#d42f2f', 'pop');
+    } },
+    { code: 'SPOT-2', name: 'Station', blurb: 'Mirror, clippers, combs in blue and a stack of hot towels.', build(R) {
+      R.step('Wall & floor', 'Opening up', '#d9e4ef'); R.walls('#d9e4ef', { h: 2.3 }); R.box(4, .04, 4, 0, 0, 0, '#f4f1ea', 'growX', { tex: 'checker' });
+      R.step('Mirror', 'Hanging the mirror', '#bfe3f0'); R.box(1.4, 1.1, .05, .1, .95, -1.97, '#1b1b1f', 'pop'); R.box(1.3, 1.0, .03, .1, 1.0, -1.93, '#bfe3f0', 'pop');
+      R.step('Counter', 'Fitting the counter', '#8b5a3c'); R.box(2.4, .85, .5, .1, .04, -1.72, '#8b5a3c', 'rise'); R.box(2.5, .06, .56, .1, .89, -1.72, '#f4f1ea', 'drop');
+      R.step('Clippers', 'Charging the clippers', '#1b1b1f'); [-.55, -.35, -.15].forEach((x, i) => R.box(.1, .06, .26, x, .95, -1.65, i === 1 ? '#d42f2f' : '#1b1b1f', 'drop', { ry: .3 }));
+      R.step('Comb jar', 'Filling the comb jar', '#2f8fd4'); R.cyl(.12, .12, .3, .65, .95, -1.75, '#7fd3ff', 'rise', { opacity: .6 }); for (let i = 0; i < 4; i++) R.box(.02, .3, .06, .6 + i * .03, 1.05, -1.75, '#1b1b1f', 'drop', { rz: (i - 1.5) * .15 });
+      R.step('Hot towels', 'Steaming the towels', '#ffffff'); for (let i = 0; i < 4; i++) R.cyl(.06, .06, .3, 1.0 + (i % 2) * .14, .95 + Math.floor(i / 2) * .12, -1.7, '#ffffff', 'pop', { rz: Math.PI / 2, center: true });
+      R.step('Price board', 'Writing up prices', '#1b1b1f'); R.sign('CUT $30', 1.0, .4, -1.97, 1.6, .9, '#1b1b1f', '#ffffff', 'pop', { face: 'x' });
+    } },
+    { code: 'SPOT-3', name: 'The pole', blurb: 'The pole starts turning, the awning drops and the door swings open.', build(R) {
+      R.step('Storefront', 'Painting the storefront', '#2f56c9'); R.box(4.24, 2.5, .12, 0, 0, -2.06, '#2f56c9', 'rise'); R.box(4, .04, 4, 0, 0, 0, '#c9c4b8', 'growX', { tex: 'concrete' });
+      R.step('Glass door', 'Hanging the door', '#bfe3f0'); R.box(.9, 1.7, .06, -.6, .04, -1.97, '#1b1b1f', 'rise'); R.box(.75, 1.55, .03, -.6, .1, -1.93, '#bfe3f0', 'pop'); R.sph(.04, -.3, .9, -1.9, '#ffc93c', 'pop');
+      R.step('Window', 'Fitting the window', '#bfe3f0'); R.box(1.3, 1.0, .05, .9, .7, -1.96, '#bfe3f0', 'pop');
+      R.step('Barber pole', 'Starting the pole', '#d42f2f'); R.cyl(.1, .1, 1.2, 1.85, .9, -1.85, '#ffffff', 'spin', { tex: 'stripes', rep: [1, 2] }); R.sph(.13, 1.85, 2.15, -1.85, '#c9ced3', 'pop'); R.cyl(.12, .12, .08, 1.85, .82, -1.85, '#c9ced3', 'pop');
+      R.step('Awning', 'Dropping the awning', '#d42f2f'); R.box(3.4, .06, .8, .2, 2.0, -1.62, '#d42f2f', 'drop', { rx: .35 }); for (let i = 0; i < 7; i++) R.box(.24, .07, .82, -1.25 + i * .48, 2.005, -1.62, '#ffffff', 'drop', { rx: .35 });
+      R.step('Open sign', 'Flipping to open', '#ffc93c'); R.sign('OPEN', .5, .22, -.6, 1.25, -1.9, '#ffc93c', '#1b1b1f', 'pop');
+      R.step('Bench outside', 'Putting out the bench', '#8b5a3c'); R.box(1.4, .08, .4, .6, .42, .6, '#8b5a3c', 'drop'); [0, 1.2].forEach((x) => R.box(.08, .42, .36, x, 0, .6, '#1b1b1f', 'rise'));
+    } },
+    { code: 'SPOT-4', name: 'Waiting area', blurb: 'A long bench, old magazines, the game on and a coat rack by the door.', build(R) {
+      R.step('Wall & floor', 'Sweeping up', '#e9dcc4'); R.walls('#e9dcc4', { h: 2.3 }); R.box(4, .04, 4, 0, 0, 0, '#f4f1ea', 'growX', { tex: 'checker' });
+      R.step('Leather bench', 'Placing the bench', '#d42f2f'); R.box(2.4, .4, .6, .2, .04, -1.65, '#d42f2f', 'drop'); R.box(2.4, .5, .14, .2, .44, -1.9, '#d42f2f', 'drop');
+      R.step('Magazine table', 'Stacking magazines', '#8b5a3c'); R.table(.2, -.6, .9, .5, .45, '#8b5a3c', '#1b1b1f'); ['#2f56c9', '#ffc93c', '#d42f2f'].forEach((c, i) => R.box(.3, .02, .22, .1 + i * .08, .46 + i * .02, -.6, c, 'drop', { ry: i * .3 }));
+      R.step('TV', 'Putting the game on', '#1b1b1f'); R.box(.05, .7, 1.2, -1.96, 1.2, -.2, '#1b1b1f', 'pop'); R.box(.02, .6, 1.1, -1.93, 1.25, -.2, '#3fbf6f', 'pop', { emissive: '#2fa85c', ei: .8 });
+      R.step('Coat rack', 'Standing the coat rack', '#8b5a3c'); R.cyl(.03, .03, 1.7, 1.5, .04, .9, '#8b5a3c', 'rise'); [0, 1.6, 3.2].forEach((a) => R.sph(.05, 1.5 + Math.cos(a) * .15, 1.7, .9 + Math.sin(a) * .15, '#1b1b1f', 'pop')); R.cyl(.2, .22, .04, 1.5, .02, .9, '#1b1b1f', 'pop');
+      R.step('Plant & radio', 'Turning on the radio', '#4f9d5a'); R.plant(-1.6, 1.4, 1.2, .04, '#d42f2f'); R.box(.4, .25, .18, 1.4, .94, -1.85, '#ffc93c', 'drop'); R.cyl(.07, .07, .02, 1.3, 1.07, -1.76, '#1b1b1f', 'pop', { rx: Math.PI / 2, center: true });
+    } },
+  ],
+};
+</script>
+<script src="../engine/scenes.js"></script>
+</body>
+</html>

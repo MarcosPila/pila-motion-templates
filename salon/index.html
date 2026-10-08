@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chairside Salon</title>
+<meta name="description" content="Realistic 3D scroll template for a hair and beauty salon: styling station, wash bar, nail bar and reception build themselves as you scroll.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Jost:wght@400;500&family=JetBrains+Mono&display=swap">
+<link rel="stylesheet" href="../engine/scenes.css">
+<style>
+:root {
+  --paper: #fbf3f5; --sheet: #ffffff; --ink: #3b1d33; --ink-2: #5d3b52; --ink-3: #7d5a71; --line: #f0dfe5; --line-2: #dcbcc9;
+  --accent: #b0417a; --accent-ink: #ffffff; --accent-text: #9a2f66; --pat: rgb(176 65 122 / .10);
+  --display: 'Cormorant Garamond', Georgia, serif; --body: 'Jost', system-ui, sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
+  --radius: 0px; --bw: 1px; --hard: 0px; --h-weight: 700; --h-track: -0.01em;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #1f1019; --sheet: #2b1724; --ink: #fbeef4; --ink-2: #e2c8d5; --ink-3: #b897a8; --line: #3d2233; --line-2: #573248; --accent-text: #ef7cb6; --pat: rgb(239 124 182 / .09); color-scheme: dark; } }
+:root[data-theme="dark"] { --paper: #1f1019; --sheet: #2b1724; --ink: #fbeef4; --ink-2: #e2c8d5; --ink-3: #b897a8; --line: #3d2233; --line-2: #573248; --accent-text: #ef7cb6; --pat: rgb(239 124 182 / .09); color-scheme: dark; }
+</style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+window.SCENES = {
+  key: 'salon', hud: 'minimal', look: 'flat', layout: 'elevator', assembly: 'rise', speed: 'smooth', saturation: .8, quality: 'medium', base: 'square', pattern: 'plain', unit: 'Station', meterLabel: 'Ready',
+  brand: { name: 'Chairside Salon', mark: 'CS' },
+  three: { outline: '#7d5a71', ghost: ['#b0417a', '#f39cc7'], plinth: ['#f3e6e9', '#3a2131'], plinthSide: ['#e2cbd2', '#2b1724'] },
+  intro: { kicker: 'Hair · colour · nails · beauty', title: 'Book your chair.', highlight: 2, lede: 'Scroll down and each station gets ready for you, brush by brush. Scroll back up to see it before the doors open.' },
+  outro: { kicker: 'Station by station', title: 'Every detail, considered.', lede: 'The same steps, in plain text.' },
+  scenes: [
+    { code: 'ST-01', name: 'Styling station', blurb: 'A hydraulic chair, a tall gold mirror and every tool within reach.', build(R) {
+      R.step('Blush walls', 'Painting the walls', '#f3dce4'); R.walls('#f3dce4');
+      R.step('Terrazzo floor', 'Polishing the floor', '#ece6e3'); R.tiles(4, '#ece6e3', '#e4ddda', { tex: 'marble' });
+      R.step('Gold mirror', 'Hanging the mirror', '#c9a24b'); R.box(1.0, 1.7, .05, .2, .6, -1.97, '#c9a24b', 'pop', { metal: .9, rough: .25 }); R.box(.9, 1.6, .02, .2, .65, -1.93, '#e6eef4', 'pop', { metal: 1, rough: .05 });
+      R.step('Counter', 'Fitting the counter', '#3b1d33'); R.box(1.6, .06, .4, .2, .9, -1.78, '#3b1d33', 'drop', { glossy: true }); R.box(.06, .9, .4, -.55, 0, -1.78, '#3b1d33', 'rise'); R.box(.06, .9, .4, .95, 0, -1.78, '#3b1d33', 'rise');
+      R.step('Styling chair', 'Setting the chair', '#3b1d33'); R.cyl(.3, .3, .05, .2, .04, -.5, '#c9ced3', 'pop', { metal: .9, rough: .2 }); R.cyl(.06, .06, .38, .2, .09, -.5, '#c9ced3', 'rise', { metal: .9, rough: .2 }); R.box(.6, .14, .55, .2, .47, -.5, '#3b1d33', 'drop', { glossy: true }); R.box(.6, .7, .12, .2, .6, -.78, '#3b1d33', 'drop', { glossy: true }); [-.12, .52].forEach((x) => R.box(.08, .06, .5, x, .66, -.5, '#c9ced3', 'pop', { metal: .9, rough: .2 }));
+      R.step('Tools', 'Laying out the tools', '#f2f0ee'); R.cyl(.06, .06, .25, -.25, .96, -1.75, '#2b2f34', 'pop', { rz: Math.PI / 2, center: true }); R.box(.12, .18, .1, -.4, .96, -1.75, '#2b2f34', 'pop'); R.box(.05, .02, .2, .55, .96, -1.75, '#c9a24b', 'pop', { metal: .8 });
+      R.step('Products', 'Lining up products', '#b0417a'); R.bottles(.35, -1.85, .96, 5, ['#b0417a', '#f2f0ee', '#3b1d33'], { gap: .1, h: .2 });
+      R.step('Pendant & plant', 'Lighting the station', '#c9a24b'); R.pendant(.2, -1.0, 1.95, '#c9a24b', '#3b1d33'); R.plant(-1.5, -1.5, 1.3, .04);
+    } },
+    { code: 'ST-02', name: 'Wash bar', blurb: 'A deep basin, a reclining chair and warm towels on standby.', build(R) {
+      R.step('Walls', 'Painting the walls', '#efe7ea'); R.walls('#efe7ea');
+      R.step('Tile wall', 'Tiling the wash wall', '#ffffff'); R.box(4, 1.2, .02, .1, 0, -1.98, '#ffffff', 'rise', { tex: 'tile' });
+      R.step('Marble floor', 'Laying the floor', '#ece6e3'); R.tiles(4, '#ece6e3', '#e4ddda', { tex: 'marble' });
+      R.step('Basin', 'Plumbing the basin', '#f7f7f7'); R.box(.7, .8, .5, .2, .04, -1.72, '#3b1d33', 'rise'); R.box(.7, .2, .55, .2, .84, -1.72, '#f7f7f7', 'drop', { glossy: true }); R.cyl(.02, .02, .3, .2, 1.04, -1.92, '#c9ced3', 'rise', { metal: .9 });
+      R.step('Reclining chair', 'Reclining the chair', '#3b1d33'); R.box(.6, .42, .7, .2, .04, -.8, '#3b1d33', 'drop', { glossy: true }); R.box(.6, .1, .6, .2, .62, -1.25, '#3b1d33', 'drop', { rx: .9, glossy: true }); R.box(.6, .12, .7, .2, .2, -.1, '#3b1d33', 'drop', { rx: -.3, glossy: true });
+      R.step('Towels', 'Stacking warm towels', '#f2f0ee'); R.shelf(-1.3, -1.75, .8, 1.4, .4, 3, '#c9a24b', {}); for (let lv = 0; lv < 3; lv++) for (let i = 0; i < 2; i++) R.box(.3, .12, .3, -1.48 + i * .35, .12 + lv * .65, -1.75, lv % 2 ? '#f3dce4' : '#ffffff', 'drop', { tex: 'fabric' });
+      R.step('Products', 'Restocking shampoo', '#b0417a'); R.bottles(.85, -1.85, .04, 4, ['#b0417a', '#ffffff'], { gap: .14, h: .3 });
+    } },
+    { code: 'ST-03', name: 'Nail bar', blurb: 'A marble table, a good lamp and a wall of colour.', build(R) {
+      R.step('Walls', 'Painting the walls', '#f3dce4'); R.walls('#f3dce4');
+      R.step('Floor', 'Laying the floor', '#d8c3b4'); R.planks(8, '#d8c3b4', '#cfb8a7');
+      R.step('Polish wall', 'Mounting the polish shelves', '#ffffff'); for (let i = 0; i < 4; i++) R.box(2.0, .03, .14, .2, .8 + i * .32, -1.92, '#ffffff', 'growX');
+      R.step('Polish colours', 'Lining up the colours', '#b0417a'); const cols = ['#b0417a', '#e76f51', '#f4a261', '#3b1d33', '#d4a5c8', '#9a2f66', '#ffffff', '#c9a24b']; for (let r = 0; r < 4; r++) for (let i = 0; i < 10; i++) R.cyl(.03, .03, .1, -.65 + i * .19, .83 + r * .32, -1.9, cols[(i + r * 3) % cols.length], 'pop', { glossy: true });
+      R.step('Marble table', 'Setting the table', '#f2efe9'); R.table(.2, -.4, 1.4, .6, .75, '#f2efe9', '#c9a24b', { tex: 'marble' });
+      R.step('Lamp & cushion', 'Angling the lamp', '#c9a24b'); R.cyl(.02, .02, .5, .7, .75, -.55, '#c9a24b', 'rise', { rz: .3, metal: .8 }); R.cyl(.06, .1, .12, .55, 1.2, -.55, '#c9a24b', 'hang', { emissive: '#ffe1a0', ei: .4, metal: .6 }); R.box(.3, .06, .2, .15, .75, -.4, '#f3dce4', 'pop', { tex: 'fabric' });
+      R.step('Chairs', 'Pulling up chairs', '#3b1d33'); R.chair(.2, -1.15, 0, '#3b1d33', '#c9a24b', .9); R.chair(.2, .35, Math.PI, '#b0417a', '#c9a24b', .9);
+      R.step('Flowers', 'Arranging flowers', '#f3dce4'); R.cyl(.06, .05, .2, -.35, .75, -.35, '#ffffff', 'rise', { opacity: .5 }); [[-.35, 1.0, -.35], [-.3, .98, -.3], [-.4, .98, -.4]].forEach(([x, y, z]) => R.sph(.05, x, y, z, '#f3a5c2', 'pop'));
+    } },
+    { code: 'ST-04', name: 'Reception', blurb: 'A curved desk, a shelf of favourites and fresh flowers every week.', build(R) {
+      R.step('Walls', 'Painting the walls', '#efe7ea'); R.walls('#efe7ea');
+      R.step('Herringbone floor', 'Laying the floor', '#cfb8a7'); R.planks(10, '#cfb8a7', '#c4ab98');
+      R.step('Logo wall', 'Lettering the wall', '#3b1d33'); R.sign('Chairside', 1.8, .45, .2, 1.55, -1.97, '#3b1d33', '#e9c9a1', 'pop');
+      R.step('Desk', 'Building the desk', '#ffffff'); R.cyl(.8, .8, .95, .2, .04, -.9, '#ffffff', 'rise', { seg: 40 }); R.cyl(.85, .85, .05, .2, .99, -.9, '#c9a24b', 'drop', { seg: 40, metal: .8, rough: .3 });
+      R.step('Retail shelf', 'Stocking the shelf', '#c9a24b'); R.shelf(-1.75, .2, .3, 1.6, 1.2, 4, '#c9a24b', { ry: Math.PI / 2 }); for (let lv = 1; lv < 4; lv++) for (let i = 0; i < 4; i++) R.cyl(.04, .04, .18, -1.75, .07 + lv * .5, -.15 + i * .25, ['#b0417a', '#ffffff', '#3b1d33'][(i + lv) % 3], 'pop', { glossy: true });
+      R.step('Velvet sofa', 'Placing the sofa', '#5d3b52'); R.box(1.6, .38, .7, .5, .04, 1.4, '#5d3b52', 'drop', { tex: 'fabric' }); R.box(1.6, .42, .16, .5, .42, 1.72, '#5d3b52', 'drop', { tex: 'fabric' });
+      R.step('Flowers & light', 'Finishing touches', '#f3a5c2'); R.cyl(.1, .08, .28, .55, 1.04, -.9, '#ffffff', 'rise'); for (let i = 0; i < 5; i++) R.sph(.07, .5 + (i % 3) * .05, 1.4 + (i % 2) * .05, -.9 + (i - 2) * .04, i % 2 ? '#f3a5c2' : '#ffffff', 'pop'); R.pendant(.2, -.9, 2.0, '#c9a24b', '#3b1d33');
+    } },
+  ],
+};
+</script>
+<script src="../engine/scenes.js"></script>
+</body>
+</html>

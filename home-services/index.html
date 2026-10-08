@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fixwell Home Services</title>
+<meta name="description" content="Cartoon 3D scroll template for a home services company: plumbing, electrical, heating and roofing jobs build themselves as you scroll.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&family=Space+Mono&display=swap">
+<link rel="stylesheet" href="../engine/scenes.css">
+<style>
+:root {
+  --paper: #f4f7fb; --sheet: #ffffff; --ink: #13233a; --ink-2: #3a4a60; --ink-3: #5b6a7e; --line: #dde5ef; --line-2: #b7c5d6;
+  --accent: #ffb703; --accent-ink: #13233a; --accent-text: #a35400; --pat: rgb(19 35 58 / .12);
+  --display: 'Baloo 2', ui-rounded, system-ui, sans-serif; --body: 'Nunito', ui-rounded, system-ui, sans-serif; --mono: 'Space Mono', ui-monospace, monospace;
+  --radius: 16px; --bw: 2.5px; --hard: 4px; --h-weight: 800; --h-track: -0.02em;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #0f1c2e; --sheet: #172a42; --ink: #eef4ff; --ink-2: #c2cfe2; --ink-3: #93a5bf; --line: #24395a; --line-2: #34507a; --accent-text: #ffc23d; --pat: rgb(238 244 255 / .08); color-scheme: dark; } }
+:root[data-theme="dark"] { --paper: #0f1c2e; --sheet: #172a42; --ink: #eef4ff; --ink-2: #c2cfe2; --ink-3: #93a5bf; --line: #24395a; --line-2: #34507a; --accent-text: #ffc23d; --pat: rgb(238 244 255 / .08); color-scheme: dark; }
+</style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+window.SCENES = {
+  key: 'home', look: 'toon', layout: 'U', speed: 'bouncy', saturation: 1.15, quality: 'medium', base: 'round', pattern: 'dots', unit: 'Job',
+  brand: { name: 'Fixwell Home Services', mark: 'FW' },
+  three: { ghost: ['#1f6fb2', '#8cc8ff'], plinth: ['#ffe7a3', '#24476e'], plinthSide: ['#f2c14e', '#1b3657'], outline: '#13233a' },
+  intro: { kicker: 'Plumbing · electrical · heating · roofing', title: 'We fix it right, the first time.', highlight: 5, lede: 'Scroll down and watch each job come together, part by part. Scroll back up to see how it started. Every fix is done in the right order, by one friendly crew.' },
+  outro: { kicker: 'Every job, step by step', title: 'No mystery, just good work.', lede: 'The same steps, in plain text. This is the order a proper fix follows.' },
+  scenes: [
+    { code: 'JOB-01', name: 'Leaky sink', blurb: 'New supply lines, a fresh P-trap and a faucet that finally stops dripping.', build(R) {
+      R.step('Wall & tile floor', 'Setting the scene', '#fdf0d5'); R.walls('#fdf0d5', { h: 2.2 }); R.tiles(4, '#d8ecf7', '#c3dff0');
+      R.step('Plumber on site', 'Arriving on time', '#1f6fb2'); R.figure(1.05, .7, '#1f6fb2', '#e8b98f', { hair: '#3b2a1e' }); R.cyl(.15, .15, .06, 1.05, .87, .7, '#ffb703', 'drop');
+      R.step('Pedestal', 'Setting the pedestal', '#ffffff'); R.cyl(.14, .2, .78, .2, .03, -1.55, '#ffffff', 'rise');
+      R.step('Basin', 'Mounting the basin', '#ffffff'); R.box(1, .22, .62, .2, .8, -1.62, '#ffffff', 'drop'); R.cyl(.3, .24, .05, .2, 1.0, -1.6, '#d7eef7', 'pop');
+      R.step('Supply lines & valves', 'Fitting new supply lines', '#c0c6cc');
+      R.cyl(.02, .02, .5, -.05, .3, -1.9, '#c0c6cc', 'rise'); R.cyl(.02, .02, .5, .45, .3, -1.9, '#c0c6cc', 'rise');
+      R.sph(.05, -.05, .42, -1.85, '#e63946', 'pop'); R.sph(.05, .45, .42, -1.85, '#3a86ff', 'pop');
+      R.step('New P-trap', 'Swapping the P-trap', '#c0c6cc'); R.torus(.1, .028, .2, .55, -1.75, '#c0c6cc', 'pop', { ry: Math.PI / 2 }); R.cyl(.028, .028, .3, .2, .64, -1.86, '#c0c6cc', 'pop', { rx: Math.PI / 2, center: true });
+      R.step('New faucet', 'Installing the faucet', '#c9ced3'); R.cyl(.03, .03, .22, .2, 1.02, -1.86, '#c9ced3', 'rise'); R.box(.04, .04, .2, .2, 1.2, -1.78, '#c9ced3', 'pop'); R.sph(.04, .05, 1.06, -1.86, '#e63946', 'pop'); R.sph(.04, .35, 1.06, -1.86, '#3a86ff', 'pop');
+      R.step('Mirror', 'Hanging the mirror', '#bfe3f0'); R.cyl(.42, .42, .04, .2, 1.72, -1.96, '#bfe3f0', 'pop', { rx: Math.PI / 2, center: true }); R.torus(.42, .04, .2, 1.72, -1.95, '#ffb703', 'pop');
+      R.step('Tidy up', 'Packing the toolbox', '#e63946'); R.box(.6, .3, .3, 1.15, .03, -.4, '#e63946', 'drop'); R.torus(.12, .02, 1.15, .42, -.4, '#2b2f34', 'pop'); R.box(.45, .04, .07, .5, .04, .5, '#9aa3ab', 'drop', { ry: .6 });
+    } },
+    { code: 'JOB-02', name: 'Electrical panel', blurb: 'A safe new panel, labelled breakers and outlets that just work.', build(R) {
+      R.step('Garage wall', 'Prepping the wall', '#e8eef5'); R.walls('#e8eef5', { h: 2.3 }); R.slab('#cfd6dc', { tex: 'concrete' });
+      R.step('Electrician on site', 'Arriving with the gear', '#ff8c42'); R.figure(.45, .55, '#ff8c42', '#c68b59', { hair: '#1b1b1f' }); R.sph(.17, .45, 1.28 - .36, .55, '#ffd23f', 'drop', { sy: .6 });
+      R.step('Panel box', 'Mounting the panel', '#aab4bd'); R.box(.9, 1.2, .16, -.4, .8, -1.92, '#aab4bd', 'rise'); R.box(.8, 1.1, .02, -.4, .85, -1.83, '#c5cdd4', 'pop');
+      R.step('Breakers', 'Snapping in the breakers', '#2b2f34');
+      for (let c = 0; c < 2; c++) for (let r = 0; r < 6; r++) { const x = -.58 + c * .36; R.box(.28, .1, .04, x, .95 + r * .15, -1.81, '#2b2f34', 'pop'); R.box(.07, .05, .03, x, .975 + r * .15, -1.785, c ? '#ffb703' : '#ff8c42', 'pop'); }
+      R.step('Wiring', 'Pulling the wires', '#e63946'); ['#e63946', '#ffffff', '#2b2f34'].forEach((col, i) => R.cyl(.02, .02, .32, -.55 + i * .15, 2.0, -1.92, col, 'rise'));
+      R.step('Outlets & switches', 'Fitting outlets', '#ffffff'); R.box(.18, .28, .03, .9, .45, -1.98, '#ffffff', 'pop'); R.box(.03, .07, .02, .86, .6, -1.96, '#2b2f34', 'pop'); R.box(.03, .07, .02, .94, .6, -1.96, '#2b2f34', 'pop'); R.box(.16, .26, .03, 1.45, 1.15, -1.98, '#ffffff', 'pop'); R.box(.05, .09, .03, 1.45, 1.23, -1.96, '#ffb703', 'pop');
+      R.step('Wall lights', 'Testing the lights', '#fff2c2'); R.box(.05, .14, .14, -1.97, 1.6, -.6, '#2b2f34', 'pop'); R.sph(.12, -1.85, 1.67, -.6, '#fff2c2', 'hang', { emissive: '#ffd77a', ei: 1.3 }); R.box(.05, .14, .14, -1.97, 1.6, .6, '#2b2f34', 'pop'); R.sph(.12, -1.85, 1.67, .6, '#fff2c2', 'hang', { emissive: '#ffd77a', ei: 1.3 });
+      R.step('Ladder & tester', 'Double-checking everything', '#ffb703'); [1.0, 1.42].forEach((x) => R.box(.05, 1.9, .05, x, 0, -1.5, '#ffb703', 'rise', { rx: -.18 })); for (let i = 0; i < 5; i++) R.box(.42, .04, .05, 1.21, .3 + i * .35, -1.5 - (.3 + i * .35) * .18, '#ffb703', 'pop'); R.box(.14, .24, .06, .1, .03, .3, '#ffd23f', 'drop');
+    } },
+    { code: 'JOB-03', name: 'Furnace tune-up', blurb: 'Clean filter, clear ducts and a thermostat that actually listens.', build(R) {
+      R.step('Basement wall', 'Clearing the space', '#eef0e6'); R.walls('#eef0e6', { h: 2.3 }); R.slab('#c9cdd1', { tex: 'concrete' });
+      R.step('Technician on site', 'Arriving with a checklist', '#2a9d8f'); R.figure(.45, .35, '#2a9d8f', '#e8b98f', { hair: '#7a4b2a' }); R.box(.2, .26, .02, .62, .52, .48, '#b07d4f', 'pop');
+      R.step('Furnace', 'Opening up the furnace', '#d6dce2'); R.box(.8, 1.4, .8, -1.2, .04, -1.4, '#d6dce2', 'rise'); R.box(.7, .6, .02, -1.2, .2, -.99, '#b9c2ca', 'pop'); R.sph(.07, -1.2, .45, -.97, '#ff7b29', 'pop', { emissive: '#ff5a1f', ei: 2 });
+      R.step('New filter', 'Sliding in a new filter', '#f5f0d8'); R.box(.75, .05, .62, -1.2, 1.1, -1.32, '#f5f0d8', 'slide');
+      R.step('Ductwork', 'Sealing the ducts', '#c4ccd4'); R.box(.8, .4, .8, -1.2, 1.44, -1.4, '#c4ccd4', 'rise'); R.box(.5, .4, .5, -1.2, 1.84, -1.4, '#c4ccd4', 'rise'); R.box(2.6, .38, .38, .2, 1.9, -1.78, '#c4ccd4', 'growX');
+      R.step('Water heater', 'Flushing the water heater', '#f2f2f0'); R.cyl(.32, .32, 1.3, .7, .04, -1.45, '#f2f2f0', 'rise'); R.cyl(.3, .33, .06, .7, 1.34, -1.45, '#b8c0c8', 'drop'); R.cyl(.06, .06, .5, .7, 1.4, -1.45, '#9aa3ab', 'rise');
+      R.step('Smart thermostat', 'Setting the thermostat', '#5ad1a8'); R.box(.03, .24, .18, -1.97, 1.3, .45, '#ffffff', 'pop'); R.box(.01, .12, .12, -1.955, 1.33, .45, '#5ad1a8', 'pop', { emissive: '#5ad1a8', ei: .9 });
+      R.step('All clear', 'Signing it off', '#ffb703'); R.sign('ALL GOOD', .9, .3, 1.3, 1.25, -1.97, '#ffb703', '#13233a', 'pop');
+    } },
+    { code: 'JOB-04', name: 'Roof repair', blurb: 'From rafters to ridge cap: shingles laid row by row, gutters on.', build(R) {
+      const th = .62, ridge = 2.25, len = 1.62;
+      const P = (s, n, back) => { const y = ridge - s * Math.sin(th) + n * Math.cos(th); const z = (s * Math.cos(th) + n * Math.sin(th)) * (back ? -1 : 1); return [y, z]; };
+      R.step('House walls', 'Framing the house', '#f6d6a8'); R.box(3, 1.3, 2.4, 0, .02, 0, '#f6d6a8', 'rise');
+      R.step('Door & windows', 'Fitting door and windows', '#e63946'); R.box(.5, .8, .04, .45, .02, 1.21, '#e63946', 'pop'); R.box(.5, .42, .04, -.7, .55, 1.21, '#bfe3f0', 'pop'); R.box(.04, .42, .5, 1.51, .55, .2, '#bfe3f0', 'pop');
+      R.step('Rafters', 'Raising the rafters', '#c9a06a'); for (let i = 0; i < 5; i++) { const x = -1.4 + i * .7; [false, true].forEach((b) => { const [y, z] = P(len / 2, 0, b); R.box(.06, .06, len, x, y, z, '#c9a06a', 'drop', { center: true, rx: b ? -th : th }); }); }
+      R.step('Sheathing', 'Nailing down sheathing', '#d8b98a'); [false, true].forEach((b) => { const [y, z] = P(len / 2, .05, b); R.box(3.2, .04, len, 0, y, z, '#d8b98a', 'growX', { center: true, rx: b ? -th : th }); });
+      R.step('Underlayment', 'Rolling out underlayment', '#3b3f45'); [false, true].forEach((b) => { const [y, z] = P(len / 2, .08, b); R.box(3.2, .015, len, 0, y, z, '#3b3f45', 'growX', { center: true, rx: b ? -th : th }); });
+      R.step('Shingles', 'Laying shingles row by row', '#5b6f8c'); [false, true].forEach((b) => { for (let r = 0; r < 5; r++) { const [y, z] = P(len - (r + .5) * .32, .11, b); R.box(3.25, .05, .34, 0, y, z, r % 2 ? '#5b6f8c' : '#4f6280', 'growX', { center: true, rx: b ? -th : th }); } });
+      R.step('Ridge cap & vent', 'Capping the ridge', '#2b2f34'); R.box(3.3, .09, .26, 0, ridge + .08, 0, '#2b2f34', 'growX', { center: true }); R.cyl(.08, .08, .25, -.8, 1.92, .45, '#9aa3ab', 'pop');
+      R.step('Gutters', 'Hanging the gutters', '#e9ecef'); R.box(3.2, .08, .1, 0, 1.24, 1.4, '#e9ecef', 'growX'); R.cyl(.04, .04, 1.22, 1.55, .02, 1.4, '#e9ecef', 'rise');
+      R.step('Roofer signs off', 'Final walk-around', '#e76f51'); R.figure(-1.5, 1.7, '#e76f51', '#c68b59', { hair: '#2b2f34' }); R.sph(.17, -1.5, .92, 1.7, '#ffd23f', 'drop', { sy: .6 });
+    }, ground: { color: '#8fd16b' } },
+  ],
+};
+</script>
+<script src="../engine/scenes.js"></script>
+</body>
+</html>

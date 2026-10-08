@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NorthKey Realty</title>
+<meta name="description" content="Realistic 3D scroll template for a real estate agency: a new build, a staged condo, a backyard and a sold sign build themselves as you scroll.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;600&family=JetBrains+Mono&display=swap">
+<link rel="stylesheet" href="../engine/scenes.css">
+<style>
+:root {
+  --paper: #f1f2f5; --sheet: #ffffff; --ink: #0f1b2d; --ink-2: #33415a; --ink-3: #56637b; --line: #d9dee8; --line-2: #b8c1d1;
+  --accent: #c9a24b; --accent-ink: #0f1b2d; --accent-text: #8a6a1f; --pat: rgb(15 27 45 / .06);
+  --display: 'DM Serif Display', Georgia, serif; --body: 'Manrope', system-ui, sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
+  --radius: 6px; --bw: 1.5px; --hard: 0px; --h-weight: 400; --h-track: -0.01em;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #0b1424; --sheet: #121f35; --ink: #eef2fa; --ink-2: #c0cadb; --ink-3: #8e9ab0; --line: #1d2b45; --line-2: #2b3c5c; --accent-text: #e3c06e; --pat: rgb(238 242 250 / .05); color-scheme: dark; } }
+:root[data-theme="dark"] { --paper: #0b1424; --sheet: #121f35; --ink: #eef2fa; --ink-2: #c0cadb; --ink-3: #8e9ab0; --line: #1d2b45; --line-2: #2b3c5c; --accent-text: #e3c06e; --pat: rgb(238 242 250 / .05); color-scheme: dark; }
+</style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const roof = (R, th, ridge, len, wide, col1, col2) => {
+  const P = (s, n, back) => [ridge - s * Math.sin(th) + n * Math.cos(th), (s * Math.cos(th) + n * Math.sin(th)) * (back ? -1 : 1)];
+  [false, true].forEach((b) => { const [y, z] = P(len / 2, .03, b); R.box(wide, .05, len, 0, y, z, col1, 'growX', { center: true, rx: b ? -th : th }); });
+  [false, true].forEach((b) => { for (let r = 0; r < 4; r++) { const [y, z] = P(len - (r + .5) * (len / 4), .07, b); R.box(wide + .05, .05, len / 4 + .02, 0, y, z, col2, 'growX', { center: true, rx: b ? -th : th, tex: 'shingle' }); } });
+};
+window.SCENES = {
+  key: 'realty', hud: 'side', look: 'real', layout: 'board', speed: 'smooth', saturation: .95, quality: 'high', base: 'square', pattern: 'grid', unit: 'Listing', meterLabel: 'Ready',
+  brand: { name: 'NorthKey Realty', mark: 'NK' },
+  three: { ghost: ['#8a6a1f', '#e3c06e'], plinth: ['#e3e6ec', '#1a2a45'], plinthSide: ['#c7cdd8', '#121f35'] },
+  intro: { kicker: 'Buy · sell · stage · new builds', title: 'Find your next place.', highlight: 2, lede: 'Scroll down and watch each listing come together, from footings to the sold sign. Scroll back up and it is back on the market.' },
+  outro: { kicker: 'Listing by listing', title: 'Every home, ready to show.', lede: 'The same steps, in plain text.' },
+  scenes: [
+    { code: 'LOT-14', name: 'New build', blurb: 'A three-bed on a quiet street, built from the ground up.', ground: { color: '#7fa864', tex: 'grass' }, build(R) {
+      R.step('Foundation', 'Pouring the foundation', '#a3a4a2'); R.box(3.0, .3, 2.4, 0, 0, 0, '#a3a4a2', 'rise', { tex: 'concrete' });
+      R.step('Framing', 'Raising the frame', '#c9a06a'); for (let i = 0; i < 7; i++) { R.box(.06, 1.4, .1, -1.4 + i * .466, .3, 1.15, '#c9a06a', 'rise'); R.box(.06, 1.4, .1, -1.4 + i * .466, .3, -1.15, '#c9a06a', 'rise'); } R.box(3.0, .08, .1, 0, 1.7, 1.15, '#c9a06a', 'growX'); R.box(3.0, .08, .1, 0, 1.7, -1.15, '#c9a06a', 'growX');
+      R.step('Walls', 'Closing in the walls', '#e7e1d6'); R.box(3.0, 1.45, 2.4, 0, .3, 0, '#e7e1d6', 'rise', { tex: 'concrete' });
+      R.step('Roof', 'Shingling the roof', '#3d4651'); roof(R, .58, 2.55, 1.45, 3.3, '#8a7a62', '#3d4651');
+      R.step('Windows & door', 'Fitting windows', '#9fc2dc'); [[-.85, .95], [.85, .95]].forEach(([x, y]) => R.box(.6, .55, .04, x, y, 1.21, '#9fc2dc', 'pop', { emissive: '#bcd6f0', ei: .35, rough: .15 })); R.box(.5, .95, .05, 0, .3, 1.22, '#0f1b2d', 'pop', { glossy: true }); R.sph(.03, .17, .75, 1.26, '#c9a24b', 'pop', { metal: .9 });
+      R.step('Porch & path', 'Laying the path', '#c9c2b6'); R.box(1.2, .1, .5, 0, .2, 1.45, '#c9c2b6', 'drop', { tex: 'concrete' }); [1.85, 2.12].forEach((z) => R.box(.5, .04, .22, 0, .02, z, '#d8d2c6', 'pop', { tex: 'concrete' }));
+      R.step('Landscaping', 'Planting the garden', '#4f8a4a'); [[-1.3, 1.5], [1.3, 1.5], [-1.7, -1.6], [1.7, -1.6]].forEach(([x, z]) => R.sph(.3, x, .3, z, '#4f8a4a', 'pop')); R.cyl(.08, .12, 1.2, 1.75, .02, .3, '#6b4f36', 'rise'); R.sph(.5, 1.75, 1.5, .3, '#5b9a50', 'pop');
+    } },
+    { code: 'UNIT-6', name: 'Staged condo', blurb: 'Light, layered and ready for the open house on Saturday.', build(R) {
+      R.step('Walls', 'Painting the walls', '#efebe5'); R.walls('#efebe5');
+      R.step('Oak floor', 'Laying the floor', '#c4a07a'); R.planks(8, '#c4a07a', '#b8946d');
+      R.step('Window wall', 'Revealing the view', '#a9c8e8'); R.box(.04, 2.0, 3.0, -1.97, .25, .2, '#a9c8e8', 'pop', { emissive: '#bcd6f0', ei: .5, rough: .15 }); for (let i = 0; i < 4; i++) R.box(.05, 2.0, .05, -1.95, .25, -1.3 + i * 1, '#1f2a36', 'rise');
+      R.step('Sofa', 'Staging the sofa', '#d8d2c7'); R.box(2.0, .4, .85, .3, .04, -1.45, '#d8d2c7', 'drop', { tex: 'fabric' }); R.box(2.0, .45, .2, .3, .44, -1.82, '#d8d2c7', 'drop', { tex: 'fabric' }); R.box(.35, .3, .1, -.4, .52, -1.6, '#c9a24b', 'drop', { tex: 'fabric' });
+      R.step('Rug & coffee table', 'Layering the rug', '#55657d'); R.box(2.2, .02, 1.6, .3, .04, -.5, '#55657d', 'growX', { tex: 'carpet' }); R.roundTable(.3, -.5, .45, .42, '#f2efe9', '#2b2f34');
+      R.step('Dining set', 'Setting the dining table', '#6e4f37'); R.table(.6, 1.2, 1.4, .8, .75, '#6e4f37', '#2b2f34', { tex: 'wood' }); [[.2, .65, 0], [1.0, .65, 0], [.2, 1.75, Math.PI], [1.0, 1.75, Math.PI]].forEach(([x, z, r]) => R.chair(x, z, r, '#efebe5', '#2b2f34', .85));
+      R.step('Art & plants', 'Hanging the art', '#c9a24b'); R.box(1.0, .7, .04, .3, 1.35, -1.97, '#c9a24b', 'pop', { metal: .6, rough: .35 }); R.box(.9, .6, .02, .3, 1.4, -1.94, '#0f1b2d', 'pop'); R.plant(-1.5, -1.6, 1.4, .04); R.pendant(.6, 1.2, 1.8, '#2b2f34', '#2b2f34');
+    } },
+    { code: 'LOT-9', name: 'Backyard', blurb: 'A cedar fence, a stone patio and a grill for summer evenings.', ground: { color: '#7fa864', tex: 'grass' }, build(R) {
+      R.step('Patio stones', 'Laying the patio', '#cdc6ba'); for (let r = 0; r < 3; r++) for (let c = 0; c < 4; c++) R.box(.62, .05, .62, -.9 + c * .66, .02, -1.0 + r * .66, (r + c) % 2 ? '#cdc6ba' : '#c2baad', 'pop', { tex: 'concrete' });
+      R.step('Fence posts', 'Setting the posts', '#8a6a4e'); for (let i = 0; i < 5; i++) { R.box(.1, 1.4, .1, -2.0 + i * 1.0, .02, -2.0, '#8a6a4e', 'rise'); R.box(.1, 1.4, .1, -2.0, .02, -2.0 + i * 1.0, '#8a6a4e', 'rise'); }
+      R.step('Fence boards', 'Nailing the boards', '#b98a5e'); for (let i = 0; i < 3; i++) { R.box(4, .3, .04, 0, .2 + i * .4, -1.95, '#b98a5e', 'growX', { tex: 'wood' }); R.box(.04, .3, 4, -1.95, .2 + i * .4, 0, '#b98a5e', 'growZ', { tex: 'wood' }); }
+      R.step('Grill', 'Firing up the grill', '#1f2328'); R.box(.8, .7, .5, 1.3, .02, -1.4, '#1f2328', 'rise', { metal: .6, rough: .35 }); R.cyl(.25, .25, .8, 1.3, .9, -1.4, '#1f2328', 'drop', { rz: Math.PI / 2, center: true, metal: .6, rough: .35 });
+      R.step('Patio set', 'Setting the patio table', '#f2efe9'); R.roundTable(-.2, -.4, .5, .72, '#f2efe9', '#2b2f34'); R.chair(-.95, -.4, Math.PI / 2, '#2b2f34', '#2b2f34', .85); R.chair(.55, -.4, -Math.PI / 2, '#2b2f34', '#2b2f34', .85);
+      R.step('Garden bed', 'Planting the garden', '#e76f51'); R.box(2.4, .3, .5, .2, .02, 1.5, '#8a6a4e', 'rise', { tex: 'wood' }); for (let i = 0; i < 8; i++) R.sph(.1, -.8 + i * .28, .4, 1.5, ['#e76f51', '#f4a261', '#ffffff', '#c9a24b'][i % 4], 'pop');
+      R.step('Shade tree', 'Planting the tree', '#4f8a4a'); R.cyl(.1, .14, 1.5, 1.5, .02, .6, '#6b4f36', 'rise'); R.sph(.7, 1.5, 1.9, .6, '#4f8a4a', 'pop'); R.sph(.45, 1.15, 1.6, .9, '#5b9a50', 'pop');
+    } },
+    { code: 'SOLD', name: 'Sold', blurb: 'Fresh curb appeal, a new mailbox and the sign everyone waits for.', ground: { color: '#7fa864', tex: 'grass' }, build(R) {
+      R.step('Front of house', 'Washing the siding', '#d9d2c4'); R.box(3.6, 1.8, .4, 0, .02, -1.6, '#d9d2c4', 'rise', { tex: 'brick' });
+      R.step('Roofline', 'Cleaning the gutters', '#3d4651'); R.box(3.9, .1, .9, 0, 1.82, -1.55, '#3d4651', 'drop', { tex: 'shingle' });
+      R.step('Door & windows', 'Painting the door', '#0f1b2d'); R.box(.6, 1.1, .05, 0, .02, -1.38, '#0f1b2d', 'pop', { glossy: true }); [[-1.1], [1.1]].forEach(([x]) => R.box(.7, .6, .04, x, .8, -1.38, '#9fc2dc', 'pop', { emissive: '#bcd6f0', ei: .35 }));
+      R.step('Path', 'Edging the path', '#d8d2c6'); for (let i = 0; i < 5; i++) R.box(.6, .04, .4, 0, .02, -1.0 + i * .55, '#d8d2c6', 'pop', { tex: 'concrete' });
+      R.step('Mailbox', 'Installing the mailbox', '#0f1b2d'); R.box(.08, .9, .08, -1.1, .02, 1.4, '#6b4f36', 'rise'); R.box(.22, .2, .4, -1.1, .92, 1.4, '#0f1b2d', 'drop', { glossy: true });
+      R.step('For-sale sign', 'Planting the sign', '#c9a24b'); R.box(.07, 1.5, .07, 1.2, .02, 1.3, '#f2efe9', 'rise'); R.box(.9, .07, .07, 1.55, 1.42, 1.3, '#f2efe9', 'growX'); R.sign('NORTHKEY', .8, .4, 1.6, .74, 1.3, '#0f1b2d', '#c9a24b', 'hang');
+      R.step('Sold rider', 'Adding the sold rider', '#c9a24b'); R.sign('SOLD', .8, .2, 1.6, 1.17, 1.31, '#c9a24b', '#0f1b2d', 'drop');
+    } },
+  ],
+};
+</script>
+<script src="../engine/scenes.js"></script>
+</body>
+</html>

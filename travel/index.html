@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lakeside Stays</title>
+<meta name="description" content="Realistic 3D scroll template for a hotel or vacation rental: suite, lobby, pool deck and cabin build themselves as you scroll.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Work+Sans:wght@400;600&family=JetBrains+Mono&display=swap">
+<link rel="stylesheet" href="../engine/scenes.css">
+<style>
+:root {
+  --paper: #eef2f1; --sheet: #ffffff; --ink: #0f2e33; --ink-2: #36545a; --ink-3: #58757a; --line: #d5e1e0; --line-2: #b0c6c5;
+  --accent: #1b8a8f; --accent-ink: #ffffff; --accent-text: #12686c; --pat: rgb(27 138 143 / .12);
+  --display: 'Fraunces', Georgia, serif; --body: 'Work Sans', system-ui, sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
+  --radius: 10px; --bw: 1.5px; --hard: 0px; --h-weight: 700; --h-track: -0.02em;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #0b1f22; --sheet: #12302f; --ink: #e9f6f5; --ink-2: #b9d3d2; --ink-3: #88a9a8; --line: #1d3d3e; --line-2: #2b5555; --accent-text: #5fd0d4; --pat: rgb(95 208 212 / .10); color-scheme: dark; } }
+:root[data-theme="dark"] { --paper: #0b1f22; --sheet: #12302f; --ink: #e9f6f5; --ink-2: #b9d3d2; --ink-3: #88a9a8; --line: #1d3d3e; --line-2: #2b5555; --accent-text: #5fd0d4; --pat: rgb(95 208 212 / .10); color-scheme: dark; }
+</style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+window.SCENES = {
+  key: 'stay', hud: 'cinema', look: 'real', layout: 'helix', speed: 'cinematic', saturation: 1.05, quality: 'high', base: 'square', pattern: 'plain', unit: 'Space', meterLabel: 'Ready',
+  brand: { name: 'Lakeside Stays', mark: 'LS' },
+  three: { ghost: ['#1b8a8f', '#7fd8dc'], plinth: ['#e8e2d8', '#1d3b3d'], plinthSide: ['#cfc6b8', '#142c2e'] },
+  intro: { kicker: 'Suites · lobby · pool · cabins', title: 'Stay a little longer.', highlight: 2, lede: 'Scroll down and every space gets ready for you, linen by linen. Scroll back up and watch it reset for the next guest.' },
+  outro: { kicker: 'Space by space', title: 'Ready before you arrive.', lede: 'The same steps, in plain text.' },
+  scenes: [
+    { code: 'STAY-01', name: 'Lake suite', blurb: 'Oak floors, crisp linen and a window full of water.', build(R) {
+      R.step('Walls', 'Raising the walls', '#efe9e1'); R.walls('#efe9e1');
+      R.step('Oak floor', 'Laying oak boards', '#c99d6a'); R.planks(8, '#c99d6a', '#ba8e5d');
+      R.step('Lake window', 'Framing the view', '#9fd2e6'); R.box(.05, 1.4, 2.2, -1.97, .7, -.2, '#ffffff', 'pop'); R.box(.02, 1.3, 2.1, -1.95, .75, -.2, '#9fd2e6', 'pop', { emissive: '#bfe6f3', ei: .5 });
+      R.step('Bed frame', 'Assembling the bed', '#8a6a4e'); R.box(1.9, .32, 2.1, .5, .04, -.85, '#8a6a4e', 'rise', { tex: 'wood' }); R.box(2.1, 1.1, .1, .5, .04, -1.93, '#5e7a7c', 'rise', { tex: 'fabric' });
+      R.step('Linen', 'Making the bed', '#f7f6f2'); R.box(1.8, .24, 2.0, .5, .36, -.88, '#f7f6f2', 'drop', { tex: 'fabric' }); R.box(1.86, .07, 1.3, .5, .6, -.5, '#2f5f66', 'drop', { tex: 'fabric' }); [.1, .9].forEach((x) => R.box(.65, .15, .38, x, .6, -1.65, '#ffffff', 'drop', { tex: 'fabric' }));
+      R.step('Nightstands & lamps', 'Placing the nightstands', '#8a6a4e'); [-.75, 1.75].forEach((x) => { R.box(.42, .48, .4, x, .04, -1.72, '#8a6a4e', 'drop', { tex: 'wood' }); R.lamp(x, -1.72, .52, '#f4ead2', '#a07a3a'); });
+      R.step('Armchair', 'Placing the armchair', '#c9b79c'); R.box(.8, .4, .75, -1.2, .04, 1.1, '#c9b79c', 'drop', { tex: 'fabric' }); R.box(.8, .5, .16, -1.2, .44, .8, '#c9b79c', 'drop', { tex: 'fabric' });
+      R.step('Luggage & plant', 'Bringing up the bags', '#1b8a8f'); R.box(.5, .7, .25, 1.3, .04, 1.2, '#1b8a8f', 'slide', { glossy: true }); R.torus(.08, .015, 1.3, .82, 1.2, '#2b2f34', 'pop'); R.plant(1.75, .3, 1.2, .04);
+    } },
+    { code: 'STAY-02', name: 'Lobby', blurb: 'Marble underfoot, a warm desk and a sofa you will not want to leave.', build(R) {
+      R.step('Walls', 'Raising the walls', '#e9e3d9'); R.walls('#e9e3d9');
+      R.step('Marble floor', 'Setting the marble', '#ece8e1'); R.tiles(4, '#ece8e1', '#e2ddd4', { tex: 'marble' });
+      R.step('Reception desk', 'Building the desk', '#6e4f37'); R.box(2.2, 1.0, .6, .3, .04, -1.4, '#6e4f37', 'rise', { tex: 'wood' }); R.box(2.3, .05, .7, .3, 1.04, -1.4, '#f2efe9', 'drop', { tex: 'marble' });
+      R.step('Lakeside sign', 'Hanging the sign', '#1b8a8f'); R.sign('LAKESIDE', 1.8, .38, .3, 1.75, -1.97, '#0f2e33', '#f4e3c1', 'pop');
+      R.step('Rug', 'Rolling out the rug', '#2f5f66'); R.box(2.2, .02, 1.6, .1, .04, .8, '#2f5f66', 'growX', { tex: 'carpet' });
+      R.step('Sofa', 'Placing the sofa', '#c9b79c'); R.box(2.0, .4, .8, -.1, .04, 1.5, '#c9b79c', 'drop', { tex: 'fabric' }); R.box(2.0, .45, .2, -.1, .44, 1.85, '#c9b79c', 'drop', { tex: 'fabric' });
+      R.step('Coffee table', 'Setting the table', '#6e4f37'); R.roundTable(.2, .6, .4, .4, '#2b2f34', '#2b2f34');
+      R.step('Pendant & plant', 'Lighting the lobby', '#d9b56b'); R.pendant(.3, -.6, 1.8, '#d9b56b', '#2b2f34'); R.plant(-1.6, -1.5, 1.6, .04); R.box(.8, .05, .5, 1.5, .5, .9, '#c9a24b', 'drop', { metal: .8, rough: .3 }); [[1.15], [1.85]].forEach(([x]) => R.cyl(.02, .02, 1.1, x, .04, .9, '#c9a24b', 'rise', { metal: .8, rough: .3 }));
+    } },
+    { code: 'STAY-03', name: 'Pool deck', blurb: 'Warm stone, still water, loungers and an umbrella for the afternoon.', build(R) {
+      R.step('Stone deck', 'Laying the stone', '#d8d2c6'); R.slab('#d8d2c6', { tex: 'concrete' });
+      R.step('Pool', 'Filling the pool', '#3aa6c2'); R.box(2.4, .03, 2.0, -.5, .04, -.6, '#3aa6c2', 'growX', { tex: 'water', emissive: '#1f7e99', ei: .25, rough: .1 });
+      R.step('Coping', 'Edging the pool', '#f2efe9'); R.box(2.6, .06, .14, -.5, .04, -1.67, '#f2efe9', 'growX'); R.box(2.6, .06, .14, -.5, .04, .47, '#f2efe9', 'growX'); R.box(.14, .06, 2.2, -1.77, .04, -.6, '#f2efe9', 'growZ'); R.box(.14, .06, 2.2, .77, .04, -.6, '#f2efe9', 'growZ');
+      R.step('Loungers', 'Setting out loungers', '#ffffff'); [.6, 1.4].forEach((x) => { R.box(.55, .22, 1.3, x, .04, 1.2, '#ffffff', 'drop'); R.box(.55, .06, .55, x, .4, .6, '#ffffff', 'drop', { rx: -.7 }); });
+      R.step('Towels', 'Rolling the towels', '#1b8a8f'); [.6, 1.4].forEach((x, i) => R.cyl(.07, .07, .5, x, .32, 1.55, i ? '#e76f51' : '#1b8a8f', 'pop', { rz: Math.PI / 2, center: true }));
+      R.step('Umbrella', 'Opening the umbrella', '#f4e3c1'); R.cyl(.03, .03, 2.0, 1.0, .04, .2, '#8a6a4e', 'rise'); R.cone(1.0, .4, 1.0, 2.0, .2, '#f4e3c1', 'drop', { seg: 10 });
+      R.step('Palms', 'Planting the palms', '#4f9d5a'); [[-1.7, 1.4], [1.7, -1.6]].forEach(([x, z]) => { R.cyl(.08, .12, 1.8, x, .04, z, '#8a6a4e', 'rise'); for (let i = 0; i < 5; i++) { const a = i / 5 * Math.PI * 2; R.box(.6, .03, .18, x + Math.cos(a) * .3, 1.82, z + Math.sin(a) * .3, '#4f9d5a', 'pop', { ry: -a, rz: -.35 }); } });
+    } },
+    { code: 'STAY-04', name: 'Lake cabin', blurb: 'Log walls, a stone fireplace and a kayak waiting by the door.', build(R) {
+      R.step('Log walls', 'Stacking the logs', '#a0714f'); for (let i = 0; i < 9; i++) { R.cyl(.14, .14, 4.2, 0, .14 + i * .27, -2.04, i % 2 ? '#a0714f' : '#93663f', 'slide', { rz: Math.PI / 2, center: true, tex: 'wood' }); R.cyl(.14, .14, 4, -2.04, .14 + i * .27, 0, i % 2 ? '#93663f' : '#a0714f', 'drop', { rx: Math.PI / 2, center: true, tex: 'wood' }); }
+      R.step('Pine floor', 'Laying pine boards', '#c99d6a'); R.planks(6, '#d4ab79', '#c99d6a');
+      R.step('Stone fireplace', 'Building the fireplace', '#8e9093'); R.box(1.4, 1.2, .5, .6, .04, -1.7, '#8e9093', 'rise', { tex: 'brick' }); R.box(.7, .5, .05, .6, .2, -1.43, '#1c1f22', 'pop'); R.sph(.16, .6, .36, -1.55, '#ff8a3a', 'pop', { emissive: '#ff6a1a', ei: 2 }); R.box(1.6, .08, .6, .6, 1.24, -1.65, '#6e4f37', 'drop', { tex: 'wood' });
+      R.step('Rug', 'Rolling out the rug', '#b0413e'); R.box(2.0, .02, 1.4, .3, .04, -.2, '#b0413e', 'growX', { tex: 'carpet' });
+      R.step('Armchairs', 'Pulling up armchairs', '#5e7a7c'); [[-.5, .5], [1.2, .5]].forEach(([x, z]) => { R.box(.75, .4, .75, x, .04, z, '#5e7a7c', 'drop', { tex: 'fabric' }); R.box(.75, .5, .15, x, .44, z + .3, '#5e7a7c', 'drop', { tex: 'fabric' }); });
+      R.step('Kayak', 'Hanging the kayak', '#e76f51'); R.sph(.22, -1.85, 1.6, .3, '#e76f51', 'hang', { sz: 6, sx: .6, glossy: true });
+      R.step('Lantern & books', 'Lighting the lantern', '#ffd77a'); R.box(.5, .4, .4, 1.6, .04, 1.5, '#6e4f37', 'drop', { tex: 'wood' }); R.cyl(.08, .08, .22, 1.6, .44, 1.5, '#fff2c2', 'pop', { emissive: '#ffcf5a', ei: 1.2 }); R.box(.3, .05, .2, 1.45, .44, 1.4, '#2f5f66', 'drop');
+    } },
+  ],
+};
+</script>
+<script src="../engine/scenes.js"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Torque &amp; Co. Garage</title>
+<meta name="description" content="Realistic 3D scroll template for an auto shop: oil change, brakes, detailing and tires build themselves as you scroll.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Barlow:wght@400;600;700&family=JetBrains+Mono&display=swap">
+<link rel="stylesheet" href="../engine/scenes.css">
+<style>
+:root {
+  --paper: #eef0f2; --sheet: #ffffff; --ink: #121417; --ink-2: #3c4148; --ink-3: #5d646d; --line: #d9dde2; --line-2: #b8bec6;
+  --accent: #e5383b; --accent-ink: #ffffff; --accent-text: #c1272d; --pat: rgb(18 20 23 / .06);
+  --display: 'Big Shoulders Display', 'Arial Narrow', sans-serif; --body: 'Barlow', system-ui, sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
+  --radius: 4px; --bw: 1.5px; --hard: 0px; --h-weight: 900; --h-track: .01em; --h-case: uppercase;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #0f1113; --sheet: #181b1f; --ink: #f1f3f5; --ink-2: #c3c8ce; --ink-3: #8e959e; --line: #262a30; --line-2: #353b43; --accent-text: #ff6b6e; --pat: rgb(241 243 245 / .05); color-scheme: dark; } }
+:root[data-theme="dark"] { --paper: #0f1113; --sheet: #181b1f; --ink: #f1f3f5; --ink-2: #c3c8ce; --ink-3: #8e959e; --line: #262a30; --line-2: #353b43; --accent-text: #ff6b6e; --pat: rgb(241 243 245 / .05); color-scheme: dark; }
+</style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+window.SCENES = {
+  key: 'auto', hud: 'cinema', look: 'real', layout: 'dolly', assembly: 'explode', speed: 'cinematic', saturation: .85, quality: 'high', base: 'square', pattern: 'lines', unit: 'Bay',
+  brand: { name: 'Torque & Co. Garage', mark: 'TQ' },
+  three: { ghost: ['#e5383b', '#ff8a8c'], plinth: ['#d9dcdf', '#24282d'], plinthSide: ['#b9bec4', '#1a1d21'], exposure: 1.1 },
+  intro: { kicker: 'Service · brakes · detailing · tires', title: 'Honest work, done right.', highlight: 2, lede: 'Scroll through the shop and watch every job go together part by part. Scroll back to strip it down again. No surprises on the bill, no shortcuts in the bay.' },
+  outro: { kicker: 'Bay by bay', title: 'Every job, in order.', lede: 'The same steps, written out. This is how a proper service goes.' },
+  scenes: [
+    { code: 'BAY-01', name: 'Oil change', blurb: 'Up on the lift, old oil out, new filter and fresh synthetic in.', build(R) {
+      R.step('Bay floor', 'Sweeping the bay', '#c9ccd0'); R.slab('#c9ccd0', { tex: 'concrete' }); R.walls('#d7dbdf', { left: false, tex: 'concrete' }); R.box(4, .03, .12, 0, .04, 1.3, '#f2c230', 'growX');
+      R.step('Two-post lift', 'Setting the lift', '#e5383b'); [[-1.05], [1.15]].forEach(([z]) => R.box(.26, 2.3, .26, .2, 0, z, '#e5383b', 'rise', { metal: .3, rough: .5 })); R.box(.08, .08, 1.0, -.6, .82, .1, '#7c838b', 'growZ', { metal: .7 }); R.box(.08, .08, 1.0, 1.0, .82, .1, '#7c838b', 'growZ', { metal: .7 });
+      R.step('Car on the lift', 'Raising the car', '#2b5aa8'); R.car(.2, .1, '#2b5aa8', { yb: .86 });
+      R.step('Drain pan', 'Draining the old oil', '#2f3337'); R.cyl(.32, .28, .5, .55, 0, .1, '#2f3337', 'slide', { metal: .4 }); R.cyl(.3, .3, .02, .55, .5, .1, '#1a1206', 'pop', { glossy: true });
+      R.step('New filter', 'Spinning on a new filter', '#f28c28'); R.cyl(.08, .08, .16, .9, .72, .25, '#f28c28', 'spin', { glossy: true });
+      R.step('Fresh oil', 'Topping up synthetic', '#d9a520'); R.box(.9, .7, .45, -1.3, 0, -1.6, '#b81e22', 'drop', { metal: .4, rough: .4 }); R.bottles(-1.6, -1.6, .7, 6, ['#d9a520', '#1f1f1f'], { gap: .12, h: .22 });
+      R.step('Tool board', 'Hanging the tools', '#7c838b'); R.box(1.6, .9, .03, -.9, 1.25, -1.98, '#a5aab0', 'pop', { tex: 'metal' }); for (let i = 0; i < 6; i++) R.box(.05, .32, .03, -1.5 + i * .24, 1.45, -1.95, '#5b6168', 'pop', { metal: .8, rough: .3 });
+      R.step('Checked out', 'Stamping the service sticker', '#e5383b'); R.sign('SERVICED', 1.1, .32, 1.1, 1.85, -1.97, '#e5383b', '#ffffff', 'pop');
+    } },
+    { code: 'BAY-02', name: 'Brake job', blurb: 'New rotors, pads and a caliper that grabs like it should.', build(R) {
+      R.step('Bay floor', 'Prepping the bay', '#c9ccd0'); R.slab('#c9ccd0', { tex: 'concrete' }); R.walls('#d7dbdf', { left: false, tex: 'concrete' });
+      R.step('Hub & axle', 'Mounting the hub', '#6b7178'); R.cyl(.09, .09, 1.6, 0, .95, -.9, '#6b7178', 'pop', { rx: Math.PI / 2, center: true, metal: .8, rough: .3 }); R.cyl(.22, .22, .2, 0, .95, -.05, '#7c838b', 'pop', { rx: Math.PI / 2, center: true, metal: .8, rough: .3 });
+      R.step('Rotor', 'Fitting new rotors', '#9aa1a8'); R.cyl(.58, .58, .07, 0, .95, .1, '#9aa1a8', 'spin', { rx: Math.PI / 2, center: true, tex: 'metal', metal: .85, rough: .25 });
+      R.step('Pads & bracket', 'Seating the pads', '#3d4248'); R.box(.32, .4, .05, .45, 1.2, .2, '#3d4248', 'pop', { rz: -.6 }); R.box(.32, .4, .05, .45, 1.2, 0, '#3d4248', 'pop', { rz: -.6 });
+      R.step('Caliper', 'Bolting on the caliper', '#e5383b'); R.box(.36, .5, .28, .5, 1.22, .1, '#e5383b', 'drop', { rz: -.6, glossy: true });
+      R.step('Wheel & tire', 'Mounting the wheel', '#1d1f22'); R.torus(.7, .22, 0, .95, .32, '#1d1f22', 'pop', { rough: .9 }); R.cyl(.55, .55, .12, 0, .95, .32, '#c9ced3', 'pop', { rx: Math.PI / 2, center: true, metal: .85, rough: .2 });
+      R.step('Lug nuts', 'Torquing the lug nuts', '#d9dde1'); for (let i = 0; i < 5; i++) { const a = i / 5 * Math.PI * 2; R.cyl(.04, .04, .06, Math.cos(a) * .2, .95 + Math.sin(a) * .2, .42, '#d9dde1', 'spin', { rx: Math.PI / 2, center: true, metal: .9, rough: .2 }); }
+      R.step('Jack stand & tools', 'Clearing the tools', '#e5383b'); R.cyl(.2, .26, .5, -1.3, 0, .9, '#e5383b', 'rise', { metal: .3 }); R.box(.16, .5, .16, -1.3, .5, .9, '#7c838b', 'rise', { metal: .7 }); R.box(.6, .16, .2, 1.2, 0, 1.3, '#2f3337', 'drop', { metal: .4 }); R.sign('BRAKES', 1.2, .34, -.6, 1.9, -1.97, '#121417', '#ffffff', 'pop');
+    } },
+    { code: 'BAY-03', name: 'Detailing', blurb: 'Foam, polish and a ceramic coat you can see your face in.', build(R) {
+      R.step('Wash bay', 'Opening the wash bay', '#b9bfc6'); R.tiles(4, '#b9bfc6', '#aeb4bb', { tex: 'tile' }); R.box(2.6, .02, .2, .2, .03, 1.2, '#2f3337', 'growX', { metal: .6 }); R.walls('#dfe3e7', { left: false, tex: 'tile' });
+      R.step('Car rolls in', 'Pulling the car in', '#121417'); R.car(.15, 0, '#141a20', { s: 1.05 });
+      R.step('Snow foam', 'Covering it in foam', '#ffffff'); for (let i = 0; i < 14; i++) R.sph(.12 + (i % 3) * .04, -1.1 + (i % 7) * .38, .95 + (i % 2) * .12, -.3 + Math.floor(i / 7) * .6, '#f6f8fa', 'pop', { opacity: .85 });
+      R.step('Machine polish', 'Polishing the paint', '#f2c230'); R.box(.3, .14, .2, 1.45, .02, 1.0, '#f2c230', 'drop'); R.cyl(.12, .12, .05, 1.45, .16, 1.0, '#2f3337', 'spin');
+      R.step('Ceramic coat', 'Laying the ceramic coat', '#a9d4ff'); R.box(2.75, .55, 1.17, .15, .25, 0, '#a9d4ff', 'rise', { opacity: .14 });
+      R.step('Tire shine', 'Dressing the tires', '#0a0b0c'); [[-.74, -.55], [1.04, -.55], [-.74, .55], [1.04, .55]].forEach(([x, z]) => R.torus(.24, .04, x, .27, z, '#0a0b0c', 'pop', { glossy: true }));
+      R.step('Inspection lights', 'Switching on the lights', '#ffffff'); [-.7, .3, 1.3].forEach((x) => R.box(1.0, .05, .14, x - .2, 2.3, 0, '#ffffff', 'hang', { emissive: '#ffffff', ei: 1.4 }));
+      R.step('Handover', 'Handing back the keys', '#e5383b'); R.sign('SHINE', .9, .32, -1.1, 1.8, -1.97, '#e5383b', '#ffffff', 'pop');
+    } },
+    { code: 'BAY-04', name: 'Tire shop', blurb: 'Balanced, mounted and rotated, with the old set stacked for you.', build(R) {
+      R.step('Shop floor', 'Clearing the floor', '#c9ccd0'); R.slab('#c9ccd0', { tex: 'concrete' }); R.walls('#d7dbdf', { tex: 'brick' });
+      R.step('Tire rack', 'Building the rack', '#5b6168'); R.shelf(-.2, -1.7, 2.6, 2.2, .5, 3, '#5b6168', {});
+      R.step('Tires on the rack', 'Racking the tires', '#1d1f22'); for (let lv = 0; lv < 3; lv++) for (let i = 0; i < 5; i++) R.torus(.2, .09, -1.25 + i * .5, .35 + lv * 1.05, -1.7, '#1d1f22', 'pop', { rough: .9 });
+      R.step('Balancer', 'Calibrating the balancer', '#c1272d'); R.box(.7, .9, .6, 1.3, 0, -.6, '#c1272d', 'rise', { metal: .3, rough: .45 }); R.cyl(.05, .05, .5, 1.3, 1.05, -.35, '#9aa1a8', 'pop', { rx: Math.PI / 2, center: true, metal: .9 });
+      R.step('Wheel on the balancer', 'Spinning the wheel', '#c9ced3'); R.torus(.36, .12, 1.3, 1.05, -.12, '#1d1f22', 'spin', { rough: .9 }); R.cyl(.27, .27, .1, 1.3, 1.05, -.12, '#c9ced3', 'spin', { rx: Math.PI / 2, center: true, metal: .85, rough: .2 });
+      R.step('Old set stacked', 'Stacking the old set', '#2a2c2f'); for (let i = 0; i < 4; i++) R.torus(.34, .13, -1.3, .14 + i * .27, .9, '#2a2c2f', 'drop', { rx: Math.PI / 2, rough: .95 });
+      R.step('Counter', 'Opening the counter', '#3c4148'); R.box(1.1, .95, .5, .5, 0, 1.3, '#3c4148', 'slide', { metal: .3 }); R.box(.5, .32, .04, .5, .95, 1.3, '#0e1013', 'pop', { emissive: '#2b5aa8', ei: .6 });
+      R.step('Open for business', 'Flipping the sign', '#e5383b'); R.sign('TIRES', .9, .34, 1.2, 1.8, -1.97, '#e5383b', '#ffffff', 'pop');
+    } },
+  ],
+};
+</script>
+<script src="../engine/scenes.js"></script>
+</body>
+</html>

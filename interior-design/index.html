@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ink &amp; Oak Interiors</title>
+<meta name="description" content="Notebook-style 3D scroll template for an interior designer: each page turn reveals a room sketched in pencil and watercolour as you scroll.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Patrick+Hand&family=Space+Mono&display=swap">
+<link rel="stylesheet" href="../engine/scenes.css">
+<style>
+:root {
+  --paper: #e6dfd2; --sheet: #fbf8f1; --ink: #2d2a32; --ink-2: #4c4752; --ink-3: #6e6976; --line: #ddd5c6; --line-2: #c9bfae;
+  --accent: #2f4bb0; --accent-ink: #ffffff; --accent-text: #2f4bb0; --pat: rgb(255 255 255 / .55);
+  --page: #fbf8f1; --rule: rgb(70 110 190 / .2); --margin: rgb(214 70 70 / .5); --cover: #2f4a3f; --ring: #8a8d94;
+  --display: 'Caveat', 'Segoe Print', cursive; --body: 'Patrick Hand', 'Segoe Print', cursive; --mono: 'Space Mono', ui-monospace, monospace;
+  --radius: 10px; --bw: 1.5px; --hard: 0px; --h-weight: 700; --h-track: 0;
+}
+.intro h1 { font-size: clamp(3.4rem, 1.6rem + 7vw, 7.6rem); }
+</style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+window.SCENES = {
+  key: 'notebook', look: 'sketch', layout: 'notebook', speed: 'smooth', saturation: 1.1, quality: 'high', lockTheme: 'light', pattern: 'plain', unit: 'Page', meterLabel: 'Sketched',
+  brand: { name: 'Ink & Oak Interiors', mark: 'IO' },
+  three: { paper: '#fbf8f1', pencil: '#2d2a32', ghost: ['#a59fb2', '#a59fb2'] },
+  intro: { kicker: 'Interior design · concept sketchbook', title: 'Every room starts on paper.', highlight: 3, lede: 'Scroll down and turn the pages of our sketchbook. On the left, the idea. On the right, the room being drawn, piece by piece. Scroll back up to turn the pages back.', hint: 'Scroll to open the sketchbook' },
+  outro: { kicker: 'Page by page', title: 'From sketch to space.', lede: 'Every page, written out.' },
+  scenes: [
+    { code: 'p. 1', name: 'The living room', blurb: 'A low sofa facing the light, warm oak underfoot and room to put your feet up.', build(R) {
+      R.step('Walls', 'Sketching the walls', '#efe8dd'); R.walls('#efe8dd');
+      R.step('Oak floor', 'Laying the floor', '#c99d6a'); R.planks(7, '#c99d6a', '#ba8e5d');
+      R.step('Big window', 'Drawing the window', '#9fd2e6'); R.box(.05, 1.5, 2.2, -1.97, .6, -.3, '#ffffff', 'pop'); R.box(.02, 1.4, 2.1, -1.95, .65, -.3, '#9fd2e6', 'pop');
+      R.step('Low sofa', 'Placing the sofa', '#7d9a86'); R.box(2.0, .38, .85, .3, .04, -1.45, '#7d9a86', 'drop'); R.box(2.0, .42, .2, .3, .42, -1.82, '#7d9a86', 'drop'); [-.4, .5].forEach((x, i) => R.box(.32, .28, .1, x, .5, -1.62, i ? '#e2a25e' : '#e8d9c2', 'drop'));
+      R.step('Rug & coffee table', 'Layering the rug', '#c9806a'); R.box(2.2, .02, 1.6, .3, .04, -.5, '#c9806a', 'growX'); R.roundTable(.3, -.5, .42, .42, '#8a6a4e', '#2d2a32');
+      R.step('Floor lamp', 'Adding a reading light', '#f2d48a'); R.cyl(.15, .15, .03, 1.6, .04, -1.6, '#2d2a32', 'pop'); R.cyl(.015, .015, 1.4, 1.6, .07, -1.6, '#2d2a32', 'rise'); R.cyl(.13, .2, .26, 1.6, 1.45, -1.6, '#f2d48a', 'hang');
+      R.step('Shelves & plants', 'Filling the shelves', '#4f9d5a'); R.shelf(-1.75, .9, .3, 1.6, 1.0, 4, '#8a6a4e', { ry: Math.PI / 2 }); R.plant(-1.6, -1.6, 1.3, .04); R.plant(-1.72, .7, .7, .58);
+      R.step('Art', 'Hanging the art', '#2f4bb0'); R.box(1.0, .7, .04, .3, 1.35, -1.97, '#2d2a32', 'pop'); R.box(.9, .6, .02, .3, 1.4, -1.94, '#2f4bb0', 'pop');
+    } },
+    { code: 'p. 2', name: 'The kitchen', blurb: 'Sage cabinets, a marble island and open shelves for the good jars.', build(R) {
+      R.step('Walls', 'Sketching the walls', '#efe8dd'); R.walls('#efe8dd');
+      R.step('Tile floor', 'Tiling the floor', '#d9d2c4'); R.tiles(4, '#e3ddd0', '#d6cebf');
+      R.step('Sage cabinets', 'Drawing the cabinets', '#8fa58b'); [-1.4, -.4, .6].forEach((x) => R.box(.98, .86, .6, x, .04, -1.7, '#8fa58b', 'drop')); [-.88, .14].forEach((z) => R.box(.6, .86, .98, -1.7, .04, z, '#8fa58b', 'drop'));
+      R.step('Marble counter', 'Shading the marble', '#f2efe9'); R.box(3.1, .05, .64, -.4, .9, -1.68, '#f2efe9', 'drop'); R.box(.64, .05, 2.06, -1.68, .9, -.37, '#f2efe9', 'drop');
+      R.step('Open shelves', 'Adding open shelves', '#8a6a4e'); [1.35, 1.75].forEach((y) => R.box(2.4, .04, .26, -.2, y, -1.87, '#8a6a4e', 'growX')); for (let i = 0; i < 6; i++) R.cyl(.06, .06, .18, -1.2 + i * .4, 1.39, -1.86, ['#e2a25e', '#ffffff', '#c9806a'][i % 3], 'pop');
+      R.step('Island', 'Drawing the island', '#8fa58b'); R.box(1.6, .86, .8, .5, .04, .6, '#8fa58b', 'rise'); R.box(1.75, .05, .95, .5, .9, .6, '#f2efe9', 'drop');
+      R.step('Pendants & stools', 'Hanging the pendants', '#e2a25e'); [.15, .85].forEach((x) => { R.pendant(x, .6, 1.85, '#e2a25e', '#2d2a32'); R.stool(x, 1.35, .66, '#8a6a4e', '#2d2a32'); });
+    } },
+    { code: 'p. 3', name: 'The bedroom', blurb: 'Soft linen, a tall headboard and curtains that close out the street.', build(R) {
+      R.step('Walls', 'Sketching the walls', '#e9e1ea'); R.walls('#e9e1ea');
+      R.step('Wool carpet', 'Rolling out the carpet', '#cfc3b5'); R.slab('#cfc3b5');
+      R.step('Window & curtains', 'Hanging the curtains', '#e8dfd2'); R.box(.04, 1.2, 1.3, -1.98, .8, .4, '#ffffff', 'pop'); R.box(.02, 1.1, 1.2, -1.96, .85, .4, '#9fd2e6', 'pop'); [-.42, 1.22].forEach((z) => R.box(.06, 2.2, .3, -1.93, .1, z, '#e8dfd2', 'hang'));
+      R.step('Bed', 'Drawing the bed', '#8a6a4e'); R.box(1.9, .3, 2.2, .3, .04, -.8, '#8a6a4e', 'rise'); R.box(1.8, .25, 2.1, .3, .34, -.82, '#ffffff', 'drop'); R.box(1.86, .08, 1.45, .3, .59, -.45, '#6f86b0', 'drop');
+      R.step('Tall headboard', 'Fixing the headboard', '#c7a98d'); R.box(2.1, 1.3, .12, .3, .04, -1.93, '#c7a98d', 'rise');
+      R.step('Nightstands & lamps', 'Placing the nightstands', '#8a6a4e'); [-.97, 1.57].forEach((x) => { R.box(.5, .5, .4, x, .04, -1.72, '#8a6a4e', 'drop'); R.lamp(x, -1.72, .54, '#f2d48a', '#2d2a32'); });
+      R.step('Rug & art', 'Finishing the room', '#c9806a'); R.box(2.4, .02, 1.1, .3, .04, .75, '#c9806a', 'growX'); R.box(.9, .55, .03, .3, 1.6, -1.98, '#2d2a32', 'pop'); R.box(.82, .47, .02, .3, 1.64, -1.96, '#e2a25e', 'pop');
+    } },
+    { code: 'p. 4', name: 'The study', blurb: 'A deep desk by the window, books within reach and a pinboard of ideas.', build(R) {
+      R.step('Walls', 'Sketching the walls', '#e6ece4'); R.walls('#e6ece4');
+      R.step('Herringbone floor', 'Laying the floor', '#b98a5e'); R.planks(10, '#b98a5e', '#ad7f55');
+      R.step('Desk', 'Drawing the desk', '#6e4f37'); R.table(.3, -1.5, 1.8, .7, .76, '#6e4f37', '#2d2a32');
+      R.step('Chair', 'Pulling up the chair', '#2f4bb0'); R.chair(.3, -.8, Math.PI, '#2f4bb0', '#2d2a32');
+      R.step('Screen & lamp', 'Adding the screen', '#2d2a32'); R.box(.8, .48, .04, .3, 1.0, -1.7, '#2d2a32', 'pop'); R.box(.1, .22, .1, .3, .76, -1.72, '#2d2a32', 'rise'); R.lamp(1.0, -1.55, .76, '#f2d48a', '#2d2a32');
+      R.step('Bookcase', 'Filling the bookcase', '#8a6a4e'); R.shelf(-1.75, .4, .35, 2.0, 1.6, 5, '#8a6a4e', { ry: Math.PI / 2 }); for (let lv = 0; lv < 4; lv++) for (let i = 0; i < 6; i++) R.box(.24, .3, .08, -1.72, .1 + lv * .48, -.25 + i * .22, ['#2f4bb0', '#c9806a', '#e2a25e', '#7d9a86', '#e8d9c2'][(i + lv) % 5], 'pop');
+      R.step('Pinboard', 'Pinning up ideas', '#e8d9c2'); R.box(1.2, .8, .03, .3, 1.5, -1.98, '#c7a98d', 'pop'); [[-.05, 1.65, '#ffffff'], [.35, 1.7, '#f2d48a'], [.65, 1.6, '#9fd2e6'], [.1, 1.35, '#e2a25e']].forEach(([x, y, c], i) => R.box(.26, .2, .01, x, y, -1.96, c, 'pop', { rz: (i - 1.5) * .08 }));
+      R.step('Plant', 'Adding a plant', '#4f9d5a'); R.plant(1.6, .6, 1.4, .04);
+    } },
+  ],
+};
+</script>
+<script src="../engine/scenes.js"></script>
+</body>
+</html>

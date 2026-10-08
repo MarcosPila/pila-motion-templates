@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GoodGoods Shop</title>
+<meta name="description" content="Cartoon 3D scroll template for an online store: product shot, packing, warehouse and delivery build themselves as you scroll.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;700&family=Space+Mono&display=swap">
+<link rel="stylesheet" href="../engine/scenes.css">
+<style>
+:root {
+  --paper: #f6f4ff; --sheet: #ffffff; --ink: #1c1631; --ink-2: #423a63; --ink-3: #635b85; --line: #e5e1f7; --line-2: #c6bff0;
+  --accent: #ff6b35; --accent-ink: #1c1631; --accent-text: #c44a17; --pat: rgb(28 22 49 / .10);
+  --display: 'Lilita One', ui-rounded, system-ui, sans-serif; --body: 'Nunito', ui-rounded, system-ui, sans-serif; --mono: 'Space Mono', ui-monospace, monospace;
+  --radius: 18px; --bw: 2.5px; --hard: 4px; --h-weight: 400; --h-track: 0;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #120f1f; --sheet: #1d182f; --ink: #f5f2ff; --ink-2: #cfc8ec; --ink-3: #9d95c0; --line: #2a2442; --line-2: #3c345c; --accent-text: #ff9a72; --pat: rgb(245 242 255 / .07); color-scheme: dark; } }
+:root[data-theme="dark"] { --paper: #120f1f; --sheet: #1d182f; --ink: #f5f2ff; --ink-2: #cfc8ec; --ink-3: #9d95c0; --line: #2a2442; --line-2: #3c345c; --accent-text: #ff9a72; --pat: rgb(245 242 255 / .07); color-scheme: dark; }
+</style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const KRAFT = '#d9a66b', KRAFT2 = '#c99358';
+const parcel = (R, x, yb, z, s, ry, col) => { R.box(.5 * s, .4 * s, .5 * s, x, yb, z, col || KRAFT, 'drop', { ry }); R.box(.52 * s, .02, .1 * s, x, yb + .4 * s, z, '#6d4aff', 'pop', { ry }); };
+window.SCENES = {
+  key: 'shop', look: 'flat', layout: 'board', assembly: 'drop', speed: 'bouncy', saturation: 1.2, quality: 'low', base: 'round', pattern: 'dots', unit: 'Step', meterLabel: 'Done',
+  brand: { name: 'GoodGoods Shop', mark: 'GG' },
+  three: { outline: '#1c1631', ghost: ['#6d4aff', '#b9a6ff'], plinth: ['#ffe1d3', '#2a2442'], plinthSide: ['#ffb894', '#1d182f'], outline: '#1c1631' },
+  intro: { kicker: 'Shop · pack · ship · smile', title: 'From our hands to your door.', highlight: 4, lede: 'Scroll down and follow an order from photo shoot to front door, one step at a time. Scroll back up and it rewinds to the start.' },
+  outro: { kicker: 'Order by order', title: 'Packed with care.', lede: 'Here is the same journey in plain text.' },
+  scenes: [
+    { code: 'STEP-1', name: 'Product shot', blurb: 'A pastel set, a ring light and the bottle that started it all.', build(R) {
+      R.step('Backdrop', 'Setting the backdrop', '#c9b8ff'); R.box(3.0, 2.2, .04, .1, 0, -1.6, '#c9b8ff', 'rise'); R.box(3.0, .04, 1.8, .1, 0, -.7, '#c9b8ff', 'growZ');
+      R.step('Pedestals', 'Placing the pedestals', '#ffffff'); R.cyl(.4, .4, .5, .1, .04, -.7, '#ffffff', 'rise'); R.cyl(.28, .28, .3, -.75, .04, -.4, '#ffd1e1', 'rise'); R.box(.5, .7, .5, 1.0, .04, -1.0, '#ffe08a', 'rise');
+      R.step('Hero product', 'Unboxing the hero product', '#ff6b35'); R.cyl(.15, .15, .5, .1, .54, -.7, '#ff6b35', 'drop'); R.cyl(.08, .08, .12, .1, 1.04, -.7, '#1c1631', 'drop'); R.sign('GOOD', .28, .14, .1, .7, -.54, '#ffffff', '#1c1631', 'pop');
+      R.step('Supporting cast', 'Arranging the props', '#5ad8b4'); R.sph(.14, -.75, .48, -.4, '#5ad8b4', 'pop'); R.cyl(.1, .1, .3, 1.0, .74, -1.0, '#6d4aff', 'drop'); R.torus(.08, .03, 1.0, 1.1, -1.0, '#ffd166', 'pop', { rx: Math.PI / 2 });
+      R.step('Ring light', 'Switching on the ring light', '#ffffff'); R.box(.04, 1.4, .04, 1.3, 0, .8, '#1c1631', 'rise'); R.torus(.35, .05, 1.3, 1.7, .8, '#ffffff', 'hang', { emissive: '#ffffff', ei: 1.3, ry: -.8 });
+      R.step('Phone on tripod', 'Framing the shot', '#1c1631'); [0, 2.1, 4.2].forEach((a) => R.box(.03, .9, .03, -.7 + Math.cos(a) * .15, 0, 1.0 + Math.sin(a) * .15, '#1c1631', 'rise', { rx: Math.sin(a) * .16, rz: -Math.cos(a) * .16 })); R.box(.2, .38, .03, -.7, .95, 1.0, '#1c1631', 'drop', { ry: .6 });
+      R.step('Sparkle', 'Adding a little sparkle', '#ffd166'); [[-.3, 1.3, -.8], [.5, 1.1, -.5], [-.1, 1.5, -.3]].forEach(([x, y, z]) => R.sph(.05, x, y, z, '#ffd166', 'pop', { emissive: '#ffd166', ei: 1.4 }));
+    } },
+    { code: 'STEP-2', name: 'Packing', blurb: 'Tissue paper, a handwritten note and tape that means business.', build(R) {
+      R.step('Packing table', 'Clearing the table', '#ffffff'); R.table(.1, -.5, 2.6, 1.2, .8, '#ffffff', '#1c1631');
+      R.step('Box', 'Folding the box', KRAFT); R.box(.9, .04, .7, .1, .8, -.5, KRAFT2, 'pop'); R.box(.9, .45, .04, .1, .84, -.85, KRAFT, 'rise'); R.box(.9, .45, .04, .1, .84, -.15, KRAFT, 'rise'); R.box(.04, .45, .7, -.35, .84, -.5, KRAFT, 'rise'); R.box(.04, .45, .7, .55, .84, -.5, KRAFT, 'rise');
+      R.step('Tissue paper', 'Lining with tissue', '#ffb3c9'); R.box(.85, .02, .65, .1, .9, -.5, '#ffb3c9', 'growX');
+      R.step('Product', 'Nestling the product', '#ff6b35'); R.cyl(.12, .12, .36, .0, .92, -.5, '#ff6b35', 'drop'); R.cyl(.12, .12, .36, .28, .92, -.5, '#6d4aff', 'drop');
+      R.step('Thank-you card', 'Writing the note', '#ffffff'); R.sign('THANK YOU!', .4, .22, .14, 1.0, -.62, '#ffffff', '#6d4aff', 'drop', { rx: -.5 });
+      R.step('Lid & tape', 'Taping it shut', '#6d4aff'); R.box(.94, .03, .74, .1, 1.29, -.5, KRAFT2, 'drop'); R.box(.96, .03, .14, .1, 1.32, -.5, '#6d4aff', 'growX');
+      R.step('Shipping label', 'Printing the label', '#ffffff'); R.sign('SHIP TO', .35, .2, .1, .9, -.12, '#ffffff', '#1c1631', 'pop');
+      R.step('Packer', 'Packer signs off', '#5ad8b4'); R.figure(.1, .4, '#5ad8b4', '#c68b59', { hair: '#1b1b1f' });
+    } },
+    { code: 'STEP-3', name: 'Warehouse', blurb: 'Shelves stocked, orders picked and a cart ready to roll.', build(R) {
+      R.step('Floor', 'Sweeping the floor', '#d9d4e8'); R.slab('#d9d4e8', { tex: 'concrete' }); R.box(4, .01, .1, 0, .04, .3, '#ffd166', 'growX');
+      R.step('Shelving', 'Building the shelves', '#6d4aff'); R.shelf(-.2, -1.6, 3.0, 2.0, .6, 4, '#6d4aff', {});
+      R.step('Stock', 'Stocking the shelves', KRAFT); for (let lv = 0; lv < 3; lv++) for (let i = 0; i < 5; i++) R.box(.42, .38, .45, -1.35 + i * .57, .09 + lv * .633, -1.6, (i + lv) % 3 ? KRAFT : KRAFT2, 'drop');
+      R.step('Picking cart', 'Rolling out the cart', '#ff6b35'); R.box(.8, .05, .5, 1.1, .3, .9, '#ff6b35', 'drop'); [[.75, .7], [1.45, .7], [.75, 1.1], [1.45, 1.1]].forEach(([x, z]) => R.sph(.06, x, .06, z, '#1c1631', 'pop')); R.box(.04, .7, .5, 1.5, .3, .9, '#ff6b35', 'rise');
+      R.step('Orders picked', 'Picking the orders', KRAFT); parcel(R, .95, .35, .85, .7, .2); parcel(R, 1.25, .35, .95, .6, -.3); parcel(R, 1.1, .63, .9, .5, .5);
+      R.step('Scanner', 'Scanning out', '#1c1631'); R.box(.1, .2, .06, .4, .9, .9, '#1c1631', 'drop', { rz: .3 }); R.box(.06, .01, .04, .38, 1.01, .9, '#ff3b3b', 'pop', { emissive: '#ff3b3b', ei: 1.4 });
+      R.step('Picker', 'Picker on the floor', '#ffd166'); R.figure(.0, .6, '#ffd166', '#e8b98f', { hair: '#7a4b2a' });
+    } },
+    { code: 'STEP-4', name: 'Delivery', blurb: 'Loaded up, driven over and left right at your door.', ground: { color: '#a8e08a' }, build(R) {
+      R.step('Road', 'Paving the road', '#4a4560'); R.box(4.4, .02, 1.6, 0, .02, .9, '#4a4560', 'growX'); for (let i = 0; i < 4; i++) R.box(.4, .01, .08, -1.5 + i * 1, .045, .9, '#ffffff', 'pop');
+      R.step('Front door', 'Building the porch', '#ffffff'); R.box(1.4, 1.9, .2, -.6, .02, -1.6, '#ffffff', 'rise'); R.box(.6, 1.2, .05, -.6, .02, -1.48, '#ff6b35', 'pop'); R.box(1.2, .12, .5, -.6, .02, -1.25, '#d9d4e8', 'drop');
+      R.step('Van body', 'Building the van', '#6d4aff'); R.box(2.0, 1.05, 1.0, .4, .3, .9, '#6d4aff', 'drop'); R.box(.6, .7, 1.0, 1.7, .3, .9, '#6d4aff', 'drop'); R.box(.04, .35, .9, 2.0, .62, .9, '#bfe3f0', 'pop');
+      R.step('Wheels', 'Bolting on the wheels', '#1c1631'); [[-.2, .4], [1.7, .4], [-.2, 1.4], [1.7, 1.4]].forEach(([x, z]) => R.cyl(.25, .25, .16, x, .27, z, '#1c1631', 'pop', { rx: Math.PI / 2, center: true }));
+      R.step('Van wrap', 'Wrapping the van', '#ffd166'); R.sign('GOODGOODS', 1.6, .4, .4, .55, 1.42, '#6d4aff', '#ffd166', 'pop');
+      R.step('Parcels', 'Unloading the parcels', KRAFT); parcel(R, -.9, .02, -.9, .8, .3); parcel(R, -.4, .02, -.85, .6, -.2);
+      R.step('Courier & mailbox', 'Delivered!', '#ff6b35'); R.figure(.2, -.6, '#ff6b35', '#c68b59', { hair: '#1b1b1f' }); R.box(.06, .8, .06, 1.6, .02, -.9, '#1c1631', 'rise'); R.box(.3, .25, .4, 1.6, .82, -.9, '#5ad8b4', 'drop');
+    } },
+  ],
+};
+</script>
+<script src="../engine/scenes.js"></script>
+</body>
+</html>

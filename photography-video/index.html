@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stillframe Studio</title>
+<meta name="description" content="Cartoon 3D scroll template for a photography and video studio: portrait set, video set, edit suite and wedding shoot build themselves as you scroll.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Outfit:wght@400;600&family=Space+Mono&display=swap">
+<link rel="stylesheet" href="../engine/scenes.css">
+<style>
+:root {
+  --paper: #f5f4fb; --sheet: #ffffff; --ink: #17151f; --ink-2: #3c3950; --ink-3: #5d5a73; --line: #e3e1f1; --line-2: #c4c0de;
+  --accent: #6d4aff; --accent-ink: #ffffff; --accent-text: #5634e0; --pat: rgb(23 21 31 / .10);
+  --display: 'Unbounded', system-ui, sans-serif; --body: 'Outfit', system-ui, sans-serif; --mono: 'Space Mono', ui-monospace, monospace;
+  --radius: 18px; --bw: 2.5px; --hard: 4px; --h-weight: 800; --h-track: -0.03em;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #100e17; --sheet: #1b1826; --ink: #f3f1ff; --ink-2: #cdc8e6; --ink-3: #9a95b8; --line: #29253a; --line-2: #3a3552; --accent-text: #a990ff; --pat: rgb(243 241 255 / .07); color-scheme: dark; } }
+:root[data-theme="dark"] { --paper: #100e17; --sheet: #1b1826; --ink: #f3f1ff; --ink-2: #cdc8e6; --ink-3: #9a95b8; --line: #29253a; --line-2: #3a3552; --accent-text: #a990ff; --pat: rgb(243 241 255 / .07); color-scheme: dark; }
+</style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const tripod = (R, x, z, h, col) => { [0, 2.1, 4.2].forEach((a) => R.box(.035, h, .035, x + Math.cos(a) * .18, 0, z + Math.sin(a) * .18, col, 'rise', { rx: Math.sin(a) * .18, rz: -Math.cos(a) * .18 })); };
+const softbox = (R, x, z, ry) => { tripod(R, x, z, 1.3, '#17151f'); R.cyl(.02, .02, .5, x, 1.3, z, '#17151f', 'rise'); R.box(.6, .6, .3, x, 1.55, z, '#17151f', 'hang', { ry }); R.box(.55, .55, .02, x + Math.sin(ry) * .16, 1.575, z + Math.cos(ry) * .16, '#ffffff', 'hang', { ry, emissive: '#ffffff', ei: 1.2 }); };
+window.SCENES = {
+  key: 'photo', hud: 'minimal', look: 'neon', layout: 'ring', assembly: 'grow', speed: 'cinematic', saturation: 1.2, quality: 'medium', lockTheme: 'dark', base: 'round', pattern: 'dots', unit: 'Set', meterLabel: 'Ready',
+  brand: { name: 'Stillframe Studio', mark: 'SF' },
+  three: { glow: '#a990ff', ghost: ['#6d4aff', '#b9a6ff'], plinth: ['#e8e4ff', '#2a2540'], plinthSide: ['#c9c0ff', '#1d1a2e'], outline: '#17151f' },
+  intro: { kicker: 'Portraits · video · editing · weddings', title: 'Moments, kept.', highlight: 1, lede: 'Scroll down and each set builds itself, light by light. Scroll back up and the studio is dark again, waiting for the next shoot.' },
+  outro: { kicker: 'Set by set', title: 'Lit, framed and ready.', lede: 'The same steps, in plain text.' },
+  scenes: [
+    { code: 'SET-A', name: 'Portrait set', blurb: 'A paper backdrop, two softboxes and a stool for the hero shot.', build(R) {
+      R.step('Studio floor', 'Clearing the floor', '#e6e3ef'); R.slab('#e6e3ef');
+      R.step('Backdrop stands', 'Raising the stands', '#17151f'); [-1.3, 1.5].forEach((x) => R.box(.05, 2.3, .05, x, 0, -1.8, '#17151f', 'rise')); R.cyl(.06, .06, 2.9, .1, 2.25, -1.8, '#6d4aff', 'pop', { rz: Math.PI / 2, center: true });
+      R.step('Paper backdrop', 'Unrolling the paper', '#ffd166'); R.box(2.6, 2.2, .02, .1, 0, -1.78, '#ffd166', 'rise'); R.box(2.6, .02, 1.2, .1, .03, -1.18, '#ffd166', 'growZ');
+      R.step('Stool', 'Placing the stool', '#ff6b9a'); R.stool(.1, -1.1, .7, '#ff6b9a', '#17151f');
+      R.step('Softboxes', 'Switching on the softboxes', '#ffffff'); softbox(R, -1.3, -.2, .9); softbox(R, 1.4, -.1, -.9);
+      R.step('Camera', 'Mounting the camera', '#17151f'); tripod(R, .3, 1.3, 1.1, '#17151f'); R.box(.34, .24, .18, .3, 1.12, 1.3, '#17151f', 'drop'); R.cyl(.08, .08, .2, .3, 1.24, 1.15, '#3c3950', 'pop', { rx: Math.PI / 2, center: true }); R.sph(.03, .42, 1.38, 1.3, '#ff5a5a', 'pop', { emissive: '#ff3030', ei: 1.4 });
+      R.step('Reflector', 'Bouncing the light', '#ffd166'); R.cyl(.4, .4, .02, -.9, .7, .9, '#ffd166', 'pop', { rx: Math.PI / 2.4, center: true });
+      R.step('Subject', 'Subject takes a seat', '#6d4aff'); R.figure(.1, -1.1, '#6d4aff', '#c68b59', { yb: .68, hair: '#1b1b1f', s: .95 });
+    } },
+    { code: 'SET-B', name: 'Video set', blurb: 'A camera on a slider, LED panels and a boom mic for clean sound.', build(R) {
+      R.step('Set floor', 'Taping marks', '#2a2540'); R.slab('#2a2540'); R.box(.3, .01, .05, .2, .04, -.4, '#ffd166', 'pop'); R.box(.05, .01, .3, .2, .04, -.4, '#ffd166', 'pop');
+      R.step('Backdrop', 'Hanging the backdrop', '#6d4aff'); R.walls('#6d4aff', { h: 2.3 });
+      R.step('Slider rail', 'Laying the slider', '#c9ced3'); R.box(2.2, .06, .14, .2, .5, 1.2, '#c9ced3', 'growX'); [-.8, 1.2].forEach((x) => R.box(.05, .5, .05, x, 0, 1.2, '#17151f', 'rise'));
+      R.step('Cinema camera', 'Mounting the camera', '#17151f'); R.box(.4, .3, .5, .2, .56, 1.2, '#17151f', 'slide'); R.cyl(.1, .1, .3, .2, .7, .85, '#3c3950', 'pop', { rx: Math.PI / 2, center: true }); R.box(.2, .14, .02, .45, .92, 1.25, '#7fd3ff', 'pop', { emissive: '#5ab8ff', ei: .8 });
+      R.step('LED panels', 'Dialling in the LEDs', '#ffffff'); [[-1.3, -.2], [1.6, -.6]].forEach(([x, z]) => { R.box(.05, 1.4, .05, x, 0, z, '#17151f', 'rise'); R.box(.5, .7, .06, x, 1.4, z, '#ffe8a3', 'hang', { emissive: '#ffe8a3', ei: 1.1, ry: x < 0 ? .7 : -.7 }); });
+      R.step('Boom mic', 'Swinging in the boom', '#3c3950'); R.box(.05, 1.9, .05, 1.3, 0, .6, '#17151f', 'rise'); R.box(1.4, .04, .04, .7, 1.9, .2, '#3c3950', 'growX', { ry: .5 }); R.cyl(.06, .06, .3, .15, 1.75, -.15, '#17151f', 'hang', { rz: Math.PI / 2, center: true });
+      R.step('Host & clapper', 'Rolling: take one', '#ff6b9a'); R.figure(.2, -.6, '#ff6b9a', '#e8b98f', { hair: '#5a3825' }); R.sign('TAKE 1', .5, .3, -.6, .5, .3, '#17151f', '#ffffff', 'pop', { ry: .4 });
+    } },
+    { code: 'SET-C', name: 'Edit suite', blurb: 'Two screens, studio monitors and a timeline that finally fits.', build(R) {
+      R.step('Walls & floor', 'Dimming the room', '#2a2540'); R.walls('#2a2540', { h: 2.3 }); R.planks(6, '#b98a5e', '#ad7f55', { tex: 'wood' });
+      R.step('Desk', 'Setting up the desk', '#e8e4ff'); R.table(.2, -1.4, 2.4, .8, .75, '#e8e4ff', '#17151f');
+      R.step('Monitors', 'Plugging in the monitors', '#17151f'); [[-.35, .2], [.75, -.2]].forEach(([x, r]) => { R.box(.9, .55, .04, x, 1.05, -1.6, '#17151f', 'pop', { ry: r }); R.box(.84, .48, .02, x + Math.sin(r) * .03, 1.085, -1.58 + Math.cos(r) * .01, '#6d4aff', 'pop', { ry: r, emissive: '#6d4aff', ei: .7 }); R.box(.1, .3, .1, x, .75, -1.65, '#17151f', 'rise'); });
+      R.step('Timeline', 'Cutting the timeline', '#ffd166'); for (let i = 0; i < 4; i++) R.box(.25, .05, .01, -.6 + i * .17, .9 + (i % 2) * .07, -1.55, ['#ffd166', '#ff6b9a', '#5ad8b4', '#ffffff'][i], 'growX', { ry: .2 });
+      R.step('Speakers', 'Placing the speakers', '#17151f'); [-1.0, 1.4].forEach((x) => { R.box(.25, .4, .25, x, .75, -1.6, '#17151f', 'drop'); R.cyl(.08, .08, .02, x, .97, -1.47, '#6d4aff', 'pop', { rx: Math.PI / 2, center: true }); });
+      R.step('Chair & headphones', 'Settling in', '#ff6b9a'); R.chair(.2, -.6, Math.PI, '#ff6b9a', '#17151f'); R.torus(.12, .025, 1.2, .82, -1.2, '#17151f', 'pop');
+      R.step('Poster & plant', 'Hanging the poster', '#ffd166'); R.sign('STILLFRAME', 1.2, .5, -1.97, 1.5, .4, '#ffd166', '#17151f', 'pop', { face: 'x' }); R.plant(1.6, .4, 1.1, .03, '#e8e4ff');
+    } },
+    { code: 'SET-D', name: 'Wedding shoot', blurb: 'A flower arch, a white aisle and the photographer in position.', ground: { color: '#a8e08a' }, build(R) {
+      R.step('Aisle', 'Rolling out the aisle', '#ffffff'); R.box(.9, .02, 3.6, .2, .03, .2, '#ffffff', 'growZ');
+      R.step('Arch', 'Raising the arch', '#ffffff'); R.torus(1.1, .07, .2, 0, -1.4, '#ffffff', 'pop');
+      R.step('Flowers', 'Dressing the arch', '#ff9dbd'); for (let i = 0; i < 11; i++) { const a = Math.PI * (i / 10); R.sph(.13, .2 + Math.cos(a) * 1.1, Math.sin(a) * 1.1, -1.4, ['#ff9dbd', '#ffffff', '#ffd166'][i % 3], 'pop'); }
+      R.step('Guest chairs', 'Setting the rows', '#e8e4ff'); [-.75, 1.15].forEach((x) => [.4, 1.2].forEach((z) => R.chair(x, z, Math.PI, '#e8e4ff', '#17151f', .8)));
+      R.step('The couple', 'Couple in place', '#17151f'); R.figure(-.1, -1.2, '#17151f', '#c68b59', { hair: '#1b1b1f' }); R.figure(.5, -1.2, '#ffffff', '#e8b98f', { hair: '#7a4b2a' });
+      R.step('Photographer', 'Framing the shot', '#6d4aff'); R.figure(1.4, -.2, '#6d4aff', '#e8b98f', { hair: '#3b2a1e', s: .9 }); R.box(.18, .14, .12, 1.32, .66, -.3, '#17151f', 'pop');
+      R.step('Confetti', 'Throwing confetti', '#ffd166'); for (let i = 0; i < 12; i++) R.box(.05, .01, .05, -.6 + (i % 6) * .3, 1.4 + Math.floor(i / 6) * .3, -.8 + (i % 4) * .2, ['#ffd166', '#ff9dbd', '#6d4aff', '#5ad8b4'][i % 4], 'hang', { ry: i });
+    } },
+  ],
+};
+</script>
+<script src="../engine/scenes.js"></script>
+</body>
+</html>

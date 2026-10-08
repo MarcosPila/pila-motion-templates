@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Iron Hour Gym</title>
+<meta name="description" content="Realistic 3D scroll template for a gym: free weights, cardio, studio and locker room build themselves as you scroll.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;600&family=JetBrains+Mono&display=swap">
+<link rel="stylesheet" href="../engine/scenes.css">
+<style>
+:root {
+  --paper: #f1f2ee; --sheet: #ffffff; --ink: #0e0f0c; --ink-2: #363a30; --ink-3: #5b6052; --line: #dcdfd5; --line-2: #bfc4b4;
+  --accent: #c6f432; --accent-ink: #0e0f0c; --accent-text: #4f6b00; --pat: rgb(14 15 12 / .06);
+  --display: 'Anton', Impact, sans-serif; --body: 'Barlow', system-ui, sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
+  --radius: 0px; --bw: 2px; --hard: 0px; --h-weight: 400; --h-track: .01em; --h-case: uppercase;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #0b0c09; --sheet: #15170f; --ink: #f4f6ee; --ink-2: #c9cdbf; --ink-3: #959b88; --line: #22251b; --line-2: #33372a; --accent-text: #c6f432; --pat: rgb(198 244 50 / .06); color-scheme: dark; } }
+:root[data-theme="dark"] { --paper: #0b0c09; --sheet: #15170f; --ink: #f4f6ee; --ink-2: #c9cdbf; --ink-3: #959b88; --line: #22251b; --line-2: #33372a; --accent-text: #c6f432; --pat: rgb(198 244 50 / .06); color-scheme: dark; }
+</style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+window.SCENES = {
+  key: 'gym', hud: 'minimal', look: 'neon', layout: 'dolly', assembly: 'scatter', speed: 'snappy', saturation: 1.3, quality: 'medium', lockTheme: 'dark', base: 'square', pattern: 'grid', unit: 'Zone', meterLabel: 'Set up',
+  brand: { name: 'Iron Hour Gym', mark: 'IH' },
+  three: { glow: '#c6f432', ghost: ['#4f6b00', '#c6f432'], plinth: ['#d5d8cf', '#1d2017'], plinthSide: ['#b4b8ab', '#13150f'], exposure: 1.1 },
+  intro: { kicker: 'Strength · cardio · classes · recovery', title: 'First class is free.', highlight: 3, lede: 'Scroll down and every zone racks itself up, plate by plate. Scroll back up and it is 5 a.m. before opening.' },
+  outro: { kicker: 'Zone by zone', title: 'Built for the work.', lede: 'Same steps, in plain text.' },
+  scenes: [
+    { code: 'Z-01', name: 'Free weights', blurb: 'A squat rack, a loaded bar and dumbbells from 5 to 50.', build(R) {
+      R.step('Rubber floor', 'Laying rubber tiles', '#2b2d29'); R.tiles(4, '#2b2d29', '#33352f', { tex: 'concrete' }); R.walls('#d9dcd3', { tex: 'concrete' });
+      R.step('Mirror wall', 'Mounting the mirrors', '#dfe7ee'); R.box(3.2, 1.6, .03, .2, .5, -1.97, '#dfe7ee', 'pop', { metal: 1, rough: .05 });
+      R.step('Squat rack', 'Bolting the rack', '#1a1b18'); [[-.6, -1.2], [.6, -1.2], [-.6, -.3], [.6, -.3]].forEach(([x, z]) => R.box(.09, 2.2, .09, x + .3, 0, z, '#1a1b18', 'rise', { metal: .5, rough: .4 })); R.box(1.3, .09, .09, .3, 2.12, -1.2, '#1a1b18', 'growX', { metal: .5 }); R.box(1.3, .09, .09, .3, 2.12, -.3, '#1a1b18', 'growX', { metal: .5 });
+      R.step('Barbell', 'Racking the bar', '#c9ced3'); R.cyl(.025, .025, 2.0, .3, 1.35, -.75, '#c9ced3', 'pop', { rz: Math.PI / 2, center: true, metal: .9, rough: .25 });
+      R.step('Plates', 'Loading the plates', '#1a1b18'); [[-.45, .3], [-.53, .22], [1.05, .3], [1.13, .22]].forEach(([x, r]) => R.cyl(r, r, .06, x, 1.35, -.75, '#1a1b18', 'pop', { rz: Math.PI / 2, center: true, rough: .6 }));
+      R.step('Dumbbell rack', 'Lining up dumbbells', '#c6f432'); R.box(2.0, .5, .5, .1, .04, 1.4, '#1a1b18', 'rise', { metal: .5 }); for (let i = 0; i < 7; i++) { const x = -.75 + i * .28, s = .06 + i * .008; R.cyl(.02, .02, .22, x, .64, 1.4, '#c9ced3', 'pop', { rx: Math.PI / 2, center: true, metal: .9 }); [-.11, .11].forEach((dz) => R.cyl(s, s, .07, x, .64, 1.4 + dz, '#2b2d29', 'pop', { rx: Math.PI / 2, center: true })); }
+      R.step('Bench', 'Placing the bench', '#1a1b18'); R.box(.35, .1, 1.2, -1.3, .42, .1, '#1a1b18', 'drop'); [-.35, .55].forEach((z) => R.box(.3, .42, .08, -1.3, 0, z, '#5b6052', 'rise', { metal: .5 }));
+      R.step('Kettlebells & chalk', 'Chalking up', '#c6f432'); [-1.65, -1.35].forEach((x) => { R.sph(.15, x, .17, 1.6, '#1a1b18', 'pop', { rough: .5 }); R.torus(.08, .025, x, .34, 1.6, '#1a1b18', 'pop'); }); R.cyl(.18, .14, .25, 1.6, 0, -1.6, '#c6f432', 'rise'); R.sign('LIFT', 1.0, .36, -1.97, 1.7, .8, '#c6f432', '#0e0f0c', 'pop', { face: 'x' });
+    } },
+    { code: 'Z-02', name: 'Cardio', blurb: 'Treadmills, a bike and a rower, all facing the big window.', build(R) {
+      R.step('Floor', 'Laying the floor', '#3a3c37'); R.slab('#3a3c37', { tex: 'carpet' }); R.walls('#e2e4dc');
+      R.step('Window', 'Opening the view', '#a9c8e8'); R.box(.03, 1.4, 3.2, -1.97, .7, 0, '#a9c8e8', 'pop', { emissive: '#bcd6f0', ei: .45 });
+      R.step('Treadmills', 'Installing treadmills', '#1a1b18'); [-.8, .4].forEach((x) => { R.box(.7, .2, 1.6, x, .04, -1.0, '#1a1b18', 'drop', { metal: .4 }); R.box(.55, .02, 1.4, x, .24, -.95, '#2b2d29', 'growZ'); [-.3, .3].forEach((dx) => R.box(.05, 1.0, .05, x + dx, .24, -1.75, '#5b6052', 'rise', { metal: .6 })); R.box(.7, .3, .1, x, 1.2, -1.75, '#1a1b18', 'drop'); R.box(.4, .2, .02, x, 1.25, -1.69, '#c6f432', 'pop', { emissive: '#9fd11e', ei: .7 }); });
+      R.step('Bike', 'Setting up the bike', '#c6f432'); R.cyl(.3, .3, .06, 1.4, .34, .3, '#1a1b18', 'pop', { rx: Math.PI / 2, center: true }); R.box(.1, .7, .1, 1.4, .34, .55, '#c6f432', 'rise', { rx: -.3 }); R.box(.3, .06, .2, 1.4, 1.0, .75, '#1a1b18', 'drop'); R.box(.08, .6, .08, 1.4, .34, .05, '#c6f432', 'rise', { rx: .2 });
+      R.step('Rower', 'Placing the rower', '#5b6052'); R.box(.25, .08, 2.0, -.3, .2, 1.1, '#5b6052', 'growZ', { metal: .6 }); R.cyl(.28, .28, .16, -.3, .4, .15, '#1a1b18', 'pop', { rx: Math.PI / 2, center: true }); R.box(.3, .06, .3, -.3, .28, 1.3, '#1a1b18', 'drop');
+      R.step('Fan & water', 'Filling the water station', '#a9d4ff'); R.cyl(.3, .3, .05, 1.6, 1.4, -1.6, '#5b6052', 'spin', { rx: Math.PI / 2, center: true }); R.box(.4, .9, .35, 1.6, .04, -.8, '#e2e4dc', 'rise'); R.cyl(.12, .12, .35, 1.6, .94, -.8, '#a9d4ff', 'pop', { opacity: .6 });
+    } },
+    { code: 'Z-03', name: 'Studio', blurb: 'Maple floor, mats, boxes and a sound system for 6 a.m. classes.', build(R) {
+      R.step('Maple floor', 'Laying the maple', '#d9b48c'); R.planks(8, '#d9b48c', '#cfa87e'); R.walls('#e9ebe4');
+      R.step('Mirror', 'Mounting the mirror', '#dfe7ee'); R.box(.03, 1.6, 3.4, -1.97, .5, 0, '#dfe7ee', 'pop', { metal: 1, rough: .05 });
+      R.step('Mats', 'Rolling out mats', '#c6f432'); for (let i = 0; i < 4; i++) R.box(.6, .02, 1.5, -.8 + i * .75, .04, .2, i % 2 ? '#c6f432' : '#3a3c37', 'growZ', { tex: 'fabric' });
+      R.step('Plyo boxes', 'Stacking plyo boxes', '#1a1b18'); R.box(.6, .5, .6, 1.4, .04, -1.4, '#1a1b18', 'drop'); R.box(.6, .4, .6, 1.4, .54, -1.4, '#5b6052', 'drop'); R.box(.6, .3, .6, 1.4, .94, -1.4, '#c6f432', 'drop');
+      R.step('Kettlebells', 'Lining up kettlebells', '#1a1b18'); for (let i = 0; i < 6; i++) { const x = -1.4 + i * .3; R.sph(.11 + i * .01, x, .16, -1.6, '#1a1b18', 'pop'); R.torus(.06, .02, x, .3, -1.6, '#1a1b18', 'pop'); }
+      R.step('Sound system', 'Testing the speakers', '#1a1b18'); [-1.6, 1.6].forEach((z) => { R.box(.4, .8, .35, -1.75, 1.4, z * .9, '#1a1b18', 'pop'); R.cyl(.12, .12, .02, -1.55, 1.6, z * .9, '#5b6052', 'pop', { rz: Math.PI / 2, center: true }); });
+      R.step('Neon sign', 'Switching on the neon', '#c6f432'); R.sign('HOUR', 1.2, .4, .3, 1.8, -1.97, '#0e0f0c', '#c6f432', 'pop');
+    } },
+    { code: 'Z-04', name: 'Locker room', blurb: 'Lockers, benches, fresh towels and showers that run hot.', build(R) {
+      R.step('Tile floor', 'Tiling the floor', '#c9ccc4'); R.tiles(4, '#c9ccc4', '#bec1b8', { tex: 'tile' }); R.walls('#e2e4dc', { tex: 'tile' });
+      R.step('Lockers', 'Installing lockers', '#3a3c37'); for (let i = 0; i < 6; i++) { R.box(.48, 1.9, .5, -1.25 + i * .5, .04, -1.72, '#3a3c37', 'rise', { metal: .5, rough: .4 }); R.box(.3, .03, .02, -1.25 + i * .5, 1.6, -1.46, '#c6f432', 'pop'); }
+      R.step('Bench', 'Bolting the bench', '#d9b48c'); R.box(2.4, .08, .4, 0, .44, -.6, '#d9b48c', 'drop', { tex: 'wood' }); [-1, 1].forEach((x) => R.box(.08, .44, .3, x, 0, -.6, '#5b6052', 'rise', { metal: .6 }));
+      R.step('Towels', 'Folding towels', '#ffffff'); for (let i = 0; i < 3; i++) R.box(.36, .1, .3, .4 + (i % 2) * .04, .52 + i * .1, -.6, i % 2 ? '#c6f432' : '#ffffff', 'drop', { tex: 'fabric' });
+      R.step('Shower glass', 'Hanging the glass', '#cfe8f2'); R.box(.03, 1.9, 1.2, -1.2, .04, 1.2, '#cfe8f2', 'rise', { opacity: .3 }); R.cyl(.1, .1, .02, -1.85, 1.95, 1.2, '#c9ced3', 'hang', { metal: .9 });
+      R.step('Mirror & sink', 'Polishing the mirror', '#dfe7ee'); R.box(.6, .3, .45, 1.4, .8, 1.6, '#ffffff', 'drop'); R.box(.03, .8, .9, 1.96, 1.2, 1.4, '#dfe7ee', 'pop', { metal: 1, rough: .05 });
+    } },
+  ],
+};
+</script>
+<script src="../engine/scenes.js"></script>
+</body>
+</html>

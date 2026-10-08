@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Morning Loaf Café</title>
+<meta name="description" content="Cartoon 3D scroll template for a café or restaurant: espresso bar, bakery case, dining table and patio build themselves as you scroll.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito+Sans:wght@400;700&family=Space+Mono&display=swap">
+<link rel="stylesheet" href="../engine/scenes.css">
+<style>
+:root {
+  --paper: #f3fbf8; --sheet: #ffffff; --ink: #3a2418; --ink-2: #5c4033; --ink-3: #7a5c4d; --line: #dcefe8; --line-2: #b9dccf;
+  --accent: #e0457b; --accent-ink: #ffffff; --accent-text: #c22f63; --pat: rgb(58 36 24 / .12);
+  --display: 'Fredoka', ui-rounded, system-ui, sans-serif; --body: 'Nunito Sans', system-ui, sans-serif; --mono: 'Space Mono', ui-monospace, monospace;
+  --radius: 22px; --bw: 2.5px; --hard: 4px; --h-weight: 700; --h-track: -0.01em;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #1d140f; --sheet: #2a1d16; --ink: #fff3ea; --ink-2: #e8d3c3; --ink-3: #bfa592; --line: #3a2a20; --line-2: #54402f; --accent-text: #ff7aa6; --pat: rgb(255 243 234 / .07); color-scheme: dark; } }
+:root[data-theme="dark"] { --paper: #1d140f; --sheet: #2a1d16; --ink: #fff3ea; --ink-2: #e8d3c3; --ink-3: #bfa592; --line: #3a2a20; --line-2: #54402f; --accent-text: #ff7aa6; --pat: rgb(255 243 234 / .07); color-scheme: dark; }
+</style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+window.SCENES = {
+  key: 'cafe', look: 'clay', layout: 'ring', speed: 'smooth', saturation: 1.05, quality: 'high', base: 'round', pattern: 'dots', unit: 'Corner', meterLabel: 'Ready',
+  brand: { name: 'Morning Loaf Café', mark: 'ML' },
+  three: { ghost: ['#e0457b', '#ff9dbd'], plinth: ['#ffd9e6', '#4a3326'], plinthSide: ['#f7a8c4', '#3a281d'], outline: '#3a2418' },
+  intro: { kicker: 'Coffee · bakery · lunch · patio', title: 'Fresh every morning, from scratch.', highlight: 2, lede: 'Scroll down and watch the café set itself up, cup by cup and loaf by loaf. Scroll back up and it packs away again.' },
+  outro: { kicker: 'Corner by corner', title: 'Set up with care.', lede: 'Here is the same list, in plain text.' },
+  scenes: [
+    { code: 'CAFE-01', name: 'Espresso bar', blurb: 'A bar built for a morning rush: machine, grinder and a case of pastries.', build(R) {
+      R.step('Walls & floor', 'Opening up', '#bfe8dc'); R.walls('#bfe8dc', { h: 2.2 }); R.box(4, .04, 4, 0, 0, 0, '#efe6d8', 'growX', { tex: 'checker' });
+      R.step('Counter', 'Building the counter', '#8b5a3c'); R.box(3.2, .9, .7, .2, .04, -1.55, '#8b5a3c', 'rise'); R.box(3.3, .06, .78, .2, .94, -1.55, '#f4efe8', 'drop');
+      R.step('Espresso machine', 'Warming up the machine', '#d9dee3'); R.box(1.0, .5, .5, -.4, 1.0, -1.7, '#d9dee3', 'drop'); R.box(1.0, .08, .52, -.4, 1.5, -1.7, '#e0457b', 'drop'); [-.65, -.15].forEach((x) => { R.cyl(.06, .06, .12, x, .9, -1.45, '#3a3f45', 'pop', {}); }); R.box(.9, .03, .2, -.4, 1.0, -1.42, '#3a3f45', 'pop');
+      R.step('Grinder', 'Grinding the beans', '#3a3f45'); R.box(.3, .4, .3, .6, 1.0, -1.7, '#3a3f45', 'rise'); R.cone(.18, .3, .6, 1.4, -1.7, '#c9a27a', 'drop', { rx: Math.PI });
+      R.step('Cups & saucers', 'Setting out cups', '#ffffff'); for (let i = 0; i < 3; i++) { R.cyl(.12, .12, .02, 1.05 + i * .3, 1.0, -1.4, '#ffffff', 'pop'); R.cyl(.07, .06, .1, 1.05 + i * .3, 1.02, -1.4, '#ffffff', 'drop'); }
+      R.step('Pastry case', 'Filling the pastry case', '#f2b56b'); R.box(1.2, .45, .5, -1.2, .04, .3, '#ffffff', 'rise', { opacity: .35 }); R.box(1.2, .04, .5, -1.2, .04, .3, '#8b5a3c', 'growX'); [-1.6, -1.3, -1.0, -.75].forEach((x, i) => R.torus(.08, .04, x, .14, .3, i % 2 ? '#f2b56b' : '#d9883a', 'pop', { rx: Math.PI / 2 }));
+      R.step('Menu board', 'Writing the menu', '#3a2418'); R.sign('MENU', 1.1, .55, .3, 1.55, -1.97, '#3a2418', '#ffffff', 'pop');
+      R.step('Barista', 'Barista on shift', '#e0457b'); R.figure(.3, -.6, '#e0457b', '#e8b98f', { hair: '#5a3825' }); R.box(.26, .3, .02, .3, .2, -.43, '#3a2418', 'pop');
+    } },
+    { code: 'CAFE-02', name: 'Bakery case', blurb: 'Shelves of sourdough, baguettes and a cake worth the walk.', build(R) {
+      R.step('Walls & floor', 'Sweeping up', '#ffe2ec'); R.walls('#ffe2ec', { h: 2.2 }); R.slab('#f4e6d4');
+      R.step('Bread shelves', 'Building the shelves', '#a0714f'); R.shelf(-.2, -1.7, 2.6, 1.8, .45, 3, '#a0714f', {});
+      R.step('Sourdough', 'Shelving the sourdough', '#d9883a'); for (let i = 0; i < 4; i++) R.sph(.18, -1.1 + i * .55, .32, -1.7, '#d9883a', 'pop', { sx: 1.5, sy: .8 });
+      R.step('Baguettes', 'Stacking baguettes', '#e7a95c'); for (let i = 0; i < 5; i++) R.cyl(.06, .06, .9, -1.0 + i * .4, 1.02, -1.65, '#e7a95c', 'drop', { rz: Math.PI / 2, center: true });
+      R.step('Croissants', 'Laying out croissants', '#f2b56b'); for (let i = 0; i < 5; i++) R.torus(.1, .05, -1.1 + i * .45, 1.66, -1.7, '#f2b56b', 'pop', { rx: Math.PI / 2 });
+      R.step('Cake stand', 'Topping the cake', '#ffb3c9'); R.cyl(.12, .2, .5, 1.1, 0, .2, '#ffffff', 'rise'); R.cyl(.4, .4, .05, 1.1, .5, .2, '#ffffff', 'pop'); R.cyl(.32, .32, .22, 1.1, .55, .2, '#ffb3c9', 'drop'); R.cyl(.25, .25, .18, 1.1, .77, .2, '#fff3f7', 'drop'); R.sph(.06, 1.1, 1.0, .2, '#d62839', 'pop');
+      R.step('Bread basket', 'Filling the basket', '#c9a27a'); R.cyl(.35, .3, .25, -1.0, 0, .9, '#c9a27a', 'rise'); [-1.1, -.9, -1.0].forEach((x, i) => R.sph(.12, x, .3 + i * .05, .85 + i * .05, '#d9883a', 'pop', { sx: 1.4 }));
+      R.step('Fresh today', 'Hanging the sign', '#e0457b'); R.sign('FRESH', 1.0, .4, 1.2, 1.6, -1.97, '#e0457b', '#ffffff', 'pop');
+    } },
+    { code: 'CAFE-03', name: 'Dining table', blurb: 'A table for two, set properly, with a candle and fresh flowers.', build(R) {
+      R.step('Floor', 'Mopping the floor', '#e9d6c2'); R.planks(6, '#d9b48c', '#cda57b', { tex: 'wood' });
+      R.step('Rug', 'Rolling out the rug', '#7cc6b4'); R.cyl(1.5, 1.5, .03, 0, .04, 0, '#7cc6b4', 'pop', { seg: 48 });
+      R.step('Table', 'Setting up the table', '#a0714f'); R.roundTable(0, 0, .75, .75, '#a0714f', '#3a2418');
+      R.step('Chairs', 'Pulling up chairs', '#e0457b'); R.chair(0, -1.1, 0, '#e0457b', '#3a2418'); R.chair(0, 1.1, Math.PI, '#e0457b', '#3a2418');
+      R.step('Plates & cutlery', 'Laying the plates', '#ffffff'); [-.4, .4].forEach((z) => { R.cyl(.2, .2, .02, 0, .75, z, '#ffffff', 'pop'); R.box(.03, .01, .22, .27, .75, z, '#c9ced3', 'pop'); R.box(.03, .01, .22, -.27, .75, z, '#c9ced3', 'pop'); });
+      R.step('Glasses', 'Pouring water', '#bfe8f7'); [[.35, -.15], [-.35, .15]].forEach(([x, z]) => R.cyl(.06, .05, .18, x, .75, z, '#bfe8f7', 'drop', { opacity: .5 }));
+      R.step('Candle & flowers', 'Lighting the candle', '#ffd166'); R.cyl(.04, .04, .16, .12, .75, 0, '#fff7e0', 'rise'); R.sph(.035, .12, .95, 0, '#ffb703', 'pop', { emissive: '#ff9f1c', ei: 1.6 }); R.cyl(.07, .06, .2, -.14, .75, 0, '#7cc6b4', 'rise'); [[-.14, 1.0, 0], [-.08, .98, .05], [-.2, .98, -.04]].forEach(([x, y, z], i) => R.sph(.06, x, y, z, ['#e0457b', '#ffd166', '#ffffff'][i], 'pop'));
+      R.step('Pendant light', 'Dimming the lights', '#ffd166'); R.pendant(0, 0, 1.9, '#ffd166', '#3a2418');
+    } },
+    { code: 'CAFE-04', name: 'Patio', blurb: 'Umbrellas up, string lights on, planters full: open until late.', ground: { color: '#9bd67a' }, build(R) {
+      R.step('Patio tiles', 'Laying the patio', '#e3d5c4'); R.tiles(4, '#e3d5c4', '#d5c4b0');
+      R.step('Planters', 'Potting the planters', '#4f9d5a'); R.box(.5, .45, 2.8, -1.7, 0, 0, '#a0714f', 'rise'); for (let i = 0; i < 4; i++) R.sph(.24, -1.7, .6, -1.1 + i * .7, '#4f9d5a', 'pop');
+      R.step('Tables', 'Setting the tables', '#ffffff'); R.roundTable(.2, -.6, .45, .72, '#ffffff', '#3a2418'); R.roundTable(1.0, .9, .45, .72, '#ffffff', '#3a2418');
+      R.step('Chairs', 'Arranging the chairs', '#7cc6b4'); R.chair(-.5, -.6, Math.PI / 2, '#7cc6b4', '#3a2418', .85); R.chair(.9, -.6, -Math.PI / 2, '#7cc6b4', '#3a2418', .85); R.chair(1.0, .2, 0, '#e0457b', '#3a2418', .85); R.chair(1.0, 1.6, Math.PI, '#e0457b', '#3a2418', .85);
+      R.step('Umbrella', 'Opening the umbrella', '#e0457b'); R.cyl(.03, .03, 1.9, .2, .72, -.6, '#3a2418', 'rise'); R.cone(1.0, .45, .2, 2.2, -.6, '#e0457b', 'drop', { seg: 8 });
+      R.step('String lights', 'Hanging string lights', '#ffd166'); for (let i = 0; i < 9; i++) { const t = i / 8; R.sph(.045, 1.6 - t * 3, 2.3 - Math.sin(t * Math.PI) * .3, 1.7, '#fff2c2', 'hang', { emissive: '#ffcf5a', ei: 1.6 }); }
+      R.step('Open sign', 'Putting out the A-frame', '#3a2418'); R.sign('OPEN', .7, .5, 1.6, .02, -1.3, '#3a2418', '#ffffff', 'drop', { ry: -.4 });
+    } },
+  ],
+};
+</script>
+<script src="../engine/scenes.js"></script>
+</body>
+</html>
