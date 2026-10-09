@@ -418,7 +418,7 @@
     if (reduce) return;
     cards.forEach((c, i) => {
       const next = cards[i + 1];
-      if (next) gsap.to(c, { scale: 1 - (cards.length - i) * 0.035, filter: 'brightness(.82)', ease: 'none', scrollTrigger: { trigger: next, start: 'top bottom', end: 'top 30%', scrub: true } });
+      if (next) gsap.fromTo(c, { scale: 1, filter: 'brightness(1)' }, { scale: 1 - (cards.length - i) * 0.035, filter: 'brightness(.82)', ease: 'none', scrollTrigger: { trigger: next, start: 'top bottom', end: 'top 30%', scrub: true } });
     });
   }));
 

@@ -40,6 +40,8 @@ h2 { margin: 0 0 16px; font: 820 1.6rem/1 'Archivo', sans-serif; font-stretch: 1
 .tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .tags span { font: 500 11.5px 'JetBrains Mono', monospace; padding: 4px 8px; border: 1px solid var(--line-2); color: var(--ink-2); }
 .go { font: 700 13px 'Archivo', sans-serif; font-stretch: 110%; letter-spacing: .05em; text-transform: uppercase; color: var(--vis); }
+.pl { display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; border: 1.5px solid var(--line-2); background: var(--sheet); color: var(--ink); font: 600 13px 'Archivo', sans-serif; font-stretch: 106%; letter-spacing: .03em; text-decoration: none; }
+.pl:hover, .pl:focus-visible { border-color: var(--vis); color: var(--vis); }
 code { font: 13px 'JetBrains Mono', monospace; background: var(--sheet); border: 1px solid var(--line-2); padding: 1px 5px; }
 footer { font: 400 13px 'JetBrains Mono', monospace; color: var(--ink-3); border-top: 2px solid var(--ink); padding-top: 18px; }
 </style>
@@ -66,10 +68,27 @@ footer { font: 400 13px 'JetBrains Mono', monospace; color: var(--ink-3); border
     <div class="cards" id="sites"></div>
   </section>
 
+  <section aria-labelledby="remix-h">
+    <h2 id="remix-h">Remixes</h2>
+    <p class="lede" style="margin:-4px 0 20px">Five more sites made by mixing the looks and motion of the twelve above, each for a new kind of business, each with one new trick of its own.</p>
+    <div class="cards" id="remixes"></div>
+  </section>
+
   <section aria-labelledby="scroll-h">
     <h2 id="scroll-h">3D scroll scenes</h2>
     <div class="filters" id="filters" role="group" aria-label="Filter by look"></div>
     <div class="cards" id="scenes"></div>
+  </section>
+
+  <section aria-labelledby="player-h">
+    <h2 id="player-h">Player mode</h2>
+    <p class="lede" style="margin:-4px 0 20px">No long scroll. One stage that stays put: press <b>Show me</b> to watch a build play, drag the slider to scrub it, and slide between builds with the style bar, the arrows, a swipe or the arrow keys. <b>Play all</b> tours every build in turn.</p>
+    <div class="cards">
+      <a class="card" href="./construction-timelapse/"><span class="top"><span>Construction · timelapse</span><span class="dot" style="--c:#ff7a1a"></span></span><h3>Ironbridge Construction</h3><p>Four sites from bare dirt to handover: the sun sweeps the sky, cranes swing, crews move, and the scaffold comes down at the end.</p><span class="tags"><span>Timelapse</span><span>Player</span><span>Day counter</span></span><span class="go">Open →</span></a>
+      <a class="card" href="./build-showroom/"><span class="top"><span>Renovation · player mode</span><span class="dot" style="--c:#d9632b"></span></span><h3>Northline Renovations</h3><p>A room showroom: kitchen, bathroom, living room, bedroom, home office and mudroom. Pick one and watch it built.</p><span class="tags"><span>Realistic</span><span>Player</span><span>Swipe</span></span><span class="go">Open →</span></a>
+    </div>
+    <p class="lede" style="margin:22px 0 10px">Every 3D scene above runs this way too. Open it with <code>?mode=player</code>:</p>
+    <div class="filters" id="playerLinks"></div>
   </section>
 
   <section aria-labelledby="use-h">
@@ -112,8 +131,17 @@ const S = [
 const looks = ['All', ...new Set(T.map((t) => t[4]))];
 let look = 'All';
 const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const R = [
+  ['landscaping', 'Fernwood Landscapes', 'Landscaping', 'A garden plan draws itself, then grows plant by plant. A mower does laps on the hills.', ['Home services', 'Travel', 'Café'], '#4f8a3c'],
+  ['tattoo-studio', 'Black Lantern Tattoo', 'Tattoo studio', 'A flash sheet that inks itself line by line, a Flip viewer, razor-cut steps and a swipeable artist deck.', ['Barbershop', 'Photography', 'Gym'], '#b3261e'],
+  ['spa', 'Stillwater Spa', 'Spa & bathhouse', 'A breathing guide over calm waves, a floating-photo treatment list and a ritual timeline.', ['Salon', 'Health clinic'], '#4f6b5c'],
+  ['law-firm', 'Hartley & Sato LLP', 'Law firm', 'A typed promise over a brass net, and a pinned case file that lights up stage by stage.', ['Real estate', 'Accounting', 'Automotive'], '#b08d57'],
+  ['music-venue', 'Northern Static', 'Live music venue', 'An equalizer that jumps with scroll speed, a zoom through "LOUD", and tickets that fly into your wallet.', ['Gym', 'Automotive', 'Online store', 'Café'], '#ff3ea5'],
+];
+document.getElementById('remixes').innerHTML = R.map(([dir, name, ind, desc, mix, col]) => `<a class="card" href="./sites/${dir}/"><span class="top"><span>${esc(ind)}</span><span class="dot" style="--c:${col}"></span></span><h3>${esc(name)}</h3><p>${esc(desc)}</p><span class="tags"><span>Mix of:</span>${mix.map((t) => `<span>${esc(t)}</span>`).join('')}</span><span class="go">Open →</span></a>`).join('');
 document.getElementById('sites').innerHTML = S.map(([dir, name, ind, desc, tags, col]) => `<a class="card" href="./sites/${dir}/"><span class="top"><span>${esc(ind)}</span><span class="dot" style="--c:${col}"></span></span><h3>${esc(name)}</h3><p>${esc(desc)}</p><span class="tags">${tags.map((t) => `<span>${esc(t)}</span>`).join('')}</span><span class="go">Open →</span></a>`).join('');
 document.getElementById('scenes').innerHTML = T.map(([dir, name, ind, desc, lk, lay, sp, col]) => `<a class="card" href="./${dir}/" data-look="${lk}"><span class="top"><span>${esc(ind)}</span><span class="dot" style="--c:${col}"></span></span><h3>${esc(name)}</h3><p>${esc(desc)}</p><span class="tags"><span>${lk}</span><span>${lay}</span><span>${sp}</span></span><span class="go">Open →</span></a>`).join('');
+document.getElementById('playerLinks').innerHTML = T.filter((t) => t[0] !== 'arcade').map(([dir, name]) => `<a class="pl" href="./${dir}/?mode=player">▶ ${esc(name)}</a>`).join('');
 function render() {
   document.getElementById('filters').innerHTML = looks.map((l) => `<button type="button" data-look="${l}" aria-pressed="${l === look}">${l}</button>`).join('');
   document.querySelectorAll('#scenes .card').forEach((c) => { c.hidden = look !== 'All' && c.dataset.look !== look; });

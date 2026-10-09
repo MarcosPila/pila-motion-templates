@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Black Lantern Tattoo · Sample tattoo studio site</title>
+<meta name="description" content="Sample website template for a tattoo studio in Winnipeg: flash sheet, artists, process, aftercare and booking. Made-up business. A remix of the barbershop, photography and gym templates.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0e0c0b">
+<script>document.documentElement.classList.add('js');setTimeout(function(){var d=document.documentElement;if(!d.classList.contains('kit-ready'))d.classList.remove('js')},4000)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;600&display=swap">
+<link rel="stylesheet" href="../../kit/kit.css">
+<style>
+:root {
+  --paper: #0e0c0b; --card: #171412; --ink: #efe6d6; --ink-2: #a3988a; --line: #2c2622;
+  --accent: #d9a441; --blood: #b3261e; --bone: #efe6d6; --soot: #1a1412;
+  --display: 'Anton', Impact, sans-serif; --serif: 'Instrument Serif', Georgia, serif; --body: 'Outfit', system-ui, sans-serif;
+  --cursor: #d9a441; --cursor-ink: #0e0c0b; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 300 17px/1.65 var(--body); overflow-x: clip; }
+body::after { content: ''; position: fixed; inset: -50%; z-index: 300; pointer-events: none; opacity: .07; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"); animation: grain 1s steps(4) infinite; }
+@keyframes grain { 25% { transform: translate(-4%, 3%); } 50% { transform: translate(3%, -4%); } 75% { transform: translate(-2%, 4%); } }
+.kit-reduce body::after { animation: none; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; line-height: .9; text-transform: uppercase; }
+h2 { font-size: clamp(3.2rem, 1.6rem + 6.4vw, 8rem); }
+h2 em, h1 em { font-family: var(--serif); font-style: italic; text-transform: none; color: var(--accent); }
+h3 { font-size: 1.8rem; }
+p { margin: 0; }
+.wrap { width: min(1240px, 100% - 32px); margin-inline: auto; }
+.lab { font: 600 12px/1 var(--body); letter-spacing: .24em; text-transform: uppercase; color: var(--accent); }
+section { padding: clamp(80px, 11vw, 140px) 0; position: relative; }
+.btn { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 24px; font: 600 14px/1 var(--body); letter-spacing: .16em; text-transform: uppercase; text-decoration: none; background: var(--bone); color: var(--paper); border: 2px solid var(--bone); cursor: pointer; transition: background-color .15s, color .15s, border-color .15s; }
+.btn:hover { background: var(--blood); border-color: var(--blood); color: #fff; }
+.btn-line { background: transparent; color: var(--ink); }
+
+.top { position: fixed; inset: 0 0 auto; z-index: 60; padding: 14px 0; }
+.top.is-scrolled { background: rgb(14 12 11 / .85); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 26px; }
+.logo { display: flex; align-items: center; gap: 10px; font: 400 1.5rem/1 var(--display); text-transform: uppercase; text-decoration: none; }
+.logo svg { width: 26px; height: 32px; }
+.nav { display: flex; gap: 26px; margin-left: auto; }
+.nav a { font-weight: 600; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; text-decoration: none; }
+.nav a:hover { color: var(--accent); }
+.menu-btn { display: none; margin-left: auto; background: none; color: var(--ink); border: 2px solid var(--ink); padding: 9px 12px; font: 600 12px var(--body); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
+@media (max-width: 799px) {
+  .menu-btn { display: block; }
+  .nav { position: fixed; inset: 0; z-index: -1; flex-direction: column; justify-content: center; padding: 0 24px; gap: 10px; background: var(--blood); visibility: hidden; opacity: 0; transition: opacity .2s, visibility .2s; }
+  .nav.is-open { visibility: visible; opacity: 1; }
+  .nav a { font: 400 3.6rem/1 var(--display); letter-spacing: 0; }
+}
+
+/* Hero */
+.hero { min-height: 100svh; padding: 110px 0 50px; display: grid; align-items: end; overflow: hidden; }
+.smoke { position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 40%, #3a0d0a, #0e0c0b 65%); }
+.hero .wrap { position: relative; z-index: 1; display: grid; grid-template-columns: 1.2fr .8fr; gap: 30px; align-items: end; }
+.hero h1 { font-size: clamp(5rem, 1rem + 16vw, 16rem); line-height: .8; }
+.hero h1 em { display: block; font-size: .32em; line-height: 1.1; margin-top: 10px; }
+.hero p { max-width: 42ch; color: var(--ink-2); margin-top: 24px; }
+.hero .ctas { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+.rose { position: relative; max-width: 380px; width: 100%; justify-self: center; }
+.rose svg { width: 100%; height: auto; overflow: visible; }
+.rose svg path { fill: none; stroke: var(--accent); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.rose .badge { position: absolute; right: -6%; bottom: 4%; width: 130px; height: 130px; display: grid; place-items: center; }
+.badge text { font: 600 13px var(--body); letter-spacing: .14em; fill: var(--bone); text-transform: uppercase; }
+.badge i { position: absolute; font-style: normal; font: 400 1.4rem var(--display); color: var(--blood); }
+@media (max-width: 799px) { .hero .wrap { grid-template-columns: 1fr; } .rose { max-width: 240px; grid-row: 1; justify-self: end; } .rose .badge { width: 100px; height: 100px; } }
+
+.band { background: var(--blood); color: #fff; padding: 12px 0; }
+.band .mq-track span { font: 400 clamp(2.2rem, 1.6rem + 3vw, 4rem)/1 var(--display); text-transform: uppercase; white-space: nowrap; }
+
+/* Flash sheet */
+.flash { background: var(--bone); color: var(--soot); }
+.flash .lab { color: var(--blood); }
+.flash h2 em { color: var(--blood); }
+.ftabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 30px 0 8px; }
+.ftabs button { font: 600 13px var(--body); letter-spacing: .12em; text-transform: uppercase; padding: 10px 14px; border: 2px solid var(--soot); background: transparent; color: var(--soot); cursor: pointer; }
+.ftabs button[aria-pressed="true"] { background: var(--soot); color: var(--bone); }
+.fstatus { font-size: 14px; color: #6b6158; min-height: 1.4em; }
+.sheet { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 14px; }
+.design { position: relative; display: grid; gap: 8px; padding: 14px 14px 16px; background: #f7f1e6; border: 2px solid var(--soot); cursor: zoom-in; font: inherit; color: inherit; text-align: left; }
+.design svg { width: 100%; aspect-ratio: 1; display: block; }
+.design svg path { fill: none; stroke: var(--soot); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: stroke .3s; }
+.design:hover svg path, .design:focus-visible svg path { stroke: var(--blood); }
+.design .row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.design .nm { font: 400 1.4rem/1 var(--display); text-transform: uppercase; }
+.design:hover .nm { animation: glitch .3s steps(2) 2; }
+@keyframes glitch { 0% { text-shadow: 2px 0 var(--blood), -2px 0 #2b6cb0; transform: translateX(1px); } 50% { text-shadow: -2px 0 var(--blood), 2px 0 #2b6cb0; transform: translateX(-1px); } 100% { text-shadow: none; transform: none; } }
+.design .pr { font: italic 400 1.3rem var(--serif); color: var(--blood); }
+.design .sty { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #6b6158; }
+@media (max-width: 899px) { .sheet { grid-template-columns: 1fr 1fr; } }
+.lightbox { position: fixed; inset: 0; z-index: 200; display: none; place-items: center; background: rgb(239 230 214 / .97); color: var(--soot); padding: 70px 16px 30px; }
+.lightbox.open { display: grid; }
+.lightbox .big { width: min(560px, 90vw); aspect-ratio: 1; }
+.lightbox .big svg { width: 100%; height: 100%; }
+.lightbox .big svg path { fill: none; stroke: var(--soot); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.lightbox .close { position: absolute; top: 18px; right: 18px; width: 48px; height: 48px; border: 2px solid var(--soot); background: transparent; color: var(--soot); font-size: 20px; cursor: pointer; }
+.lightbox .cap { text-align: center; margin-top: 14px; font: 400 2rem var(--display); text-transform: uppercase; }
+.lightbox .cap em { font: italic 400 1.4rem var(--serif); color: var(--blood); text-transform: none; margin-left: 10px; }
+
+/* Process rows with razor cuts */
+.steps { margin-top: 40px; border-top: 1px solid var(--line); }
+.prow { display: grid; grid-template-columns: 120px 1fr 1.4fr; gap: 24px; align-items: baseline; padding: 30px 0; border-bottom: 1px solid var(--line); }
+.prow .n { font: 400 3.6rem/1 var(--display); color: var(--blood); font-variant-numeric: tabular-nums; }
+.prow h3 { font-size: clamp(2rem, 1.4rem + 2vw, 3.2rem); }
+.prow p { color: var(--ink-2); }
+@media (max-width: 799px) { .prow { grid-template-columns: 70px 1fr; } .prow p { grid-column: 2; } .prow .n { font-size: 2.6rem; } }
+
+/* Artists deck */
+.crew .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.deck { position: relative; width: min(360px, 100%); aspect-ratio: 3 / 4; margin-inline: auto; touch-action: pan-y; }
+.acard { position: absolute; inset: 0; background: var(--card); border: 2px solid var(--bone); display: grid; grid-template-rows: 1fr auto; overflow: hidden; user-select: none; cursor: grab; }
+.acard [data-art] { filter: grayscale(1) contrast(1.2) sepia(.25); }
+.acard .cap { padding: 14px 16px; background: var(--bone); color: var(--soot); display: flex; justify-content: space-between; align-items: end; gap: 10px; }
+.acard h3 { font-size: 2.2rem; }
+.acard .cap span { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; }
+.crew p { color: var(--ink-2); margin-top: 18px; }
+.deck-ctl { display: flex; justify-content: center; margin-top: 18px; }
+@media (max-width: 799px) { .crew .wrap { grid-template-columns: 1fr; } .deck { width: min(290px, 86%); } }
+
+/* Aftercare + booking */
+.book { background: var(--bone); color: var(--soot); }
+.book .lab { color: var(--blood); }
+.book h2 em { color: var(--blood); }
+.book .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+.care details { border-bottom: 1px solid #cfc4b2; }
+.care summary { padding: 16px 0; font: 400 1.5rem var(--display); text-transform: uppercase; display: flex; justify-content: space-between; gap: 10px; }
+.care summary::after { content: '+'; font-family: var(--body); transition: transform .3s; }
+.care details.is-open summary::after { transform: rotate(45deg); }
+.care .acc-body p { padding-bottom: 16px; color: #5b5148; }
+.bk { border: 2px solid var(--soot); padding: clamp(20px, 4vw, 36px); background: #f7f1e6; }
+.bk legend { font: 400 2.4rem/1 var(--display); text-transform: uppercase; padding: 0; margin-bottom: 16px; }
+.bk .meta { display: flex; justify-content: space-between; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 10px; }
+.bk [data-steps-bar] { background: #e0d6c4; height: 6px; border-radius: 0; }
+.bk [data-steps-bar] i { background: var(--blood); }
+.ch { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ch label { position: relative; }
+.ch input { position: absolute; inset: 0; opacity: 0; }
+.ch span { display: block; padding: 12px 14px; border: 2px solid var(--soot); font-weight: 600; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+.ch input:checked + span { background: var(--soot); color: var(--bone); }
+.ch input:focus-visible + span { outline: 3px solid var(--blood); outline-offset: 2px; }
+.fx { display: grid; gap: 6px; margin-bottom: 12px; }
+.fx label { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
+.fx input, .fx select, .fx textarea { font: inherit; padding: 12px; border: 2px solid var(--soot); background: var(--bone); color: var(--soot); width: 100%; border-radius: 0; }
+.age { display: flex; gap: 10px; align-items: center; font-weight: 600; margin-top: 6px; }
+.age input { width: 20px; height: 20px; accent-color: var(--blood); }
+.bk .rw { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+.bk .btn { background: var(--soot); color: var(--bone); border-color: var(--soot); }
+.bk .btn:hover { background: var(--blood); border-color: var(--blood); }
+.bk .btn-line { background: transparent; color: var(--soot); }
+.done h3 { font-size: 3.6rem; color: var(--blood); }
+@media (max-width: 799px) { .book .wrap { grid-template-columns: 1fr; } }
+
+footer { padding: 60px 0 30px; overflow: hidden; }
+.giant { font: 400 clamp(3.4rem, 1rem + 14vw, 15rem)/.85 var(--display); text-transform: uppercase; white-space: nowrap; color: transparent; -webkit-text-stroke: 2px var(--line); background: linear-gradient(90deg, var(--blood) 0 50%, transparent 50%) 100% 0 / 200% 100% no-repeat; -webkit-background-clip: text; background-clip: text; }
+.foot-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px; margin-top: 26px; font-size: 13px; color: var(--ink-2); letter-spacing: .06em; text-transform: uppercase; }
+.foot-row button { font: inherit; background: none; color: var(--ink); border: 2px solid var(--line); padding: 6px 12px; text-transform: inherit; letter-spacing: inherit; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top" data-header data-header-hide>
+  <div class="wrap">
+    <a class="logo" href="#top"><svg viewBox="0 0 26 32" aria-hidden="true"><path d="M8 4h10M13 4V1M6 8h14l-2 16H8z" fill="none" stroke="#d9a441" stroke-width="2"/><path d="M13 12c-3 3-3 6 0 8c3-2 3-5 0-8z" fill="#b3261e"/><path d="M9 24h8v4H9z" fill="#d9a441"/></svg>Black Lantern</a>
+    <nav class="nav" id="nav" aria-label="Main"><a href="#flash">Flash</a><a href="#process">Process</a><a href="#artists">Artists</a><a href="#book">Book</a></nav>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle>Menu</button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="smoke" id="smoke" aria-hidden="true"></div>
+    <div class="wrap">
+      <div>
+        <span class="lab" data-reveal="fade" data-now>Tattoo studio · Exchange District · Winnipeg</span>
+        <h1 style="margin-top:16px"><span data-split="lines" data-split-anim="slide" data-now data-delay=".1">Ink</span><em data-reveal="blur" data-now data-delay=".6">that outlives the trend.</em></h1>
+        <p data-reveal="up" data-now data-delay=".8">Custom work, flash Fridays and careful cover-ups by four resident artists. Private rooms, single-use everything, and no rush.</p>
+        <div class="ctas" data-reveal="up" data-now data-delay=".95"><a class="btn" href="#book" data-magnet="0.3">Book a consult</a><a class="btn btn-line" href="#flash">See the flash</a></div>
+      </div>
+      <div class="rose" aria-hidden="true">
+        <svg viewBox="0 0 120 120" id="heroRose"><path d="M60 40c-12 0-18 10-14 20s20 12 26 2s0-22-12-22z"/><path d="M60 50c-5 0-7 5-5 9s9 4 11-1s-2-8-6-8z"/><path d="M46 58c-10 4-12 20 0 26s28 2 30-10"/><path d="M74 58c8 4 10 16 2 22"/><path d="M60 84v30"/><path d="M60 96c-8-6-18-4-22 2c8 4 18 4 22-2z"/><path d="M60 104c8-6 18-4 22 2c-8 4-18 4-22-2z"/><path d="M38 30l-6-6M82 30l6-6M60 22v-8M30 48h-8M90 48h8"/></svg>
+        <div class="badge" data-circle-text="Custom • Flash Fridays • Est. 2011 • " data-circle-scroll><i>★</i></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="band" data-marquee data-marquee-velocity data-marquee-skew data-marquee-flip data-marquee-speed="85" style="--mq-gap:30px" aria-hidden="true">
+    <div class="mq-track"><span>Custom</span><span>✦</span><span>Flash</span><span>✦</span><span>Cover-ups</span><span>✦</span><span>Fine line</span><span>✦</span><span>Blackwork</span><span>✦</span></div>
+  </div>
+
+  <section class="flash" id="flash" aria-labelledby="fl-h">
+    <div class="wrap" data-filter>
+      <span class="lab">Flash sheet · ready to tattoo</span>
+      <h2 id="fl-h" style="margin-top:14px" data-split="lines" data-split-anim="slide">Pick off <em>the wall.</em></h2>
+      <div class="ftabs" role="group" aria-label="Filter by style"><button type="button" data-filter-btn="all" aria-pressed="true">All</button><button type="button" data-filter-btn="trad" aria-pressed="false">Traditional</button><button type="button" data-filter-btn="fine" aria-pressed="false">Fine line</button><button type="button" data-filter-btn="black" aria-pressed="false">Blackwork</button></div>
+      <p class="fstatus" data-filter-status aria-live="polite"></p>
+      <div class="sheet" id="sheet">
+        <button class="design" type="button" data-tags="trad" data-cursor="View"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M60 40c-12 0-18 10-14 20s20 12 26 2s0-22-12-22z"/><path d="M60 50c-5 0-7 5-5 9s9 4 11-1s-2-8-6-8z"/><path d="M46 58c-10 4-12 20 0 26s28 2 30-10"/><path d="M74 58c8 4 10 16 2 22"/><path d="M60 84v26"/><path d="M60 96c-8-6-18-4-20 2c8 4 16 4 20-2z"/><path d="M60 100c8-6 18-4 20 2c-8 4-16 4-20-2z"/></svg><span class="row"><span class="nm">Rose</span><span class="pr">$180</span></span><span class="sty">Traditional · palm size</span></button>
+        <button class="design" type="button" data-tags="trad" data-cursor="View"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M60 10l7 60H53z"/><path d="M42 70h36"/><path d="M60 70v14"/><path d="M53 84h14v10H53z"/><path d="M60 94v14"/><path d="M60 26v34"/></svg><span class="row"><span class="nm">Dagger</span><span class="pr">$160</span></span><span class="sty">Traditional · forearm</span></button>
+        <button class="design" type="button" data-tags="trad black" data-cursor="View"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M18 64c18-18 48-22 68-10c10-6 18-4 22 0c-8 2-12 8-12 14c-10 10-30 12-44 6l-28 18c6-12 8-20-6-28z"/><path d="M60 58c6-14 2-28-10-38c12 4 20 14 22 28"/><path d="M96 54a2 2 0 1 0 .1 0"/></svg><span class="row"><span class="nm">Swallow</span><span class="pr">$200</span></span><span class="sty">Traditional · chest</span></button>
+        <button class="design" type="button" data-tags="fine" data-cursor="View"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M60 30v60"/><path d="M60 30c-4-8-12-12-16-14M60 30c4-8 12-12 16-14"/><path d="M58 40c-20-16-46-10-44 10c2 16 26 18 44 4"/><path d="M62 40c20-16 46-10 44 10c-2 16-26 18-44 4"/><path d="M58 60c-14 4-26 18-18 30c8 8 18-4 18-18"/><path d="M62 60c14 4 26 18 18 30c-8 8-18-4-18-18"/></svg><span class="row"><span class="nm">Moth</span><span class="pr">$150</span></span><span class="sty">Fine line · sternum</span></button>
+        <button class="design" type="button" data-tags="black" data-cursor="View"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M18 92c10-20 40-20 42 0s30 20 40 0s-10-40-30-40s-30-20-20-30s30 0 32 12"/><path d="M82 34c6-2 10 2 8 6c-4 2-8 0-8-6z"/><path d="M90 38l6 2"/></svg><span class="row"><span class="nm">Snake</span><span class="pr">$240</span></span><span class="sty">Blackwork · wrap</span></button>
+        <button class="design" type="button" data-tags="trad" data-cursor="View"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M60 14a8 8 0 1 0 .1 0"/><path d="M60 30v76"/><path d="M42 44h36"/><path d="M22 76c4 22 26 30 38 28c12 2 34-6 38-28"/><path d="M22 76l-6 8M22 76l8 6M98 76l6 8M98 76l-8 6"/></svg><span class="row"><span class="nm">Anchor</span><span class="pr">$170</span></span><span class="sty">Traditional · calf</span></button>
+        <button class="design" type="button" data-tags="fine black" data-cursor="View"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M14 60c20-26 72-26 92 0c-20 26-72 26-92 0z"/><path d="M46 60a14 14 0 1 0 28 0a14 14 0 1 0-28 0"/><path d="M55 60a5 5 0 1 0 10 0a5 5 0 1 0-10 0"/><path d="M60 20v10M36 26l6 8M84 26l-6 8M60 100V90"/></svg><span class="row"><span class="nm">Eye</span><span class="pr">$140</span></span><span class="sty">Fine line · hand</span></button>
+        <button class="design" type="button" data-tags="fine" data-cursor="View"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M74 18a42 42 0 1 0 0 84a34 34 0 1 1 0-84z"/><path d="M90 40l2 6l6 2l-6 2l-2 6l-2-6l-6-2l6-2z"/><path d="M98 74l1.5 4l4 1.5l-4 1.5l-1.5 4l-1.5-4l-4-1.5l4-1.5z"/></svg><span class="row"><span class="nm">Moon</span><span class="pr">$120</span></span><span class="sty">Fine line · ankle</span></button>
+      </div>
+    </div>
+  </section>
+
+  <div class="lightbox" id="lb" role="dialog" aria-modal="true" aria-label="Design viewer"><button class="close" type="button" id="lbClose" aria-label="Close">✕</button><div><div class="big" id="lbBig"></div><p class="cap" id="lbCap"></p></div></div>
+
+  <section id="process" aria-labelledby="pr-h">
+    <div class="wrap">
+      <span class="lab">The process</span>
+      <h2 id="pr-h" style="margin-top:14px" data-split="lines" data-split-anim="slide">Four steps, <em>no surprises.</em></h2>
+      <div class="steps">
+        <div class="prow" data-cut><span class="n" data-scramble data-scramble-chars="0123456789">01</span><h3>Consult</h3><p>Fifteen minutes, free. Bring photos and ideas; we'll talk size, placement and budget.</p></div>
+        <div class="prow" data-cut><span class="n" data-scramble data-scramble-chars="0123456789">02</span><h3>Design</h3><p>Your artist draws it. You see it before the day and can ask for changes.</p></div>
+        <div class="prow" data-cut><span class="n" data-scramble data-scramble-chars="0123456789">03</span><h3>Session</h3><p>Private room, fresh needles, breaks whenever you want them.</p></div>
+        <div class="prow" data-cut><span class="n" data-scramble data-scramble-chars="0123456789">04</span><h3>Heal</h3><p>Aftercare kit to take home, and a free touch-up within three months.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="crew" id="artists" aria-labelledby="ar-h" style="padding-top:0">
+    <div class="wrap">
+      <div>
+        <span class="lab">Resident artists</span>
+        <h2 id="ar-h" style="margin-top:14px" data-split="lines" data-split-anim="slide">Swipe <em>the crew.</em></h2>
+        <p data-reveal="up">Drag the top card away, or use the button. Each artist's books open on the first of the month.</p>
+      </div>
+      <div>
+        <div class="deck" id="deck" aria-live="polite">
+          <article class="acard"><div data-art="portrait" data-seed="301" data-palette="#3a2a24,#1a1412,#b3261e,#c99a76"></div><div class="cap"><h3>Mara</h3><span>Fine line · botanicals</span></div></article>
+          <article class="acard"><div data-art="portrait" data-seed="306" data-palette="#3a2a24,#1a1412,#d9a441,#8a5a3c"></div><div class="cap"><h3>Kofi</h3><span>Blackwork · dotwork</span></div></article>
+          <article class="acard"><div data-art="portrait" data-seed="311" data-palette="#3a2a24,#1a1412,#efe6d6,#d9a07e"></div><div class="cap"><h3>Jun</h3><span>Neo-traditional</span></div></article>
+          <article class="acard"><div data-art="portrait" data-seed="316" data-palette="#3a2a24,#1a1412,#b3261e,#6f4a35"></div><div class="cap"><h3>Rosie</h3><span>Traditional · flash</span></div></article>
+        </div>
+        <div class="deck-ctl"><button class="btn btn-line" type="button" id="nextArtist">Next artist →</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="book" id="book" aria-labelledby="bk-h">
+    <div class="wrap">
+      <div>
+        <span class="lab">Aftercare &amp; booking</span>
+        <h2 id="bk-h" style="margin:14px 0 24px" data-split="lines" data-split-anim="slide">Book <em>a consult.</em></h2>
+        <div class="care" data-accordion>
+          <details><summary>How do I look after it?</summary><div class="acc-body"><p>Wash gently twice a day, a thin layer of the balm we give you, no swimming or sun for two weeks.</p></div></details>
+          <details><summary>Do you take deposits?</summary><div class="acc-body"><p>Yes, $80, which comes off the final price. It holds your date and pays for the drawing time.</p></div></details>
+          <details><summary>Can you cover an old tattoo?</summary><div class="acc-body"><p>Often, yes. Book a consult with Kofi or Jun and bring a clear photo of the old piece.</p></div></details>
+        </div>
+      </div>
+      <div class="bk" data-reveal="up">
+        <form data-steps action="#" aria-label="Consult request">
+          <div class="meta"><span data-steps-count>Step 1 of 3</span><span>2 minutes</span></div>
+          <div data-steps-bar style="margin-bottom:20px"><i></i></div>
+          <fieldset data-step><legend>What kind of piece?</legend>
+            <div class="ch"><label><input type="radio" name="kind" value="custom" required><span>Custom</span></label><label><input type="radio" name="kind" value="flash"><span>Flash</span></label><label><input type="radio" name="kind" value="cover"><span>Cover-up</span></label><label><input type="radio" name="kind" value="unsure"><span>Not sure yet</span></label></div>
+            <div class="rw"><button class="btn" data-next>Next</button></div>
+          </fieldset>
+          <fieldset data-step><legend>Size &amp; placement</legend>
+            <div class="fx"><label for="t-place">Placement</label><select id="t-place" name="place"><option>Forearm</option><option>Upper arm</option><option>Leg</option><option>Back</option><option>Chest</option><option>Somewhere else</option></select></div>
+            <div class="fx"><label for="t-idea">Your idea, in a sentence</label><textarea id="t-idea" name="idea" rows="3" required></textarea></div>
+            <div class="rw"><button class="btn btn-line" data-back>Back</button><button class="btn" data-next>Next</button></div>
+          </fieldset>
+          <fieldset data-step><legend>About you</legend>
+            <div class="fx"><label for="t-name">Name</label><input id="t-name" name="name" required autocomplete="name"></div>
+            <div class="fx"><label for="t-mail">Email</label><input id="t-mail" type="email" name="email" required autocomplete="email"></div>
+            <label class="age"><input type="checkbox" name="adult" required> I'm 18 or older</label>
+            <div class="rw"><button class="btn btn-line" data-back>Back</button><button class="btn" type="submit">Request consult</button></div>
+            <p style="font-size:13px;color:#5b5148;margin-top:12px">Sample form: nothing is sent.</p>
+          </fieldset>
+        </form>
+        <div class="done" data-steps-done hidden><h3>Inked in.</h3><p style="margin-top:8px">On a real site, the studio would email you within two days.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="giant" id="giant" aria-hidden="true">Black Lantern</div>
+  <div class="wrap foot-row"><span>Exchange District, Winnipeg · <span data-year>2026</span></span><span>Sample business: everything here is made up.</span><button type="button" data-motion-toggle>Motion: on</button></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Flip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/DrawSVGPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrambleTextPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Draggable.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>window.KIT = {
+  ease: 'power4.out', dur: 0.85, stagger: 0.05, smooth: { lerp: 0.12 }, anchorOffset: 64, cursor: 'ring',
+  spark: { color: ['#d9a441', '#b3261e'], selector: '.btn, .ch span' },
+  vanta: { el: '#smoke', effect: 'FOG', options: { highlightColor: 0xb3261e, midtoneColor: 0x4a0f0c, lowlightColor: 0x1a0605, baseColor: 0x0e0c0b, blurFactor: 0.55, speed: 0.7, zoom: 0.9 } },
+};</script>
+<script src="../../kit/art.js"></script>
+<script src="../../kit/kit.js"></script>
+<script>
+(() => {
+  const K = window.KIT;
+  if (!window.gsap) return;
+
+  // Flash lightbox: the design grows into the viewer with Flip.
+  const lb = document.getElementById('lb'), big = document.getElementById('lbBig'), cap = document.getElementById('lbCap'), closeBtn = document.getElementById('lbClose');
+  let from = null;
+  const open = (d) => {
+    from = d;
+    const svg = d.querySelector('svg'), state = Flip.getState(svg);
+    big.appendChild(svg);
+    cap.innerHTML = `${d.querySelector('.nm').textContent}<em>${d.querySelector('.pr').textContent} · ${d.querySelector('.sty').textContent}</em>`;
+    lb.classList.add('open'); K.lenis?.stop(); closeBtn.focus();
+    if (!K.reduce) Flip.from(state, { duration: 0.7, ease: 'power3.inOut', scale: true });
+  };
+  const close = () => {
+    if (!from) return;
+    const svg = big.querySelector('svg'), state = Flip.getState(svg);
+    from.prepend(svg); lb.classList.remove('open'); K.lenis?.start();
+    if (!K.reduce) Flip.from(state, { duration: 0.6, ease: 'power3.inOut', scale: true });
+    from.focus(); from = null;
+  };
+  document.querySelectorAll('.design').forEach((d) => d.addEventListener('click', () => open(d)));
+  closeBtn.addEventListener('click', close);
+  lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
+  addEventListener('keydown', (e) => { if (!lb.classList.contains('open')) return; if (e.key === 'Escape') close(); if (e.key === 'Tab') { e.preventDefault(); closeBtn.focus(); } });
+
+  // Artist deck: throw the top card (drag or button) and it goes to the back.
+  const deck = document.getElementById('deck');
+  const layout = (instant) => [...deck.children].forEach((c, i, all) => {
+    const depth = all.length - 1 - i;
+    gsap.to(c, { x: 0, y: depth * -12, rotation: depth ? (depth % 2 ? -3 : 3) * depth * 0.6 : 0, scale: 1 - depth * 0.04, zIndex: i, duration: instant || K.reduce ? 0 : 0.5, ease: 'power3.out' });
+    c.setAttribute('aria-hidden', String(i !== all.length - 1));
+  });
+  let drag;
+  const throwTop = (dir = 1) => { const top = deck.lastElementChild; gsap.to(top, { x: dir * 700, rotation: dir * 30, duration: K.reduce ? 0 : 0.45, ease: 'power2.in', onComplete: () => { deck.prepend(top); layout(); bind(); } }); };
+  const bind = () => {
+    drag?.kill();
+    if (!window.Draggable) return;
+    const top = deck.lastElementChild;
+    drag = Draggable.create(top, { type: 'x,y', zIndexBoost: false, onDrag() { gsap.set(top, { rotation: this.x / 14 }); }, onRelease() { if (Math.abs(this.x) > 110) throwTop(Math.sign(this.x)); else gsap.to(top, { x: 0, y: 0, rotation: 0, duration: 0.6, ease: 'elastic.out(1, .5)' }); } })[0];
+  };
+  layout(true); bind();
+  document.getElementById('nextArtist').addEventListener('click', () => throwTop(1));
+
+  if (K.reduce) return;
+
+  // Hero rose is inked line by line, then glows.
+  gsap.timeline({ delay: 0.4 }).from('#heroRose path', { drawSVG: '0%', duration: 1.2, stagger: 0.12, ease: 'power2.inOut' })
+    .to('#heroRose', { filter: 'drop-shadow(0 0 14px rgba(217,164,65,.55))', duration: 1.2, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+
+  // Flash designs ink themselves as they arrive.
+  document.querySelectorAll('.design svg').forEach((s, i) => gsap.from(s.querySelectorAll('path'), { drawSVG: '0%', duration: 1.1, stagger: 0.1, ease: 'power2.inOut', delay: (i % 4) * 0.12, scrollTrigger: { trigger: s, start: 'top 88%', once: true } }));
+
+  // Process rows open with a diagonal razor cut.
+  document.querySelectorAll('[data-cut]').forEach((r) => gsap.fromTo(r, { clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)' }, { clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)', duration: 0.9, ease: 'power4.inOut', scrollTrigger: { trigger: r, start: 'top 85%', once: true } }));
+
+  gsap.to('#giant', { backgroundPosition: '0% 0', ease: 'none', scrollTrigger: { trigger: 'footer', start: 'top bottom', end: 'bottom bottom', scrub: true } });
+})();
+</script>
+</body>
+</html>

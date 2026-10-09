@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Northline Renovations · Room showroom</title>
+<meta name="description" content="Player-mode 3D template for a renovation company: press Show me to watch a room build itself, and slide between six room styles. No long scroll.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,600..900&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono&display=swap">
+<link rel="stylesheet" href="../engine/scenes.css">
+<style>
+:root {
+  --paper: #f3f1ec; --sheet: #ffffff; --ink: #1b2226; --ink-2: #3d474d; --ink-3: #5f6a70; --line: #dcd8cf; --line-2: #bdb7ab;
+  --accent: #d9632b; --accent-ink: #ffffff; --accent-text: #b04a17; --pat: rgb(27 34 38 / .06);
+  --display: 'Archivo', system-ui, sans-serif; --body: 'Source Sans 3', system-ui, sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
+  --radius: 10px; --bw: 1.5px; --hard: 3px; --h-weight: 850; --h-track: -0.025em;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #121618; --sheet: #1b2124; --ink: #f1eee8; --ink-2: #c8ccce; --ink-3: #9aa3a8; --line: #2a3236; --line-2: #3d474d; --accent-text: #f08a55; --pat: rgb(241 238 232 / .05); color-scheme: dark; } }
+:root[data-theme="dark"] { --paper: #121618; --sheet: #1b2124; --ink: #f1eee8; --ink-2: #c8ccce; --ink-3: #9aa3a8; --line: #2a3236; --line-2: #3d474d; --accent-text: #f08a55; --pat: rgb(241 238 232 / .05); color-scheme: dark; }
+.intro h1 { font-stretch: 112%; }
+</style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+window.SCENES = {
+  key: 'showroom', mode: 'player', look: 'real', layout: 'U', speed: 'smooth', saturation: 1, quality: 'high', hud: 'classic', base: 'square', pattern: 'grid', unit: 'Room', meterLabel: 'Built',
+  brand: { name: 'Northline Renovations', mark: 'NR' },
+  three: { ghost: ['#b04a17', '#f08a55'], plinth: ['#e6e2da', '#22292c'], plinthSide: ['#cfc9bd', '#1b2124'] },
+  intro: {
+    kicker: 'Renovation showroom · Sudbury, Ontario', title: 'Pick a room. Watch it built.', highlight: 3,
+    playerLede: 'Six rooms we renovate most. Press Show me to watch the current one come together, material by material, or slide between the styles with the bar, the arrows or a swipe. You stay in control the whole time.',
+    lede: 'Six rooms we renovate most, built material by material as you scroll.',
+    playerHint: 'Press Show me, or slide between rooms',
+  },
+  outro: { kicker: 'Room by room', title: 'Every material, in order.', lede: 'The same build steps as plain text, for every room.' },
+  scenes: [
+    { code: 'RM-01', name: 'Kitchen', blurb: 'Sage shaker cabinets, a quartz island and open oak shelves.', build(R) {
+      R.step('Walls', 'Boarding the walls', '#ece6dc'); R.walls('#ece6dc');
+      R.step('Porcelain floor', 'Tiling the floor', '#d9d3c6'); R.tiles(5, '#ddd7ca', '#cfc8b9', { tex: 'tile' });
+      R.step('Cabinets', 'Installing the cabinets', '#8fa58b'); [-1.4, -.4, .6].forEach((x) => R.box(.98, .86, .6, x, .04, -1.7, '#8fa58b', 'drop', { tex: 'wood' })); [-.88, .14].forEach((z) => R.box(.6, .86, .98, -1.7, .04, z, '#8fa58b', 'drop', { tex: 'wood' }));
+      R.step('Quartz counters', 'Templating the counters', '#f2efe9'); R.box(3.1, .05, .64, -.4, .9, -1.68, '#f2efe9', 'drop', { tex: 'marble' }); R.box(.64, .05, 2.06, -1.68, .9, -.37, '#f2efe9', 'drop', { tex: 'marble' });
+      R.step('Backsplash', 'Setting the backsplash', '#ffffff'); R.box(3.1, .5, .03, -.4, .95, -1.99, '#ffffff', 'growX', { tex: 'tile' });
+      R.step('Oak shelves', 'Hanging the shelves', '#b98a5e'); [1.55, 1.95].forEach((y) => R.box(2.2, .04, .26, -.3, y, -1.87, '#b98a5e', 'growX', { tex: 'wood' })); for (let i = 0; i < 6; i++) R.cyl(.06, .06, .18, -1.2 + i * .36, 1.59, -1.86, ['#d9632b', '#ffffff', '#8fa58b'][i % 3], 'pop');
+      R.step('Island', 'Building the island', '#8fa58b'); R.box(1.6, .86, .8, .5, .04, .6, '#8fa58b', 'rise', { tex: 'wood' }); R.box(1.75, .05, .95, .5, .9, .6, '#f2efe9', 'drop', { tex: 'marble' });
+      R.step('Pendants & stools', 'Wiring the pendants', '#d9632b'); [.15, .85].forEach((x) => { R.pendant(x, .6, 1.85, '#1b2226'); R.stool(x, 1.35, .66, '#b98a5e', '#1b2226'); });
+    } },
+    { code: 'RM-02', name: 'Bathroom', blurb: 'A deep soaker tub, a floating oak vanity and a glass shower screen.', build(R) {
+      R.step('Tiled walls', 'Tiling the walls', '#e9eef0'); R.walls('#e9eef0', { tex: 'tile' });
+      R.step('Floor tile', 'Laying the floor', '#cfd6da'); R.tiles(6, '#d7dde0', '#c6cdd1', { tex: 'tile' });
+      R.step('Soaker tub', 'Setting the tub', '#ffffff'); R.box(1.6, .55, .8, -1.1, .04, -1.55, '#ffffff', 'rise', { glossy: true }); R.box(1.4, .02, .6, -1.1, .5, -1.55, '#bfe0ea', 'pop', { glossy: true }); R.cyl(.025, .025, .3, -1.1, .58, -1.9, '#b9bec2', 'rise', { metal: .8, rough: .25 });
+      R.step('Shower screen', 'Fitting the glass', '#bfe3ec'); R.box(.04, 1.5, .8, -.28, .6, -1.55, '#bfe3ec', 'pop', { opacity: .35, glossy: true });
+      R.step('Oak vanity', 'Hanging the vanity', '#b98a5e'); R.box(1.1, .5, .5, .95, .35, -1.72, '#b98a5e', 'drop', { tex: 'wood' }); R.box(1.2, .05, .55, .95, .85, -1.7, '#f2efe9', 'drop', { tex: 'marble' }); R.cyl(.2, .16, .12, .95, .9, -1.68, '#ffffff', 'pop', { glossy: true }); R.cyl(.02, .02, .22, .95, .9, -1.9, '#b9bec2', 'rise', { metal: .8 });
+      R.step('Round mirror', 'Hanging the mirror', '#cfe0e6'); R.cyl(.4, .4, .03, .95, 1.5, -1.96, '#d8e6ea', 'pop', { rx: Math.PI / 2, metal: .7, rough: .08 }); R.cyl(.43, .43, .02, .95, 1.5, -1.975, '#b98a5e', 'pop', { rx: Math.PI / 2 });
+      R.step('Towels & mat', 'Adding the soft things', '#d9632b'); R.box(.06, .7, .45, -1.93, .9, .3, '#d9632b', 'hang'); R.box(.06, .6, .4, -1.93, .95, .9, '#ece6dc', 'hang'); R.box(.9, .02, .5, -1.1, .04, -.85, '#9fb8c2', 'growX', { tex: 'fabric' });
+      R.step('Light & plant', 'Finishing touches', '#4f9d5a'); R.pendant(-1.1, -1.4, 1.95, '#e8d9c2'); R.plant(1.6, -.6, .9, .04);
+    } },
+    { code: 'RM-03', name: 'Living room', blurb: 'Wide-plank oak, a deep sofa facing the window, and built-in shelves.', build(R) {
+      R.step('Walls', 'Painting the walls', '#efe8dd'); R.walls('#efe8dd');
+      R.step('Oak floor', 'Laying the floor', '#c99d6a'); R.planks(7, '#c99d6a', '#ba8e5d');
+      R.step('Big window', 'Framing the window', '#9fd2e6'); R.box(.05, 1.5, 2.2, -1.97, .6, -.3, '#ffffff', 'pop'); R.box(.02, 1.4, 2.1, -1.95, .65, -.3, '#9fd2e6', 'pop', { glossy: true });
+      R.step('Sofa', 'Delivering the sofa', '#5f7a86'); R.box(2.0, .38, .85, .3, .04, -1.45, '#5f7a86', 'drop', { tex: 'fabric' }); R.box(2.0, .42, .2, .3, .42, -1.82, '#5f7a86', 'drop', { tex: 'fabric' }); [-.4, .5].forEach((x, i) => R.box(.32, .28, .1, x, .5, -1.62, i ? '#d9632b' : '#e8d9c2', 'drop', { tex: 'fabric' }));
+      R.step('Rug & table', 'Rolling out the rug', '#c9806a'); R.box(2.2, .02, 1.6, .3, .04, -.5, '#c9806a', 'growX', { tex: 'carpet' }); R.roundTable(.3, -.5, .42, .42, '#8a6a4e', '#1b2226');
+      R.step('Built-ins', 'Building the shelves', '#ffffff'); R.shelf(-1.75, .9, .3, 1.6, 1.0, 4, '#f4f1ea', { ry: Math.PI / 2 }); R.plant(-1.72, .7, .7, .58);
+      R.step('Lamp & art', 'Hanging the art', '#2f4bb0'); R.cyl(.15, .15, .03, 1.6, .04, -1.6, '#1b2226', 'pop'); R.cyl(.015, .015, 1.4, 1.6, .07, -1.6, '#1b2226', 'rise'); R.cyl(.13, .2, .26, 1.6, 1.45, -1.6, '#f2d48a', 'hang', { emissive: '#ffe1a0', ei: .5 }); R.box(1.0, .7, .04, .3, 1.35, -1.97, '#1b2226', 'pop'); R.box(.9, .6, .02, .3, 1.4, -1.94, '#2f4bb0', 'pop');
+    } },
+    { code: 'RM-04', name: 'Bedroom', blurb: 'Soft carpet, a tall upholstered headboard and blackout drapes.', build(R) {
+      R.step('Walls', 'Painting the walls', '#e6e3ec'); R.walls('#e6e3ec');
+      R.step('Carpet', 'Rolling out the carpet', '#cfc3b5'); R.slab('#cfc3b5', { tex: 'carpet' });
+      R.step('Window & drapes', 'Hanging the drapes', '#e8dfd2'); R.box(.04, 1.2, 1.3, -1.98, .8, .4, '#ffffff', 'pop'); R.box(.02, 1.1, 1.2, -1.96, .85, .4, '#9fd2e6', 'pop'); [-.42, 1.22].forEach((z) => R.box(.06, 2.2, .3, -1.93, .1, z, '#7d8a9c', 'hang', { tex: 'fabric' }));
+      R.step('Bed frame', 'Assembling the bed', '#8a6a4e'); R.box(1.9, .3, 2.2, .3, .04, -.8, '#8a6a4e', 'rise', { tex: 'wood' }); R.box(1.8, .25, 2.1, .3, .34, -.82, '#ffffff', 'drop', { tex: 'fabric' }); R.box(1.86, .08, 1.45, .3, .59, -.45, '#6f86b0', 'drop', { tex: 'fabric' });
+      R.step('Headboard', 'Fixing the headboard', '#c7a98d'); R.box(2.1, 1.3, .12, .3, .04, -1.93, '#c7a98d', 'rise', { tex: 'fabric' });
+      R.step('Nightstands', 'Placing the nightstands', '#8a6a4e'); [-.97, 1.57].forEach((x) => { R.box(.5, .5, .4, x, .04, -1.72, '#8a6a4e', 'drop', { tex: 'wood' }); R.lamp(x, -1.72, .54, '#f2d48a', '#1b2226'); });
+      R.step('Rug & art', 'Finishing the room', '#d9632b'); R.box(2.4, .02, 1.1, .3, .04, .75, '#d9632b', 'growX', { tex: 'carpet' }); R.box(.9, .55, .03, .3, 1.6, -1.98, '#1b2226', 'pop'); R.box(.82, .47, .02, .3, 1.64, -1.96, '#e2a25e', 'pop');
+    } },
+    { code: 'RM-05', name: 'Home office', blurb: 'A deep desk by the window, a wall of books and a door that closes.', build(R) {
+      R.step('Walls', 'Painting the walls', '#e3ebe4'); R.walls('#e3ebe4');
+      R.step('Herringbone floor', 'Laying the floor', '#b98a5e'); R.planks(10, '#b98a5e', '#ad7f55');
+      R.step('Desk', 'Building the desk', '#6e4f37'); R.table(.3, -1.5, 1.8, .7, .76, '#6e4f37', '#1b2226', { tex: 'wood' });
+      R.step('Chair', 'Rolling in the chair', '#2f4bb0'); R.chair(.3, -.8, Math.PI, '#2f4bb0', '#1b2226');
+      R.step('Screen & lamp', 'Setting up the screen', '#1b2226'); R.box(.8, .48, .04, .3, 1.0, -1.7, '#1b2226', 'pop', { glossy: true }); R.box(.1, .22, .1, .3, .76, -1.72, '#1b2226', 'rise'); R.lamp(1.0, -1.55, .76, '#f2d48a', '#1b2226');
+      R.step('Bookcase', 'Filling the bookcase', '#8a6a4e'); R.shelf(-1.75, .4, .35, 2.0, 1.6, 5, '#8a6a4e', { ry: Math.PI / 2 }); for (let lv = 0; lv < 4; lv++) for (let i = 0; i < 6; i++) R.box(.24, .3, .08, -1.72, .1 + lv * .48, -.25 + i * .22, ['#2f4bb0', '#c9806a', '#e2a25e', '#7d9a86', '#e8d9c2'][(i + lv) % 5], 'pop');
+      R.step('Plant', 'Adding a plant', '#4f9d5a'); R.plant(1.6, .6, 1.4, .04);
+    } },
+    { code: 'RM-06', name: 'Laundry & mudroom', blurb: 'Stacked machines, a folding counter, and a bench with hooks for wet coats.', build(R) {
+      R.step('Walls', 'Painting the walls', '#eef0e8'); R.walls('#eef0e8');
+      R.step('Slate tile', 'Tiling the floor', '#8d9296'); R.tiles(5, '#8d9296', '#7f8488', { tex: 'tile' });
+      R.step('Washer & dryer', 'Plumbing the machines', '#ffffff'); [-1.45, -.7].forEach((x) => { R.box(.7, .85, .65, x, .04, -1.62, '#f7f7f5', 'drop', { glossy: true }); R.cyl(.22, .22, .03, x, .48, -1.28, '#9aa4ab', 'pop', { rx: Math.PI / 2, metal: .5, rough: .3 }); });
+      R.step('Folding counter', 'Fitting the counter', '#b98a5e'); R.box(1.7, .05, .72, -1.05, .92, -1.62, '#b98a5e', 'drop', { tex: 'wood' });
+      R.step('Upper cabinets', 'Hanging the cabinets', '#6f8f8a'); [-1.45, -.65, .15].forEach((x) => R.box(.76, .7, .38, x, 1.45, -1.8, '#6f8f8a', 'drop', { tex: 'wood' }));
+      R.step('Bench & hooks', 'Building the bench', '#6f8f8a'); R.box(.45, .45, 1.4, -1.72, .04, .6, '#6f8f8a', 'drop', { tex: 'wood' }); [.1, .45, .8, 1.15].forEach((z) => R.box(.08, .06, .06, -1.94, 1.45, z, '#1b2226', 'pop', { metal: .6 }));
+      R.step('Coats & baskets', 'Hanging the coats', '#d9632b'); [[.1, '#d9632b'], [.45, '#2f4bb0'], [.8, '#ece6dc']].forEach(([z, c]) => R.box(.1, .7, .32, -1.9, .72, z, c, 'hang', { tex: 'fabric' })); [.3, .9].forEach((z) => R.box(.3, .22, .35, -1.72, .52, z, '#c9a777', 'pop', { tex: 'fabric' }));
+      R.step('Boots & mat', 'Leaving the boots', '#3b3f42'); R.box(1.2, .02, .6, -.8, .04, .7, '#8a6a4e', 'growX', { tex: 'carpet' }); [-.95, -.65].forEach((x) => { R.box(.12, .25, .28, x, .06, .7, '#3b3f42', 'pop'); R.box(.12, .25, .28, x + .14, .06, .72, '#3b3f42', 'pop'); });
+    } },
+  ],
+};
+</script>
+<script src="../engine/scenes.js"></script>
+</body>
+</html>

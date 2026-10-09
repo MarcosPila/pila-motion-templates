@@ -13,7 +13,7 @@ Live: https://marcospila.github.io/pila-motion-templates/
 | `room-by-room/` | The first 3D scroll piece: five rooms build themselves on a U-shaped track. |
 | `engine/` | The shared engine for the scroll scenes below (`scenes.js` + `scenes.css`). |
 | `home-services/` … `interior-design/` | 13 industry scroll scenes, each a different combination of look, layout, speed and colour. |
-| `sites/` | 12 complete motion websites on GSAP, Lenis and Vanta, one per industry (see below). |
+| `sites/` | 17 complete motion websites on GSAP, Lenis and Vanta: twelve originals, one per industry, and five remixes (see below). |
 | `kit/` | The shared kit for `sites/`: `kit.js`, `kit.css` and `art.js` (placeholder art). |
 
 | Template | Look | Layout | Speed |
@@ -51,6 +51,18 @@ Twelve complete one-page websites, one per industry, each with its own look and 
 | `sites/professional-services` Ledgerline | Swiss, clean | Typed headline (TextPlugin), chart that draws with scroll, sideways tax-year calendar, Flip "recommended" badge | Vanta net |
 | `sites/photography-video` Afterglow | Film, moody | Image trail, timecode, developing film strip, Flip lightbox, grain | Vanta fog |
 | `sites/online-store` Sprout & Pot | Playful, rounded | Floating products follow the cursor, Flip sort, products fly into the cart, cart drawer, plant-finder quiz | none |
+
+### Remixes
+
+Five more sites that mix the looks and motion of the twelve above, each for a new kind of business, each with one new trick:
+
+| Site | Mix of | New trick |
+| --- | --- | --- |
+| `sites/landscaping` Fernwood Landscapes | Home services (blueprint draw, chunky buttons, before/after) × Travel (Vanta clouds, sinking hills) × Café (stacked season cards) | A pinned garden plan that draws itself, then grows shrubs, trees and flowers; a mower that does laps on the hill |
+| `sites/tattoo-studio` Black Lantern Tattoo | Barbershop (grit, razor cuts, swipe deck, footer fill) × Photography (grain, Vanta fog, Flip viewer) × Gym (glitch hover) | A flash sheet whose designs ink themselves line by line |
+| `sites/spa` Stillwater Spa | Salon (slow serif luxury, floating-photo list, drifting columns, blobs) × Health clinic (Vanta waves, timeline, motion switch) | A breathing guide (in 4, hold 4, out 6) with a pause button |
+| `sites/law-firm` Hartley &amp; Sato LLP | Real estate (navy and brass) × Accounting (typed headline, ledger rows, Vanta net, gliding badge) × Automotive (pinned bay with callouts and scrambling codes) | A case file that highlights, stamps and re-codes itself through four stages |
+| `sites/music-venue` Northern Static | Gym (neon, flipping title, zoom-through word) × Automotive (speed streaks) × Online store (fly-to-cart, drawer) × Café (rotating words, filter) | An equalizer that jumps with scroll speed, and tickets that fly into a wallet |
 
 ### The kit (`kit/`)
 
@@ -103,6 +115,27 @@ Then switch effects on in the HTML:
 
 Everything respects reduced motion (and the on-page motion switch). Content stays readable if the scripts fail to load. All motion code in `kit/` and `sites/` is our own; some effects are styled after common patterns (React Bits and others), but no third-party component code is copied in.
 
+## Player mode (3D scenes)
+
+Scroll mode makes a visitor scroll through every build. Player mode gives them the controls instead. One stage stays put, and the visitor can:
+
+- press **Show me** to watch the current build play (it becomes **Pause** while playing, then **Show me again**);
+- drag the **slider** to scrub through the build by hand;
+- slide to another build with the **style bar**, the **arrows**, a **swipe or drag** on the scene, or the **← → keys**;
+- press **Play all** to tour every build in turn.
+
+Every build starts finished, so visitors can browse the results and only watch the ones they care about. Leaving a room half-built snaps it back to finished.
+
+Turn it on per page with `mode: 'player'` in `window.SCENES`, or add `?mode=player` to any scene page's address. `build-showroom/` (Northline Renovations) is built for it, with six rooms. Optional text for this mode goes in `intro.playerLede` and `intro.playerHint`. Player mode is not used with the game layer (`hud: 'game'`).
+
+### Timelapse, moving parts and things that leave
+
+`construction-timelapse/` (Ironbridge Construction) uses three more engine features. Any scene template can use them:
+
+- **Timelapse**: `timelapse: { days, cycles, start }` sweeps the sun across a changing sky as a build progresses: dawn, noon, sunset and night, a few times over. A day counter ("Day 87 of 240 · Week 13") sits under the title. A scene can set its own `days`. `playSeconds` sets how long Show me takes. Day changes are smooth sweeps, never flashes, and reduced motion keeps it at noon.
+- **Moving parts**: `R.group(name, x, y, z, { ry })` … `R.end()` gathers pieces into a named group. A scene's `live({ a, t, parts })` runs every frame, so it can swing a crane's jib, run a trolley along it, dig with an excavator's arm or walk a worker around. `a` is how built the scene is, so the motion speeds up during the timelapse and stops when it's done.
+- **Removal steps**: tag pieces with `{ tag: 'scaffold' }`, and a step with `{ removes: 'scaffold' }` (or a list of tags) takes them away during that step. That's how the hoarding, cabins, plant, cranes and scaffolding leave before handover.
+
 ## Plug and play (3D scenes)
 
 Each scene page is one config, `window.SCENES`, loaded after three.js r128 and before `engine/scenes.js`.
@@ -117,6 +150,9 @@ Change these keys to restyle any page:
 | `quality` | `high`, `medium`, `low` (pixel density and shadows) |
 | `saturation` | number, `1` as written, lower is muted, higher is vivid |
 | `hud` | `classic`, `minimal`, `side`, `cinema`, `game` (ignored by `notebook`) |
+| `mode` | `scroll` (default) or `player` (press Show me, slide between builds; see Player mode). `?mode=player` in the address does the same |
+| `timelapse` | `{ days, cycles, start }`: sun and sky sweep through days as each build progresses, with a day counter |
+| `playSeconds` | how long Show me takes in player mode |
 | `base` | `square`, `round`, or `island` (floating island) |
 | `avatar` | for `world`: `{ body, skin, cap, legs }` colours of the player who hops between islands |
 | `pattern` | page background: `grid`, `dots`, `lines`, `plain` |

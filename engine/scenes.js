@@ -10,8 +10,19 @@
    saturation  number, 1 = as written (0.6 muted … 1.4 vivid)
    lockTheme   'dark' or 'light' to fix the page to one theme (hides the switch)
    hud       'classic' | 'minimal' | 'side' | 'cinema'
+   mode      'scroll' (default) | 'player'. Any page can also be opened with ?mode=player.
+   timelapse { days, cycles } : the sun sweeps across a changing sky as a build progresses, with a day
+             counter. A scene can set its own days. playSeconds sets how long Show me takes.
 
-   As you scroll down, the current scene builds itself; scroll up and it comes apart. */
+   Scenes can also have moving parts and things that leave: R.group(name, x, y, z, { ry }) … R.end()
+   gathers the pieces in between into a named group, and a scene's live({ a, t, parts }) runs every
+   frame to move those groups (a is how built the scene is). Give pieces a tag ({ tag: 'scaffold' })
+   and a step with { removes: 'scaffold' } takes them away again during that step.
+
+   Scroll mode: as you scroll down, the current scene builds itself; scroll up and it comes apart.
+   Player mode: one stage that stays put. Press "Show me" to watch the current build play, drag the
+   slider to scrub it, and use the style bar, the arrows, a swipe or the arrow keys to slide to another
+   build. "Play all" tours every build in turn. Nobody has to scroll through every animation. */
 (() => {
   'use strict';
   const CFG = window.SCENES;
@@ -22,6 +33,7 @@
   const OUTLINED = TOON || FLAT || VOXEL;
   const LAYOUT = CFG.layout || CFG.track || 'U';
   const NOTEBOOK = LAYOUT === 'notebook';
+  const PLAYER = (new URLSearchParams(location.search).get('mode') || CFG.mode) === 'player' && CFG.hud !== 'game';
   const SPEEDS = { cinematic: { follow: 2.4, dur: .8, stagger: .35 }, smooth: { follow: 5, dur: .55, stagger: .5 }, snappy: { follow: 11, dur: .28, stagger: .7 }, bouncy: { follow: 7, dur: .5, stagger: .5 } };
   const SPEED = SPEEDS[CFG.speed] || SPEEDS.smooth;
   const QUALITY = { high: { pr: 2, shadow: 2048, aa: true }, medium: { pr: 1.5, shadow: 1024, aa: true }, low: { pr: 1, shadow: 0, aa: false } }[CFG.quality || 'medium'];
@@ -40,7 +52,17 @@
 
   /* ---------------- page ---------------- */
   if (CFG.lockTheme) document.documentElement.dataset.theme = CFG.lockTheme;
-  document.body.classList.add('pat-' + (CFG.pattern || 'grid'), 'hud-' + (CFG.hud || 'classic'), 'layout-' + LAYOUT);
+  document.body.classList.add('pat-' + (CFG.pattern || 'grid'), 'hud-' + (CFG.hud || 'classic'), 'layout-' + LAYOUT, PLAYER ? 'mode-player' : 'mode-scroll');
+  const navHTML = `<div class="nav"><button class="arrow" type="button" id="prev" aria-label="Previous ${esc(UNIT.toLowerCase())}">${arrowL}</button><div class="pills" id="pills" role="group" aria-label="${esc(UNIT)}s"></div><button class="arrow" type="button" id="next" aria-label="Next ${esc(UNIT.toLowerCase())}">${arrowR}</button></div>`;
+  const ctrlHTML = PLAYER ? `<div class="ctrl">
+          <div class="dock">
+            <button class="show" type="button" id="showBtn"><span class="ico" aria-hidden="true">▶</span><span id="showLbl">Show me</span></button>
+            <label class="scrub"><span>${esc(CFG.meterLabel || 'Built')}</span><input type="range" id="scrub" min="0" max="1000" value="1000" aria-label="Scrub through this build"></label>
+            <button class="tour" type="button" id="tourBtn" aria-pressed="false">Play all</button>
+          </div>
+          ${navHTML}
+          <p class="swipe-hint" aria-hidden="true">Swipe or drag the scene to slide between ${esc(UNIT.toLowerCase())}s</p>
+        </div>` : navHTML;
   const words = CFG.intro.title.split(' ');
   const hlFrom = CFG.intro.highlight ?? words.length - 1;
   document.body.insertAdjacentHTML('afterbegin', `
@@ -51,17 +73,17 @@
   <section class="intro" aria-labelledby="intro-h">
     <p class="kicker">${esc(CFG.intro.kicker)}</p>
     <h1 id="intro-h" aria-label="${esc(CFG.intro.title)}">${words.map((w, i) => `<span class="w${i >= hlFrom ? ' hl' : ''}" style="--i:${i}" aria-hidden="true">${esc(w)}</span>`).join(' ')}</h1>
-    <p class="lede">${esc(CFG.intro.lede)}</p>
-    <p class="hint"><i aria-hidden="true"></i>${esc(CFG.intro.hint || 'Scroll to start building')}</p>
+    <p class="lede">${esc(PLAYER ? CFG.intro.playerLede || CFG.intro.lede : CFG.intro.lede)}</p>
+    <p class="hint"><i aria-hidden="true"></i>${esc(PLAYER ? CFG.intro.playerHint || 'Press Show me, or slide between them' : CFG.intro.hint || 'Scroll to start building')}</p>
     <span class="badge">${LOOK_NAME} · ${LAYOUT_NAME} · sample business</span>
   </section>
-  <section class="stage" id="stage" aria-label="${esc(CFG.stageLabel || 'Scenes built as you scroll')}">
+  <section class="stage" id="stage" aria-label="${esc(CFG.stageLabel || (PLAYER ? 'Builds you can play and switch between' : 'Scenes built as you scroll'))}">
     <div class="sticky">${NOTEBOOK ? `
       <div class="book" id="book">
         <div class="page left"><div class="pg-in" aria-live="polite">
           <p class="no"><b id="code"></b><span id="count"></span></p><h2><span id="name"></span></h2><p id="blurb" class="blurb"></p>
           <ol class="steps" id="steps" aria-label="Steps for this ${esc(UNIT.toLowerCase())}"></ol>
-          <div class="meter"><small>${esc(CFG.meterLabel || 'Drawn')}</small><b id="pct">0%</b><p class="now" id="now">Scroll to start</p><div class="bar" id="bar"><i></i></div></div>
+          <div class="meter"><small>${esc(CFG.meterLabel || 'Drawn')}</small><b id="pct">0%</b><p class="now" id="now">${PLAYER ? 'Press Show me' : 'Scroll to start'}</p><div class="bar" id="bar"><i></i></div></div>
           <span class="pg-no" id="pgL">1</span>
         </div></div>
         <div class="page right"><canvas class="gl" id="gl" aria-hidden="true"></canvas><div class="fallback" id="fallback" hidden><p class="lede">This drawing needs WebGL, which this browser has turned off.</p></div><span class="pg-no" id="pgR">2</span></div>
@@ -69,15 +91,15 @@
         <div class="rings" aria-hidden="true"></div>
       </div>
       <div class="hud"><span></span><span></span>
-        <div class="nav"><button class="arrow" type="button" id="prev" aria-label="Previous ${esc(UNIT.toLowerCase())}">${arrowL}</button><div class="pills" id="pills" role="group" aria-label="${esc(UNIT)}s"></div><button class="arrow" type="button" id="next" aria-label="Next ${esc(UNIT.toLowerCase())}">${arrowR}</button></div>
+        ${ctrlHTML}
       </div>` : `
       <canvas class="gl" id="gl" aria-hidden="true"></canvas>
       <div class="fallback" id="fallback" hidden><p class="lede">This animation needs WebGL, which this browser has turned off. Every step is listed further down.</p></div>
       <div class="hud">
         <div class="title" aria-live="polite"><p class="no"><b id="code"></b><span id="count"></span></p><h2><span id="name"></span></h2><p id="blurb"></p></div>
         <div class="mid"><ol class="steps panel" id="steps" aria-label="Steps for this ${esc(UNIT.toLowerCase())}"></ol><span></span>
-          <div class="meter panel"><small>${esc(CFG.meterLabel || 'Built')}</small><b id="pct">0%</b><p class="now" id="now">Scroll to start</p><div class="bar" id="bar"><i></i></div></div></div>
-        <div class="nav"><button class="arrow" type="button" id="prev" aria-label="Previous ${esc(UNIT.toLowerCase())}">${arrowL}</button><div class="pills" id="pills" role="group" aria-label="${esc(UNIT)}s"></div><button class="arrow" type="button" id="next" aria-label="Next ${esc(UNIT.toLowerCase())}">${arrowR}</button></div>
+          <div class="meter panel"><small>${esc(CFG.meterLabel || 'Built')}</small><b id="pct">0%</b><p class="now" id="now">${PLAYER ? 'Press Show me' : 'Scroll to start'}</p><div class="bar" id="bar"><i></i></div></div></div>
+        ${ctrlHTML}
       </div>`}
     </div>
   </section>
@@ -146,7 +168,7 @@
   /* ---------------- text list (works without WebGL) ---------------- */
   const stepNames = SC.map((s) => {
     const names = [];
-    s.build(helpers({ step: (n) => names.push(n), box() {}, cyl() {}, sph() {}, cone() {}, torus() {}, sign() {} }));
+    s.build(helpers({ step: (n) => names.push(n), box() {}, cyl() {}, sph() {}, cone() {}, torus() {}, sign() {}, group() {}, end() {} }));
     return names;
   });
   $('#list').innerHTML = SC.map((s, i) => `<article class="panel"><span class="kicker">${esc(s.code)}</span><b>${esc(s.name)}</b><ol>${stepNames[i].map((n) => `<li>${esc(n)}</li>`).join('')}</ol></article>`).join('');
@@ -370,8 +392,9 @@
       gm.position.y = .01; gm.receiveShadow = true; inner.add(gm);
     }
     const blob = new THREE.Mesh(new THREE.PlaneGeometry(9.5, 9.5), blobMat); blob.rotation.x = -Math.PI / 2; blob.position.y = -.35; blob.visible = !island; group.add(blob);
-    const pieces = [], steps = [];
+    const pieces = [], steps = [], parts = {}, stack = [];
     let cur = null;
+    const parent = () => stack[stack.length - 1] || inner;
     const add = (geom, dims, x, y, z, color, anim, o) => {
       o = o || {};
       const mesh = new THREE.Mesh(geom, o.material || makeMat(color, o, dims));
@@ -385,18 +408,22 @@
       const ghost = new THREE.LineSegments(new THREE.EdgesGeometry(geom, 25), ghostMat);
       ghost.position.copy(mesh.position); ghost.rotation.copy(mesh.rotation); ghost.scale.copy(mesh.scale);
       if (TOON || FLAT || SKETCH || VOXEL) ghost.computeLineDistances();
-      inner.add(mesh); inner.add(ghost);
+      parent().add(mesh); parent().add(ghost);
       const away = new THREE.Vector3(x, y - .6, z); if (away.lengthSq() < .01) away.set(0, 1, 0); away.normalize();
       const p = { mesh, ghost, anim: ASSEMBLY || anim, dims, pos: mesh.position.clone(), rot: mesh.rotation.clone(), scl: mesh.scale.clone(), away, rnd: new THREE.Vector3(rand() * 2 - 1, rand() * .8 + .3, rand() * 2 - 1).normalize(), spin: rand() * 2 - 1 };
+      if (o.tag) p.tag = o.tag;
       pieces.push(p); cur.pieces.push(p);
+      return p;
     };
     const R = helpers({
-      step(name, verb, swatch) { cur = { name, verb: verb || name, swatch: swatch || '#999', pieces: [] }; steps.push(cur); },
-      box(w, h, d, x, yb, z, color, anim = 'drop', o = {}) { add(boxGeom(w, h, d), { w, h, d }, x, o.center ? yb : yb + h / 2, z, color, anim, o); },
-      cyl(rt, rb, h, x, yb, z, color, anim = 'drop', o = {}) { add(new THREE.CylinderGeometry(rt, rb, h, cylSeg(o)), { w: Math.max(rt, rb) * 2, h, d: Math.max(rt, rb) * 2 }, x, o.center ? yb : yb + h / 2, z, color, anim, o); },
-      cone(r, h, x, yb, z, color, anim = 'drop', o = {}) { add(new THREE.CylinderGeometry(0, r, h, cylSeg(o)), { w: r * 2, h, d: r * 2 }, x, yb + h / 2, z, color, anim, o); },
-      sph(r, x, y, z, color, anim = 'pop', o = {}) { add(sphGeom(r), { w: r * 2, h: r * 2, d: r * 2 }, x, y, z, color, anim, o); },
-      torus(r, tube, x, y, z, color, anim = 'pop', o = {}) { add(new THREE.TorusGeometry(r, tube, LOW || VOXEL ? 5 : 12, LOW || VOXEL ? 10 : 36), { w: (r + tube) * 2, h: (r + tube) * 2, d: tube * 2 }, x, y, z, color, anim, o); },
+      step(name, verb, swatch, so = {}) { cur = { name, verb: verb || name, swatch: swatch || '#999', pieces: [], removes: so.removes ? [].concat(so.removes) : null }; steps.push(cur); },
+      group(name, x = 0, y = 0, z = 0, o = {}) { const g = new THREE.Group(); g.position.set(x, y, z); g.rotation.set(o.rx || 0, o.ry || 0, o.rz || 0); parent().add(g); stack.push(g); if (name) parts[name] = g; return g; },
+      end() { stack.pop(); },
+      box(w, h, d, x, yb, z, color, anim = 'drop', o = {}) { return add(boxGeom(w, h, d), { w, h, d }, x, o.center ? yb : yb + h / 2, z, color, anim, o); },
+      cyl(rt, rb, h, x, yb, z, color, anim = 'drop', o = {}) { return add(new THREE.CylinderGeometry(rt, rb, h, cylSeg(o)), { w: Math.max(rt, rb) * 2, h, d: Math.max(rt, rb) * 2 }, x, o.center ? yb : yb + h / 2, z, color, anim, o); },
+      cone(r, h, x, yb, z, color, anim = 'drop', o = {}) { return add(new THREE.CylinderGeometry(0, r, h, cylSeg(o)), { w: r * 2, h, d: r * 2 }, x, yb + h / 2, z, color, anim, o); },
+      sph(r, x, y, z, color, anim = 'pop', o = {}) { return add(sphGeom(r), { w: r * 2, h: r * 2, d: r * 2 }, x, y, z, color, anim, o); },
+      torus(r, tube, x, y, z, color, anim = 'pop', o = {}) { return add(new THREE.TorusGeometry(r, tube, LOW || VOXEL ? 5 : 12, LOW || VOXEL ? 10 : 36), { w: (r + tube) * 2, h: (r + tube) * 2, d: tube * 2 }, x, y, z, color, anim, o); },
       sign(text, w, h, x, yb, z, bg, fg, anim = 'pop', o = {}) {
         const sideways = o.face === 'x', depth = o.depth || .04;
         const cv = document.createElement('canvas'); cv.width = 512; cv.height = Math.max(64, Math.round(512 * h / w));
@@ -416,8 +443,13 @@
       const n = st.pieces.length, span = 1 / S;
       st.pieces.forEach((p, j) => { p.t0 = si * span + (n > 1 ? (j / (n - 1)) * span * SPEED.stagger : 0); p.t1 = p.t0 + span * SPEED.dur; });
     });
+    steps.forEach((st, si) => {
+      if (!st.removes) return;
+      const span = 1 / S, out = pieces.filter((p) => p.tag && st.removes.includes(p.tag)), n = out.length;
+      out.forEach((p, j) => { p.t2 = si * span + (n > 1 ? (j / (n - 1)) * span * SPEED.stagger : 0); p.t3 = p.t2 + span * SPEED.dur; });
+    });
     scene.add(group);
-    return { s, group, pieces, steps, stepNames: steps.map((x) => x.name) };
+    return { s, group, pieces, steps, parts, stepNames: steps.map((x) => x.name) };
   });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => signs.forEach(drawSign));
 
@@ -508,7 +540,14 @@
     }
   }
   function buildScene(b, a) {
-    for (const p of b.pieces) { let q = (a - p.t0) / (p.t1 - p.t0); q = reduce ? (q > 0 ? 1 : 0) : clamp01(q); animatePiece(p, q); }
+    for (const p of b.pieces) {
+      let q = (a - p.t0) / (p.t1 - p.t0);
+      const leaving = p.t2 !== undefined && a > p.t2;
+      if (leaving) q = 1 - (a - p.t2) / (p.t3 - p.t2);
+      q = reduce ? (q > 0 ? 1 : 0) : clamp01(q);
+      animatePiece(p, q);
+      if (leaving) p.ghost.visible = false;
+    }
   }
 
   /* ---------------- game world: a player that hops between islands, coins to collect ---------------- */
@@ -562,9 +601,9 @@
   /* ---------------- scroll ---------------- */
   const DWELL = .72, PMAX = N - 1 + DWELL;
   const stage = $('#stage');
-  stage.style.height = `${N * 170 + 100}vh`;
+  if (!PLAYER) stage.style.height = `${N * 170 + 100}vh`;
   let target = 0, shown = 0;
-  function readScroll() { const r = stage.getBoundingClientRect(), span = stage.offsetHeight - innerHeight; target = clamp01(-r.top / span) * PMAX; }
+  function readScroll() { if (PLAYER) return; const r = stage.getBoundingClientRect(), span = stage.offsetHeight - innerHeight; target = clamp01(-r.top / span) * PMAX; }
   function state(p) {
     const i = Math.min(N - 1, Math.floor(p)), f = p - i, moving = f > DWELL && i < N - 1;
     let c = i;
@@ -576,12 +615,51 @@
     window.scrollTo({ top: stage.offsetTop + (p / PMAX) * span, behavior: reduce ? 'auto' : 'smooth' });
   }
 
+  /* ---------------- player mode ---------------- */
+  // Each build has its own progress (0 = bare plinth, 1 = finished). The camera slides between builds
+  // on its own, so switching never replays the ones in between.
+  const B = new Array(N).fill(1);
+  const pState = { c: 0, build: (j) => B[j] };
+  const PLAY_SECS = CFG.playSeconds || { cinematic: 9, smooth: 7, snappy: 4.5, bouncy: 6 }[CFG.speed] || 7;
+  let cur = 0, camC = 0, camShown = 0, phase = 'idle', tourOn = false, holdT = 0, played = false, scrubbing = false;
+  const playedSet = new Set();
+  const going = () => phase === 'play' || phase === 'rewind' || phase === 'wait';
+  function syncDock() {
+    if (!PLAYER) return;
+    const btn = $('#showBtn');
+    btn.querySelector('.ico').textContent = going() ? '❚❚' : '▶';
+    $('#showLbl').textContent = going() ? 'Pause' : B[cur] >= 1 ? (playedSet.has(cur) ? 'Show me again' : 'Show me') : B[cur] > 0 ? 'Keep building' : 'Show me';
+    btn.classList.toggle('pulse', !played && !going());
+    $('#tourBtn').setAttribute('aria-pressed', String(tourOn));
+    $('#tourBtn').textContent = tourOn ? 'Stop tour' : 'Play all';
+  }
+  function goScene(j) {
+    j = Math.max(0, Math.min(N - 1, j));
+    // The room you leave snaps back to finished, so the neighbours on the track always look complete.
+    if (j !== cur) { B[cur] = 1; if (!tourOn) phase = 'idle'; }
+    cur = j; camC = j;
+    if (tourOn) { playedSet.add(j); B[j] = 0; phase = 'wait'; holdT = 0; }
+    syncDock();
+  }
+  function play() { played = true; playedSet.add(cur); phase = B[cur] >= 1 ? 'rewind' : 'play'; syncDock(); }
+  function toggleTour() {
+    tourOn = !tourOn;
+    if (tourOn) { played = true; playedSet.add(cur); B[cur] = 0; phase = 'wait'; holdT = 0; } else phase = 'idle';
+    syncDock();
+  }
+  function tickPlayer(dt) {
+    if (phase === 'rewind') { B[cur] = reduce ? 0 : Math.max(0, B[cur] - dt / .6); if (B[cur] <= 0) phase = 'play'; }
+    else if (phase === 'wait') { if (Math.abs(camC - camShown) < .02) { holdT += dt; if (holdT > .35) { holdT = 0; phase = 'play'; } } }
+    else if (phase === 'play') { B[cur] = Math.min(1, B[cur] + dt / PLAY_SECS); if (B[cur] >= 1) { phase = tourOn ? 'hold' : 'idle'; holdT = 0; syncDock(); } }
+    else if (phase === 'hold') { holdT += dt; if (holdT > 1.4) { if (cur < N - 1) goScene(cur + 1); else { tourOn = false; phase = 'idle'; syncDock(); } } }
+  }
+
   /* ---------------- HUD ---------------- */
   $('#pills').innerHTML = SC.map((s, k) => `<button class="pill" type="button" data-scene="${k}">${esc(s.name)}</button>`).join('');
   const pills = [...document.querySelectorAll('.pill')];
   let hudScene = -1, hudStep = -2;
   function hud(st) {
-    const k = Math.round(st.c), b = built[k], a = st.build(k);
+    const k = PLAYER ? cur : Math.round(st.c), b = built[k], a = st.build(k);
     if (k !== hudScene) {
       const nm = $('#name');
       nm.textContent = b.s.name; nm.className = 'swap' + (k < hudScene ? ' back' : ''); void nm.offsetWidth;
@@ -598,7 +676,7 @@
     const S = b.steps.length, si = a > .995 ? S : Math.min(S - 1, Math.floor(a * S));
     if (si !== hudStep) {
       [...$('#steps').children].forEach((li, j) => { li.className = j < si ? 'done' : j === si ? 'now' : ''; });
-      $('#now').innerHTML = a <= 0 ? 'Scroll down to start' : si >= S ? `<em>${esc(b.s.name)} done.</em> Keep scrolling` : `${esc(b.steps[si].verb)}<br><em>${esc(b.steps[si].name)}</em>`;
+      $('#now').innerHTML = a <= 0 ? (PLAYER ? 'Press Show me to build it' : 'Scroll down to start') : si >= S ? `<em>${esc(b.s.name)} done.</em> ${PLAYER ? 'Try another' : 'Keep scrolling'}` : `${esc(b.steps[si].verb)}<br><em>${esc(b.steps[si].name)}</em>`;
       hudStep = si;
     }
     $('#pct').textContent = `${Math.round(a * 100)}%`;
@@ -608,9 +686,11 @@
   document.addEventListener('click', (e) => {
     const t = e.target.closest('button');
     if (!t) return;
-    if (t.dataset.scene) scrollToScene(+t.dataset.scene);
-    else if (t.id === 'prev') scrollToScene(Math.max(0, hudScene - 1));
-    else if (t.id === 'next') scrollToScene(Math.min(N - 1, hudScene + 1), false);
+    if (t.dataset.scene) (PLAYER ? goScene : scrollToScene)(+t.dataset.scene);
+    else if (t.id === 'prev') PLAYER ? goScene(cur - 1) : scrollToScene(Math.max(0, hudScene - 1));
+    else if (t.id === 'next') PLAYER ? goScene(cur + 1) : scrollToScene(Math.min(N - 1, hudScene + 1), false);
+    else if (t.id === 'showBtn') { if (going()) { phase = 'idle'; tourOn = false; syncDock(); } else play(); }
+    else if (t.id === 'tourBtn') toggleTour();
     else if (t.id === 'themeBtn') {
       const next = isDark() ? 'light' : 'dark';
       const go = () => { document.documentElement.dataset.theme = next; ls.set(themeKey, next); syncLbl(); applyTheme(); };
@@ -618,6 +698,37 @@
     }
   });
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { syncLbl(); applyTheme(); });
+
+  /* ---------------- timelapse: the sun sweeps a few days across the sky as the build goes ---------------- */
+  const TL = CFG.timelapse ? Object.assign({ days: 120, cycles: 4.3, start: .3 }, CFG.timelapse) : null;
+  let tlSky = null;
+  if (TL) {
+    tlSky = document.createElement('div'); tlSky.className = 'tl-sky'; tlSky.setAttribute('aria-hidden', 'true');
+    canvas.parentElement.insertBefore(tlSky, canvas);
+    const title = document.querySelector('.hud .title');
+    if (title) title.insertAdjacentHTML('beforeend', '<p class="tl-clock" aria-hidden="true"><b id="tlDay">Day 1</b><span id="tlWeek"></span></p>');
+    document.body.classList.add('timelapse');
+  }
+  const SKY = [[0, '#1f2a4d', '#4d5f8c'], [.22, '#5b4f86', '#e89a76'], [.3, '#f2a36b', '#f7dcb4'], [.42, '#6fb1e6', '#cfe7f7'], [.62, '#6aa9e0', '#d6ebf8'], [.72, '#f08a5d', '#f6c98f'], [.8, '#6c4f8f', '#e7866a'], [1, '#1f2a4d', '#4d5f8c']];
+  const skyA = new THREE.Color(), skyB = new THREE.Color(), warm = new THREE.Color('#ffb27a'), white = new THREE.Color('#ffffff'), nightSky = new THREE.Color('#5d6fa8');
+  let tlLastDay = -1;
+  function skyAt(ph, i) {
+    for (let k = 1; k < SKY.length; k++) if (ph <= SKY[k][0]) { const [p0, ...c0] = SKY[k - 1], [p1, ...c1] = SKY[k], f = (ph - p0) / (p1 - p0); return skyA.set(c0[i]).lerp(skyB.set(c1[i]), f).getStyle(); }
+    return SKY[0][i + 1];
+  }
+  function timelapse(k, a) {
+    if (!TL) return;
+    const ph = reduce ? .5 : ((TL.start + a * TL.cycles) % 1 + 1) % 1, ang = (ph - .25) * Math.PI * 2, elev = Math.sin(ang);
+    const day = Math.max(0, Math.min(1, (elev + .15) / .4));
+    sun.position.set(-Math.cos(ang) * 10, Math.max(.8, elev * 10 + 1.5), 6);
+    sun.intensity = LIGHT[1] * (.18 + .82 * day);
+    sun.color.copy(warm).lerp(white, Math.max(0, Math.min(1, elev * 2.2)));
+    hemi.intensity = LIGHT[0] * (.38 + .62 * day);
+    hemi.color.copy(nightSky).lerp(white, day);
+    tlSky.style.setProperty('--sky1', skyAt(ph, 0)); tlSky.style.setProperty('--sky2', skyAt(ph, 1));
+    const days = SC[k].days || TL.days, d = 1 + Math.round(a * (days - 1)), key = a >= 1 ? -k - 1 : k * 100000 + d;
+    if (key !== tlLastDay) { tlLastDay = key; $('#tlDay').textContent = a >= 1 ? `Done in ${days} days` : `Day ${d} of ${days}`; $('#tlWeek').textContent = a >= 1 ? '' : `Week ${Math.ceil(d / 7)}`; }
+  }
 
   /* ---------------- camera + loop ---------------- */
   let aspect = 1, baseDist = 15;
@@ -650,14 +761,25 @@
   window.SCENES_API = {
     count: N, names: SC.map((s) => s.name), codes: SC.map((s) => s.code),
     positions: LAYOUT === 'world' || LAYOUT === 'board' ? FOLLOW.map((p) => [p.x, p.z]) : null,
-    goTo: scrollToScene, current: () => hudScene, segmentPx: () => (stage.offsetHeight - innerHeight) / PMAX, stage,
+    goTo: PLAYER ? goScene : scrollToScene, play: PLAYER ? play : () => {}, mode: PLAYER ? 'player' : 'scroll', current: () => hudScene, segmentPx: () => (stage.offsetHeight - innerHeight) / PMAX, stage,
   };
   let running = false, last = performance.now();
   function frame(now) {
     const dt = Math.min(.05, (now - last) / 1000); last = now;
-    shown += (target - shown) * (reduce ? 1 : 1 - Math.exp(-dt * SPEED.follow));
-    if (Math.abs(target - shown) < .0005) shown = target;
-    const st = state(shown);
+    let st;
+    if (PLAYER) {
+      tickPlayer(dt);
+      camShown += (camC - camShown) * (reduce ? 1 : 1 - Math.exp(-dt * SPEED.follow));
+      if (Math.abs(camC - camShown) < .0005) camShown = camC;
+      pState.c = camShown; st = pState;
+      const sc = $('#scrub');
+      if (!scrubbing) sc.value = Math.round(B[cur] * 1000);
+      sc.setAttribute('aria-valuetext', `${Math.round(B[cur] * 100)}% built`);
+    } else {
+      shown += (target - shown) * (reduce ? 1 : 1 - Math.exp(-dt * SPEED.follow));
+      if (Math.abs(target - shown) < .0005) shown = target;
+      st = state(shown);
+    }
     if (NOTEBOOK) {
       const i0 = Math.min(N - 1, Math.floor(st.c + 1e-6)), flipF = st.c - i0, flipping = flipF > .002 && i0 < N - 1;
       if (flipping && flipK !== i0) {
@@ -672,7 +794,11 @@
       nbVisible = flipping ? i0 + 1 : Math.round(st.c);
       const leaf = $('#leaf'); leaf.style.display = flipping ? 'block' : 'none'; $('#book').style.setProperty('--f', flipF.toFixed(4));
     }
-    built.forEach((b, j) => { place(b, j, st.c, now / 1000); buildScene(b, st.build(j)); });
+    built.forEach((b, j) => {
+      place(b, j, st.c, now / 1000); buildScene(b, st.build(j));
+      if (b.s.live && b.group.visible) b.s.live({ a: st.build(j), t: now / 1000, parts: b.parts, reduce });
+    });
+    if (TL) { const kk = PLAYER ? cur : Math.min(N - 1, Math.round(st.c)); timelapse(kk, st.build(kk)); }
     if (ringDisc) ringDisc.rotation.y = -st.c * RING_A;
     placeWorldExtras(st, now / 1000);
     placeCamera(st.c);
@@ -688,6 +814,33 @@
     else if (!en.isIntersecting) running = false;
   }).observe(stage);
   addEventListener('scroll', readScroll, { passive: true });
+  if (PLAYER) {
+    const sc = $('#scrub'), box = stage.querySelector('.sticky');
+    sc.addEventListener('input', () => { scrubbing = true; phase = 'idle'; tourOn = false; played = true; B[cur] = sc.value / 1000; syncDock(); });
+    sc.addEventListener('change', () => { scrubbing = false; });
+    sc.addEventListener('pointerup', () => { scrubbing = false; });
+    // Drag or swipe the scene sideways: the camera follows your finger, then settles on a build.
+    let dragX = null, dragC = 0;
+    box.addEventListener('pointerdown', (e) => {
+      if (e.button !== 0 || e.target.closest('button, a, input, label, .steps, .pills')) return;
+      dragX = e.clientX; dragC = camC; box.classList.add('dragging');
+    });
+    addEventListener('pointermove', (e) => { if (dragX === null) return; camC = Math.max(0, Math.min(N - 1, dragC - (e.clientX - dragX) / (box.clientWidth * .55))); });
+    const endDrag = (e) => {
+      if (dragX === null) return;
+      const dx = e.clientX - dragX; dragX = null; box.classList.remove('dragging');
+      let j = Math.round(camC);
+      if (j === cur && Math.abs(dx) > 50) j = cur + (dx < 0 ? 1 : -1);
+      goScene(j);
+    };
+    addEventListener('pointerup', endDrag); addEventListener('pointercancel', endDrag);
+    addEventListener('keydown', (e) => {
+      if (!running || e.target.closest('input, textarea, select')) return;
+      if (e.key === 'ArrowRight') { e.preventDefault(); goScene(cur + 1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); goScene(cur - 1); }
+    });
+    syncDock();
+  }
   applyTheme(); resize(); readScroll(); shown = target;
   frame(performance.now());
 })();

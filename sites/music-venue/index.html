@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Northern Static · Sample live music venue site</title>
+<meta name="description" content="Sample website template for a live music bar in Edmonton: lineup by genre, tickets, the room and private events. Made-up venue. A remix of the gym, automotive, online store and café templates.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0b0718">
+<script>document.documentElement.classList.add('js');setTimeout(function(){var d=document.documentElement;if(!d.classList.contains('kit-ready'))d.classList.remove('js')},4000)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Chakra+Petch:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../../kit/kit.css">
+<style>
+:root {
+  --paper: #0b0718; --card: #150f2a; --ink: #f2eefe; --ink-2: #a59cc4; --line: #2a2148;
+  --accent: #ff3ea5; --cyan: #33e1ff; --lime: #c6ff4d;
+  --display: 'Unbounded', system-ui, sans-serif; --body: 'Chakra Petch', system-ui, sans-serif;
+  --cursor: #ff3ea5; --trail-w: 200px; --trail-r: 12px; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.6 var(--body); overflow-x: clip; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); margin: 0; line-height: .95; text-transform: uppercase; letter-spacing: -0.02em; }
+h2 { font-size: clamp(2.4rem, 1.2rem + 4.6vw, 5.2rem); font-weight: 900; }
+h3 { font-size: 1.25rem; font-weight: 700; }
+p { margin: 0; }
+.wrap { width: min(1240px, 100% - 32px); margin-inline: auto; }
+.tag { display: inline-flex; align-items: center; gap: 8px; font: 600 12px/1 var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--cyan); }
+.tag::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+section { padding: clamp(80px, 10vw, 130px) 0; position: relative; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 24px; border-radius: 999px; font: 700 13px/1 var(--display); letter-spacing: .04em; text-transform: uppercase; text-decoration: none; border: 0; background: var(--accent); color: #12051c; cursor: pointer; box-shadow: 0 0 24px rgb(255 62 165 / .45); }
+.btn-ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 2px var(--line); }
+.btn-ghost:hover { box-shadow: inset 0 0 0 2px var(--cyan); color: var(--cyan); }
+
+.top { position: fixed; inset: 0 0 auto; z-index: 60; padding: 14px 0; }
+.top.is-scrolled { background: rgb(11 7 24 / .85); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 24px; }
+.logo { font: 900 1.05rem/1 var(--display); text-transform: uppercase; text-decoration: none; letter-spacing: .02em; }
+.logo span { color: var(--accent); }
+.nav { display: flex; gap: 24px; margin-left: auto; }
+.nav a { font-weight: 600; text-decoration: none; letter-spacing: .06em; text-transform: uppercase; font-size: 14px; }
+.nav a:hover { color: var(--cyan); }
+.wallet { position: relative; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 999px; border: 0; background: var(--card); color: var(--ink); box-shadow: inset 0 0 0 2px var(--line); font: 600 14px var(--body); cursor: pointer; }
+.wallet b { min-width: 22px; height: 22px; border-radius: 11px; background: var(--accent); color: #12051c; font: 700 12px/22px var(--body); text-align: center; }
+.wallet .wi { display: none; }
+@media (max-width: 479px) { .wallet .wl { display: none; } .wallet .wi { display: inline; } .wallet { padding: 0 12px; } .top .wrap { gap: 12px; } .logo { font-size: .9rem; } }
+.menu-btn { display: none; background: var(--card); color: var(--ink); border: 0; box-shadow: inset 0 0 0 2px var(--line); border-radius: 999px; padding: 12px 16px; font: 600 13px var(--body); letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+@media (max-width: 899px) {
+  .menu-btn { display: block; margin-left: auto; }
+  .nav { position: fixed; inset: 0; z-index: -1; flex-direction: column; justify-content: center; align-items: center; gap: 14px; background: var(--paper); visibility: hidden; opacity: 0; transition: opacity .25s, visibility .25s; }
+  .nav.is-open { visibility: visible; opacity: 1; }
+  .nav a { font: 900 2.4rem/1.1 var(--display); }
+}
+
+/* Hero: neon streaks, flipping title, an equalizer that jumps with scroll speed */
+.hero { min-height: 100svh; padding: 120px 0 0; display: grid; grid-template-rows: 1fr auto; overflow: hidden; }
+#streaks { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 60% 50% at 50% 45%, rgb(255 62 165 / .18), transparent 70%); }
+.hero .wrap { position: relative; z-index: 1; align-self: center; }
+.hero h1 { font-size: clamp(3rem, 0.6rem + 10vw, 10rem); font-weight: 900; line-height: .86; }
+.hero h1 .pk { color: var(--accent); text-shadow: 0 0 30px rgb(255 62 165 / .6); }
+.tonight { margin-top: 26px; font: 600 clamp(1.1rem, 1rem + .6vw, 1.5rem) var(--body); letter-spacing: .04em; }
+.tonight b { color: var(--cyan); }
+.hero .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.eq { position: relative; z-index: 1; display: flex; align-items: flex-end; gap: 6px; height: 140px; padding: 0 max(16px, (100vw - 1240px) / 2); }
+.eq i { flex: 1; height: 100%; border-radius: 4px 4px 0 0; background: linear-gradient(var(--accent), var(--cyan)); transform-origin: 50% 100%; transform: scaleY(.2); opacity: .9; }
+@media (max-width: 699px) { .eq { height: 90px; gap: 4px; } }
+
+/* Zoom-through */
+.zoom { height: 100svh; padding: 0; display: grid; place-items: center; overflow: hidden; }
+.zoom-word { font: 900 clamp(4rem, 1rem + 16vw, 18rem)/1 var(--display); color: var(--cyan); text-transform: uppercase; white-space: nowrap; text-shadow: 0 0 40px rgb(51 225 255 / .5); }
+.zoom-after { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 20px; color: #071a20; opacity: 0; }
+.zoom-after h2 { max-width: 16ch; font-size: clamp(2rem, 1rem + 4vw, 4.4rem); }
+
+/* Lineup */
+.days { display: flex; flex-wrap: wrap; gap: 8px; margin: 30px 0 8px; }
+.days button { font: 600 14px var(--body); letter-spacing: .08em; text-transform: uppercase; padding: 10px 16px; border-radius: 999px; border: 0; background: var(--card); color: var(--ink); box-shadow: inset 0 0 0 2px var(--line); cursor: pointer; }
+.days button[aria-pressed="true"] { background: var(--cyan); color: #071a20; box-shadow: none; }
+.lstat { color: var(--ink-2); font-size: 14px; min-height: 1.4em; }
+.shows { display: grid; gap: 10px; margin-top: 14px; }
+.show { display: grid; grid-template-columns: 90px 1fr auto auto; gap: 20px; align-items: center; padding: 16px 18px; background: var(--card); border-radius: 18px; box-shadow: inset 0 0 0 1px var(--line); }
+.show .date { text-align: center; font: 900 1.6rem/1 var(--display); color: var(--accent); }
+.show .date small { display: block; font: 600 12px var(--body); letter-spacing: .14em; color: var(--ink-2); margin-top: 4px; }
+.show h3 { font-size: clamp(1.1rem, .9rem + 1vw, 1.6rem); }
+.show .meta { color: var(--ink-2); font-size: 14px; }
+.show .genre { font: 600 12px var(--body); letter-spacing: .14em; text-transform: uppercase; padding: 6px 10px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line); color: var(--cyan); }
+.show .btn { min-height: 44px; font-size: 12px; }
+@media (max-width: 799px) { .show { grid-template-columns: 70px 1fr; gap: 12px; } .show .genre { display: none; } .show .btn { grid-column: 1 / -1; } }
+
+.band { background: var(--accent); color: #12051c; padding: 14px 0; }
+.band .mq-track span { font: 900 clamp(1.6rem, 1.2rem + 2vw, 2.8rem)/1 var(--display); text-transform: uppercase; white-space: nowrap; }
+
+/* The room: image trail */
+.room { min-height: 70vh; display: grid; place-items: center; text-align: center; overflow: hidden; background: radial-gradient(circle at 50% 50%, #1f1340, #0b0718 70%); }
+.room .inner { position: relative; z-index: 2; pointer-events: none; }
+.room .inner a { pointer-events: auto; }
+.room h2 { font-size: clamp(2.6rem, 1.4rem + 5vw, 6rem); }
+.room p { color: var(--ink-2); margin-top: 12px; }
+.room .trail-layer { z-index: 1 !important; }
+.stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px 50px; margin-top: 34px; }
+.stats b { display: block; font: 900 clamp(2.2rem, 1.6rem + 2vw, 3.4rem)/1 var(--display); color: var(--lime); font-variant-numeric: tabular-nums; }
+.stats span { color: var(--ink-2); font-size: 14px; letter-spacing: .1em; text-transform: uppercase; }
+.hint-touch { display: none; }
+@media (hover: none), (pointer: coarse) { .hint-fine { display: none; } .hint-touch { display: inline; } }
+
+/* Private events */
+.priv .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+.pf { background: var(--card); border-radius: 26px; padding: clamp(22px, 4vw, 40px); box-shadow: inset 0 0 0 1px var(--line); }
+.pf legend { font: 900 1.4rem/1.1 var(--display); text-transform: uppercase; padding: 0; margin-bottom: 16px; }
+.pf .meta { display: flex; justify-content: space-between; font-size: 13px; color: var(--ink-2); margin-bottom: 10px; letter-spacing: .1em; text-transform: uppercase; }
+.pf [data-steps-bar] { background: var(--line); }
+.pf [data-steps-bar] i { background: linear-gradient(90deg, var(--accent), var(--cyan)); }
+.opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.opts label { position: relative; }
+.opts input { position: absolute; inset: 0; opacity: 0; }
+.opts span { display: block; padding: 16px; border-radius: 16px; background: var(--paper); box-shadow: inset 0 0 0 2px var(--line); font-weight: 600; cursor: pointer; }
+.opts input:checked + span { box-shadow: inset 0 0 0 2px var(--accent); color: var(--accent); }
+.opts input:focus-visible + span { outline: 3px solid var(--cyan); outline-offset: 2px; }
+.fp { display: grid; gap: 6px; margin-bottom: 12px; }
+.fp label { font-size: 14px; font-weight: 600; letter-spacing: .06em; }
+.fp input, .fp select { font: inherit; padding: 13px 14px; border-radius: 14px; border: 0; box-shadow: inset 0 0 0 2px var(--line); background: var(--paper); color: var(--ink); width: 100%; }
+.pf .rr { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+.priv ul { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 12px; }
+.priv li { display: flex; gap: 12px; color: var(--ink-2); }
+.priv li b { color: var(--lime); font-family: var(--display); }
+.done h3 { font-size: 2.2rem; color: var(--accent); }
+@media (max-width: 899px) { .priv .wrap { grid-template-columns: 1fr; } }
+
+/* Ticket wallet drawer + flying stub */
+.drawer { position: fixed; inset: 0; z-index: 100; visibility: hidden; }
+.drawer.open { visibility: visible; }
+.drawer .shade { position: absolute; inset: 0; background: rgb(0 0 0 / .55); opacity: 0; }
+.drawer .panel { position: absolute; top: 0; right: 0; bottom: 0; width: min(420px, 100%); background: var(--paper); box-shadow: -1px 0 0 var(--line); padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+.drawer .head { display: flex; justify-content: space-between; align-items: center; }
+.drawer .x { width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--card); color: var(--ink); cursor: pointer; font-size: 18px; }
+.tix { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; overflow: auto; flex: 1; align-content: start; }
+.tick { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; padding: 14px; border-radius: 14px; background: var(--card); border-left: 4px dashed var(--accent); }
+.tick small { display: block; color: var(--ink-2); }
+.tick .q { display: flex; gap: 6px; align-items: center; }
+.tick .q button { width: 30px; height: 30px; border-radius: 50%; border: 0; background: var(--paper); color: var(--ink); cursor: pointer; font-weight: 700; }
+.empty { color: var(--ink-2); text-align: center; padding: 30px 0; }
+.sum { display: flex; justify-content: space-between; font: 900 1.1rem var(--display); text-transform: uppercase; }
+.stub { position: fixed; z-index: 120; left: 0; top: 0; width: 120px; height: 52px; border-radius: 8px; background: var(--accent); color: #12051c; display: grid; place-items: center; font: 900 11px var(--display); text-transform: uppercase; pointer-events: none; box-shadow: 0 0 30px rgb(255 62 165 / .6); }
+
+footer { border-top: 1px solid var(--line); padding: 36px 0; color: var(--ink-2); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: center; }
+footer button { font: inherit; background: var(--card); color: var(--ink); border: 0; border-radius: 999px; padding: 7px 14px; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div data-progress></div>
+
+<header class="top" data-header data-header-hide>
+  <div class="wrap">
+    <a class="logo" href="#top">Northern<span>/</span>Static</a>
+    <nav class="nav" id="nav" aria-label="Main"><a href="#lineup">Lineup</a><a href="#room">The room</a><a href="#private">Private events</a></nav>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle>Menu</button>
+    <button class="wallet" type="button" id="walletBtn" aria-haspopup="dialog" aria-label="Your tickets, 0"><span class="wl" aria-hidden="true">Tickets</span><span class="wi" aria-hidden="true">🎟</span> <b id="wcount">0</b></button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <canvas id="streaks" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <span class="tag" data-reveal="fade" data-now>Live music bar · Whyte Ave · Edmonton</span>
+      <h1 style="margin-top:20px"><span data-split="chars" data-split-anim="flip" data-now data-delay=".1" data-stagger=".03" style="display:block">Turn it</span><span class="pk" data-split="chars" data-split-anim="flip" data-now data-delay=".35" data-stagger=".03" style="display:block">all the way up.</span></h1>
+      <p class="tonight" data-reveal="up" data-now data-delay=".8">Tonight: <b data-rotate="Velvet Static|The Prairie Ghosts|DJ Moonwalk|Lila &amp; the Low Tide">Velvet Static</b></p>
+      <div class="ctas" data-reveal="up" data-now data-delay=".95"><a class="btn" href="#lineup" data-magnet="0.3">See the lineup</a><a class="btn btn-ghost" href="#private">Book the room</a></div>
+    </div>
+    <div class="eq" id="eq" aria-hidden="true"></div>
+  </section>
+
+  <section class="zoom" aria-label="Loud">
+    <div class="zoom-word" id="zoomWord" aria-hidden="true">L<span id="zo">O</span>UD</div>
+    <div class="zoom-after" id="zoomAfter"><h2>A 300-cap room with a sound system that punches way above it.</h2></div>
+  </section>
+
+  <section id="lineup" aria-labelledby="lu-h">
+    <div class="wrap" data-filter>
+      <span class="tag">On stage</span>
+      <h2 id="lu-h" style="margin-top:16px" data-split="chars" data-split-anim="flip" data-stagger=".02">The lineup</h2>
+      <div class="days" role="group" aria-label="Filter by genre"><button type="button" data-filter-btn="all" aria-pressed="true">All</button><button type="button" data-filter-btn="rock" aria-pressed="false">Rock</button><button type="button" data-filter-btn="elec" aria-pressed="false">Electronic</button><button type="button" data-filter-btn="jazz" aria-pressed="false">Jazz &amp; soul</button><button type="button" data-filter-btn="folk" aria-pressed="false">Folk</button></div>
+      <p class="lstat" data-filter-status aria-live="polite"></p>
+      <div class="shows" data-reveal-group="left" data-stagger=".05">
+        <article class="show" data-tags="rock" data-name="Velvet Static" data-price="25"><span class="date">10<small>OCT · FRI</small></span><div><h3>Velvet Static</h3><span class="meta">Doors 8 pm · with Hollow Pines</span></div><span class="genre">Rock</span><button class="btn" type="button" data-ticket>Tickets · $25</button></article>
+        <article class="show" data-tags="elec" data-name="DJ Moonwalk" data-price="18"><span class="date">11<small>OCT · SAT</small></span><div><h3>DJ Moonwalk</h3><span class="meta">10 pm till late · 19+</span></div><span class="genre">Electronic</span><button class="btn" type="button" data-ticket>Tickets · $18</button></article>
+        <article class="show" data-tags="jazz" data-name="Lila & the Low Tide" data-price="22"><span class="date">12<small>OCT · SUN</small></span><div><h3>Lila &amp; the Low Tide</h3><span class="meta">All ages · doors 6 pm</span></div><span class="genre">Jazz &amp; soul</span><button class="btn" type="button" data-ticket>Tickets · $22</button></article>
+        <article class="show" data-tags="folk" data-name="The Prairie Ghosts" data-price="20"><span class="date">16<small>OCT · THU</small></span><div><h3>The Prairie Ghosts</h3><span class="meta">Seated show · doors 7 pm</span></div><span class="genre">Folk</span><button class="btn" type="button" data-ticket>Tickets · $20</button></article>
+        <article class="show" data-tags="rock" data-name="Static Shock Fest" data-price="35"><span class="date">17<small>OCT · FRI</small></span><div><h3>Static Shock Fest</h3><span class="meta">Five local bands · doors 6 pm</span></div><span class="genre">Rock</span><button class="btn" type="button" data-ticket>Tickets · $35</button></article>
+        <article class="show" data-tags="elec jazz" data-name="Neon Brass Club" data-price="20"><span class="date">18<small>OCT · SAT</small></span><div><h3>Neon Brass Club</h3><span class="meta">Live horns over house beats · 19+</span></div><span class="genre">Electronic</span><button class="btn" type="button" data-ticket>Tickets · $20</button></article>
+      </div>
+    </div>
+  </section>
+
+  <div class="band" data-marquee data-marquee-velocity data-marquee-skew data-marquee-flip data-marquee-speed="90" style="--mq-gap:28px" aria-hidden="true">
+    <div class="mq-track"><span>All-ages Sundays</span><span>✦</span><span>Late shows Fri–Sat</span><span>✦</span><span>Local bands Thursdays</span><span>✦</span><span>No cover before 9</span><span>✦</span></div>
+  </div>
+
+  <section class="room" id="room" data-trail="100" aria-labelledby="rm-h">
+    <div class="trail-items" aria-hidden="true">
+      <div data-art="city" data-seed="31" data-palette="#1f1340,#ff3ea5,#0b0718,#33e1ff"></div><div data-art="portrait" data-seed="601" data-palette="#2a1d55,#150f2a,#ff3ea5,#c99a76"></div><div data-art="abstract" data-seed="44" data-palette="#0b0718,#ff3ea5,#33e1ff,#c6ff4d"></div>
+      <div data-art="portrait" data-seed="608" data-palette="#2a1d55,#150f2a,#33e1ff,#8a5a3c"></div><div data-art="product" data-seed="7" data-palette="#1f1340,#2a1d55,#ff3ea5,#c6ff4d"></div><div data-art="city" data-seed="52" data-palette="#150f2a,#33e1ff,#0b0718,#ff3ea5"></div>
+    </div>
+    <div class="wrap inner">
+      <span class="tag">The room</span>
+      <h2 id="rm-h" style="margin-top:16px">Sweaty, close,<br>and loud.</h2>
+      <p><span class="hint-fine">Move your cursor around this space.</span><span class="hint-touch">Three hundred people, one great sound system.</span></p>
+      <div class="stats"><div><b data-count="300">300</b><span>capacity</span></div><div><b data-count="220" data-suffix="+">220+</b><span>shows a year</span></div><div><b data-count="11">11</b><span>years on Whyte</span></div></div>
+    </div>
+  </section>
+
+  <section class="priv" id="private" aria-labelledby="pv-h">
+    <div class="wrap">
+      <div>
+        <span class="tag">Private events</span>
+        <h2 id="pv-h" style="margin-top:16px" data-split="chars" data-split-anim="flip" data-stagger=".02">Book the room</h2>
+        <ul data-reveal-group="up"><li><b>01</b>Album launches with full sound and lights crew.</li><li><b>02</b>Company parties for 40 to 300 people.</li><li><b>03</b>Weekday afternoons for rehearsals and video shoots.</li></ul>
+      </div>
+      <div class="pf" data-reveal="up">
+        <form data-steps action="#" aria-label="Private event enquiry">
+          <div class="meta"><span data-steps-count>Step 1 of 3</span><span>1 minute</span></div>
+          <div data-steps-bar style="margin-bottom:22px"><i></i></div>
+          <fieldset data-step><legend>What's the occasion?</legend>
+            <div class="opts"><label><input type="radio" name="kind" value="launch" required><span>Album launch</span></label><label><input type="radio" name="kind" value="party"><span>Company party</span></label><label><input type="radio" name="kind" value="shoot"><span>Shoot or rehearsal</span></label><label><input type="radio" name="kind" value="other"><span>Something else</span></label></div>
+            <div class="rr"><button class="btn" data-next>Next</button></div>
+          </fieldset>
+          <fieldset data-step><legend>When and how many?</legend>
+            <div class="fp"><label for="v-date">Date</label><input id="v-date" type="date" name="date" required></div>
+            <div class="fp"><label for="v-size">Guests</label><select id="v-size" name="size"><option>Under 50</option><option>50 to 150</option><option>150 to 300</option></select></div>
+            <div class="rr"><button class="btn btn-ghost" data-back>Back</button><button class="btn" data-next>Next</button></div>
+          </fieldset>
+          <fieldset data-step><legend>Who's asking?</legend>
+            <div class="fp"><label for="v-name">Name</label><input id="v-name" name="name" required autocomplete="name"></div>
+            <div class="fp"><label for="v-mail">Email</label><input id="v-mail" type="email" name="email" required autocomplete="email"></div>
+            <div class="rr"><button class="btn btn-ghost" data-back>Back</button><button class="btn" type="submit">Send enquiry</button></div>
+            <p style="font-size:13px;color:var(--ink-2);margin-top:12px">Sample form: nothing is sent.</p>
+          </fieldset>
+        </form>
+        <div class="done" data-steps-done hidden><h3>Rock on.</h3><p style="margin-top:8px;color:var(--ink-2)">On a real site, the events team would email within a day.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="w-h">
+  <div class="shade" id="shade"></div>
+  <div class="panel" id="panel">
+    <div class="head"><h2 id="w-h" style="font-size:1.4rem">Your tickets</h2><button class="x" type="button" id="closeW" aria-label="Close tickets">✕</button></div>
+    <ul class="tix" id="tix"></ul>
+    <div class="sum"><span>Total</span><span id="wtotal">$0</span></div>
+    <button class="btn" type="button" id="pay">Checkout</button>
+    <p style="font-size:13px;color:var(--ink-2);text-align:center">Sample venue: nothing is charged.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap"><span>Northern Static · Whyte Ave, Edmonton · <span data-year>2026</span></span><span>Sample venue: bands, dates and prices are made up.</span><button type="button" data-motion-toggle>Motion: on</button></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Flip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/MotionPathPlugin.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>window.KIT = { ease: 'power4.out', dur: 0.6, stagger: 0.04, smooth: { lerp: 0.13 }, anchorOffset: 70, cursor: 'dot', spark: { color: ['#ff3ea5', '#33e1ff', '#c6ff4d'], selector: '.days button, .opts span' } };</script>
+<script src="../../kit/art.js"></script>
+<script src="../../kit/kit.js"></script>
+<script>
+(() => {
+  const K = window.KIT;
+  if (!window.gsap) return;
+  const $ = (id) => document.getElementById(id);
+
+  // Ticket wallet: shows keyed by name, a drawer with quantities and a total.
+  const wallet = new Map(), tix = $('tix'), drawer = $('drawer'), panel = $('panel'), shade = $('shade');
+  const render = () => {
+    const all = [...wallet.values()], n = all.reduce((s, t) => s + t.q, 0), sum = all.reduce((s, t) => s + t.q * t.price, 0);
+    $('wcount').textContent = n; $('walletBtn').setAttribute('aria-label', `Your tickets, ${n}`); $('wtotal').textContent = '$' + sum;
+    tix.innerHTML = all.length ? all.map((t) => `<li class="tick" data-name="${t.name}"><div><b>${t.name}</b><small>${t.date}</small></div><div class="q"><button type="button" data-dec aria-label="One less ticket for ${t.name}">−</button><span>${t.q}</span><button type="button" data-inc aria-label="One more ticket for ${t.name}">+</button></div></li>`).join('') : '<li class="empty">No tickets yet. Pick a show.</li>';
+  };
+  tix.addEventListener('click', (e) => { const li = e.target.closest('.tick'); if (!li) return; const t = wallet.get(li.dataset.name); if (e.target.closest('[data-inc]')) t.q++; if (e.target.closest('[data-dec]') && !--t.q) wallet.delete(t.name); render(); });
+  let back = null;
+  gsap.set(panel, { xPercent: 100 });
+  const open = () => { back = document.activeElement; drawer.classList.add('open'); K.lenis?.stop(); gsap.to(panel, { xPercent: 0, duration: K.reduce ? 0 : 0.45, ease: 'power3.out' }); gsap.to(shade, { opacity: 1, duration: K.reduce ? 0 : 0.3 }); $('closeW').focus(); };
+  const close = () => { gsap.to(panel, { xPercent: 100, duration: K.reduce ? 0 : 0.35, ease: 'power3.in', onComplete: () => drawer.classList.remove('open') }); gsap.to(shade, { opacity: 0, duration: K.reduce ? 0 : 0.3 }); K.lenis?.start(); back?.focus(); };
+  $('walletBtn').addEventListener('click', open); $('closeW').addEventListener('click', close); shade.addEventListener('click', close);
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && drawer.classList.contains('open')) close(); });
+  $('pay').addEventListener('click', (e) => { const r = e.target.getBoundingClientRect(); K.burst(r.left + r.width / 2, r.top, { kind: 'confetti', color: ['#ff3ea5', '#33e1ff', '#c6ff4d'] }); });
+  document.querySelectorAll('[data-ticket]').forEach((b) => b.addEventListener('click', () => {
+    const s = b.closest('.show'), name = s.dataset.name;
+    const t = wallet.get(name) || { name, price: +s.dataset.price, q: 0, date: s.querySelector('.date').textContent.replace(/(\d+)/, '$1 ') };
+    t.q++; wallet.set(name, t);
+    const done = () => { render(); if (!K.reduce) gsap.fromTo('#wcount', { scale: 1.9 }, { scale: 1, duration: 0.5, ease: 'elastic.out(1, .4)' }); };
+    if (K.reduce || !window.MotionPathPlugin) return done();
+    const a = b.getBoundingClientRect(), z = $('walletBtn').getBoundingClientRect();
+    const stub = document.body.appendChild(Object.assign(document.createElement('div'), { className: 'stub', textContent: name }));
+    stub.setAttribute('aria-hidden', 'true');
+    const x0 = a.left + a.width / 2 - 60, y0 = a.top + a.height / 2 - 26, x1 = z.left + z.width / 2 - 60, y1 = z.top + z.height / 2 - 26;
+    gsap.set(stub, { x: x0, y: y0 });
+    gsap.timeline({ onComplete: () => { stub.remove(); done(); } })
+      .to(stub, { motionPath: { path: [{ x: x0, y: y0 }, { x: (x0 + x1) / 2 - 120, y: Math.min(y0, y1) - 140 }, { x: x1, y: y1 }], curviness: 1.3 }, rotate: 540, duration: 0.85, ease: 'power2.in' })
+      .to(stub, { scale: 0.2, opacity: 0.6, duration: 0.85, ease: 'power2.in' }, 0);
+  }));
+  render();
+
+  // Equalizer bars.
+  const eq = $('eq'), N = innerWidth < 700 ? 18 : 36;
+  eq.innerHTML = '<i></i>'.repeat(N);
+  const bars = [...eq.children];
+  if (K.reduce) { bars.forEach((b, i) => gsap.set(b, { scaleY: 0.2 + 0.5 * Math.abs(Math.sin(i * 0.7)) })); return; }
+
+  // Neon streaks (same engine as the automotive hero, recoloured) that rush with scroll speed.
+  const cv = $('streaks'), ctx = cv.getContext('2d'), hero = document.querySelector('.hero');
+  let W = 0, H = 0, live = true;
+  const size = () => { const d = Math.min(devicePixelRatio || 1, 2); W = hero.clientWidth; H = hero.clientHeight; cv.width = W * d; cv.height = H * d; ctx.setTransform(d, 0, 0, d, 0, 0); };
+  const spawn = (x) => ({ x: x ?? Math.random(), y: Math.random(), len: 0.05 + Math.random() * 0.2, sp: 0.2 + Math.random(), c: Math.random() < 0.5 ? '255,62,165' : '51,225,255' });
+  const S = Array.from({ length: 70 }, () => spawn());
+  size(); addEventListener('resize', size);
+  new IntersectionObserver(([e]) => (live = e.isIntersecting)).observe(hero);
+  let t = 0;
+  gsap.ticker.add((time, dt) => {
+    if (!live) return;
+    const s = dt / 1000, energy = Math.min(Math.abs(K.velocity) / 700, 1.6);
+    t += s * (1 + energy * 3);
+    ctx.clearRect(0, 0, W, H);
+    for (const p of S) {
+      p.x -= p.sp * (0.08 + energy) * s;
+      if (p.x + p.len < 0) Object.assign(p, spawn(1 + Math.random() * 0.2));
+      const g = ctx.createLinearGradient(p.x * W, 0, (p.x + p.len) * W, 0);
+      g.addColorStop(0, `rgba(${p.c},.7)`); g.addColorStop(1, `rgba(${p.c},0)`);
+      ctx.strokeStyle = g; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(p.x * W, p.y * H); ctx.lineTo((p.x + p.len) * W, p.y * H); ctx.stroke();
+    }
+    bars.forEach((b, i) => { const v = 0.12 + (0.35 + energy * 0.4) * Math.abs(Math.sin(t * (1.6 + (i % 5) * 0.4) + i * 0.9)) * (0.6 + 0.4 * Math.sin(t * 0.7 + i)); gsap.set(b, { scaleY: Math.min(1, v) }); });
+  });
+
+  // Zoom through the O of LOUD.
+  const word = $('zoomWord'), zo = $('zo');
+  const origin = () => { const w = word.getBoundingClientRect(), r = zo.getBoundingClientRect(); return `${((r.left + r.width * 0.1 - w.left) / w.width) * 100}% ${((r.top + r.height / 2 - w.top) / w.height) * 100}%`; };
+  gsap.set(word, { transformOrigin: origin() });
+  gsap.timeline({ scrollTrigger: { trigger: '.zoom', start: 'top top', end: '+=160%', pin: true, scrub: 0.6, refreshPriority: 1, onRefresh: () => gsap.set(word, { transformOrigin: origin() }) } })
+    .to(word, { scale: 70, ease: 'power2.in', duration: 1 })
+    .to('.zoom', { backgroundColor: '#33e1ff', duration: 0.05 }, 0.95)
+    .to('#zoomAfter', { opacity: 1, duration: 0.3 }, 1)
+    .from('#zoomAfter h2', { y: 60, duration: 0.3 }, 1);
+})();
+</script>
+</body>
+</html>

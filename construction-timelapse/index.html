@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ironbridge Construction · Site timelapse</title>
+<meta name="description" content="3D timelapse template for a construction company: four sites go from bare dirt to finished buildings while the sun sweeps across the sky. Press Show me, or slide between sites.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;600&family=JetBrains+Mono&display=swap">
+<link rel="stylesheet" href="../engine/scenes.css">
+<style>
+:root {
+  --paper: #f2efe9; --sheet: #ffffff; --ink: #1d2024; --ink-2: #3f454c; --ink-3: #636a72; --line: #dcd6cb; --line-2: #bcb5a8;
+  --accent: #ff7a1a; --accent-ink: #1d2024; --accent-text: #b4500a; --pat: rgb(29 32 36 / .06);
+  --display: 'Barlow Condensed', system-ui, sans-serif; --body: 'Barlow', system-ui, sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
+  --radius: 4px; --bw: 2px; --hard: 3px; --h-weight: 800; --h-track: 0; --h-case: uppercase;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #131517; --sheet: #1c1f22; --ink: #f0ede7; --ink-2: #c6cacf; --ink-3: #959ca4; --line: #2a2e33; --line-2: #3c4248; --accent-text: #ff9a4d; --pat: rgb(240 237 231 / .05); color-scheme: dark; } }
+:root[data-theme="dark"] { --paper: #131517; --sheet: #1c1f22; --ink: #f0ede7; --ink-2: #c6cacf; --ink-3: #959ca4; --line: #2a2e33; --line-2: #3c4248; --accent-text: #ff9a4d; --pat: rgb(240 237 231 / .05); color-scheme: dark; }
+.intro h1 { font-size: clamp(3.4rem, 1.6rem + 7vw, 8rem); line-height: .9; }
+</style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* Site kit for these four builds. The lot runs from -2 to 2 on x and z; the camera looks at the +x/+z corner.
+   Everything tagged here (crane, plant, cabins, hoarding, scaffold, crew…) leaves the site in a removal step. */
+const STEEL = '#7c838b', CONC = '#a7a6a1', VEST = '#ff7a1a', HAT = '#f5f5f0', YEL = '#f2b705';
+const T = (tag, o = {}) => Object.assign({ tag }, o);
+const wave = (a, f, p = 0) => (a > 0 && a < 1 ? Math.sin(a * f + p) : 0);
+
+function towerCrane(R, id, x, z, h, jib, color = YEL, cable = 1.1) {
+  const t = { tag: 'crane' };
+  R.group(id, x, 0, z);
+  R.box(.5, .12, .5, 0, 0, 0, '#8c8c8c', 'rise', T('crane', { tex: 'concrete' }));
+  [[-.11, -.11], [.11, -.11], [-.11, .11], [.11, .11]].forEach(([lx, lz]) => R.box(.035, h, .035, lx, .12, lz, color, 'rise', t));
+  for (let y = .45; y < h - .1; y += .45) { R.box(.26, .025, .025, 0, .12 + y, .11, color, 'growX', t); R.box(.025, .025, .26, .11, .12 + y, 0, color, 'growZ', t); }
+  R.group(id + 'Top', 0, h + .12, 0);
+  R.box(.34, .14, .34, 0, 0, 0, '#3b3f44', 'drop', t);
+  R.box(.2, .18, .2, .17, .14, .16, '#f4f4f0', 'drop', T('crane', { glossy: true }));
+  R.box(jib, .07, .1, jib / 2, .2, 0, color, 'growX', t);
+  R.box(jib - .3, .025, .025, (jib - .3) / 2, .34, 0, color, 'growX', t);
+  R.box(1.0, .07, .12, -.5, .2, 0, color, 'growX', t);
+  R.box(.3, .22, .22, -.85, .06, 0, '#9a9a96', 'drop', T('crane', { tex: 'concrete' }));
+  R.box(.05, .55, .05, 0, .14, 0, color, 'rise', t);
+  R.group(id + 'Trolley', jib * .6, .2, 0);
+  R.box(.1, .05, .1, 0, -.06, 0, '#3b3f44', 'pop', t);
+  R.cyl(.006, .006, cable, 0, -.06 - cable, 0, '#222222', 'hang', t);
+  R.box(.24, .1, .24, 0, -.16 - cable, 0, '#c9a06a', 'hang', T('crane', { tex: 'wood' }));
+  R.end(); R.end(); R.end();
+}
+function crawlerCrane(R, id, x, z, ry, boom = 3.2, color = '#d7261e') {
+  const t = { tag: 'crane' };
+  R.group(id, x, 0, z, { ry });
+  R.box(.8, .14, .18, 0, 0, -.22, '#2b2b2b', 'drop', t); R.box(.8, .14, .18, 0, 0, .22, '#2b2b2b', 'drop', t);
+  R.group(id + 'Turret', 0, .14, 0);
+  R.box(.6, .26, .44, -.05, 0, 0, color, 'drop', t);
+  R.box(.2, .2, .18, .2, .26, .14, color, 'drop', t);
+  R.box(.2, .3, .44, -.32, .05, 0, '#3b3f44', 'drop', t);
+  R.group(id + 'Boom', .22, .22, 0, { rz: 1.0 });
+  [[.06, .09], [.06, -.09], [-.06, 0]].forEach(([y, z2]) => R.box(boom, .045, .045, boom / 2, y, z2, color, 'growX', T('crane', { center: true })));
+  for (let k = .32; k < boom; k += .32) R.box(.02, .14, .2, k, 0, 0, color, 'pop', T('crane', { center: true }));
+  R.group(id + 'Hook', boom, 0, 0, { rz: -1.0 });
+  R.cyl(.006, .006, 1.3, 0, -1.3, 0, '#222222', 'hang', t);
+  R.box(.55, .06, .07, 0, -1.4, 0, STEEL, 'hang', T('crane', { metal: .6, rough: .4 }));
+  R.end(); R.end(); R.end(); R.end();
+}
+function excavator(R, id, x, z, ry) {
+  const t = { tag: 'plant' };
+  R.group(id, x, 0, z, { ry });
+  R.box(.62, .12, .14, 0, 0, -.17, '#2b2b2b', 'drop', t); R.box(.62, .12, .14, 0, 0, .17, '#2b2b2b', 'drop', t);
+  R.group(id + 'Turret', 0, .12, 0);
+  R.box(.46, .2, .4, -.04, 0, 0, YEL, 'drop', t);
+  R.box(.2, .24, .2, .1, .2, -.09, YEL, 'drop', t);
+  R.box(.02, .16, .17, .205, .24, -.09, '#9cc9e0', 'pop', T('plant', { glossy: true }));
+  R.box(.14, .16, .38, -.26, .02, 0, '#3b3f44', 'drop', t);
+  R.group(id + 'Boom', .16, .22, .1, { rz: .6 });
+  R.box(.62, .07, .07, .31, 0, 0, YEL, 'growX', T('plant', { center: true }));
+  R.group(id + 'Arm', .62, 0, 0, { rz: -1.5 });
+  R.box(.46, .05, .05, .23, 0, 0, YEL, 'growX', T('plant', { center: true }));
+  R.box(.14, .12, .14, .48, 0, 0, '#3b3f44', 'pop', T('plant', { center: true }));
+  R.end(); R.end(); R.end(); R.end();
+}
+function dumper(R, id, x, z, ry) {
+  const t = { tag: 'plant' };
+  R.group(id, x, 0, z, { ry });
+  [[-.16, -.13], [.16, -.13], [-.16, .13], [.16, .13]].forEach(([wx, wz]) => R.cyl(.075, .075, .06, wx, .075, wz, '#222222', 'pop', T('plant', { rx: Math.PI / 2, center: true })));
+  R.box(.46, .08, .24, 0, .08, 0, YEL, 'drop', t);
+  R.box(.24, .16, .26, .08, .16, 0, YEL, 'drop', t);
+  R.box(.1, .14, .12, -.16, .16, 0, '#3b3f44', 'drop', t);
+  R.end();
+}
+function worker(R, id, x, z, yb = 0, tag = 'crew', vest = VEST) {
+  R.group(id, x, yb, z);
+  R.cyl(.035, .05, .19, 0, 0, 0, vest, 'rise', T(tag));
+  R.sph(.042, 0, .235, 0, '#e8b98f', 'pop', T(tag));
+  R.sph(.048, 0, .26, 0, HAT, 'pop', T(tag, { sy: .6 }));
+  R.end();
+}
+function hoarding(R, color = '#e9edf0', withSign = true) {
+  const t = { tag: 'hoarding' };
+  for (let i = 0; i < 8; i++) if (i !== 5) R.box(.5, .3, .03, -1.95 + i * .53 + .25, 0, 2.12, color, 'rise', t);
+  for (let i = 0; i < 8; i++) R.box(.03, .3, .5, 2.12, 0, -1.95 + i * .53 + .25, color, 'rise', t);
+  if (withSign) { R.sign('SITE ACCESS', .5, .14, -.55, .12, 2.15, '#ffd500', '#1d2024', 'pop', t); R.sign('PPE REQUIRED', .45, .12, 2.15, .14, .9, '#1f6fd1', '#ffffff', 'pop', T('hoarding', { face: 'x' })); }
+}
+function lumber(R, x, z, ry, layers = 4, boards = 6, len = 1.1) {
+  R.group(null, x, 0, z, { ry });
+  for (let l = 0; l < layers; l++) for (let b = 0; b < boards; b++) R.box(len, .05, .085, 0, l * .055, -boards * .05 + b * .1, l % 2 ? '#d9b98a' : '#e4c79a', 'drop', T('lumber', { tex: 'wood' }));
+  R.end();
+}
+function tree(R, x, z, s = 1, leaf = '#3f7d3a') { R.cyl(.03 * s, .045 * s, .4 * s, x, .02, z, '#6b4f3a', 'rise'); R.sph(.22 * s, x, .55 * s, z, leaf, 'pop'); R.sph(.15 * s, x + .1 * s, .7 * s, z - .05, leaf, 'pop'); }
+function studs(R, x0, x1, z, y, h, step, along = 'x') {
+  const n = Math.round(Math.abs(x1 - x0) / step);
+  for (let i = 0; i <= n; i++) { const v = x0 + (x1 - x0) * (i / n); along === 'x' ? R.box(.05, h, .09, v, y, z, '#d9b98a', 'rise', { tex: 'wood' }) : R.box(.09, h, .05, z, y, v, '#d9b98a', 'rise', { tex: 'wood' }); }
+  along === 'x' ? (R.box(Math.abs(x1 - x0) + .05, .04, .09, (x0 + x1) / 2, y + h, z, '#cfa874', 'growX', { tex: 'wood' }), R.box(Math.abs(x1 - x0) + .05, .04, .09, (x0 + x1) / 2, y, z, '#cfa874', 'growX', { tex: 'wood' }))
+    : (R.box(.09, .04, Math.abs(x1 - x0) + .05, z, y + h, (x0 + x1) / 2, '#cfa874', 'growZ', { tex: 'wood' }), R.box(.09, .04, Math.abs(x1 - x0) + .05, z, y, (x0 + x1) / 2, '#cfa874', 'growZ', { tex: 'wood' }));
+}
+function scaffoldLift(R, x0, x1, zf, z0, z1, xf, y0, h) {
+  const t = { tag: 'scaffold' }, pole = T('scaffold', { metal: .5, rough: .4 }), off = .18;
+  for (let i = 0; i <= 5; i++) R.cyl(.012, .012, h, x0 + (x1 - x0) * i / 5, y0, zf + off, '#9aa3ab', 'rise', pole);
+  for (let i = 0; i <= 4; i++) R.cyl(.012, .012, h, xf + off, y0, z0 + (z1 - z0) * i / 4, '#9aa3ab', 'rise', pole);
+  R.box(x1 - x0, .02, .02, (x0 + x1) / 2, y0 + h - .02, zf + off, '#9aa3ab', 'growX', pole);
+  R.box(.02, .02, z1 - z0, xf + off, y0 + h - .02, (z0 + z1) / 2, '#9aa3ab', 'growZ', pole);
+  R.box(x1 - x0, .02, .2, (x0 + x1) / 2, y0 + h - .05, zf + off - .1, '#c9a06a', 'growX', T('scaffold', { tex: 'wood' }));
+  R.box(.2, .02, z1 - z0, xf + off - .1, y0 + h - .05, (z0 + z1) / 2, '#c9a06a', 'growZ', T('scaffold', { tex: 'wood' }));
+  R.box(x1 - x0, .012, .012, (x0 + x1) / 2, y0 + h * .55, zf + off + .02, '#ff7a1a', 'growX', t);
+}
+function crewLive(parts, a, ids, amp = .3) { ids.forEach((id, i) => { const g = parts[id]; if (!g) return; if (g.userData.x === undefined) { g.userData.x = g.position.x; g.userData.z = g.position.z; } g.position.x = g.userData.x + wave(a, 90 + i * 17, i * 2) * amp; g.position.z = g.userData.z + wave(a, 70 + i * 13, i) * amp * .6; g.rotation.y = wave(a, 45 + i * 9, i) * 2; }); }
+function towerLive(parts, a, id, base, jib) { const top = parts[id + 'Top'], tr = parts[id + 'Trolley']; if (top) top.rotation.y = base + wave(a, 34) * 1.2; if (tr) tr.position.x = jib * (.4 + .25 * (wave(a, 57, 1) + 1)); }
+
+window.SCENES = {
+  key: 'timelapse', mode: 'player', look: 'real', layout: 'U', speed: 'smooth', saturation: 1, quality: 'high', hud: 'classic', base: 'square', pattern: 'grid', unit: 'Site', meterLabel: 'Complete', fov: 33,
+  playSeconds: 14, timelapse: { days: 240, cycles: 4.3, start: .3 },
+  brand: { name: 'Ironbridge Construction', mark: 'IC' },
+  three: { ghost: ['#b4500a', '#ff9a4d'], plinth: ['#cfc6b6', '#2a2d31'], plinthSide: ['#a89f8e', '#1c1f22'] },
+  intro: {
+    kicker: 'General contractor · London, Ontario', title: 'Watch it go up.', highlight: 2,
+    playerLede: 'Four of our sites, from bare dirt to handover. Press Show me for a timelapse: the sun sweeps across the sky, the cranes swing, the crews move, and the building rises piece by piece. Drag the slider to scrub, or slide to another site.',
+    lede: 'Four of our sites, from bare dirt to handover, built as you scroll.',
+    playerHint: 'Press Show me for the timelapse',
+  },
+  outro: { kicker: 'Site by site', title: 'Every stage, in order.', lede: 'The same build sequence as plain text, for every site.' },
+  scenes: [
+    { code: 'SITE 01', name: 'Timber-frame home', blurb: 'A two-storey family home: stick-framed, sheathed and sided by our carpentry crew.', days: 180, ground: { color: '#7a5c40', tex: 'concrete' }, build(R) {
+      R.step('Lot staked out', 'Staking out the lot', '#ff7a1a'); [[-1.6, -1.5], [1.2, -1.5], [-1.6, .6], [1.2, .6]].forEach(([x, z]) => R.cyl(.015, .015, .28, x + (x < 0 ? -.12 : .12), 0, z + (z < 0 ? -.12 : .12), '#ff7a1a', 'rise', T('stakes'))); R.box(3.04, .01, .01, -.2, .2, .72, '#ff7a1a', 'growX', T('stakes')); R.box(.01, .01, 2.34, 1.32, .2, -.45, '#ff7a1a', 'growZ', T('stakes'));
+      R.step('Foundation', 'Pouring the foundation', CONC); R.box(2.8, .35, .12, -.2, 0, .54, CONC, 'rise', { tex: 'concrete' }); R.box(2.8, .35, .12, -.2, 0, -1.44, CONC, 'rise', { tex: 'concrete' }); R.box(.12, .35, 2.1, -1.54, 0, -.45, CONC, 'rise', { tex: 'concrete' }); R.box(.12, .35, 2.1, 1.14, 0, -.45, CONC, 'rise', { tex: 'concrete' }); R.box(2.56, .3, 1.86, -.2, 0, -.45, '#9b9a95', 'rise', { tex: 'concrete' });
+      R.step('Lumber delivered', 'Dropping the lumber', '#e4c79a'); lumber(R, -.9, 1.45, 0); lumber(R, .55, 1.55, .25, 3, 6, 1.2); worker(R, 'h1', 1.6, 1.0); worker(R, 'h2', -1.7, 1.2);
+      R.step('Subfloor', 'Gluing down the subfloor', '#cfa874'); R.box(2.8, .05, 2.1, -.2, .35, -.45, '#cfa874', 'growX', { tex: 'wood' });
+      R.step('Ground-floor walls', 'Framing the walls', '#d9b98a'); studs(R, -1.57, 1.17, .57, .4, .95, .27); studs(R, -1.57, 1.17, -1.47, .4, .95, .27); studs(R, -1.42, .42, -1.57, .4, .95, .3, 'z'); studs(R, -1.42, .42, 1.17, .4, .95, .3, 'z');
+      R.step('Second floor deck', 'Decking upstairs', '#cfa874'); R.box(2.8, .05, 2.1, -.2, 1.39, -.45, '#cfa874', 'growX', { tex: 'wood' }); R.group(null, 1.75, 0, .2, { rz: .28 }); R.box(.04, 1.7, .04, 0, 0, -.12, '#c0c6cc', 'rise', T('ladder', { metal: .6 })); R.box(.04, 1.7, .04, 0, 0, .12, '#c0c6cc', 'rise', T('ladder', { metal: .6 })); for (let y = .15; y < 1.7; y += .22) R.box(.03, .03, .26, 0, y, 0, '#c0c6cc', 'pop', T('ladder', { metal: .6 })); R.end(); worker(R, 'h3', .2, -.2, .4);
+      R.step('Upper walls', 'Framing upstairs', '#d9b98a'); studs(R, -1.57, 1.17, .57, 1.44, .86, .27); studs(R, -1.57, 1.17, -1.47, 1.44, .86, .27); studs(R, -1.42, .42, -1.57, 1.44, .86, .3, 'z'); studs(R, -1.42, .42, 1.17, 1.44, .86, .3, 'z');
+      R.step('Roof trusses', 'Setting the trusses', '#d9b98a'); for (let x = -1.55; x <= 1.16; x += .45) { R.box(.04, .05, 1.32, x, 2.68, .125, '#d9b98a', 'drop', { center: true, rx: .514, tex: 'wood' }); R.box(.04, .05, 1.32, x, 2.68, -1.025, '#d9b98a', 'drop', { center: true, rx: -.514, tex: 'wood' }); R.box(.04, .04, 2.3, x, 2.32, -.45, '#d9b98a', 'drop', { tex: 'wood' }); }
+      R.step('Sheathing', 'Sheathing the walls', '#c8a46a'); R.box(2.84, 1.92, .03, -.2, .4, .63, '#c8a46a', 'growX', { tex: 'wood' }); R.box(2.84, 1.92, .03, -.2, .4, -1.53, '#c8a46a', 'growX', { tex: 'wood' }); R.box(.03, 1.92, 2.16, -1.63, .4, -.45, '#c8a46a', 'growZ', { tex: 'wood' }); R.box(.03, 1.92, 2.16, 1.23, .4, -.45, '#c8a46a', 'growZ', { tex: 'wood' });
+      R.step('Roof deck & gables', 'Closing in the roof', '#c9a066'); R.box(3.0, .03, 1.36, -.2, 2.72, .14, '#c9a066', 'growX', { center: true, rx: .514, tex: 'wood' }); R.box(3.0, .03, 1.36, -.2, 2.72, -1.04, '#c9a066', 'growX', { center: true, rx: -.514, tex: 'wood' }); [-1.65, 1.25].forEach((x) => R.cyl(1.212, 1.212, .05, x, 2.566, -.45, '#e6e8e6', 'pop', { seg: 3, center: true, rx: -Math.PI / 2, rz: Math.PI / 2, sz: .357 }));
+      R.step('Shingles', 'Shingling the roof', '#4a4f55'); R.box(3.04, .03, 1.38, -.2, 2.75, .16, '#4a4f55', 'growX', { center: true, rx: .514, tex: 'shingle' }); R.box(3.04, .03, 1.38, -.2, 2.75, -1.06, '#4a4f55', 'growX', { center: true, rx: -.514, tex: 'shingle' });
+      R.step('Siding', 'Hanging the siding', '#e6e8e6'); R.box(2.88, 1.92, .03, -.2, .4, .66, '#e3e6e4', 'growX', { tex: 'wood' }); R.box(2.88, 1.92, .03, -.2, .4, -1.56, '#e3e6e4', 'growX', { tex: 'wood' }); R.box(.03, 1.92, 2.2, -1.66, .4, -.45, '#e3e6e4', 'growZ', { tex: 'wood' }); R.box(.03, 1.92, 2.2, 1.26, .4, -.45, '#e3e6e4', 'growZ', { tex: 'wood' });
+      R.step('Windows & door', 'Setting the windows', '#9cc9e0'); [[-1.05, .62], [.45, .62], [-1.05, 1.62], [-.2, 1.62], [.6, 1.62]].forEach(([x, y]) => { R.box(.56, .58, .02, x, y, .68, '#ffffff', 'pop'); R.box(.48, .5, .02, x, y + .04, .69, '#8fbbd4', 'pop', { glossy: true }); }); R.box(.34, .82, .03, -.4, .4, .68, '#2f4a5c', 'pop'); [[-1.0, .62], [.1, .62], [-1.0, 1.62], [.1, 1.62]].forEach(([z, y]) => { R.box(.02, .58, .56, 1.28, y, z, '#ffffff', 'pop'); R.box(.02, .5, .48, 1.29, y + .04, z, '#8fbbd4', 'pop', { glossy: true }); });
+      R.step('Site clean-up', 'Clearing the site', '#7a5c40', { removes: ['lumber', 'ladder', 'stakes', 'crew'] });
+      R.step('Lawn & driveway', 'Landscaping', '#5e8f3e'); R.box(4.4, .02, 1.45, 0, .005, 1.47, '#5e8f3e', 'growX', { tex: 'grass' }); R.box(.85, .02, 4.4, 1.77, .005, 0, '#5e8f3e', 'growZ', { tex: 'grass' }); R.box(.7, .03, 2.0, 1.65, .01, 1.15, '#a3a29d', 'growZ', { tex: 'concrete' }); R.box(.3, .028, 1.4, -.4, .01, 1.45, '#c9c3b6', 'growZ', { tex: 'concrete' }); [-1.4, -.95, .2, .7].forEach((x) => R.sph(.14, x, .12, .9, '#4f8f45', 'pop')); tree(R, -1.6, 1.6, 1.4); tree(R, 1.85, -1.6, 1.2);
+    }, live({ a, parts }) { crewLive(parts, a, ['h1', 'h2', 'h3']); } },
+
+    { code: 'SITE 02', name: 'Concrete tower', blurb: 'Seven floors of cast-in-place concrete, poured one deck at a time under the tower crane.', days: 540, ground: { color: '#6f5a46', tex: 'concrete' }, build(R) {
+      const FL = .42, G = [-1.05, 0, 1.05];
+      R.step('Hoarding up', 'Fencing the site', '#e9edf0'); hoarding(R, '#e9edf0');
+      R.step('Raft foundation', 'Pouring the raft', CONC); R.box(2.7, .25, 2.7, 0, 0, 0, CONC, 'rise', { tex: 'concrete' });
+      R.step('Tower crane', 'Erecting the crane', YEL); towerCrane(R, 'tc', 1.8, -1.8, 3.9, 2.6, YEL, .42);
+      const floors = (from, to) => { for (let f = from; f < to; f++) { const y = .25 + f * FL; G.forEach((x) => G.forEach((z) => { if (x || z) R.box(.13, FL - .06, .13, x, y, z, '#b9b7b1', 'rise', { tex: 'concrete' }); })); R.box(.6, FL - .06, .6, 0, y, 0, '#a9a7a1', 'rise', { tex: 'concrete' }); R.box(2.5, .06, 2.5, 0, y + FL - .06, 0, '#c2c0ba', 'growX', { tex: 'concrete' }); } };
+      R.step('Levels 1–2', 'Pouring levels 1 and 2', '#c2c0ba'); floors(0, 2); worker(R, 't1', 1.5, 1.4); worker(R, 't2', -1.5, 1.6);
+      R.step('Levels 3–4', 'Pouring levels 3 and 4', '#c2c0ba'); floors(2, 4);
+      R.step('Levels 5–6', 'Pouring levels 5 and 6', '#c2c0ba'); floors(4, 6);
+      R.step('Level 7', 'Pouring the top deck', '#c2c0ba'); floors(6, 7);
+      R.step('Rebar & edge rails', 'Tying the rebar', '#8a5a3c'); const top = .25 + 7 * FL; G.forEach((x) => G.forEach((z) => [[-.04, -.04], [.04, -.04], [-.04, .04], [.04, .04]].forEach(([dx, dz]) => R.cyl(.008, .008, .3, x + dx, top, z + dz, '#8a5a3c', 'rise', T('rebar', { metal: .4 }))))); [[0, 1.25, 'x'], [1.25, 0, 'z']].forEach(([x, z, ax]) => { R.box(ax === 'x' ? 2.5 : .02, .02, ax === 'x' ? .02 : 2.5, x, top + .22, z, '#ffd500', ax === 'x' ? 'growX' : 'growZ', T('rebar')); }); worker(R, 't3', .5, .8, top); worker(R, 't4', -.6, .5, top);
+      R.step('Curtain wall', 'Glazing the facade', '#5f8fae'); for (let f = 0; f < 7; f++) { const y = .25 + f * FL + .02; R.box(2.5, FL - .1, .03, 0, y, 1.27, '#5f8fae', 'growX', { metal: .35, rough: .12 }); R.box(.03, FL - .1, 2.5, 1.27, y, 0, '#5f8fae', 'growZ', { metal: .35, rough: .12 }); R.box(2.5, FL - .1, .03, 0, y, -1.27, '#5f8fae', 'growX', { metal: .35, rough: .12 }); R.box(.03, FL - .1, 2.5, -1.27, y, 0, '#5f8fae', 'growZ', { metal: .35, rough: .12 }); }
+      R.step('Roof & plant', 'Topping out', '#8c8c8c', { removes: ['rebar', 'crew'] }); R.box(2.56, .1, 2.56, 0, top, 0, '#8c8c8c', 'drop', { tex: 'concrete' }); R.box(.7, .3, .5, -.4, top + .1, -.3, '#b9bec4', 'drop', { metal: .4 }); R.box(.4, .22, .4, .6, top + .1, .4, '#b9bec4', 'drop', { metal: .4 });
+      R.step('Crane dismantled', 'Taking down the crane', YEL, { removes: 'crane' });
+      R.step('Plaza & trees', 'Opening the plaza', '#c9c3b6', { removes: 'hoarding' }); R.box(4.4, .02, 4.4, 0, .005, 0, '#c9c3b6', 'growX', { tex: 'tile' }); [[-1.75, 1.75], [1.75, 1.75], [1.75, -1.0], [-1.75, -1.75]].forEach(([x, z]) => tree(R, x, z, 1.1)); R.box(.6, .1, .18, .4, .02, 1.75, '#8a6a4e', 'drop', { tex: 'wood' });
+    }, live({ a, parts }) { towerLive(parts, a, 'tc', 2.4, 2.6); crewLive(parts, a, ['t1', 't2', 't3', 't4'], .25); } },
+
+    { code: 'SITE 03', name: 'Steel-frame centre', blurb: 'A three-storey steel frame for a community centre, set by a crawler crane straight off the trucks.', days: 300, ground: { color: '#b9a98f', tex: 'concrete' }, build(R) {
+      const X = [-1.55, -.6, .35, 1.3], Z = [-1.7, -.75, .2], H = .6;
+      R.step('Site yard', 'Setting up the yard', '#1f6fd1'); R.box(.9, .32, .34, -1.5, 0, 1.45, '#1f6fd1', 'drop', T('yard', { metal: .3 })); R.box(.9, .32, .34, -1.5, .32, 1.45, '#e9edf0', 'drop', T('yard', { metal: .3 })); R.box(.2, .36, .2, -.85, 0, 1.75, '#1f6fd1', 'drop', T('yard')); for (let k = 0; k < 4; k++) R.box(1.2, .05, .07, .1, .06 * k, 1.85 - (k % 2) * .1, STEEL, 'drop', T('yard', { metal: .6, rough: .45 })); for (let k = 0; k < 3; k++) R.box(.8, .06, .5, -.4, .065 * k, 1.35, '#c9a06a', 'drop', T('yard', { tex: 'wood' }));
+      R.step('Pad footings', 'Pouring the footings', CONC); X.forEach((x) => Z.forEach((z) => R.box(.28, .1, .28, x, 0, z, CONC, 'rise', { tex: 'concrete' })));
+      R.step('Crawler crane', 'Walking in the crane', '#d7261e'); crawlerCrane(R, 'cc', 1.5, 1.35, 2.23, 3.0);
+      const level = (n) => { const y = .1 + n * H; X.forEach((x) => Z.forEach((z) => R.box(.07, H, .07, x, y, z, STEEL, 'rise', { metal: .6, rough: .45 }))); Z.forEach((z) => R.box(X[3] - X[0], .07, .06, (X[0] + X[3]) / 2, y + H - .07, z, STEEL, 'growX', { metal: .6, rough: .45 })); X.forEach((x) => R.box(.06, .07, Z[2] - Z[0], x, y + H - .07, (Z[0] + Z[2]) / 2, STEEL, 'growZ', { metal: .6, rough: .45 })); };
+      R.step('Level 1 frame', 'Standing the columns', STEEL); level(0); worker(R, 's1', .8, .9); worker(R, 's2', -1.0, .8);
+      R.step('Bracing', 'Bolting the cross-bracing', '#9aa3ab'); [[-1.075, .2], [.825, .2]].forEach(([x, z]) => R.box(1.12, .03, .03, x, .1 + H / 2, z + .03, '#9aa3ab', 'pop', { center: true, rz: .56, metal: .6 })); [[1.3, -1.225], [1.3, -.275]].forEach(([x, z]) => R.box(.03, .03, 1.12, x + .03, .1 + H / 2, z, '#9aa3ab', 'pop', { center: true, rx: -.56, metal: .6 }));
+      R.step('Level 2 frame', 'Setting level 2', STEEL); level(1);
+      R.step('Level 3 frame', 'Setting level 3', STEEL); level(2); worker(R, 's3', .2, -.3, .1 + 3 * H);
+      R.step('Metal decking', 'Laying the deck', '#9aa3a8'); [1, 2, 3].forEach((n) => R.box(X[3] - X[0] + .1, .04, Z[2] - Z[0] + .1, (X[0] + X[3]) / 2, .1 + n * H - .03, (Z[0] + Z[2]) / 2, '#9aa3a8', 'growX', { metal: .5, rough: .5, tex: 'metal' }));
+      R.step('Roof trusses', 'Lifting the trusses', '#7c838b'); X.forEach((x) => { R.box(.05, .05, Z[2] - Z[0] + .2, x, .1 + 3 * H + .2, (Z[0] + Z[2]) / 2, STEEL, 'drop', { metal: .6 }); for (let k = 0; k < 5; k++) R.box(.03, .2, .03, x, .1 + 3 * H, Z[0] + k * (Z[2] - Z[0]) / 4, STEEL, 'drop', { metal: .6 }); });
+      R.step('Cladding & glazing', 'Closing in the building', '#cfd6db'); const W = X[3] - X[0] + .12, D = Z[2] - Z[0] + .12, cx = (X[0] + X[3]) / 2, cz = (Z[0] + Z[2]) / 2; R.box(W, H - .05, .03, cx, .12, Z[2] + .07, '#6e9bb8', 'growX', { metal: .35, rough: .12 }); R.box(.03, H - .05, D, X[3] + .07, .12, cz, '#6e9bb8', 'growZ', { metal: .35, rough: .12 }); [1, 2].forEach((n) => { R.box(W, H - .02, .03, cx, .1 + n * H, Z[2] + .07, '#cfd6db', 'growX', { tex: 'metal', metal: .3 }); R.box(.03, H - .02, D, X[3] + .07, .1 + n * H, cz, '#cfd6db', 'growZ', { tex: 'metal', metal: .3 }); R.box(W, H - .02, .03, cx, .1 + n * H, Z[0] - .07, '#cfd6db', 'growX', { tex: 'metal' }); R.box(.03, H - .02, D, X[0] - .07, .1 + n * H, cz, '#cfd6db', 'growZ', { tex: 'metal' }); }); R.box(W, H - .05, .03, cx, .12, Z[0] - .07, '#cfd6db', 'growX', { tex: 'metal' }); R.box(.03, H - .05, D, X[0] - .07, .12, cz, '#cfd6db', 'growZ', { tex: 'metal' }); R.box(W + .06, .08, D + .06, cx, .1 + 3 * H + .2, cz, '#4a4f55', 'drop', { metal: .3 });
+      R.step('Crane leaves', 'Walking out the crane', '#d7261e', { removes: ['crane', 'crew'] });
+      R.step('Yard cleared', 'Clearing the yard', '#b9a98f', { removes: 'yard' });
+      R.step('Parking & trees', 'Paving the lot', '#3b3f44'); R.box(4.4, .02, 1.6, 0, .005, 1.4, '#3b3f44', 'growX', { tex: 'concrete' }); for (let k = 0; k < 6; k++) R.box(.02, .022, .5, -1.6 + k * .6, .01, 1.5, '#f2f2ee', 'growZ'); R.box(.7, .02, 3.0, 1.85, .005, -.9, '#5e8f3e', 'growZ', { tex: 'grass' }); tree(R, 1.85, -.4, 1.1); tree(R, 1.85, -1.5, 1.2); tree(R, -1.85, 2.0, .9);
+    }, live({ a, parts }) { const t = parts.ccTurret, b = parts.ccBoom, h = parts.ccHook; if (t) t.rotation.y = wave(a, 30) * .7; if (b && h) { b.rotation.z = 1.0 + wave(a, 47, 1) * .1; h.rotation.z = -b.rotation.z; } crewLive(parts, a, ['s1', 's2', 's3'], .25); } },
+
+    { code: 'SITE 04', name: 'Mid-rise apartments', blurb: 'Four storeys of blockwork apartments behind a full scaffold, with the whole crew on site.', days: 420, ground: { color: '#6b5947', tex: 'concrete' }, build(R) {
+      const x0 = -1.5, x1 = 1.0, z0 = -1.75, z1 = .25, FL = .45, cx = (x0 + x1) / 2, cz = (z0 + z1) / 2, W = x1 - x0, D = z1 - z0;
+      R.step('Hoarding & signs', 'Fencing the site', '#e9edf0'); hoarding(R, '#e9edf0');
+      R.step('Site cabins', 'Craning in the cabins', '#e9edf0'); R.box(.85, .3, .34, -1.45, 0, 1.55, '#e9edf0', 'drop', T('cabins', { metal: .2 })); R.box(.85, .3, .34, -1.45, .3, 1.55, '#e9edf0', 'drop', T('cabins', { metal: .2 })); R.box(.85, .3, .34, -1.45, 0, 1.15, '#2f56c9', 'drop', T('cabins', { metal: .2 })); [[-1.65, .12], [-1.25, .12], [-1.65, .42], [-1.25, .42]].forEach(([x, y]) => R.box(.16, .1, .02, x, y, 1.73, '#9cc9e0', 'pop', T('cabins', { glossy: true })));
+      R.step('Excavation', 'Digging the footings', YEL); excavator(R, 'ex', .9, 1.35, -.7); dumper(R, 'du', -.35, 1.55, 0); R.sph(.35, 1.75, .02, .9, '#5c4a3a', 'pop', T('plant', { sy: .45, tex: 'concrete' })); worker(R, 'm1', .2, .95); worker(R, 'm2', 1.65, .35);
+      R.step('Tower crane', 'Erecting the crane', '#d7261e'); towerCrane(R, 'tc', 1.75, -1.75, 3.4, 2.5, '#d7261e');
+      R.step('Foundations', 'Pouring the foundations', CONC); R.box(W + .1, .12, D + .1, cx, 0, cz, CONC, 'rise', { tex: 'concrete' });
+      const floor = (n) => { const y = .12 + n * FL; R.box(W, FL - .05, .1, cx, y, z1 - .05, '#c98a5e', 'rise', { tex: 'brick' }); R.box(W, FL - .05, .1, cx, y, z0 + .05, '#c98a5e', 'rise', { tex: 'brick' }); R.box(.1, FL - .05, D, x0 + .05, y, cz, '#c98a5e', 'rise', { tex: 'brick' }); R.box(.1, FL - .05, D, x1 - .05, y, cz, '#c98a5e', 'rise', { tex: 'brick' }); R.box(W, .05, D, cx, y + FL - .05, cz, '#b9b7b1', 'growX', { tex: 'concrete' }); scaffoldLift(R, x0, x1, z1, z0, z1, x1, y - .12 + (n ? 0 : .12), FL + (n ? 0 : -.12)); };
+      R.step('Ground floor', 'Laying the blockwork', '#c98a5e'); floor(0);
+      R.step('First floor', 'Raising the first floor', '#c98a5e'); floor(1); worker(R, 'w1', -.3, z1 + .08, 2 * FL - .03); worker(R, 'w2', x1 + .08, -.6, 2 * FL - .03);
+      R.step('Second floor', 'Raising the second floor', '#c98a5e'); floor(2);
+      R.step('Third floor', 'Raising the third floor', '#c98a5e'); floor(3); worker(R, 'w3', .3, z1 + .08, 4 * FL - .03);
+      R.step('Roof', 'Topping out', '#4a4f55'); R.box(W + .1, .08, D + .1, cx, .12 + 4 * FL, cz, '#4a4f55', 'drop', { tex: 'concrete' }); R.box(.5, .22, .4, -.8, .2 + 4 * FL, -1.2, '#b9bec4', 'drop', { metal: .4 });
+      R.step('Windows', 'Fitting the windows', '#8fbbd4'); for (let n = 0; n < 4; n++) { const y = .22 + n * FL; [-1.1, -.55, 0, .55].forEach((x) => R.box(.3, .26, .02, x, y, z1 + .01, '#8fbbd4', 'pop', { glossy: true })); [-1.45, -.95, -.45, .0].forEach((z) => R.box(.02, .26, .3, x1 + .01, y, z, '#8fbbd4', 'pop', { glossy: true })); }
+      R.step('Scaffold struck', 'Striking the scaffold', '#9aa3ab', { removes: ['scaffold', 'crew'] });
+      R.step('Crane & plant out', 'Demobilising', '#d7261e', { removes: ['crane', 'plant'] });
+      R.step('Cabins & fence gone', 'Handing over', '#e9edf0', { removes: ['cabins', 'hoarding'] });
+      R.step('Landscaping', 'Planting and paving', '#5e8f3e'); R.box(4.4, .02, 1.75, 0, .005, 1.35, '#5e8f3e', 'growX', { tex: 'grass' }); R.box(.8, .02, 2.6, 1.75, .005, -.9, '#5e8f3e', 'growZ', { tex: 'grass' }); R.box(.4, .028, 1.7, -.2, .01, 1.35, '#c9c3b6', 'growZ', { tex: 'concrete' }); tree(R, -1.6, 1.6, 1.2); tree(R, 1.2, 1.7, 1.1); tree(R, 1.8, -.4, 1.2); [-1.0, .6].forEach((x) => R.sph(.13, x, .1, .65, '#4f8f45', 'pop'));
+    }, live({ a, parts }) {
+      towerLive(parts, a, 'tc', 2.3, 2.5);
+      const tu = parts.exTurret, bo = parts.exBoom, ar = parts.exArm, du = parts.du;
+      if (tu) tu.rotation.y = wave(a, 52) * .9; if (bo) bo.rotation.z = .6 + wave(a, 83, 1) * .22; if (ar) ar.rotation.z = -1.5 + wave(a, 83, 2) * .35;
+      if (du) { if (du.userData.x === undefined) du.userData.x = du.position.x; du.position.x = du.userData.x + wave(a, 26) * .55; du.rotation.y = wave(a, 26) > 0 ? 0 : Math.PI; }
+      crewLive(parts, a, ['m1', 'm2', 'w1', 'w2', 'w3'], .22);
+    } },
+  ],
+};
+</script>
+<script src="../engine/scenes.js"></script>
+</body>
+</html>

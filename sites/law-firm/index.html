@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hartley &amp; Sato LLP · Sample law firm site</title>
+<meta name="description" content="Sample website template for a small law firm in Vancouver: practice areas, how a matter moves, lawyers, flat fees and a confidential enquiry. Made-up firm. A remix of the real estate, accounting and automotive templates.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0f1a2b">
+<script>document.documentElement.classList.add('js');setTimeout(function(){var d=document.documentElement;if(!d.classList.contains('kit-ready'))d.classList.remove('js')},4000)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Hanken+Grotesk:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../kit/kit.css">
+<style>
+:root {
+  --paper: #f5f2ea; --card: #fffdf7; --ink: #0f1a2b; --ink-2: #586273; --line: #e0d8c6;
+  --accent: #8a6a3a; --brass: #b08d57; --navy: #0f1a2b;
+  --display: 'Playfair Display', Georgia, serif; --body: 'Hanken Grotesk', system-ui, sans-serif; --mono: 'DM Mono', ui-monospace, monospace;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.65 var(--body); overflow-x: clip; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); font-weight: 500; margin: 0; line-height: 1.05; }
+h2 { font-size: clamp(2.3rem, 1.4rem + 3.4vw, 4.2rem); }
+h2 em { font-style: italic; color: var(--accent); }
+h3 { font-size: 1.5rem; }
+p { margin: 0; }
+.wrap { width: min(1200px, 100% - 32px); margin-inline: auto; }
+.num { font: 500 13px/1 var(--mono); color: var(--accent); letter-spacing: .04em; }
+section { padding: clamp(80px, 10vw, 130px) 0; }
+.btn { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 24px; font: 600 15px/1 var(--body); letter-spacing: .03em; text-decoration: none; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); cursor: pointer; transition: background-color .3s, color .3s, border-color .3s; }
+.btn:hover { background: var(--brass); border-color: var(--brass); color: var(--ink); }
+.btn-out { background: transparent; color: var(--ink); }
+
+.top { position: fixed; inset: 0 0 auto; z-index: 50; padding: 18px 0; color: var(--paper); transition: background-color .4s, color .4s, padding .4s; }
+.top.is-scrolled { background: var(--paper); color: var(--ink); padding: 12px 0; box-shadow: 0 1px 0 var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 30px; }
+.logo { font: 600 1.35rem/1.1 var(--display); text-decoration: none; }
+.logo small { display: block; font: 500 10px var(--mono); letter-spacing: .2em; text-transform: uppercase; opacity: .8; }
+.nav { display: flex; gap: 26px; margin-left: auto; }
+.nav a { text-decoration: none; font-weight: 500; font-size: 15px; background: linear-gradient(var(--brass), var(--brass)) 0 100% / 0 1.5px no-repeat; transition: background-size .3s; }
+.nav a:hover { background-size: 100% 1.5px; }
+.top .btn { min-height: 44px; background: var(--brass); border-color: var(--brass); color: var(--navy); }
+.menu-btn { display: none; margin-left: auto; background: none; border: 1px solid currentColor; color: inherit; padding: 10px 14px; font: 500 13px var(--mono); cursor: pointer; }
+@media (max-width: 899px) {
+  .menu-btn { display: block; } .top .btn { display: none; }
+  .nav { position: fixed; inset: 0; z-index: -1; flex-direction: column; justify-content: center; padding: 0 30px; gap: 18px; background: var(--navy); color: var(--paper); visibility: hidden; opacity: 0; transition: opacity .3s, visibility .3s; }
+  .nav.is-open { visibility: visible; opacity: 1; }
+  .nav a { font: 500 2.4rem/1.1 var(--display); }
+}
+
+/* Hero: typed promise over a brass Vanta net */
+.hero { position: relative; min-height: 100svh; background: var(--navy); color: var(--paper); display: grid; align-items: end; overflow: hidden; padding: 140px 0 70px; }
+.net { position: absolute; inset: 0; background: radial-gradient(circle at 75% 30%, #1d2f4d, #0f1a2b 70%); }
+.hero .wrap { position: relative; z-index: 1; }
+.hero .num { color: var(--brass); }
+.hero h1 { font-size: clamp(3rem, 1.2rem + 7vw, 7.6rem); margin: 18px 0 0; min-height: 2.1em; }
+.hero h1 .l2 { font-style: italic; color: var(--brass); }
+.caret { display: inline-block; width: .06em; height: .8em; background: var(--brass); margin-left: .06em; vertical-align: -0.04em; animation: caret 1s steps(2) infinite; }
+@keyframes caret { 50% { opacity: 0; } }
+.hero-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 24px; margin-top: 34px; }
+.hero-row p { max-width: 46ch; color: #c9cfd8; font-size: 1.1rem; }
+.quick { display: flex; flex-wrap: wrap; gap: 8px; }
+.quick a { font: 500 13px var(--mono); padding: 9px 12px; border: 1px solid #2c3d5c; text-decoration: none; color: #c9cfd8; }
+.quick a:hover { border-color: var(--brass); color: var(--paper); }
+
+/* Practice areas: ledger rows */
+.ledger { margin-top: 40px; border-top: 2px solid var(--ink); }
+.ledger a { display: grid; grid-template-columns: 70px 1.1fr 2fr auto; gap: 20px; align-items: baseline; padding: 24px 0; border-bottom: 1px solid var(--line); text-decoration: none; position: relative; }
+.ledger a::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--brass); transform: scaleX(0); transform-origin: 0 50%; transition: transform .5s cubic-bezier(.7, 0, .2, 1); }
+.ledger a:hover::after, .ledger a:focus-visible::after { transform: scaleX(1); }
+.ledger h3 { font-size: 1.7rem; }
+.ledger p { color: var(--ink-2); }
+.ledger .go { font: 500 14px var(--mono); color: var(--accent); }
+@media (max-width: 799px) { .ledger a { grid-template-columns: 40px 1fr; } .ledger p { grid-column: 2; } .ledger .go { grid-column: 2; } }
+
+/* How a matter moves: pinned case file */
+.matter { padding: 0; background: #ebe5d8; }
+.mpin { min-height: 100svh; display: grid; align-content: center; padding: 96px 0 40px; }
+.mgrid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center; margin-top: 26px; }
+.file svg { width: 100%; height: auto; display: block; overflow: visible; }
+.file .paper { fill: #fffdf7; stroke: var(--ink); stroke-width: 1.6; }
+.file .line { stroke: #c9bfa9; stroke-width: 6; stroke-linecap: round; }
+.file .hl { stroke: #f2d49b; stroke-width: 10; stroke-linecap: round; opacity: 0; }
+.file .hot circle.ring { fill: none; stroke: var(--brass); stroke-width: 2; }
+.file .hot circle.core { fill: var(--brass); }
+.file .call { fill: none; stroke: var(--brass); stroke-width: 1.6; }
+.file .stamp { opacity: 0; }
+.stages { list-style: none; margin: 0 0 20px; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.stages li { font: 500 12px var(--mono); padding: 8px 10px; border: 1px solid #cfc4ad; color: var(--ink-2); transition: background-color .3s, color .3s, border-color .3s; }
+.stages li.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.mcards { display: grid; }
+.mcard { padding: 26px; background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--brass); }
+.mcard + .mcard { margin-top: 14px; }
+.is-pinned .mcard { grid-area: 1 / 1; margin: 0; }
+.mcard .code { font: 500 13px var(--mono); color: var(--accent); }
+.mcard h3 { margin: 10px 0 8px; font-size: 1.8rem; }
+.mcard p { color: var(--ink-2); }
+.mcard .time { margin-top: 12px; font: 500 13px var(--mono); color: var(--ink); }
+@media (max-width: 899px) { .mgrid { grid-template-columns: 1fr; gap: 18px; } .mpin { padding-top: 80px; } .mcard { padding: 18px; } .matter h2 { font-size: 2.2rem; } }
+
+/* Results */
+.results { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 2px solid var(--ink); border-bottom: 1px solid var(--line); margin-top: 40px; }
+.results div { padding: 26px 20px 26px 0; }
+.results b { display: block; font: 500 clamp(2.4rem, 1.8rem + 2vw, 3.6rem)/1 var(--display); font-variant-numeric: tabular-nums; }
+.results span { color: var(--ink-2); font-size: 15px; }
+@media (max-width: 799px) { .results { grid-template-columns: 1fr 1fr; } }
+
+/* Lawyers with practice filter */
+.ftabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 30px 0 8px; }
+.ftabs button { font: 500 13px var(--mono); padding: 9px 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
+.ftabs button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.fstat { font: 400 13px var(--mono); color: var(--ink-2); min-height: 1.4em; }
+.team { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 14px; }
+.lawyer { background: var(--card); }
+.lawyer [data-art] { aspect-ratio: 4 / 5; filter: grayscale(.35); transition: filter .4s; }
+.lawyer:hover [data-art] { filter: none; }
+.lawyer .cap { padding: 14px 16px 18px; }
+.lawyer h3 { font-size: 1.25rem; }
+.lawyer p { font-size: 14px; color: var(--ink-2); }
+.lawyer .bar { font: 500 12px var(--mono); color: var(--accent); margin-top: 6px; }
+@media (max-width: 899px) { .team { grid-template-columns: 1fr 1fr; } }
+
+/* Flat fees with gliding badge */
+.fees { background: var(--navy); color: var(--paper); }
+.fees .num { color: var(--brass); }
+.fees h2 em { color: var(--brass); }
+.picker { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 26px; color: #c9cfd8; }
+.picker select { font: inherit; padding: 10px 12px; border: 1px solid #2c3d5c; background: #13233d; color: var(--paper); }
+.plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 26px; }
+.plan { position: relative; padding: 28px; border: 1px solid #2c3d5c; background: #13233d; display: flex; flex-direction: column; gap: 10px; transition: border-color .3s; }
+.plan.is-rec { border-color: var(--brass); }
+.plan .price { font: 500 2.6rem/1 var(--display); color: var(--brass); }
+.plan .price small { font: 400 13px var(--mono); color: #c9cfd8; }
+.plan ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; color: #c9cfd8; font-size: 15px; }
+.plan li::before { content: '§ '; color: var(--brass); }
+.rec { position: absolute; top: -12px; right: 16px; font: 500 12px var(--mono); background: var(--brass); color: var(--navy); padding: 4px 9px; }
+.fees small.note { display: block; margin-top: 18px; color: #8d97a6; font: 400 13px var(--mono); }
+@media (max-width: 899px) { .plans { grid-template-columns: 1fr; } }
+
+/* Contact */
+.contact .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary { padding: 18px 0; font: 500 1.25rem var(--display); display: flex; justify-content: space-between; gap: 12px; }
+.faq summary::after { content: '+'; font: 500 1.2rem var(--mono); color: var(--accent); transition: transform .3s; }
+.faq details.is-open summary::after { transform: rotate(45deg); }
+.faq .acc-body p { padding-bottom: 18px; color: var(--ink-2); }
+.cf { background: var(--card); border: 1px solid var(--line); padding: clamp(22px, 4vw, 38px); }
+.cf legend { font: 500 1.8rem/1.1 var(--display); padding: 0; margin-bottom: 16px; }
+.cf .meta { display: flex; justify-content: space-between; font: 400 12px var(--mono); color: var(--ink-2); margin-bottom: 10px; text-transform: uppercase; }
+.cf [data-steps-bar] i { background: var(--brass); }
+.radios { display: grid; gap: 8px; }
+.radios label { display: flex; gap: 10px; align-items: center; padding: 13px 14px; border: 1px solid var(--line); cursor: pointer; }
+.radios input { accent-color: var(--ink); width: 18px; height: 18px; }
+.radios label:has(input:checked) { border-color: var(--ink); background: #f3eee2; }
+.fq { display: grid; gap: 6px; margin-bottom: 12px; }
+.fq label { font-weight: 600; font-size: 15px; }
+.fq input, .fq select { font: inherit; padding: 12px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); width: 100%; }
+.conf { margin-top: 14px; font-size: 14px; color: var(--ink-2); padding: 10px 12px; background: #f3eee2; border-left: 3px solid var(--brass); }
+.cf .rr { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+.done h3 { font: italic 500 2.2rem var(--display); color: var(--accent); }
+@media (max-width: 899px) { .contact .wrap { grid-template-columns: 1fr; } }
+
+footer { background: var(--navy); color: #c9cfd8; padding: 40px 0; font: 400 13px var(--mono); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: center; }
+footer button { font: inherit; color: var(--paper); background: none; border: 1px solid #2c3d5c; padding: 6px 10px; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div data-progress></div>
+
+<header class="top" data-header>
+  <div class="wrap">
+    <a class="logo" href="#top">Hartley &amp; Sato<small>LLP · Barristers &amp; Solicitors</small></a>
+    <nav class="nav" id="nav" aria-label="Main"><a href="#practice">Practice</a><a href="#matter">How it works</a><a href="#lawyers">Lawyers</a><a href="#fees">Fees</a></nav>
+    <a class="btn" href="#contact">Free consultation</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle>MENU</button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="net" id="net" aria-hidden="true"></div>
+    <div class="wrap">
+      <span class="num" data-reveal="fade" data-now>Vancouver · Est. 1998 · 14 lawyers</span>
+      <h1 aria-label="Clear advice. Calm outcomes."><span id="l1" aria-hidden="true">Clear advice.</span><br><span class="l2" id="l2" aria-hidden="true">Calm outcomes.</span><span class="caret" aria-hidden="true"></span></h1>
+      <div class="hero-row">
+        <p data-reveal="up" data-now data-delay="1.4">Family, real estate, wills and small-business law, explained in plain English with a fee you know up front.</p>
+        <div class="quick" data-reveal-group="up" data-now data-delay="1.5"><a href="#practice">Family</a><a href="#practice">Real estate</a><a href="#practice">Wills</a><a href="#practice">Business</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="practice" aria-labelledby="pa-h">
+    <div class="wrap">
+      <span class="num">§ 1 · Practice areas</span>
+      <h2 id="pa-h" style="margin-top:12px" data-split="lines">How we <em>help</em></h2>
+      <nav class="ledger" aria-label="Practice areas" data-reveal-group="up" data-stagger=".06">
+        <a href="#contact"><span class="num">1.1</span><h3>Family law</h3><p>Separation, parenting plans and support, with mediation first whenever it's safe.</p><span class="go">Talk to us →</span></a>
+        <a href="#contact"><span class="num">1.2</span><h3>Real estate</h3><p>Purchases, sales and refinances. Conveyancing done right, on time for closing day.</p><span class="go">Talk to us →</span></a>
+        <a href="#contact"><span class="num">1.3</span><h3>Wills &amp; estates</h3><p>Wills, powers of attorney, representation agreements and probate.</p><span class="go">Talk to us →</span></a>
+        <a href="#contact"><span class="num">1.4</span><h3>Business</h3><p>Incorporations, shareholder agreements, contracts and commercial leases.</p><span class="go">Talk to us →</span></a>
+        <a href="#contact"><span class="num">1.5</span><h3>Employment</h3><p>Severance reviews, workplace policies and wrongful dismissal claims.</p><span class="go">Talk to us →</span></a>
+      </nav>
+    </div>
+  </section>
+
+  <section class="matter" id="matter" aria-labelledby="ma-h">
+    <div class="mpin">
+      <div class="wrap">
+        <span class="num">§ 2 · How a matter moves</span>
+        <h2 id="ma-h" style="margin-top:12px">Four stages, <em>always explained.</em></h2>
+        <div class="mgrid">
+          <div class="file" aria-hidden="true">
+            <svg viewBox="0 0 620 420" id="fileSvg">
+              <rect class="paper" x="70" y="40" width="300" height="360" transform="rotate(-4 220 220)"/>
+              <rect class="paper" x="90" y="30" width="300" height="360"/>
+              <path d="M90 30h90l10-18h70l10 18" fill="#e9dcc0" stroke="#0f1a2b" stroke-width="1.6"/>
+              <g><path class="line" d="M120 90h220M120 120h180M120 150h200"/><path class="hl" d="M120 120h180"/><path class="line" d="M120 200h220M120 230h160M120 260h210M120 290h140"/><path class="hl" d="M120 230h160"/></g>
+              <g class="stamp" id="stamp" transform="rotate(-12 300 330)"><rect x="240" y="306" width="130" height="46" rx="4" fill="none" stroke="#b3261e" stroke-width="3"/><text x="305" y="337" text-anchor="middle" font-family="DM Mono" font-size="18" fill="#b3261e">RESOLVED</text></g>
+              <g id="hots">
+                <g class="hot" transform="translate(225 20)"><circle class="ring" r="16"/><circle class="core" r="5"/></g>
+                <g class="hot" transform="translate(300 120)"><circle class="ring" r="16"/><circle class="core" r="5"/></g>
+                <g class="hot" transform="translate(280 230)"><circle class="ring" r="16"/><circle class="core" r="5"/></g>
+                <g class="hot" transform="translate(305 330)"><circle class="ring" r="16"/><circle class="core" r="5"/></g>
+              </g>
+              <g id="calls"><path class="call" d="M241 20H600"/><path class="call" d="M316 120H600"/><path class="call" d="M296 230H600"/><path class="call" d="M321 330H600"/></g>
+            </svg>
+          </div>
+          <div>
+            <ol class="stages" aria-hidden="true"><li>Intake</li><li>Strategy</li><li>Negotiation</li><li>Resolution</li></ol>
+            <div class="mcards">
+              <article class="mcard"><span class="code">FILE 26-0193 · A</span><h3>Intake</h3><p>A free 30-minute call. We listen, check for conflicts, and tell you honestly if you need a lawyer at all.</p><p class="time">Day 1</p></article>
+              <article class="mcard"><span class="code">FILE 26-0193 · B</span><h3>Strategy</h3><p>A short written plan: your options, the likely costs, and how long each path usually takes.</p><p class="time">Week 1</p></article>
+              <article class="mcard"><span class="code">FILE 26-0193 · C</span><h3>Negotiation</h3><p>Most matters settle here. We keep you updated every two weeks, in writing, without legalese.</p><p class="time">Weeks 2 to 12</p></article>
+              <article class="mcard"><span class="code">FILE 26-0193 · D</span><h3>Resolution</h3><p>Agreement signed, filed or closed. We send a plain-English summary of what changes for you.</p><p class="time">Done</p></article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="rs-h">
+    <div class="wrap">
+      <span class="num">§ 3 · Results</span>
+      <h2 id="rs-h" style="margin-top:12px" data-split="lines">Twenty-eight <em>years</em></h2>
+      <div class="results" data-reveal-group="up">
+        <div><b data-count="9400" data-suffix="+">9,400+</b><span>matters closed</span></div>
+        <div><b data-count="86" data-suffix="%">86%</b><span>settled without court</span></div>
+        <div><b data-scramble data-scramble-chars="0123456789">4.9</b><span>average client rating</span></div>
+        <div><b data-count="6">6</b><span>languages spoken</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="lawyers" aria-labelledby="lw-h" style="padding-top:0">
+    <div class="wrap" data-filter>
+      <span class="num">§ 4 · Lawyers</span>
+      <h2 id="lw-h" style="margin-top:12px" data-split="lines">Who you'll <em>work with</em></h2>
+      <div class="ftabs" role="group" aria-label="Filter by practice"><button type="button" data-filter-btn="all" aria-pressed="true">All</button><button type="button" data-filter-btn="family" aria-pressed="false">Family</button><button type="button" data-filter-btn="re" aria-pressed="false">Real estate</button><button type="button" data-filter-btn="wills" aria-pressed="false">Wills</button><button type="button" data-filter-btn="biz" aria-pressed="false">Business</button></div>
+      <p class="fstat" data-filter-status aria-live="polite"></p>
+      <div class="team" data-reveal-group="up" data-stagger=".06">
+        <article class="lawyer" data-tags="family"><div data-art="portrait" data-seed="501" data-palette="#e0d8c6,#cbbd9f,#0f1a2b,#c99a76"></div><div class="cap"><h3>Margaret Hartley</h3><p>Founding partner · Family</p><p class="bar">Called 1994 · EN, FR</p></div></article>
+        <article class="lawyer" data-tags="biz re"><div data-art="portrait" data-seed="506" data-palette="#e0d8c6,#cbbd9f,#0f1a2b,#d9a07e"></div><div class="cap"><h3>Kenji Sato</h3><p>Founding partner · Business</p><p class="bar">Called 1996 · EN, JA</p></div></article>
+        <article class="lawyer" data-tags="re"><div data-art="portrait" data-seed="511" data-palette="#e0d8c6,#cbbd9f,#0f1a2b,#8a5a3c"></div><div class="cap"><h3>Priya Dhaliwal</h3><p>Associate · Real estate</p><p class="bar">Called 2015 · EN, PA, HI</p></div></article>
+        <article class="lawyer" data-tags="wills family"><div data-art="portrait" data-seed="516" data-palette="#e0d8c6,#cbbd9f,#0f1a2b,#e0b08f"></div><div class="cap"><h3>Daniel Moreau</h3><p>Associate · Wills &amp; estates</p><p class="bar">Called 2012 · EN, FR</p></div></article>
+        <article class="lawyer" data-tags="biz"><div data-art="portrait" data-seed="521" data-palette="#e0d8c6,#cbbd9f,#0f1a2b,#6f4a35"></div><div class="cap"><h3>Amara Osei</h3><p>Associate · Employment</p><p class="bar">Called 2018 · EN</p></div></article>
+        <article class="lawyer" data-tags="wills"><div data-art="portrait" data-seed="526" data-palette="#e0d8c6,#cbbd9f,#0f1a2b,#c68b59"></div><div class="cap"><h3>Lucia Ferraro</h3><p>Notary &amp; estates</p><p class="bar">Since 2009 · EN, IT, ES</p></div></article>
+        <article class="lawyer" data-tags="family re"><div data-art="portrait" data-seed="531" data-palette="#e0d8c6,#cbbd9f,#0f1a2b,#d9a07e"></div><div class="cap"><h3>Wei Zhang</h3><p>Associate · Family</p><p class="bar">Called 2019 · EN, ZH</p></div></article>
+        <article class="lawyer" data-tags="re biz"><div data-art="portrait" data-seed="536" data-palette="#e0d8c6,#cbbd9f,#0f1a2b,#8a5a3c"></div><div class="cap"><h3>Tom Hartley</h3><p>Partner · Real estate</p><p class="bar">Called 2004 · EN</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="fees" id="fees" aria-labelledby="fe-h">
+    <div class="wrap">
+      <span class="num">§ 5 · Flat fees</span>
+      <h2 id="fe-h" style="margin-top:12px;color:var(--paper)" data-split="lines">Know the fee <em>first</em></h2>
+      <div class="picker"><label for="need">I need help with</label><select id="need"><option value="0">a will</option><option value="1" selected>buying a home</option><option value="2">starting a company</option></select></div>
+      <div class="plans" id="plans">
+        <div class="plan"><h3>Wills package</h3><p class="price">$950<small> + tax</small></p><ul><li>Will and two powers of attorney</li><li>Representation agreement</li><li>Signing meeting included</li></ul></div>
+        <div class="plan is-rec"><span class="rec" id="rec">Recommended</span><h3>Home purchase</h3><p class="price">$1,350<small> + disbursements</small></p><ul><li>Contract review before you sign</li><li>Title search and transfer</li><li>Closing-day funds handled</li></ul></div>
+        <div class="plan"><h3>Incorporation</h3><p class="price">$1,600<small> + filing fees</small></p><ul><li>BC incorporation and minute book</li><li>Shareholder register</li><li>Year-one annual report</li></ul></div>
+      </div>
+      <small class="note">Sample prices. Litigation and complex matters are billed hourly, with written estimates.</small>
+    </div>
+  </section>
+
+  <section class="contact" id="contact" aria-labelledby="ct-h">
+    <div class="wrap">
+      <div>
+        <span class="num">§ 6 · Contact</span>
+        <h2 id="ct-h" style="margin:12px 0 22px" data-split="lines">A free <em>first call</em></h2>
+        <div class="faq" data-accordion>
+          <details><summary>Is the first call really free?</summary><div class="acc-body"><p>Yes, thirty minutes with a lawyer, no obligation.</p></div></details>
+          <details><summary>Is what I tell you confidential?</summary><div class="acc-body"><p>Yes. Even before you hire us, what you share to get advice is protected.</p></div></details>
+          <details><summary>Do you offer payment plans?</summary><div class="acc-body"><p>For family matters, yes. Ask us during the first call.</p></div></details>
+        </div>
+      </div>
+      <div class="cf" data-reveal="up">
+        <form data-steps action="#" aria-label="Confidential enquiry">
+          <div class="meta"><span data-steps-count>Step 1 of 3</span><span>Confidential</span></div>
+          <div data-steps-bar style="margin-bottom:22px"><i></i></div>
+          <fieldset data-step><legend>What's it about?</legend>
+            <div class="radios"><label><input type="radio" name="area" value="family" required> Family</label><label><input type="radio" name="area" value="re"> Real estate</label><label><input type="radio" name="area" value="wills"> Wills &amp; estates</label><label><input type="radio" name="area" value="biz"> Business or employment</label></div>
+            <div class="rr"><button class="btn" data-next>Next</button></div>
+          </fieldset>
+          <fieldset data-step><legend>How urgent?</legend>
+            <div class="fq"><label for="w-when">Timing</label><select id="w-when" name="when"><option>Something is due this week</option><option>Within the month</option><option>Just planning ahead</option></select></div>
+            <div class="fq"><label for="w-how">Best way to reach you</label><select id="w-how" name="how"><option>Phone</option><option>Email</option><option>Video call</option></select></div>
+            <div class="rr"><button class="btn btn-out" data-back>Back</button><button class="btn" data-next>Next</button></div>
+          </fieldset>
+          <fieldset data-step><legend>Your details</legend>
+            <div class="fq"><label for="w-name">Name</label><input id="w-name" name="name" required autocomplete="name"></div>
+            <div class="fq"><label for="w-phone">Phone or email</label><input id="w-phone" name="contact" required autocomplete="email"></div>
+            <div class="rr"><button class="btn btn-out" data-back>Back</button><button class="btn" type="submit">Request a call</button></div>
+            <p class="conf">Please don't share details of your matter here; we'll ask on the call. Sample form: nothing is sent.</p>
+          </fieldset>
+        </form>
+        <div class="done" data-steps-done hidden><h3>Thank you.</h3><p style="margin-top:8px;color:var(--ink-2)">On a real site, a lawyer would call you within one business day.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><span>Hartley &amp; Sato LLP · Vancouver, BC · <span data-year>2026</span></span><span>Sample firm: not a real law firm and not legal advice. Names and numbers are made up.</span><button type="button" data-motion-toggle>Motion: on</button></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Flip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/DrawSVGPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrambleTextPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/TextPlugin.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>window.KIT = {
+  ease: 'power2.inOut', dur: 0.9, stagger: 0.06, smooth: { lerp: 0.1 }, anchorOffset: 76,
+  vanta: { el: '#net', effect: 'NET', options: { color: 0xb08d57, backgroundColor: 0x0f1a2b, points: 8, maxDistance: 22, spacing: 20, showDots: true } },
+};</script>
+<script src="../../kit/art.js"></script>
+<script src="../../kit/kit.js"></script>
+<script>
+(() => {
+  const K = window.KIT;
+  if (!window.gsap) return;
+
+  // Flat fees: the "Recommended" badge glides to the right package.
+  const plans = [...document.querySelectorAll('.plan')], rec = document.getElementById('rec');
+  document.getElementById('need').addEventListener('change', (e) => {
+    const target = plans[+e.target.value], state = Flip.getState(rec);
+    plans.forEach((p) => p.classList.toggle('is-rec', p === target));
+    target.prepend(rec);
+    if (!K.reduce) Flip.from(state, { duration: 0.7, ease: 'power3.inOut', scale: true });
+  });
+
+  if (K.reduce) return;
+
+  // Typed promise.
+  const l1 = document.getElementById('l1'), l2 = document.getElementById('l2'), t1 = l1.textContent, t2 = l2.textContent;
+  l1.textContent = ''; l2.textContent = '';
+  gsap.timeline({ delay: 0.4 }).to(l1, { text: t1, duration: t1.length * 0.055, ease: 'none' }).to(l2, { text: t2, duration: t2.length * 0.055, ease: 'none' }, '+=0.4');
+
+  // The case file: pinned; each stage lights a part of the file, draws a callout and re-types the file code.
+  const sec = document.querySelector('.matter'), cards = [...sec.querySelectorAll('.mcard')], items = [...sec.querySelectorAll('.stages li')];
+  const hots = [...sec.querySelectorAll('.hot')], calls = [...sec.querySelectorAll('.call')], hls = [...sec.querySelectorAll('.hl')];
+  gsap.matchMedia().add('(min-height: 560px)', () => {
+    sec.classList.add('is-pinned');
+    gsap.set(cards.slice(1), { autoAlpha: 0, y: 30 });
+    gsap.set(calls, { drawSVG: '0%' });
+    gsap.set(hots, { scale: 0.6, opacity: 0.35, transformOrigin: '50% 50%' });
+    let active = -1;
+    const setActive = (i) => {
+      if (i === active) return;
+      active = i;
+      items.forEach((li, n) => li.classList.toggle('on', n === i));
+      const code = cards[i].querySelector('.code');
+      gsap.to(code, { duration: 0.8, scrambleText: { text: code.textContent, chars: '0123456789ABCDEF-', speed: 0.7 } });
+    };
+    const tl = gsap.timeline({ scrollTrigger: { trigger: sec, start: 'top top', end: '+=300%', pin: true, scrub: 0.6, refreshPriority: 1,
+      snap: { snapTo: 'labels', duration: { min: 0.2, max: 0.6 }, ease: 'power1.inOut' },
+      onUpdate: () => { const t = tl.time(); let a = 0; [0, 1, 2, 3].forEach((i) => { if (t >= tl.labels['s' + i] - 0.55) a = i; }); setActive(a); } } });
+    tl.from('#fileSvg .paper, #fileSvg .line', { opacity: 0, y: 20, stagger: 0.05, duration: 0.6 }).addLabel('s0');
+    cards.forEach((c, i) => {
+      if (i) {
+        tl.to(cards[i - 1], { autoAlpha: 0, y: -30, duration: 0.5 }, `s${i - 1}+=0.6`).to(cards[i], { autoAlpha: 1, y: 0, duration: 0.5 }, '<0.2')
+          .to([hots[i - 1], calls[i - 1]], { opacity: 0.3, duration: 0.3 }, `s${i - 1}+=0.6`);
+      }
+      tl.to(hots[i], { scale: 1.4, opacity: 1, duration: 0.4, ease: 'back.out(3)' }, i ? '<' : 's0-=0.3').to(calls[i], { drawSVG: '100%', duration: 0.6 }, '<');
+      if (i === 1) tl.to(hls[0], { opacity: 0.8, duration: 0.4 }, '<');
+      if (i === 2) tl.to(hls[1], { opacity: 0.8, duration: 0.4 }, '<');
+      if (i === 3) tl.fromTo('#stamp', { opacity: 0, scale: 2.2, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.4, ease: 'power4.in' }, '<');
+      if (i) tl.addLabel(`s${i}`, '+=0.1');
+    });
+    tl.to({}, { duration: 0.6 });
+    gsap.to('.file .hot .ring', { attr: { r: 24 }, opacity: 0, duration: 1.2, repeat: -1, ease: 'power2.out' });
+    return () => sec.classList.remove('is-pinned');
+  });
+})();
+</script>
+</body>
+</html>
