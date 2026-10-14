@@ -166,7 +166,7 @@ footer button { font: inherit; color: #fff; background: transparent; border: 1px
 
 <header class="top" data-header data-header-hide>
   <div class="wrap">
-    <a class="logo" href="#top"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M3 24L12 8l5 8l3-5l7 13z" fill="#0b6e69"/><circle cx="23" cy="7" r="3" fill="#f4a259"/></svg>Northbound</a>
+    <a class="logo" href="#top" data-plug="brand"><svg data-plug="mark" viewBox="0 0 30 30" aria-hidden="true"><path d="M3 24L12 8l5 8l3-5l7 13z" fill="#0b6e69"/><circle cx="23" cy="7" r="3" fill="#f4a259"/></svg><span data-plug="name">Northbound</span></a>
     <nav class="nav" id="nav" aria-label="Main"><a href="#route">The route</a><a href="#trips">Trips</a><a href="#about">About</a><a href="#book">Book</a></nav>
     <a class="btn" href="#book" data-magnet="0.25">Plan a trip</a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle aria-label="Menu">☰</button>
@@ -281,6 +281,7 @@ footer button { font: inherit; color: #fff; background: transparent; border: 1px
           <details><summary>How fit do I need to be?</summary><div class="acc-body"><p>If you can walk 8 km on uneven trails, you're fine. Each trip page lists its walking days.</p></div></details>
           <details><summary>Can I cancel?</summary><div class="acc-body"><p>Full refund up to 60 days before departure, 50% up to 30 days.</p></div></details>
         </div>
+        <div data-plug="contact" hidden></div>
       </div>
       <div class="bk" data-reveal="up">
         <form data-steps action="#" aria-label="Trip enquiry">
@@ -315,11 +316,14 @@ footer button { font: inherit; color: #fff; background: transparent; border: 1px
 <footer>
   <div class="wrap">
     <span>Northbound Trips · Vancouver &amp; Whitehorse · <span data-year>2026</span></span>
-    <span>Sample business: trips, prices and people are made up.</span>
+    <span data-plug-text="Your preview: photos, prices and reviews are still samples.">Sample business: trips, prices and people are made up.</span>
     <button type="button" data-motion-toggle>Motion: on</button>
   </div>
 </footer>
 
+<!-- Plug & Show: this sample business, swapped for a visitor's own details (see kit/plug.js). -->
+<script type="application/json" id="plug-sample">{"template":"motion-travel","label":"Northbound","name":["Northbound Trips","Northbound"],"owner":["Leah Tremblay","Leah"],"phrases":[["Vancouver & Whitehorse","{city}"]],"color":{"link":["--accent"],"bg":"--paper"}}</script>
+<script src="../../kit/plug.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>

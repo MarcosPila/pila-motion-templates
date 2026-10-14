@@ -181,7 +181,7 @@ footer button { font: inherit; background: none; color: var(--ink); border: 1px 
 
 <header class="top" data-header>
   <div class="wrap">
-    <a class="logo" href="#top">Redline<i>/</i>Auto</a>
+    <a class="logo" href="#top" data-plug="brand">Redline<i>/</i>Auto</a>
     <nav class="nav" id="nav" aria-label="Main"><a href="#services">Service bay</a><a href="#prices">Prices</a><a href="#why">Why us</a><a href="#book">Book</a></nav>
     <a class="btn btn-red" href="#book" data-magnet="0.25">Book a bay</a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle>Menu</button>
@@ -344,7 +344,7 @@ footer button { font: inherit; background: none; color: var(--ink); border: 1px 
         <span class="tag">Book a bay</span>
         <h2 style="margin-top:14px" data-split="chars" data-split-anim="slide">Pick a time.</h2>
         <p style="margin-top:18px;color:var(--ink-2);max-width:42ch" data-reveal="up">Most services are same-day. Drop off before 9 and you'll be on the road by 5.</p>
-        <ul class="hours" data-reveal-group="up"><li><b>Mon–Fri</b>7:30 am – 7 pm</li><li><b>Saturday</b>8 am – 4 pm</li><li><b>Phone</b><a href="tel:+19055550199">(905) 555-0199</a></li><li><b>Address</b>Dundas St E, Mississauga</li></ul>
+        <ul class="hours" data-reveal-group="up" data-plug="hours contact"><li data-plug-row><b data-plug-days>Mon–Fri</b><span data-plug-time>7:30 am – 7 pm</span></li><li data-plug-row><b data-plug-days>Saturday</b><span data-plug-time>8 am – 4 pm</span></li><li><b>Phone</b><a href="tel:+19055550199">(905) 555-0199</a></li><li><b>Address</b>Dundas St E, Mississauga</li></ul>
       </div>
       <div class="bk" data-reveal="up">
         <form data-steps action="#" aria-label="Book a service">
@@ -394,11 +394,14 @@ footer button { font: inherit; background: none; color: var(--ink); border: 1px 
 <footer>
   <div class="wrap">
     <span>Redline Auto Works · Mississauga, ON · <span data-year>2026</span></span>
-    <span>Sample business. Names, prices and reviews are made up.</span>
+    <span data-plug-text="Your preview: photos, prices and reviews are still samples.">Sample business. Names, prices and reviews are made up.</span>
     <button type="button" data-motion-toggle>Motion: on</button>
   </div>
 </footer>
 
+<!-- Plug & Show: this sample business, swapped for a visitor's own details (see kit/plug.js). -->
+<script type="application/json" id="plug-sample">{"template":"motion-automotive","label":"Redline","name":["Redline Auto Works","Redline"],"owner":["Marco Ferreira","Marco"],"phone":"(905) 555-0199","city":["Mississauga"],"address":["Dundas St E"],"phrases":[["Dundas St E, Mississauga","{address?}, {city}"],["Mississauga, ON","{city}"]],"labelTag":"b","color":{"link":["--accent"],"bg":"--paper"}}</script>
+<script src="../../kit/plug.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>

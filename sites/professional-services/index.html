@@ -159,7 +159,7 @@ footer button { font: inherit; background: var(--card); color: var(--ink); borde
 
 <header class="top" data-header>
   <div class="wrap">
-    <a class="logo" href="#top"><i></i>Ledgerline</a>
+    <a class="logo" href="#top" data-plug="brand"><i data-plug="mark"></i><span data-plug="name">Ledgerline</span></a>
     <nav class="nav" id="nav" aria-label="Main"><a href="#results">Results</a><a href="#services">Services</a><a href="#year">Your year</a><a href="#plans">Pricing</a><a href="#contact">Contact</a></nav>
     <a class="btn" href="#contact" data-magnet="0.2">Book a call</a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle>MENU</button>
@@ -265,6 +265,7 @@ footer button { font: inherit; background: var(--card); color: var(--ink); borde
           <details><summary>Do I need to change software?</summary><div class="acc-body"><p>No. We work in QuickBooks Online and Xero. If you're on spreadsheets, we'll move you over.</p></div></details>
           <details><summary>What if CRA writes to me?</summary><div class="acc-body"><p>Forward it to us. We handle CRA letters and reviews for all clients at no extra cost.</p></div></details>
         </div>
+        <div data-plug="contact" hidden></div>
       </div>
       <div class="cfm" data-reveal="up">
         <form data-steps action="#" aria-label="Book a call">
@@ -293,9 +294,12 @@ footer button { font: inherit; background: var(--card); color: var(--ink); borde
 </main>
 
 <footer>
-  <div class="wrap"><span>Ledgerline Accounting · Ottawa, ON · <span data-year>2026</span></span><span>Sample business: not a real CPA firm. Names and numbers are made up.</span><button type="button" data-motion-toggle>Motion: on</button></div>
+  <div class="wrap"><span>Ledgerline Accounting · Ottawa, ON · <span data-year>2026</span></span><span data-plug-text="Your preview: photos, prices and reviews are still samples.">Sample business: not a real CPA firm. Names and numbers are made up.</span><button type="button" data-motion-toggle>Motion: on</button></div>
 </footer>
 
+<!-- Plug & Show: this sample business, swapped for a visitor's own details (see kit/plug.js). -->
+<script type="application/json" id="plug-sample">{"template":"motion-professional-services","label":"Ledgerline","name":["Ledgerline Accounting","Ledgerline"],"city":["Ottawa"],"phrases":[["Ottawa, ON","{city}"]],"color":{"link":["--accent"],"bg":"--paper"}}</script>
+<script src="../../kit/plug.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>

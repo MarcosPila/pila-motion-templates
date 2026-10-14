@@ -150,7 +150,7 @@ footer { padding: 60px 0 30px; overflow: hidden; }
 
 <header class="top" data-header>
   <div class="wrap">
-    <a class="logo" href="#top">Fade Street</a>
+    <a class="logo" href="#top" data-plug="brand">Fade Street</a>
     <nav class="nav" id="nav" aria-label="Main"><a href="#cuts">Cuts</a><a href="#crew">Barbers</a><a href="#book">Book</a></nav>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle>Menu</button>
   </div>
@@ -216,7 +216,8 @@ footer { padding: 60px 0 30px; overflow: hidden; }
       <div>
         <span class="lab">Book</span>
         <h2 id="book-h" style="margin-top:14px" data-split="lines" data-split-anim="slide">Lock in<br>a chair.</h2>
-        <div class="hrs" data-reveal-group="left"><div><span>Mon – Fri</span><span>10 am – 8 pm</span></div><div><span>Saturday</span><span>9 am – 6 pm</span></div><div><span>Sunday</span><span>11 am – 4 pm</span></div><div><span>Phone</span><a href="tel:+14165550133">(416) 555-0133</a></div></div>
+        <div class="hrs" data-reveal-group="left" data-plug="hours"><div data-plug-row><span>Mon – Fri</span><span>10 am – 8 pm</span></div><div data-plug-row><span>Saturday</span><span>9 am – 6 pm</span></div><div data-plug-row><span>Sunday</span><span>11 am – 4 pm</span></div><div><span>Phone</span><a href="tel:+14165550133">(416) 555-0133</a></div></div>
+        <div data-plug="contact" hidden></div>
       </div>
       <div class="bk" data-reveal="up">
         <form data-steps action="#" aria-label="Book a cut">
@@ -247,9 +248,12 @@ footer { padding: 60px 0 30px; overflow: hidden; }
 
 <footer>
   <div class="giant" id="giant" aria-hidden="true">Fade Street</div>
-  <div class="wrap foot-row"><span>Queen St W, Toronto · <span data-year>2026</span></span><span>Sample business: everything here is made up.</span><button type="button" data-motion-toggle>Motion: on</button></div>
+  <div class="wrap foot-row"><span>Queen St W, Toronto · <span data-year>2026</span></span><span data-plug-text="Your preview: photos, prices and reviews are still samples.">Sample business: everything here is made up.</span><button type="button" data-motion-toggle>Motion: on</button></div>
 </footer>
 
+<!-- Plug & Show: this sample business, swapped for a visitor's own details (see kit/plug.js). -->
+<script type="application/json" id="plug-sample">{"template":"motion-barbershop","label":"Fade Street","name":["Fade Street Barbers","Fade Street"],"owner":["Andre"],"phone":"(416) 555-0133","city":["Toronto"],"address":["Queen Street West","Queen St W"],"phrases":[["Queen St W, Toronto","{address?}, {city}"],["Queen Street West · Toronto","{address?} · {city}"],["Queen Street West, Toronto","{address?}, {city}"]],"color":{"link":["--accent"],"bg":"--paper"}}</script>
+<script src="../../kit/plug.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>

@@ -146,7 +146,7 @@ footer button { margin-top: 18px; font: inherit; font-size: 13px; letter-spacing
   <div class="wrap">
     <nav class="nav" id="nav" aria-label="Main"><a href="#services">Services</a><a href="#look">Lookbook</a><a href="#team">Stylists</a></nav>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle>Menu</button>
-    <a class="logo" href="#top">Velvet &amp; Vine</a>
+    <a class="logo" href="#top" data-plug="brand">Velvet &amp; Vine</a>
     <a class="btn" href="#book">Book</a>
   </div>
 </header>
@@ -239,7 +239,8 @@ footer button { margin-top: 18px; font: inherit; font-size: 13px; letter-spacing
       <div>
         <span class="over">Reservations</span>
         <h2 id="book-h" style="margin-top:16px" data-split="lines">Reserve a <em>chair</em></h2>
-        <div class="hours" data-reveal-group="fade"><div><span>Tue – Fri</span><span>10 am – 8 pm</span></div><div><span>Saturday</span><span>9 am – 5 pm</span></div><div><span>Sun – Mon</span><span>Closed</span></div><div><span>Phone</span><a href="tel:+19055550177">(905) 555-0177</a></div></div>
+        <div class="hours" data-reveal-group="fade" data-plug="hours"><div data-plug-row><span>Tue – Fri</span><span>10 am – 8 pm</span></div><div data-plug-row><span>Saturday</span><span>9 am – 5 pm</span></div><div data-plug-row><span>Sun – Mon</span><span>Closed</span></div><div><span>Phone</span><a href="tel:+19055550177">(905) 555-0177</a></div></div>
+        <div data-plug="contact" hidden></div>
         <div class="gift" data-reveal="up"><h3>Gift cards</h3><p style="color:#e2bfd0">From $50, sent by email or wrapped in velvet at the front desk.</p><a class="btn star-border" href="#book">Give a gift</a></div>
       </div>
       <div class="bform" data-reveal="up">
@@ -275,10 +276,13 @@ footer button { margin-top: 18px; font: inherit; font-size: 13px; letter-spacing
 
 <footer>
   <a class="logo" href="#top">Velvet &amp; Vine</a>
-  <p>Lakeshore Road, Oakville · <span data-year>2026</span> · Sample business, everything here is made up.</p>
+  <p>Lakeshore Road, Oakville · <span data-year>2026</span> · <span data-plug-text="Your preview: photos, prices and reviews are still samples.">Sample business, everything here is made up.</span></p>
   <button type="button" data-motion-toggle>Motion: on</button>
 </footer>
 
+<!-- Plug & Show: this sample business, swapped for a visitor's own details (see kit/plug.js). -->
+<script type="application/json" id="plug-sample">{"template":"motion-salon","label":"Velvet & Vine","name":["Velvet & Vine"],"owner":["Isabelle Roy","Isabelle"],"phone":"(905) 555-0177","city":["Oakville"],"address":["Lakeshore Road"],"phrases":[["Lakeshore Road, Oakville","{address?}, {city}"]],"color":{"link":["--accent"],"bg":"--paper"}}</script>
+<script src="../../kit/plug.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>

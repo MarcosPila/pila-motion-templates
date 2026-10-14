@@ -198,7 +198,9 @@
   });
 
   run('rotate words', () => $$('[data-rotate]').forEach((el) => {
-    const words = el.dataset.rotate.split('|').map((w) => w.trim());
+    // Escaped: Plug & Show can put a visitor's own words in here.
+    const words = el.dataset.rotate.split('|').map((w) => w.trim().replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]))).filter(Boolean);
+    if (words.length < 2) return;
     el.insertAdjacentHTML('afterend', `<span class="sr-only">${words.join(', ')}</span>`);
     el.setAttribute('aria-hidden', 'true');
     el.innerHTML = words.map((w) => `<span class="rw">${w}</span>`).join('');

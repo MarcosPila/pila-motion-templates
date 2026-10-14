@@ -143,7 +143,7 @@ footer button { font: inherit; background: none; color: var(--ink); border: 1px 
 
 <header class="top" data-header data-header-hide>
   <div class="wrap">
-    <a class="logo" href="#top">Afterglow</a>
+    <a class="logo" href="#top" data-plug="brand">Afterglow</a>
     <span class="rec" aria-hidden="true"><i></i><span id="tc">00:00:00:00</span></span>
     <nav class="nav" id="nav" aria-label="Main"><a href="#work">Work</a><a href="#packages">Packages</a><a href="#book">Book</a></nav>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle>Menu</button>
@@ -238,7 +238,7 @@ footer button { font: inherit; background: none; color: var(--ink); border: 1px 
 
   <section class="book" id="book" aria-labelledby="bk-h" style="padding-top:0">
     <div class="wrap">
-      <div><span class="cap">Book</span><h2 id="bk-h" style="margin-top:12px" data-split="words" data-split-anim="blur">Is your <em>date</em> free?</h2><p style="margin-top:18px;color:var(--ink-2)">2026 weekends are going fast. Tell us the basics and we'll reply within a day.</p></div>
+      <div><span class="cap">Book</span><h2 id="bk-h" style="margin-top:12px" data-split="words" data-split-anim="blur">Is your <em>date</em> free?</h2><p style="margin-top:18px;color:var(--ink-2)">2026 weekends are going fast. Tell us the basics and we'll reply within a day.</p><div data-plug="contact" hidden></div></div>
       <div class="bf" data-reveal="up">
         <form data-steps action="#" aria-label="Check availability">
           <div class="meta"><span data-steps-count>Step 1 of 3</span><span>A minute</span></div>
@@ -266,9 +266,12 @@ footer button { font: inherit; background: none; color: var(--ink); border: 1px 
 </main>
 
 <footer>
-  <div class="wrap"><span>Afterglow Studio · Montréal, QC · <span data-year>2026</span></span><span>Sample business: everything here is made up.</span><button type="button" data-motion-toggle>Motion: on</button></div>
+  <div class="wrap"><span>Afterglow Studio · Montréal, QC · <span data-year>2026</span></span><span data-plug-text="Your preview: photos, prices and reviews are still samples.">Sample business: everything here is made up.</span><button type="button" data-motion-toggle>Motion: on</button></div>
 </footer>
 
+<!-- Plug & Show: this sample business, swapped for a visitor's own details (see kit/plug.js). -->
+<script type="application/json" id="plug-sample">{"template":"motion-photography-video","label":"Afterglow","name":["Afterglow Studio","Afterglow"],"owner":["Inès"],"city":["Montréal","Montreal"],"phrases":[["Montréal, QC","{city}"]],"color":{"link":["--accent"],"bg":"--paper"}}</script>
+<script src="../../kit/plug.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>

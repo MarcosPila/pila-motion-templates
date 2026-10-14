@@ -159,7 +159,7 @@ footer button { font: inherit; background: var(--card); color: var(--ink); borde
 
 <header class="top" data-header data-header-hide>
   <div class="wrap">
-    <a class="logo" href="#top"><i></i>Ironclad</a>
+    <a class="logo" href="#top" data-plug="brand"><i data-plug="mark"></i><span data-plug="name">Ironclad</span></a>
     <nav class="nav" id="nav" aria-label="Main"><a href="#classes">Classes</a><a href="#programs">Programs</a><a href="#join">Join</a></nav>
     <a class="btn" href="#trial" data-magnet="0.3">Free week</a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle aria-label="Menu">≡</button>
@@ -169,7 +169,7 @@ footer button { font: inherit; background: var(--card); color: var(--ink); borde
 <main id="main">
   <section class="hero" id="top">
     <div class="wrap">
-      <span class="chip" data-reveal="pop" data-now>Calgary · Open 5 am – 11 pm</span>
+      <span class="chip" data-reveal="pop" data-now data-plug-text="{city} · Open {hours}">Calgary · Open 5 am – 11 pm</span>
       <h1 style="margin-top:22px"><span data-split="chars" data-split-anim="flip" data-now data-delay=".1" data-stagger=".03" style="display:block">Train</span><span class="lime" data-split="chars" data-split-anim="flip" data-now data-delay=".35" data-stagger=".03" style="display:block">harder.</span><span data-split="chars" data-split-anim="flip" data-now data-delay=".6" data-stagger=".03" style="display:block">Recover smarter.</span></h1>
       <svg class="ecg" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true"><path id="ecg" d="M0 60H220l20-10l14 10h40l16-48l22 96l18-58l14 10H560l20-10l14 10h40l16-48l22 96l18-58l14 10H900l20-10l14 10h40l16-48l22 96l18-58l14 10H1200"/></svg>
       <div class="row">
@@ -257,7 +257,7 @@ footer button { font: inherit; background: var(--card); color: var(--ink); borde
 
   <section class="trial" id="trial" aria-labelledby="tr-h" style="padding-top:0">
     <div class="wrap">
-      <div><span class="chip">Free week</span><h2 id="tr-h" style="margin-top:16px" data-split="chars" data-split-anim="flip" data-stagger=".02">Try us for 7 days</h2><p style="margin-top:18px;color:var(--ink-2);max-width:42ch">No contract, no card. Come to any class, and a coach will meet you at the door the first time.</p></div>
+      <div><span class="chip">Free week</span><h2 id="tr-h" style="margin-top:16px" data-split="chars" data-split-anim="flip" data-stagger=".02">Try us for 7 days</h2><p style="margin-top:18px;color:var(--ink-2);max-width:42ch">No contract, no card. Come to any class, and a coach will meet you at the door the first time.</p><div data-plug="contact" hidden></div></div>
       <div class="tf" data-reveal="up">
         <form data-steps action="#" aria-label="Free week sign-up">
           <div class="meta"><span data-steps-count>Step 1 of 3</span><span>1 minute</span></div>
@@ -285,9 +285,12 @@ footer button { font: inherit; background: var(--card); color: var(--ink); borde
 </main>
 
 <footer>
-  <div class="wrap"><span>Ironclad Fitness · Calgary, AB · <span data-year>2026</span></span><span>Sample business: everything here is made up.</span><button type="button" data-motion-toggle>Motion: on</button></div>
+  <div class="wrap"><span>Ironclad Fitness · Calgary, AB · <span data-year>2026</span></span><span data-plug-text="Your preview: photos, prices and reviews are still samples.">Sample business: everything here is made up.</span><button type="button" data-motion-toggle>Motion: on</button></div>
 </footer>
 
+<!-- Plug & Show: this sample business, swapped for a visitor's own details (see kit/plug.js). -->
+<script type="application/json" id="plug-sample">{"template":"motion-gym","label":"Ironclad","name":["Ironclad Fitness","Ironclad"],"city":["Calgary"],"hoursLine":"5 am – 11 pm","phrases":[["Calgary, AB","{city}"]],"color":{"link":["--accent"],"bg":"--paper"}}</script>
+<script src="../../kit/plug.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
@@ -300,6 +303,16 @@ footer button { font: inherit; background: var(--card); color: var(--ink); borde
 <script>
 (() => {
   const K = window.KIT;
+  if (window.PLUG) {
+    // Plug & Show: zoom through the middle letter of their own name, sized to fit.
+    const z = document.getElementById('zoomWord'), n = PLUG.data.name.toUpperCase();
+    let m = Math.floor(n.length / 2);
+    while (m < n.length - 1 && !/[p{L}p{N}]/u.test(n[m])) m++;
+    z.replaceChildren(n.slice(0, m), Object.assign(document.createElement('span'), { id: 'zo', textContent: n[m] }), n.slice(m + 1));
+    const fit = () => { z.style.fontSize = ''; const max = innerWidth * 0.94; if (z.scrollWidth > max) z.style.fontSize = (parseFloat(getComputedStyle(z).fontSize) * max) / z.scrollWidth + 'px'; };
+    fit();
+    document.fonts?.ready.then(() => { fit(); window.ScrollTrigger?.refresh(); });
+  }
   if (!window.gsap) return;
 
   // Membership prices roll to the new number when billing changes.
@@ -337,7 +350,7 @@ footer button { font: inherit; background: var(--card); color: var(--ink); borde
     gsap.set(word, { transformOrigin: origin() });
     gsap.timeline({ scrollTrigger: { trigger: '.zoom', start: 'top top', end: '+=160%', pin: true, scrub: 0.6, refreshPriority: 1, onRefresh: () => gsap.set(word, { transformOrigin: origin() }) } })
       .to(word, { scale: 60, ease: 'power2.in', duration: 1 })
-      .to('.zoom', { backgroundColor: '#d7ff3a', duration: 0.05 }, 0.95)
+      .to('.zoom', { backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#d7ff3a', duration: 0.05 }, 0.95)
       .to('#zoomAfter', { opacity: 1, duration: 0.3 }, 1)
       .from('#zoomAfter h2', { y: 60, duration: 0.3 }, 1);
   });

@@ -14,7 +14,7 @@ Live: https://marcospila.github.io/pila-motion-templates/
 | `engine/` | The shared engine for the scroll scenes below (`scenes.js` + `scenes.css`). |
 | `home-services/` … `interior-design/` | 13 industry scroll scenes, each a different combination of look, layout, speed and colour. |
 | `sites/` | 17 complete motion websites on GSAP, Lenis and Vanta: twelve originals, one per industry, and five remixes (see below). |
-| `kit/` | The shared kit for `sites/`: `kit.js`, `kit.css` and `art.js` (placeholder art). |
+| `kit/` | The shared kit for `sites/`: `kit.js`, `kit.css` and `art.js` (placeholder art), plus `plug.js` (Plug & Show, used by the sites and the scenes). |
 
 | Template | Look | Layout | Speed |
 | --- | --- | --- | --- |
@@ -66,7 +66,7 @@ Five more sites that mix the looks and motion of the twelve above, each for a ne
 
 ### The kit (`kit/`)
 
-Each site loads GSAP and the plugins it uses, Lenis, then `kit/art.js` and `kit/kit.js`, with `kit/kit.css` in the head. Configure with `window.KIT` before `kit.js`:
+Each site loads `kit/plug.js` (see Plug & Show below), then GSAP and the plugins it uses, Lenis, then `kit/art.js` and `kit/kit.js`, with `kit/kit.css` in the head. Configure with `window.KIT` before `kit.js`:
 
 ```html
 <script>window.KIT = { ease: 'expo.out', dur: 1.2, stagger: 0.07, smooth: { lerp: 0.09 }, anchorOffset: 70, cursor: 'ring',
@@ -114,6 +114,19 @@ Then switch effects on in the HTML:
 `kit/art.js` draws placeholder "photos" in SVG (`data-art="portrait"`, `room`, `kitchen`, `bath`, `house`, `car`, `food`, `plant`, `product`, `building`, `city`, `landscape`, `abstract`, `chair`, `gym`, `desk`, with `data-palette` and `data-seed`). Swap any of them for a real `<img>`.
 
 Everything respects reduced motion (and the on-page motion switch). Content stays readable if the scripts fail to load. All motion code in `kit/` and `sites/` is our own; some effects are styled after common patterns (React Bits and others), but no third-party component code is copied in.
+
+## Plug & Show (your details in any template)
+
+`kit/plug.js` lets a visitor see a template with their own business in it. The form is on pilawebco.ca at `/work/try`: they pick a template, type their business name, their own name, phone, email, website, address, town, opening hours, and optionally add a logo and a brand colour, then press **Show me**. The template opens with those details where it keeps them: the logo, headings, contact lists, opening hours, footer, the 3D signs and step names, the arcade's start screen.
+
+- **How the details travel.** For these GitHub Pages templates they go in the address after `#plug=` (base64url JSON). Browsers never send that part to a server, and `plug.js` removes it from the address bar straight away, then keeps the details in `sessionStorage` for that tab. The static samples on pilawebco.ca read them from `localStorage` instead (`?plug`). Opened any other way, a template shows its sample business as usual.
+- **What a template declares.** Each page lists its sample business in `<script type="application/json" id="plug-sample">`: every way its name is written, the owner, phone, email, town, street, and exact phrases to rewrite (`"Hamilton & Burlington"` → `"{city}"`). Every one of those is swapped wherever it appears, in text and in `alt`, `title`, `aria-label`, `data-*` and meta attributes, and in `tel:` and `mailto:` links. A name written in capitals stays in capitals. The phone number keeps the sample's layout.
+- **Marks for the rest.** `data-plug="brand"` (with `mark` and `name` inside) for the logo, `data-plug="hours"` for an hours list (`data-plug-row`, `data-plug-days`, `data-plug-time`, `data-plug-lines`), `data-plug="contact"` for where details the template has no spot for are listed, `data-plug-text` for a sentence to show instead, `data-plug-hide="hours"` for things worked out from the sample (the café's "Open now" badge). The top of `kit/plug.js` explains each one.
+- **Colour.** `"color": { "accent": [...], "text": [...], "link": [...], "bg": "--paper" }` names the CSS variables to set. Link-coloured text is darkened or lightened until it reads at 4.5:1 on the page, and text on accent-coloured buttons turns black or white to match.
+- **Logo.** A wide logo (a wordmark) replaces the brand; a squarish one takes the icon's place beside the name. A dark logo in a dark header, or a light one in a light header, sits on a small tile of the opposite shade.
+- **The preview bar** (bottom left, folds away on phones) has **Edit details** and **Start with this template**, which only ever link back to pilawebco.ca or a local copy, and **See the sample**.
+
+Visitor text is only ever set as text, never as HTML; `plug.js` strips `<` and `>` and caps every field's length, and only accepts PNG, JPEG, WebP or GIF data URLs as logos. The 12 motion websites listed on pilawebco.ca and its 10 3D scenes have it; the five remixes don't yet.
 
 ## Player mode (3D scenes)
 

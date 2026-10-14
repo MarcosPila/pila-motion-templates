@@ -168,7 +168,7 @@ footer button { font: inherit; color: var(--paper); background: none; border: 1p
 
 <header class="top" data-header>
   <div class="wrap">
-    <a class="logo" href="#top"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M3 14L14 4l11 10v11H3z" fill="none" stroke="#b08d57" stroke-width="2.4"/><path d="M11 25v-7h6v7" fill="none" stroke="#b08d57" stroke-width="2.4"/></svg>Keystone</a>
+    <a class="logo" href="#top" data-plug="brand"><svg data-plug="mark" viewBox="0 0 28 28" aria-hidden="true"><path d="M3 14L14 4l11 10v11H3z" fill="none" stroke="#b08d57" stroke-width="2.4"/><path d="M11 25v-7h6v7" fill="none" stroke="#b08d57" stroke-width="2.4"/></svg><span data-plug="name">Keystone</span></a>
     <nav class="nav" id="nav" aria-label="Main"><a href="#listings">Listings</a><a href="#calc">Mortgage</a><a href="#hoods">Neighbourhoods</a><a href="#contact">Contact</a></nav>
     <a class="btn" href="#contact">Book a valuation</a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle>Menu</button>
@@ -276,6 +276,7 @@ footer button { font: inherit; color: var(--paper); background: none; border: 1p
       <div class="agent-card">
         <div data-art="portrait" data-seed="114" data-palette="#e2d9c8,#cbbd9f,#0e1b2c,#8a5a3c" data-reveal="zoom"></div>
         <div class="cap"><h3>Rachel Okafor</h3><p style="color:var(--ink-2)">Managing broker · 18 years in the Okanagan</p>
+          <div data-plug="contact" hidden></div>
           <div class="quotes" id="quotes"><blockquote>“Rachel sold our house in nine days, for more than we asked.”<cite>The Lams, Kettle Valley</cite></blockquote><blockquote>“She talked us out of the wrong condo. Then found the right one.”<cite>Josh &amp; Mira, Pandosy</cite></blockquote></div>
         </div>
       </div>
@@ -310,9 +311,12 @@ footer button { font: inherit; color: var(--paper); background: none; border: 1p
 </main>
 
 <footer>
-  <div class="wrap"><span>Keystone Realty · Kelowna, BC · <span data-year>2026</span></span><span>Sample business: listings, prices and people are made up. Not a real brokerage.</span><button type="button" data-motion-toggle>Motion: on</button></div>
+  <div class="wrap"><span>Keystone Realty · Kelowna, BC · <span data-year>2026</span></span><span data-plug-text="Your preview: photos, prices and reviews are still samples.">Sample business: listings, prices and people are made up. Not a real brokerage.</span><button type="button" data-motion-toggle>Motion: on</button></div>
 </footer>
 
+<!-- Plug & Show: this sample business, swapped for a visitor's own details (see kit/plug.js). -->
+<script type="application/json" id="plug-sample">{"template":"motion-real-estate","label":"Keystone","name":["Keystone Realty","Keystone"],"owner":["Rachel Okafor","Rachel"],"city":["Kelowna"],"phrases":[["Kelowna & the Okanagan","{city}"],["Kelowna|Lake Country|West Kelowna|Peachland","{city}"],["18 years in the Okanagan","18 years in {city}"],["Kelowna, BC","{city}"]],"color":{"link":["--accent"],"bg":"--paper"}}</script>
+<script src="../../kit/plug.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>

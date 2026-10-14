@@ -26,6 +26,9 @@
 (() => {
   'use strict';
   const CFG = window.SCENES;
+  // Plug & Show (kit/plug.js) swaps the sample business for a visitor's own;
+  // step names and 3D signs are written in code, so they are swapped here.
+  const T = (t) => (window.PLUG && typeof t === 'string' ? window.PLUG.swap(t) : t);
   if (!CFG) return;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const LOOK = CFG.look || CFG.style || 'real';
@@ -67,7 +70,7 @@
   const hlFrom = CFG.intro.highlight ?? words.length - 1;
   document.body.insertAdjacentHTML('afterbegin', `
   <div class="top">
-    <a class="brand" href="#top" id="top"><i aria-hidden="true">${esc(CFG.brand.mark)}</i>${esc(CFG.brand.name)}</a>
+    <a class="brand" href="#top" id="top" data-plug="brand"><i aria-hidden="true" data-plug="mark">${esc(CFG.brand.mark)}</i><span data-plug="name">${esc(CFG.brand.name)}</span></a>
     <div class="top-r"><a class="chip" href="../">← <span>All templates</span></a>${CFG.lockTheme ? '' : '<button class="chip" type="button" id="themeBtn" aria-label="Switch between light and dark colours"><i aria-hidden="true"></i><span id="themeLbl">Dark</span></button>'}</div>
   </div>
   <section class="intro" aria-labelledby="intro-h">
@@ -105,10 +108,12 @@
   </section>
   <section class="outro" aria-labelledby="outro-h">
     <p class="kicker">${esc(CFG.outro.kicker)}</p><h2 id="outro-h">${esc(CFG.outro.title)}</h2><p class="lede">${esc(CFG.outro.lede)}</p>
+    <div class="plug-contact" data-plug="contact" data-plug-title="Get in touch" hidden></div>
     <div class="list" id="list"></div>
     <a class="cta" href="#top">${esc(CFG.outro.cta || 'Back to the start ↑')}</a>
   </section>
-  <footer><span>${esc(CFG.brand.name)} is a sample business for a website template. Everything on this page is made up.</span><a href="../">All templates</a></footer>`);
+  <footer><span data-plug-text="Your preview: the scenes and their wording are still the sample's.">${esc(CFG.brand.name)} is a sample business for a website template. Everything on this page is made up.</span><a href="../">All templates</a></footer>`);
+  window.PLUG?.slots(document.body);
 
   /* ---------------- shared helpers (work for the real builder and the text-only stub) ---------------- */
   function helpers(R) {
@@ -168,7 +173,7 @@
   /* ---------------- text list (works without WebGL) ---------------- */
   const stepNames = SC.map((s) => {
     const names = [];
-    s.build(helpers({ step: (n) => names.push(n), box() {}, cyl() {}, sph() {}, cone() {}, torus() {}, sign() {}, group() {}, end() {} }));
+    s.build(helpers({ step: (n) => names.push(T(n)), box() {}, cyl() {}, sph() {}, cone() {}, torus() {}, sign() {}, group() {}, end() {} }));
     return names;
   });
   $('#list').innerHTML = SC.map((s, i) => `<article class="panel"><span class="kicker">${esc(s.code)}</span><b>${esc(s.name)}</b><ol>${stepNames[i].map((n) => `<li>${esc(n)}</li>`).join('')}</ol></article>`).join('');
@@ -416,7 +421,7 @@
       return p;
     };
     const R = helpers({
-      step(name, verb, swatch, so = {}) { cur = { name, verb: verb || name, swatch: swatch || '#999', pieces: [], removes: so.removes ? [].concat(so.removes) : null }; steps.push(cur); },
+      step(name, verb, swatch, so = {}) { name = T(name); verb = T(verb); cur = { name, verb: verb || name, swatch: swatch || '#999', pieces: [], removes: so.removes ? [].concat(so.removes) : null }; steps.push(cur); },
       group(name, x = 0, y = 0, z = 0, o = {}) { const g = new THREE.Group(); g.position.set(x, y, z); g.rotation.set(o.rx || 0, o.ry || 0, o.rz || 0); parent().add(g); stack.push(g); if (name) parts[name] = g; return g; },
       end() { stack.pop(); },
       box(w, h, d, x, yb, z, color, anim = 'drop', o = {}) { return add(boxGeom(w, h, d), { w, h, d }, x, o.center ? yb : yb + h / 2, z, color, anim, o); },
@@ -425,6 +430,7 @@
       sph(r, x, y, z, color, anim = 'pop', o = {}) { return add(sphGeom(r), { w: r * 2, h: r * 2, d: r * 2 }, x, y, z, color, anim, o); },
       torus(r, tube, x, y, z, color, anim = 'pop', o = {}) { return add(new THREE.TorusGeometry(r, tube, LOW || VOXEL ? 5 : 12, LOW || VOXEL ? 10 : 36), { w: (r + tube) * 2, h: (r + tube) * 2, d: tube * 2 }, x, y, z, color, anim, o); },
       sign(text, w, h, x, yb, z, bg, fg, anim = 'pop', o = {}) {
+        text = T(text);
         const sideways = o.face === 'x', depth = o.depth || .04;
         const cv = document.createElement('canvas'); cv.width = 512; cv.height = Math.max(64, Math.round(512 * h / w));
         const tex = new THREE.CanvasTexture(cv); tex.encoding = THREE.sRGBEncoding; tex.anisotropy = maxAniso;
