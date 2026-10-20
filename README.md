@@ -13,7 +13,7 @@ Live: https://marcospila.github.io/pila-motion-templates/
 | `room-by-room/` | The first 3D scroll piece: five rooms build themselves on a U-shaped track. |
 | `engine/` | The shared engine for the scroll scenes below (`scenes.js` + `scenes.css`). |
 | `home-services/` … `interior-design/` | 13 industry scroll scenes, each a different combination of look, layout, speed and colour. |
-| `sites/` | 17 complete motion websites on GSAP, Lenis and Vanta: twelve originals, one per industry, and five remixes (see below). |
+| `sites/` | 21 complete motion websites on GSAP, Lenis and Vanta: twelve originals, one per industry, five remixes, and four built on new kinds of motion (see below). |
 | `kit/` | The shared kit for `sites/`: `kit.js`, `kit.css` and `art.js` (placeholder art), plus `plug.js` (Plug & Show, used by the sites and the scenes). |
 
 | Template | Look | Layout | Speed |
@@ -63,6 +63,36 @@ Five more sites that mix the looks and motion of the twelve above, each for a ne
 | `sites/spa` Stillwater Spa | Salon (slow serif luxury, floating-photo list, drifting columns, blobs) × Health clinic (Vanta waves, timeline, motion switch) | A breathing guide (in 4, hold 4, out 6) with a pause button |
 | `sites/law-firm` Hartley &amp; Sato LLP | Real estate (navy and brass) × Accounting (typed headline, ledger rows, Vanta net, gliding badge) × Automotive (pinned bay with callouts and scrambling codes) | A case file that highlights, stamps and re-codes itself through four stages |
 | `sites/music-venue` Northern Static | Gym (neon, flipping title, zoom-through word) × Automotive (speed streaks) × Online store (fly-to-cart, drawer) × Café (rotating words, filter) | An equalizer that jumps with scroll speed, and tickets that fly into a wallet |
+
+### New kinds of motion
+
+Four sites, each built around a kind of motion none of the others use. Everything else on them (reveals, forms, accordions, carousels) is the usual kit.
+
+| Site | Kind of motion | What it does |
+| --- | --- | --- |
+| `sites/electrician` Brightwire Electric | Particles (canvas) | The hero is pinned while 1,600 glowing particles form a lightning bolt, then a light bulb, a breaker panel, an EV plug and a house, one per service. The cursor pushes them away, small arcs jump between them, and fast scrolling makes them crackle. A "flip the switch" band lights up. |
+| `sites/brewery` Cold Snap Brewing | Kinetic type (variable font) | The name fills the width; letters near the cursor swell (Anybody's weight and width axes) and every line squashes and leans when you scroll fast. Beer names roll in like slot reels, "Fresh" stretches and ripples in a pinned band, words travel along a wave, and "Pour" fills with beer, foam and bubbles as you scroll. |
+| `sites/roofing` Summit Roofing | Infinite zoom (SVG) | Scrolling flies from the street into one house, onto its shingles, then through a cutaway into the layers of the roof, which pull apart with labels. Each drawing sits inside the one before at the spot the camera flies into, so the zoom never jumps. A shingle colour picker recolours the house. |
+| `sites/pet-grooming` Sudsy Paws | Physics (canvas) | A small physics engine of our own: toys drop into the hero and can be grabbed and thrown (tapped, on a phone), soap bubbles rise and pop in the bath, and treats land on the tops of the price cards. Fast scrolling makes the toys jump. |
+
+Each keeps its effect's settings in one place, as JSON just before the scripts:
+
+```html
+<script type="application/json" id="fx">{"count": 1600, "size": 1.6, "color": "#ffd60a", "glow": true}</script>
+<script type="application/json" id="fx-knobs">[
+  {"key": "count", "label": "Number of particles", "min": 300, "max": 4000, "step": 100, "reload": true},
+  {"key": "color", "label": "Main colour", "type": "color"},
+  {"key": "glow", "label": "Glow", "type": "toggle"}
+]</script>
+```
+
+The page reads `#fx` into `window.FX` and keeps reading it while it runs, so most settings can change on a live page. `#fx-knobs` describes them for the Motion editor in Studio Builder (see below): a slider by default, `"type": "color"` or `"type": "toggle"`, and `"reload": true` for settings the page only reads once.
+
+The four have Plug & Show. Reduced motion gets a still version of each: the bolt drawn once, the beer already poured, the roof's layers apart with their labels, the toys already settled.
+
+### The Motion editor
+
+The Motion editor is part of Studio Builder (`E:\pila-studio`, the **✦ Motion editor** button), not this repo. It opens any site in `sites/` (and client sites made from one) and changes how it moves without code: the kit's speed and easing, smooth scrolling, cursor, sparks, the Vanta background, colours, a site's own `#fx` settings, and each part's entrance, text animation, timing, hover effects and parallax. It writes back plain kit attributes and three small blocks (`#motion-kit`, `#motion-speed`, `#motion-colors`), so an edited page still works anywhere without it.
 
 ### The kit (`kit/`)
 
@@ -126,7 +156,7 @@ Everything respects reduced motion (and the on-page motion switch). Content stay
 - **Logo.** A wide logo (a wordmark) replaces the brand; a squarish one takes the icon's place beside the name. A dark logo in a dark header, or a light one in a light header, sits on a small tile of the opposite shade.
 - **The preview bar** (bottom left, folds away on phones) has **Edit details** and **Start with this template**, which only ever link back to pilawebco.ca or a local copy, and **See the sample**.
 
-Visitor text is only ever set as text, never as HTML; `plug.js` strips `<` and `>` and caps every field's length, and only accepts PNG, JPEG, WebP or GIF data URLs as logos. The 12 motion websites listed on pilawebco.ca and its 10 3D scenes have it; the five remixes don't yet.
+Visitor text is only ever set as text, never as HTML; `plug.js` strips `<` and `>` and caps every field's length, and only accepts PNG, JPEG, WebP or GIF data URLs as logos. The 12 motion websites listed on pilawebco.ca, its 10 3D scenes and the four new kinds of motion have it; the five remixes don't yet.
 
 ## Player mode (3D scenes)
 

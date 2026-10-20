@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Brightwire Electric · Sample electrician site</title>
+<meta name="description" content="Sample website template for an electrician in Ottawa: lighting, panel upgrades, EV chargers and smart-home safety, with a booking form. Made-up business. Thousands of particles form each service's shape as you scroll.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0a0f1f">
+<script>document.documentElement.classList.add('js');setTimeout(function(){var d=document.documentElement;if(!d.classList.contains('kit-ready'))d.classList.remove('js')},4000)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../../kit/kit.css">
+<style>
+:root {
+  --paper: #0a0f1f; --card: #121a33; --ink: #e8ecf8; --ink-2: #9aa6c4; --line: #24305a;
+  --accent: #ffd60a; --on-accent: #14110a; --cyan: #5ee6ff; --deep: #060914;
+  --display: 'Space Grotesk', system-ui, sans-serif; --body: 'Inter', system-ui, sans-serif;
+  --cursor: #ffd60a; --cursor-ink: #14110a; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.65 var(--body); overflow-x: clip; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; margin: 0; line-height: 1.02; letter-spacing: -0.02em; }
+h1 { font-size: clamp(2.9rem, 1.4rem + 5.6vw, 6.2rem); }
+h2 { font-size: clamp(2.2rem, 1.3rem + 3.4vw, 4.2rem); }
+h1 em, h2 em { font-style: normal; color: var(--accent); }
+h3 { font-size: 1.35rem; }
+p { margin: 0; }
+.wrap { width: min(1180px, 100% - 32px); margin-inline: auto; }
+.over { font: 600 12.5px/1 var(--display); letter-spacing: .22em; text-transform: uppercase; color: var(--cyan); }
+section { padding: clamp(80px, 11vw, 140px) 0; }
+.btn { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 24px; border-radius: 12px; font: 600 15px/1 var(--display); letter-spacing: .02em; text-decoration: none; border: 1.5px solid var(--line); background: transparent; color: inherit; cursor: pointer; transition: border-color .3s, background-color .3s, color .3s; }
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn-solid { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.btn-solid:hover { background: #fff; border-color: #fff; color: var(--on-accent); }
+
+/* Header */
+.top { position: fixed; inset: 0 0 auto; z-index: 50; padding: 18px 0; transition: background-color .3s, padding .3s; }
+.top.is-scrolled { background: rgb(10 15 31 / .86); backdrop-filter: blur(12px); padding: 10px 0; border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 26px; }
+.logo { display: inline-flex; align-items: center; gap: 10px; font: 700 1.25rem/1 var(--display); text-decoration: none; }
+.logo .mark { width: 34px; height: 34px; border-radius: 10px; background: var(--accent); display: grid; place-items: center; }
+.logo .mark svg { width: 18px; height: 18px; }
+.nav { display: flex; gap: 26px; margin-left: auto; }
+.nav a { font: 500 15px var(--display); text-decoration: none; color: var(--ink-2); transition: color .2s; }
+.nav a:hover { color: var(--ink); }
+.top .call { min-height: 42px; padding: 0 16px; }
+.menu-btn { display: none; margin-left: auto; min-height: 42px; padding: 0 16px; border-radius: 10px; border: 1.5px solid var(--line); background: none; color: inherit; font: 600 14px var(--display); cursor: pointer; }
+@media (max-width: 899px) {
+  .menu-btn { display: block; } .top .call { display: none; }
+  .nav { position: fixed; inset: 0; z-index: -1; flex-direction: column; justify-content: center; align-items: center; gap: 22px; background: var(--deep); visibility: hidden; opacity: 0; transition: opacity .3s, visibility .3s; }
+  .nav.is-open { visibility: visible; opacity: 1; }
+  .nav a { font-size: 2rem; color: var(--ink); }
+}
+
+/* The particle stage: the hero and four services, one shape each */
+.stage { padding: 0; background: radial-gradient(70% 60% at 72% 45%, #16224a 0%, transparent 70%), var(--paper); }
+.stage-pin { position: relative; overflow: hidden; }
+#sparks { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.stage-grid { position: relative; z-index: 1; min-height: 100svh; display: grid; grid-template-columns: 1.05fr .95fr; gap: 40px; align-items: center; padding: 120px 0 90px; }
+.shape-box { width: min(100%, 500px); aspect-ratio: 1; justify-self: center; align-self: center; }
+.panel { max-width: 560px; }
+.panel + .panel { margin-top: 90px; }
+.panel h1, .panel h2 { margin: 18px 0 20px; }
+.panel p { color: var(--ink-2); max-width: 46ch; font-size: 1.08rem; }
+.panel .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.panel ul { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 10px; }
+.panel li { display: flex; gap: 12px; align-items: baseline; }
+.panel li::before { content: ''; flex: none; width: 8px; height: 8px; border-radius: 2px; background: var(--accent); transform: rotate(45deg) translateY(-2px); }
+.panel .from { margin-top: 24px; font: 600 1rem var(--display); color: var(--accent); }
+.trust { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 34px; font: 500 13.5px var(--display); color: var(--ink-2); }
+.trust span::before { content: '✓ '; color: var(--accent); }
+.dots { position: absolute; z-index: 2; right: max(16px, calc((100% - 1180px) / 2)); top: 50%; translate: 0 -50%; list-style: none; margin: 0; padding: 0; display: none; gap: 12px; flex-direction: column; }
+.dots button { width: 12px; height: 12px; padding: 0; border-radius: 50%; border: 1.5px solid var(--ink-2); background: transparent; cursor: pointer; transition: background-color .3s, border-color .3s, transform .3s; }
+.dots button[aria-current="true"] { background: var(--accent); border-color: var(--accent); transform: scale(1.25); }
+.scroll-hint { position: absolute; z-index: 2; left: 50%; bottom: 24px; translate: -50% 0; font: 500 12px var(--display); letter-spacing: .2em; text-transform: uppercase; color: var(--ink-2); display: none; }
+/* With motion on, the panels take turns in one place while the stage is pinned */
+.is-live .panels { display: grid; }
+.is-live .panel { grid-area: 1 / 1; margin: 0; align-self: center; }
+.is-live .dots { display: flex; }
+.is-live .scroll-hint { display: block; }
+html:not(.is-live-page) .shape-box { align-self: start; }
+@media (max-width: 799px) {
+  .stage-grid { grid-template-columns: 1fr; gap: 10px; padding: 96px 0 60px; align-content: center; }
+  .shape-box { order: -1; width: min(64vw, 280px); }
+  .is-live .stage-grid { grid-template-rows: auto 1fr; }
+  .dots { right: 10px; }
+  .panel h1, .panel h2 { margin: 12px 0 14px; }
+}
+
+/* Service towns */
+.towns { padding: 26px 0; border-block: 1px solid var(--line); background: var(--deep); font: 600 1.4rem var(--display); color: var(--ink-2); --mq-gap: 40px; }
+.towns span::after { content: '⚡'; margin-left: 40px; color: var(--accent); font-size: 1rem; vertical-align: middle; }
+
+/* Stats */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 50px; }
+.stat { padding: 28px 24px; border-radius: 18px; background: var(--card); border: 1px solid var(--line); --spot: rgb(255 214 10 / .12); }
+.stat b { display: block; font: 700 clamp(2.4rem, 1.6rem + 2.4vw, 3.6rem)/1 var(--display); color: var(--accent); }
+.stat span { display: block; margin-top: 10px; color: var(--ink-2); font-size: 15px; }
+@media (max-width: 799px) { .stats { grid-template-columns: 1fr 1fr; } }
+
+/* Flip the switch */
+.switch { position: relative; background: var(--deep); transition: background-color .6s; overflow: hidden; }
+.switch::before { content: ''; position: absolute; inset: -40%; background: radial-gradient(40% 40% at 70% 50%, rgb(255 214 10 / .55), transparent 70%); opacity: 0; transition: opacity .8s; pointer-events: none; }
+.switch.lit { background: #1d1a0a; }
+.switch.lit::before { opacity: 1; }
+.sw-grid { position: relative; display: grid; grid-template-columns: 1.3fr .7fr; gap: 40px; align-items: center; }
+.sw-grid p { margin-top: 18px; color: var(--ink-2); font-size: 1.1rem; min-height: 3.4em; }
+.toggle { justify-self: center; width: 150px; height: 230px; border-radius: 26px; border: 0; padding: 0; background: #e9e4d6; box-shadow: inset 0 -6px 0 #c9c2ae, 0 20px 50px rgb(0 0 0 / .45); display: grid; place-items: center; cursor: pointer; }
+.toggle .plate { width: 58px; height: 120px; border-radius: 14px; background: #d4cdb8; box-shadow: inset 0 3px 8px rgb(0 0 0 / .25); display: block; position: relative; }
+.toggle .lever { position: absolute; left: 6px; right: 6px; height: 56px; bottom: 6px; border-radius: 10px; background: linear-gradient(#fbf8ef, #ddd6c2); box-shadow: 0 6px 10px rgb(0 0 0 / .25); transition: bottom .25s cubic-bezier(.5, 1.8, .5, 1); }
+.toggle[aria-pressed="true"] .lever { bottom: 58px; }
+.toggle:focus-visible { outline: 3px solid var(--accent); outline-offset: 6px; }
+.switch .btn { margin-top: 22px; }
+@media (max-width: 799px) { .sw-grid { grid-template-columns: 1fr; } .toggle { width: 120px; height: 180px; } .toggle .plate { height: 96px; } .toggle .lever { height: 44px; } .toggle[aria-pressed="true"] .lever { bottom: 46px; } }
+
+/* Reviews */
+.rev-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; }
+.car-btns { display: flex; gap: 8px; }
+.car-btns button { width: 48px; height: 48px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--card); color: var(--ink); font-size: 18px; cursor: pointer; }
+.car-btns button:hover { border-color: var(--accent); }
+.reviews { margin-top: 40px; --car-gap: 16px; }
+.review { width: min(380px, 82vw); padding: 28px; border-radius: 18px; background: var(--card); border: 1px solid var(--line); display: grid; gap: 14px; align-content: start; }
+.review .stars { color: var(--accent); letter-spacing: .2em; }
+.review p { font-size: 1.05rem; }
+.review small { color: var(--ink-2); font: 500 14px var(--display); }
+
+/* FAQ */
+.faq-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 50px; }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary { display: flex; justify-content: space-between; gap: 16px; padding: 22px 0; font: 600 1.15rem var(--display); }
+.faq summary::after { content: '+'; color: var(--accent); font-size: 1.5rem; line-height: 1; transition: transform .3s; }
+.faq details.is-open summary::after { transform: rotate(45deg); }
+.faq .acc-body p { padding: 0 0 22px; color: var(--ink-2); max-width: 60ch; }
+@media (max-width: 899px) { .faq-grid { grid-template-columns: 1fr; gap: 20px; } }
+
+/* Booking */
+.book-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 50px; align-items: start; }
+.hours { margin-top: 30px; border-radius: 18px; background: var(--card); border: 1px solid var(--line); padding: 8px 22px; }
+.hours div { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.hours div:last-child { border-bottom: 0; }
+.hours span:first-child { color: var(--ink-2); }
+.form { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: clamp(22px, 4vw, 38px); }
+.form legend { font: 700 1.7rem var(--display); padding: 0; margin-bottom: 16px; }
+.form .meta { display: flex; justify-content: space-between; font: 500 13px var(--display); color: var(--ink-2); margin-bottom: 10px; }
+.opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.opts label { display: flex; gap: 10px; align-items: center; padding: 14px; border-radius: 12px; border: 1.5px solid var(--line); cursor: pointer; font: 500 15px var(--display); }
+.opts input { accent-color: var(--accent); width: 18px; height: 18px; }
+.opts label:has(input:checked) { border-color: var(--accent); background: rgb(255 214 10 / .08); }
+.fs { display: grid; gap: 6px; margin-bottom: 14px; }
+.fs label { font: 500 13px var(--display); color: var(--ink-2); }
+.fs input, .fs select, .fs textarea { font: inherit; padding: 13px 14px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--paper); color: var(--ink); width: 100%; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.rr { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+.done h3 { font-size: 2rem; color: var(--accent); }
+@media (max-width: 899px) { .book-grid { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .opts, .pair { grid-template-columns: 1fr; } }
+
+footer { border-top: 1px solid var(--line); padding: 50px 0 40px; color: var(--ink-2); font-size: 15px; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 16px 30px; align-items: center; justify-content: space-between; }
+footer .mt { font: 500 13px var(--display); border-radius: 10px; padding: 8px 14px; border: 1.5px solid var(--line); background: transparent; color: inherit; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top" data-header>
+  <div class="wrap">
+    <a class="logo" href="#top" data-plug="brand"><span class="mark" data-plug="mark" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M60 2 L18 58 H46 L36 98 L82 38 H54 L66 2 Z" fill="#14110a"/></svg></span><span data-plug="name">Brightwire</span></a>
+    <nav class="nav" id="nav" aria-label="Main"><a href="#services">Services</a><a href="#why">Why us</a><a href="#reviews">Reviews</a><a href="#book">Book</a></nav>
+    <a class="btn btn-solid call" href="tel:+16135550148" data-magnet="0.25">(613) 555-0148</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle>Menu</button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="stage" id="top" aria-label="Brightwire Electric and what we do">
+    <div class="stage-pin" id="stagePin">
+      <canvas id="sparks" aria-hidden="true"></canvas>
+      <div class="wrap stage-grid">
+        <div class="panels" id="services">
+          <article class="panel">
+            <span class="over" data-reveal="fade" data-now>Licensed electricians · Ottawa</span>
+            <h1 data-split="words" data-split-anim="up" data-now data-delay=".2">Power, done <em>properly.</em></h1>
+            <p data-reveal="up" data-now data-delay=".6">Pot lights, panel upgrades, EV chargers and safety checks for homes across Ottawa. Upfront prices, permits pulled, and the mess cleaned up before we leave.</p>
+            <div class="ctas" data-reveal="up" data-now data-delay=".8"><a class="btn btn-solid" href="#book" data-magnet="0.3">Book an electrician</a><a class="btn" href="#svc-lighting">See what we do</a></div>
+            <div class="trust" data-reveal="fade" data-now data-delay="1.1"><span>Licensed &amp; insured</span><span>Same-week visits</span><span>Upfront prices</span></div>
+          </article>
+          <article class="panel" id="svc-lighting" aria-labelledby="s1">
+            <span class="over">01 · Lighting</span>
+            <h2 id="s1">Light every <em>corner.</em></h2>
+            <p>Pot lights, kitchen and vanity fixtures, dimmers and outdoor lights, placed where you actually need them.</p>
+            <ul><li>Pot lights cut in cleanly, no big holes</li><li>Dimmers and smart switches</li><li>Soffit and landscape lighting</li></ul>
+            <p class="from">Pot lights from $165 each, installed</p>
+          </article>
+          <article class="panel" id="svc-panel" aria-labelledby="s2">
+            <span class="over">02 · Panels</span>
+            <h2 id="s2">Room for what's <em>next.</em></h2>
+            <p>Older 60 and 100 amp panels can't keep up with heat pumps, hot tubs and EVs. We upgrade them, permit and inspection included.</p>
+            <ul><li>100 to 200 amp upgrades</li><li>New breakers and sub-panels</li><li>ESA permit and inspection booked for you</li></ul>
+            <p class="from">Panel upgrades from $2,400</p>
+          </article>
+          <article class="panel" id="svc-ev" aria-labelledby="s3">
+            <span class="over">03 · EV chargers</span>
+            <h2 id="s3">Charge at home, <em>overnight.</em></h2>
+            <p>A Level 2 charger fills most cars while you sleep. We check your panel first, so the charger never trips it.</p>
+            <ul><li>Wall-mounted Level 2 chargers</li><li>Load check and load management</li><li>Garage or driveway installs</li></ul>
+            <p class="from">Charger installs from $950</p>
+          </article>
+          <article class="panel" id="svc-home" aria-labelledby="s4">
+            <span class="over">04 · Safety &amp; smart home</span>
+            <h2 id="s4">A house that <em>looks after you.</em></h2>
+            <p>Smoke and CO alarms wired together, surge protection, smart switches, and a full safety check when you buy an older home.</p>
+            <ul><li>Wired smoke and CO alarms</li><li>Whole-home surge protection</li><li>Home-buyer electrical inspections</li></ul>
+            <p class="from">Safety checks from $189</p>
+          </article>
+        </div>
+        <div class="shape-box" id="shapeBox" aria-hidden="true"></div>
+      </div>
+      <ol class="dots" aria-label="Jump to a service">
+        <li><button type="button" aria-label="Top" aria-current="true"></button></li>
+        <li><button type="button" aria-label="Lighting"></button></li>
+        <li><button type="button" aria-label="Panels"></button></li>
+        <li><button type="button" aria-label="EV chargers"></button></li>
+        <li><button type="button" aria-label="Safety and smart home"></button></li>
+      </ol>
+      <span class="scroll-hint" aria-hidden="true">Scroll</span>
+    </div>
+  </section>
+
+  <div class="towns" data-marquee data-marquee-velocity data-marquee-skew aria-label="Areas we serve">
+    <div class="mq-track"><span>Ottawa</span><span>Kanata</span><span>Orléans</span><span>Nepean</span><span>Barrhaven</span><span>Stittsville</span><span>Manotick</span><span>Gloucester</span></div>
+  </div>
+
+  <section id="why" aria-labelledby="why-h">
+    <div class="wrap">
+      <span class="over">Why Brightwire</span>
+      <h2 id="why-h" style="margin-top:16px" data-split="words" data-split-anim="blur">Straight answers, <em>tidy work.</em></h2>
+      <div class="stats" data-reveal-group="up">
+        <div class="stat" data-spotlight><b data-count="14">14</b><span>years wiring Ottawa homes</span></div>
+        <div class="stat" data-spotlight><b data-count="3200" data-suffix="+">3,200+</b><span>jobs finished</span></div>
+        <div class="stat" data-spotlight><b data-count="4.9" data-decimals="1">4.9</b><span>average from 480 reviews</span></div>
+        <div class="stat" data-spotlight><b data-count="100" data-suffix="%">100%</b><span>of jobs permitted and inspected</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="switch" id="switchBand" aria-labelledby="sw-h">
+    <div class="wrap sw-grid">
+      <div>
+        <h2 id="sw-h">Dark hallway? Dead outlet? <em>Flip it.</em></h2>
+        <p id="swText" aria-live="polite">Go on, press the switch.</p>
+        <a class="btn btn-solid" href="#book">Book a visit</a>
+      </div>
+      <button class="toggle" id="toggle" type="button" aria-pressed="false" aria-label="Light switch"><span class="plate"><span class="lever"></span></span></button>
+    </div>
+  </section>
+
+  <section id="reviews" aria-labelledby="rv-h">
+    <div class="wrap" data-carousel-wrap>
+      <div class="rev-head">
+        <div><span class="over">Reviews</span><h2 id="rv-h" style="margin-top:16px" data-split="words">Neighbours <em>say it best.</em></h2></div>
+        <div class="car-btns"><button type="button" data-car-prev aria-label="Previous review">←</button><button type="button" data-car-next aria-label="Next review">→</button></div>
+      </div>
+      <div class="reviews" data-carousel>
+        <div class="car-track">
+          <figure class="review"><span class="stars" aria-label="5 out of 5">★★★★★</span><p>"Twelve pot lights in the basement, done in a day, and they vacuumed the drywall dust. Price matched the quote exactly."</p><small>Laura M., Kanata</small></figure>
+          <figure class="review"><span class="stars" aria-label="5 out of 5">★★★★★</span><p>"Our 1960s panel was full. Priya explained the options without any upselling, and the upgrade passed inspection first time."</p><small>Daniel K., Alta Vista</small></figure>
+          <figure class="review"><span class="stars" aria-label="5 out of 5">★★★★★</span><p>"EV charger in the garage, with a load check first. Clear, tidy, on time."</p><small>Sophie T., Orléans</small></figure>
+          <figure class="review"><span class="stars" aria-label="5 out of 5">★★★★★</span><p>"They found two scorched outlets during the home inspection. Worth every dollar."</p><small>Marc-André B., Gloucester</small></figure>
+          <figure class="review"><span class="stars" aria-label="5 out of 5">★★★★★</span><p>"Booked online on Monday, they were here Wednesday. Friendly crew, no mess."</p><small>Grace O., Barrhaven</small></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq" aria-labelledby="faq-h">
+    <div class="wrap faq-grid">
+      <div><span class="over">Questions</span><h2 id="faq-h" style="margin-top:16px" data-split="words">Good to <em>know.</em></h2></div>
+      <div data-accordion data-reveal="up">
+        <details><summary>Do you pull permits?</summary><div class="acc-body"><p>Yes, every time the code needs one. We book the ESA inspection and send you the certificate when it passes.</p></div></details>
+        <details><summary>How do your prices work?</summary><div class="acc-body"><p>You get a fixed price after we see the job, before any work starts. If we find something unexpected, we stop and talk to you first.</p></div></details>
+        <details><summary>Do you take emergency calls?</summary><div class="acc-body"><p>For no-power, sparking or burning-smell calls, phone us and we'll tell you honestly how soon we can be there. If you smell burning, turn off the main breaker first.</p></div></details>
+        <details><summary>Is your work guaranteed?</summary><div class="acc-body"><p>Our workmanship is guaranteed for five years. Fixtures and chargers carry their maker's warranty, and we handle the claim for you.</p></div></details>
+      </div>
+    </div>
+  </section>
+
+  <section id="book" aria-labelledby="bk-h" style="padding-top:0">
+    <div class="wrap book-grid">
+      <div>
+        <span class="over">Book</span>
+        <h2 id="bk-h" style="margin-top:16px" data-split="words">Tell us about <em>the job.</em></h2>
+        <p style="margin-top:18px;color:var(--ink-2)">We reply within one business day with a time and a price range. Prefer to talk? Call <a href="tel:+16135550148">(613) 555-0148</a>.</p>
+        <div class="hours" data-plug="hours" data-reveal="up">
+          <div data-plug-row><span data-plug-days>Mon – Fri</span><span data-plug-time>7:30 am – 6 pm</span></div>
+          <div data-plug-row><span data-plug-days>Saturday</span><span data-plug-time>9 am – 3 pm</span></div>
+          <div data-plug-row><span data-plug-days>Sunday</span><span data-plug-time>Closed</span></div>
+        </div>
+        <div data-plug="contact" hidden></div>
+      </div>
+      <div class="form" data-reveal="up">
+        <form data-steps action="#" aria-label="Book an electrician">
+          <div class="meta"><span data-steps-count>Step 1 of 3</span><span>About a minute</span></div>
+          <div data-steps-bar style="margin-bottom:22px"><i></i></div>
+          <fieldset data-step><legend>What do you need?</legend>
+            <div class="opts"><label><input type="radio" name="job" value="lighting" required> Lighting</label><label><input type="radio" name="job" value="panel"> Panel upgrade</label><label><input type="radio" name="job" value="ev"> EV charger</label><label><input type="radio" name="job" value="safety"> Safety check</label><label><input type="radio" name="job" value="repair"> A repair</label><label><input type="radio" name="job" value="other"> Something else</label></div>
+            <div class="rr"><button class="btn btn-solid" data-next>Continue</button></div>
+          </fieldset>
+          <fieldset data-step><legend>Where and when?</legend>
+            <div class="pair"><div class="fs"><label for="e-postal">Postal code</label><input id="e-postal" name="postal" required autocomplete="postal-code"></div><div class="fs"><label for="e-when">How soon?</label><select id="e-when" name="when"><option>This week</option><option>In the next two weeks</option><option>This month</option><option>Just getting prices</option></select></div></div>
+            <div class="fs"><label for="e-notes">A few words about the job</label><textarea id="e-notes" name="notes" rows="3"></textarea></div>
+            <div class="rr"><button class="btn" data-back>Back</button><button class="btn btn-solid" data-next>Continue</button></div>
+          </fieldset>
+          <fieldset data-step><legend>Your details</legend>
+            <div class="fs"><label for="e-name">Name</label><input id="e-name" name="name" required autocomplete="name"></div>
+            <div class="pair"><div class="fs"><label for="e-mail">Email</label><input id="e-mail" type="email" name="email" required autocomplete="email"></div><div class="fs"><label for="e-tel">Phone</label><input id="e-tel" type="tel" name="phone" autocomplete="tel"></div></div>
+            <div class="rr"><button class="btn" data-back>Back</button><button class="btn btn-solid" type="submit">Send request</button></div>
+            <p style="font-size:13px;margin-top:12px;color:var(--ink-2)">Sample form: nothing is sent.</p>
+          </fieldset>
+        </form>
+        <div class="done" data-steps-done hidden><h3>Request in. ⚡</h3><p style="margin-top:8px;color:var(--ink-2)">On a real site, Brightwire would reply within one business day.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="logo" href="#top"><span class="mark" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M60 2 L18 58 H46 L36 98 L82 38 H54 L66 2 Z" fill="#14110a"/></svg></span>Brightwire Electric</a>
+    <span>Bank St, Ottawa · <span data-year>2026</span> · <span data-plug-text="Your preview: prices and reviews are still samples.">Sample business: everything here is made up.</span></span>
+    <button class="mt" type="button" data-motion-toggle>Motion: on</button>
+  </div>
+</footer>
+
+<!-- Plug & Show: this sample business, swapped for a visitor's own details (see kit/plug.js). -->
+<script type="application/json" id="plug-sample">{"template":"motion-electrician","label":"Brightwire","name":["Brightwire Electric","Brightwire"],"owner":["Priya"],"phone":"(613) 555-0148","city":["Ottawa"],"address":["Bank Street","Bank St"],"phrases":[["Bank St, Ottawa","{address?}, {city}"],["Licensed electricians · Ottawa","Licensed electricians · {city}"],["homes across Ottawa","homes across {city}"],["wiring Ottawa homes","wiring {city} homes"]],"color":{"accent":["--accent"],"text":["--on-accent"],"bg":"--paper"}}</script>
+<script src="../../kit/plug.js"></script>
+<!-- This page's own motion settings. The Motion editor in Studio Builder changes these. -->
+<script type="application/json" id="fx">{"count": 1600, "size": 1.6, "color": "#ffd60a", "color2": "#5ee6ff", "spring": 0.06, "push": 110, "scatter": 9, "twinkle": 0.5, "glow": true, "arcs": true}</script>
+<script type="application/json" id="fx-knobs">[
+  {"key": "count", "label": "Number of particles", "min": 300, "max": 4000, "step": 100, "reload": true},
+  {"key": "size", "label": "Particle size", "min": 0.6, "max": 4, "step": 0.1},
+  {"key": "color", "label": "Main colour", "type": "color"},
+  {"key": "color2", "label": "Spark colour", "type": "color"},
+  {"key": "spring", "label": "How fast shapes form", "min": 0.01, "max": 0.2, "step": 0.01},
+  {"key": "push", "label": "Cursor push", "min": 0, "max": 300, "step": 10},
+  {"key": "scatter", "label": "Burst between shapes", "min": 0, "max": 30, "step": 1},
+  {"key": "twinkle", "label": "Twinkle", "min": 0, "max": 1, "step": 0.05},
+  {"key": "glow", "label": "Glow", "type": "toggle"},
+  {"key": "arcs", "label": "Electric arcs", "type": "toggle"}
+]</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Draggable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/InertiaPlugin.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>window.KIT = { ease: 'power3.out', dur: 0.9, stagger: 0.06, smooth: { lerp: 0.1 }, anchorOffset: 70, cursor: 'ring', spark: { color: ['#ffd60a', '#5ee6ff'], selector: '.btn, .toggle' } };</script>
+<script src="../../kit/art.js"></script>
+<script src="../../kit/kit.js"></script>
+<script>
+(() => {
+  const K = window.KIT;
+  const FX = (window.FX = JSON.parse(document.getElementById('fx').textContent));
+  if (!window.gsap) return;
+
+  // Each shape is an SVG path in a 100 × 100 box; particles fill it.
+  const SHAPES = [
+    'M60 2 L18 58 H46 L36 98 L82 38 H54 L66 2 Z',
+    'M50 6 C30 6 16 21 16 40 C16 53 23 61 30 68 C33 71 34 74 34 78 H66 C66 74 67 71 70 68 C77 61 84 53 84 40 C84 21 70 6 50 6 Z M34 82 H66 V88 H34 Z M39 91 H61 C61 95 57 98 50 98 C43 98 39 95 39 91 Z',
+    'M14 4 H86 V96 H14 Z M22 12 V88 H78 V12 Z M28 18 H46 V28 H28 Z M54 18 H72 V28 H54 Z M28 34 H46 V44 H28 Z M54 34 H72 V44 H54 Z M28 50 H46 V60 H28 Z M54 50 H72 V60 H54 Z M28 66 H46 V76 H28 Z M54 66 H72 V76 H54 Z',
+    'M30 4 H40 V26 H30 Z M60 4 H70 V26 H60 Z M16 26 H84 V44 C84 63 70 75 55 77 V96 H45 V77 C30 75 16 63 16 44 Z',
+    'M50 6 L94 44 H82 V94 H18 V44 H6 Z M42 94 V66 H58 V94 Z M28 54 H40 V66 H28 Z M60 54 H72 V66 H60 Z',
+  ];
+  const stage = document.getElementById('top'), pinEl = document.getElementById('stagePin');
+  const cv = document.getElementById('sparks'), ctx = cv.getContext('2d');
+  const box = document.getElementById('shapeBox');
+  const panels = [...stage.querySelectorAll('.panel')], dots = [...stage.querySelectorAll('.dots button')];
+  const N = Math.max(100, Math.round(FX.count * (innerWidth < 800 ? 0.55 : 1)));
+
+  // Points inside each shape, sorted round the middle so a morph reshapes instead of scrambling.
+  const sample = (d) => {
+    const S = 140, c = document.createElement('canvas');
+    c.width = c.height = S;
+    const g = c.getContext('2d');
+    g.scale(S / 100, S / 100);
+    g.fill(new Path2D(d), 'evenodd');
+    const px = g.getImageData(0, 0, S, S).data, pts = [];
+    for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) if (px[(y * S + x) * 4 + 3] > 128) pts.push([(x + Math.random()) / S, (y + Math.random()) / S]);
+    const pick = Array.from({ length: N }, () => pts[(Math.random() * pts.length) | 0]);
+    pick.sort((a, b) => Math.atan2(a[1] - 0.5, a[0] - 0.5) - Math.atan2(b[1] - 0.5, b[0] - 0.5));
+    return Float32Array.from(pick.flat());
+  };
+  const T = SHAPES.map(sample);
+
+  const P = { x: new Float32Array(N), y: new Float32Array(N), vx: new Float32Array(N), vy: new Float32Array(N), ph: new Float32Array(N), sp: new Float32Array(N), hot: new Uint8Array(N) };
+  let W = 0, H = 0, dpr = 1, bx = 0, by = 0, bs = 1, shape = 0;
+  const measure = () => {
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    const r = box.getBoundingClientRect(), c = cv.getBoundingClientRect();
+    bx = r.left - c.left; by = r.top - c.top; bs = r.width;
+  };
+  measure();
+  for (let i = 0; i < N; i++) {
+    P.x[i] = Math.random() * W; P.y[i] = Math.random() * H;
+    P.ph[i] = Math.random() * 6.28; P.sp[i] = 1 + Math.random() * 3; P.hot[i] = Math.random() < 0.16;
+  }
+
+  // Glowing dots are drawn from small pre-made sprites, one per colour.
+  const sprites = {};
+  const sprite = (col) => {
+    if (sprites[col]) return sprites[col];
+    const s = document.createElement('canvas'), z = 32;
+    s.width = s.height = z;
+    const g = s.getContext('2d'), gr = g.createRadialGradient(z / 2, z / 2, 0, z / 2, z / 2, z / 2);
+    gr.addColorStop(0, '#ffffff'); gr.addColorStop(0.18, col); gr.addColorStop(0.45, col + '55'); gr.addColorStop(1, col + '00');
+    g.fillStyle = gr; g.fillRect(0, 0, z, z);
+    return (sprites[col] = s);
+  };
+
+  let mx = -9999, my = -9999, arc = null, nextArc = 0;
+  addEventListener('pointermove', (e) => { const c = cv.getBoundingClientRect(); mx = e.clientX - c.left; my = e.clientY - c.top; }, { passive: true });
+  document.documentElement.addEventListener('pointerleave', () => { mx = my = -9999; });
+
+  const draw = (time, dt) => {
+    const f = Math.min(dt / 16.7, 3), t = time;
+    const tg = T[shape], k = FX.spring * f, fr = Math.pow(0.84, f), R = FX.push, jit = Math.min(Math.abs(K.velocity) / 1500, 1) * 2.4;
+    const r = box.getBoundingClientRect(), c = cv.getBoundingClientRect();
+    bx = r.left - c.left; by = r.top - c.top; bs = r.width;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = FX.glow ? 'lighter' : 'source-over';
+    const s1 = sprite(FX.color), s2 = sprite(FX.color2);
+    for (let i = 0; i < N; i++) {
+      const tx = bx + tg[i * 2] * bs, ty = by + tg[i * 2 + 1] * bs;
+      let ax = (tx - P.x[i]) * k, ay = (ty - P.y[i]) * k;
+      const dx = P.x[i] - mx, dy = P.y[i] - my, d2 = dx * dx + dy * dy;
+      if (R > 0 && d2 < R * R) { const d = Math.sqrt(d2) || 1, push = (1 - d / R) * 5 * f; ax += (dx / d) * push; ay += (dy / d) * push; }
+      if (jit) { ax += (Math.random() - 0.5) * jit; ay += (Math.random() - 0.5) * jit; }
+      P.vx[i] = (P.vx[i] + ax) * fr; P.vy[i] = (P.vy[i] + ay) * fr;
+      P.x[i] += P.vx[i] * f; P.y[i] += P.vy[i] * f;
+      const tw = 1 + FX.twinkle * 0.6 * Math.sin(t * P.sp[i] + P.ph[i]);
+      const s = FX.size * tw * (P.hot[i] ? 1.25 : 1);
+      if (FX.glow) { const z = s * 7; ctx.drawImage(P.hot[i] ? s2 : s1, P.x[i] - z / 2, P.y[i] - z / 2, z, z); }
+      else { ctx.fillStyle = P.hot[i] ? FX.color2 : FX.color; ctx.fillRect(P.x[i] - s, P.y[i] - s, s * 2, s * 2); }
+    }
+    // Now and then a small arc jumps between two particles.
+    if (FX.arcs) {
+      if (!arc && t > nextArc) {
+        const a = (Math.random() * N) | 0, b = (a + 1 + ((Math.random() * 40) | 0)) % N;
+        arc = { a, b, t0: t };
+        nextArc = t + 0.8 + Math.random() * 2;
+      }
+      if (arc) {
+        const p = (t - arc.t0) / 0.18;
+        if (p >= 1) arc = null;
+        else {
+          ctx.globalCompositeOperation = 'lighter';
+          ctx.strokeStyle = FX.color2; ctx.globalAlpha = 1 - p; ctx.lineWidth = 1.6; ctx.beginPath();
+          const x0 = P.x[arc.a], y0 = P.y[arc.a], x1 = P.x[arc.b], y1 = P.y[arc.b];
+          ctx.moveTo(x0, y0);
+          for (let j = 1; j < 7; j++) ctx.lineTo(x0 + ((x1 - x0) * j) / 7 + (Math.random() - 0.5) * 14, y0 + ((y1 - y0) * j) / 7 + (Math.random() - 0.5) * 14);
+          ctx.lineTo(x1, y1); ctx.stroke(); ctx.globalAlpha = 1;
+        }
+      }
+    }
+  };
+
+  // Reduced motion: the bolt, drawn once, and the panels as a plain list.
+  if (K.reduce) {
+    const still = () => {
+      measure();
+      for (let i = 0; i < N; i++) { P.x[i] = bx + T[0][i * 2] * bs; P.y[i] = by + T[0][i * 2 + 1] * bs; P.vx[i] = P.vy[i] = 0; }
+      const tw = FX.twinkle; FX.twinkle = 0; FX.arcs && (nextArc = 1e9); draw(0, 16.7); FX.twinkle = tw;
+    };
+    still();
+    addEventListener('resize', still);
+    return;
+  }
+
+  document.documentElement.classList.add('is-live-page');
+  stage.classList.add('is-live');
+  gsap.set(panels.slice(1), { autoAlpha: 0 });
+  measure();
+
+  let cur = 0;
+  const show = (i) => {
+    if (i === cur) return;
+    const a = panels[cur], b = panels[i], dir = i > cur ? 1 : -1;
+    gsap.to(a, { autoAlpha: 0, y: -30 * dir, duration: 0.35, ease: 'power2.in', overwrite: true });
+    gsap.fromTo(b, { autoAlpha: 0, y: 40 * dir }, { autoAlpha: 1, y: 0, duration: 0.7, delay: 0.12, ease: 'power3.out', overwrite: true });
+    cur = i; shape = i;
+    for (let j = 0; j < N; j++) { P.vx[j] += (Math.random() - 0.5) * FX.scatter; P.vy[j] += (Math.random() - 0.5) * FX.scatter; }
+    dots.forEach((d, j) => d.setAttribute('aria-current', String(j === i)));
+  };
+
+  const st = ScrollTrigger.create({
+    trigger: pinEl, start: 'top top', end: () => '+=' + (panels.length - 1) * innerHeight, pin: true, invalidateOnRefresh: true,
+    onUpdate: (self) => show(Math.min(panels.length - 1, Math.round(self.progress * (panels.length - 1)))),
+    onRefresh: measure,
+  });
+  dots.forEach((d, i) => d.addEventListener('click', () => K.scrollTo(st.start + ((st.end - st.start) * i) / (panels.length - 1) + 2)));
+  // Tabbing into a panel brings it on screen.
+  panels.forEach((p, i) => p.addEventListener('focusin', () => { if (cur !== i) K.scrollTo(st.start + ((st.end - st.start) * i) / (panels.length - 1) + 2); }));
+  gsap.to('.scroll-hint', { autoAlpha: 0, scrollTrigger: { start: 0, end: 200, scrub: true } });
+
+  let on = true;
+  new IntersectionObserver(([e]) => (on = e.isIntersecting)).observe(pinEl);
+  gsap.ticker.add((time, dt) => { if (on) draw(time, dt); });
+  addEventListener('resize', measure);
+
+  // Flip the switch: the band lights up.
+  const band = document.getElementById('switchBand'), tog = document.getElementById('toggle'), txt = document.getElementById('swText');
+  tog.addEventListener('click', () => {
+    const lit = tog.getAttribute('aria-pressed') !== 'true';
+    tog.setAttribute('aria-pressed', String(lit));
+    band.classList.toggle('lit', lit);
+    txt.textContent = lit ? "There. That's how it should feel. Book us and we'll do the rest." : 'Go on, press the switch.';
+    if (lit) { const r = tog.getBoundingClientRect(); K.burst(r.left + r.width / 2, r.top + r.height / 3, { count: 16, size: 26, color: ['#ffd60a', '#5ee6ff', '#ffffff'] }); }
+  });
+})();
+</script>
+</body>
+</html>

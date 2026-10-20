@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Summit Roofing · Sample roofing company site</title>
+<meta name="description" content="Sample website template for a roofing company in Edmonton: replacements, repairs, eavestroughs and inspections, with a shingle colour picker and a quote form. Made-up business. Scrolling zooms from the street into the layers of a roof.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1f2a33">
+<script>document.documentElement.classList.add('js');setTimeout(function(){var d=document.documentElement;if(!d.classList.contains('kit-ready'))d.classList.remove('js')},4000)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../../kit/kit.css">
+<style>
+:root {
+  --paper: #f5f3ee; --card: #ffffff; --ink: #1f2a33; --ink-2: #54616b; --line: #dcd8cf;
+  --accent: #c2410c; --on-accent: #ffffff; --sky: #cfe7f7; --deep: #1f2a33; --shingle: #4a4f57;
+  --display: 'Barlow Condensed', 'Arial Narrow', sans-serif; --body: 'Barlow', system-ui, sans-serif;
+  --cursor: #c2410c; color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 18px/1.6 var(--body); overflow-x: clip; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); font-weight: 800; margin: 0; line-height: .98; text-transform: uppercase; letter-spacing: .01em; }
+h1 { font-size: clamp(2.8rem, 1.6rem + 4.6vw, 5.6rem); }
+h2 { font-size: clamp(2.4rem, 1.5rem + 3.4vw, 4.4rem); }
+h1 em, h2 em { font-style: normal; color: var(--accent); }
+h3 { font-size: 1.6rem; font-weight: 700; }
+p { margin: 0; }
+.wrap { width: min(1180px, 100% - 32px); margin-inline: auto; }
+.over { font: 700 14px/1 var(--display); letter-spacing: .2em; text-transform: uppercase; color: var(--accent); }
+section { padding: clamp(80px, 11vw, 140px) 0; }
+.btn { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 24px; border-radius: 6px; font: 700 17px/1 var(--display); letter-spacing: .08em; text-transform: uppercase; text-decoration: none; border: 2px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; transition: background-color .25s, color .25s, border-color .25s; }
+.btn:hover { background: var(--ink); color: #fff; }
+.btn-solid { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn-solid:hover { background: var(--ink); border-color: var(--ink); }
+
+/* Header */
+.top { position: fixed; inset: 0 0 auto; z-index: 50; padding: 16px 0; transition: background-color .3s, padding .3s, box-shadow .3s; }
+.top.is-scrolled { background: rgb(245 243 238 / .94); backdrop-filter: blur(10px); padding: 10px 0; box-shadow: 0 1px 0 var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 26px; }
+.logo { display: inline-flex; align-items: center; gap: 10px; font: 800 1.5rem/1 var(--display); text-transform: uppercase; letter-spacing: .04em; text-decoration: none; }
+.logo .mark { width: 38px; height: 38px; border-radius: 8px; background: var(--ink); display: grid; place-items: center; }
+.logo .mark svg { width: 24px; height: 24px; }
+.nav { display: flex; gap: 24px; margin-left: auto; }
+.nav a { font: 700 16px var(--display); letter-spacing: .1em; text-transform: uppercase; text-decoration: none; }
+.nav a:hover { color: var(--accent); }
+.top .btn { min-height: 44px; }
+.menu-btn { display: none; margin-left: auto; min-height: 44px; padding: 0 16px; border-radius: 6px; border: 2px solid var(--ink); background: var(--paper); color: inherit; font: 700 15px var(--display); letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+@media (max-width: 899px) {
+  .menu-btn { display: block; } .top .btn { display: none; }
+  .nav { position: fixed; inset: 0; z-index: -1; flex-direction: column; justify-content: center; align-items: center; gap: 20px; background: var(--paper); visibility: hidden; opacity: 0; transition: opacity .3s, visibility .3s; }
+  .nav.is-open { visibility: visible; opacity: 1; }
+  .nav a { font-size: 2.4rem; }
+}
+
+/* The zoom: street → house → shingles → the layers underneath */
+.zoom { padding: 0; background: var(--sky); }
+.zoom-pin { position: relative; overflow: hidden; }
+.scene { display: block; width: 100%; height: 70svh; min-height: 380px; }
+.caps { list-style: none; margin: 0; padding: 30px 0 60px; display: grid; gap: 18px; width: min(1180px, 100% - 32px); margin-inline: auto; }
+.cap { background: var(--card); border-radius: 14px; padding: 24px; box-shadow: 0 10px 40px rgb(31 42 51 / .12); max-width: 560px; }
+.cap h1, .cap h2 { margin: 10px 0 12px; }
+.cap h2 { font-size: clamp(2rem, 1.4rem + 2.4vw, 3.2rem); }
+.cap p { color: var(--ink-2); }
+.cap .ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.cap .thumb { display: block; width: 100%; height: auto; border-radius: 10px; margin-top: 16px; }
+.is-live .scene { position: absolute; inset: 0; height: 100%; min-height: 0; }
+.is-live.zoom-pin { height: 100svh; }
+.is-live .caps { position: absolute; z-index: 2; inset: 0; padding: 0; display: block; pointer-events: none; }
+.is-live .cap { position: absolute; left: max(16px, (100% - 1180px) / 2); bottom: 50px; width: min(540px, 100% - 32px); pointer-events: auto; background: rgb(255 255 255 / .9); backdrop-filter: blur(8px); }
+.is-live .cap .thumb { display: none; }
+.is-live .cap:first-child { top: 96px; bottom: auto; background: rgb(255 255 255 / .82); }
+.zoom-bar { position: absolute; z-index: 3; left: 50%; bottom: 16px; translate: -50% 0; display: none; gap: 6px; }
+.is-live .zoom-bar { display: flex; }
+.zoom-bar span { width: 34px; height: 4px; border-radius: 4px; background: rgb(31 42 51 / .25); overflow: hidden; }
+.zoom-bar i { display: block; height: 100%; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); }
+@media (max-width: 699px) { .cap { padding: 16px 18px; } .cap h2 { font-size: 1.9rem; margin: 6px 0 8px; } .cap p { font-size: 15.5px; line-height: 1.5; } .is-live .cap { bottom: 30px; } .is-live .cap:first-child { top: 80px; } }
+
+/* Services */
+.svc { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 50px; }
+.svc article { background: var(--card); border-radius: 14px; padding: 28px; border: 1px solid var(--line); display: grid; gap: 10px; align-content: start; --spot: rgb(194 65 12 / .08); }
+.svc svg { width: 46px; height: 46px; }
+.svc p { color: var(--ink-2); font-size: 16.5px; }
+.svc .pr { font: 700 1.1rem var(--display); letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+@media (max-width: 899px) { .svc { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 599px) { .svc { grid-template-columns: 1fr; } }
+
+/* Shingle colour picker */
+.pick { background: var(--deep); color: #eef2f5; }
+.pick .over { color: #ffb38a; }
+.pick h2 em { color: #ffb38a; }
+.pick-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 50px; align-items: center; }
+.pick p { color: #c3ccd3; margin-top: 16px; }
+.swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 28px; }
+.swatches button { display: grid; gap: 8px; justify-items: start; padding: 10px; border-radius: 10px; border: 2px solid #3a4853; background: #263540; color: inherit; font: 600 15px var(--body); cursor: pointer; text-align: left; }
+.swatches button i { width: 100%; height: 34px; border-radius: 6px; background: var(--c); }
+.swatches button[aria-pressed="true"] { border-color: #ffb38a; }
+.preview { width: 100%; height: auto; border-radius: 14px; display: block; }
+@media (max-width: 899px) { .pick-grid { grid-template-columns: 1fr; } }
+
+/* Numbers and steps */
+.nums { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 46px; }
+.nums div { border-top: 3px solid var(--ink); padding-top: 14px; }
+.nums b { display: block; font: 800 clamp(2.6rem, 1.8rem + 2.4vw, 3.8rem)/1 var(--display); }
+.nums span { color: var(--ink-2); font-size: 16px; }
+.steps { list-style: none; padding: 0; margin: 56px 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; counter-reset: s; }
+.steps li { counter-increment: s; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 24px; }
+.steps li::before { content: counter(s, decimal-leading-zero); display: block; font: 800 2rem/1 var(--display); color: var(--accent); margin-bottom: 12px; }
+.steps p { color: var(--ink-2); font-size: 16px; margin-top: 6px; }
+@media (max-width: 899px) { .nums, .steps { grid-template-columns: 1fr 1fr; } }
+
+/* Reviews */
+.reviews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 46px; }
+.review { background: var(--card); border-radius: 14px; padding: 26px; border: 1px solid var(--line); display: grid; gap: 12px; align-content: start; }
+.review .stars { color: var(--accent); letter-spacing: .2em; }
+.review small { font: 700 15px var(--display); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+@media (max-width: 899px) { .reviews { grid-template-columns: 1fr; } }
+
+/* FAQ and quote */
+.quote { background: #e9e5dc; }
+.quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start; }
+.faq { margin-top: 26px; border-top: 2px solid var(--ink); }
+.faq details { border-bottom: 1px solid #c9c3b6; }
+.faq summary { display: flex; justify-content: space-between; gap: 16px; padding: 18px 0; font: 700 1.3rem var(--display); text-transform: uppercase; letter-spacing: .03em; }
+.faq summary::after { content: '+'; color: var(--accent); font-size: 1.6rem; line-height: 1; transition: transform .3s; }
+.faq details.is-open summary::after { transform: rotate(45deg); }
+.faq .acc-body p { padding: 0 0 18px; color: var(--ink-2); }
+.hrs { margin-top: 26px; display: grid; gap: 6px; font-size: 16px; }
+.hrs div { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px dashed #c9c3b6; padding-bottom: 6px; }
+.form { background: var(--card); border-radius: 16px; padding: clamp(22px, 4vw, 38px); box-shadow: 0 20px 50px rgb(31 42 51 / .1); }
+.form legend { font: 800 2rem var(--display); text-transform: uppercase; padding: 0; margin-bottom: 16px; }
+.form .meta { display: flex; justify-content: space-between; font: 700 14px var(--display); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 10px; }
+.opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.opts label { display: flex; gap: 10px; align-items: center; padding: 14px; border-radius: 8px; border: 2px solid var(--line); cursor: pointer; font-weight: 500; }
+.opts input { accent-color: var(--accent); width: 18px; height: 18px; }
+.opts label:has(input:checked) { border-color: var(--accent); background: #fbeee6; }
+.fs { display: grid; gap: 6px; margin-bottom: 14px; }
+.fs label { font: 700 14px var(--display); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.fs input, .fs select { font: inherit; padding: 12px 14px; border-radius: 8px; border: 2px solid var(--line); background: var(--paper); color: var(--ink); width: 100%; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.rr { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+.done h3 { font-size: 2.4rem; color: var(--accent); }
+@media (max-width: 899px) { .quote-grid { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .opts, .pair { grid-template-columns: 1fr; } }
+
+footer { background: var(--deep); color: #c3ccd3; padding: 46px 0 38px; font-size: 16px; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 14px 30px; justify-content: space-between; align-items: center; }
+footer .logo { color: #fff; }
+footer .logo .mark { background: var(--accent); }
+footer .mt { font: 700 13px var(--display); letter-spacing: .1em; text-transform: uppercase; border-radius: 6px; padding: 8px 14px; border: 2px solid currentColor; background: transparent; color: inherit; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- The drawings: each level sits inside the one before, at the spot the zoom flies into. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="sky" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="760"><stop offset="0" stop-color="#78b4ea"/><stop offset="1" stop-color="#d6ecf8"/></linearGradient>
+    <pattern id="sh" patternUnits="userSpaceOnUse" width="320" height="320">
+      <rect width="320" height="320" fill="var(--shingle)"/>
+      <rect width="320" height="18" fill="#fff" opacity=".1"/><rect y="160" width="320" height="18" fill="#fff" opacity=".1"/>
+      <rect y="136" width="320" height="24" fill="#000" opacity=".3"/><rect y="296" width="320" height="24" fill="#000" opacity=".3"/>
+      <rect width="10" height="150" fill="#000" opacity=".32"/><rect x="160" y="160" width="10" height="150" fill="#000" opacity=".32"/>
+    </pattern>
+    <pattern id="shSmall" href="#sh" patternTransform="translate(700 400) scale(.125)"/>
+    <pattern id="shTiny" href="#sh" patternTransform="scale(.5)"/>
+    <pattern id="siding" patternUnits="userSpaceOnUse" width="40" height="22"><rect width="40" height="22" fill="#f3efe6"/><rect y="19" width="40" height="3" fill="#ded7c8"/></pattern>
+
+    <!-- The sky and hills behind the street, reused behind the house -->
+    <g id="L0back">
+      <rect width="1600" height="1000" fill="url(#sky)"/>
+      <circle cx="1290" cy="190" r="112" fill="#ffe8a3" opacity=".45"/><circle cx="1290" cy="190" r="66" fill="#ffd166"/>
+      <g id="clouds" fill="#fff">
+        <g class="cloud" data-x="120" data-s="1"><ellipse cx="0" cy="150" rx="90" ry="34"/><ellipse cx="60" cy="128" rx="64" ry="40"/><ellipse cx="-58" cy="138" rx="50" ry="28"/></g>
+        <g class="cloud" data-x="760" data-s=".6" opacity=".85"><ellipse cx="0" cy="260" rx="70" ry="24"/><ellipse cx="44" cy="244" rx="48" ry="30"/></g>
+        <g class="cloud" data-x="1500" data-s=".8" opacity=".9"><ellipse cx="0" cy="90" rx="110" ry="36"/><ellipse cx="70" cy="66" rx="70" ry="44"/><ellipse cx="-70" cy="78" rx="58" ry="30"/></g>
+      </g>
+      <path d="M0 712 C150 650 300 690 450 662 S750 640 900 668 S1250 628 1400 664 S1560 690 1600 680 V760 H0 Z" fill="#a9cfa2"/>
+      <path d="M0 742 C200 708 380 735 560 716 S900 700 1080 722 S1420 700 1600 720 V760 H0 Z" fill="#93bf8a"/>
+    </g>
+
+    <!-- 0 · The street -->
+    <symbol id="L0" viewBox="0 0 1600 1000">
+      <use href="#L0back"/>
+      <rect y="760" width="1600" height="240" fill="#86b86f"/>
+      <rect y="790" width="1600" height="22" fill="#d9d4c7"/>
+      <rect y="836" width="1600" height="164" fill="#5b5f66"/>
+      <path d="M0 918 H1600" stroke="#f1ede1" stroke-width="6" stroke-dasharray="46 34"/>
+      <g><rect x="80" y="622" width="230" height="138" fill="#f4e3c3"/><polygon points="58,632 195,520 332,632" fill="#7b4b3a"/><rect x="110" y="660" width="50" height="44" fill="#9cc7e4" stroke="#fff" stroke-width="5"/><rect x="230" y="660" width="50" height="44" fill="#9cc7e4" stroke="#fff" stroke-width="5"/><rect x="176" y="700" width="40" height="60" fill="#8a5a44"/></g>
+      <g><rect x="380" y="642" width="190" height="118" fill="#cfe0e8"/><polygon points="360,650 475,560 590,650" fill="#3d4a5c"/><rect x="404" y="674" width="46" height="40" fill="#fff8e1" stroke="#fff" stroke-width="5"/><rect x="500" y="704" width="38" height="56" fill="#c2410c"/></g>
+      <g fill="#5f9a5a"><rect x="600" y="700" width="10" height="60" fill="#7a5a3a"/><circle cx="605" cy="690" r="30"/><rect x="985" y="712" width="8" height="48" fill="#7a5a3a"/><circle cx="989" cy="702" r="22"/></g>
+      <g><rect x="1030" y="632" width="190" height="128" fill="#f0c9b0"/><polygon points="1010,642 1125,540 1240,642" fill="#5a4636"/><rect x="1056" y="664" width="44" height="40" fill="#9cc7e4" stroke="#fff" stroke-width="5"/><rect x="1150" y="664" width="44" height="40" fill="#9cc7e4" stroke="#fff" stroke-width="5"/></g>
+      <g><rect x="1290" y="612" width="250" height="148" fill="#e6e1d3"/><polygon points="1270,622 1415,500 1560,622" fill="#2f3b33"/><rect x="1316" y="650" width="56" height="46" fill="#9cc7e4" stroke="#fff" stroke-width="5"/><rect x="1458" y="650" width="56" height="46" fill="#9cc7e4" stroke="#fff" stroke-width="5"/><rect x="1396" y="696" width="40" height="64" fill="#3d4a5c"/></g>
+      <g id="truck"><rect x="1080" y="842" width="230" height="58" rx="8" fill="#fff"/><path d="M1310 852 h44 l34 26 v22 h-78 z" fill="#fff"/><path d="M1318 858 h30 l24 18 h-54 z" fill="#9cc7e4"/><rect x="1080" y="842" width="230" height="12" fill="#c2410c"/><path d="M1090 834 h200 M1110 834 v-8 M1270 834 v-8" stroke="#a0a6ad" stroke-width="5"/><text x="1195" y="886" text-anchor="middle" font-family="Barlow Condensed, sans-serif" font-weight="800" font-size="24" fill="#1f2a33">SUMMIT ROOFING</text><circle cx="1130" cy="902" r="19" fill="#1f2a33"/><circle cx="1330" cy="902" r="19" fill="#1f2a33"/><circle cx="1130" cy="902" r="7" fill="#a0a6ad"/><circle cx="1330" cy="902" r="7" fill="#a0a6ad"/></g>
+      <use href="#L1" x="640" y="590" width="320" height="200"/>
+    </symbol>
+
+    <!-- 1 · The house (the street's sky and hills, five times bigger, behind it) -->
+    <symbol id="L1" viewBox="0 0 1600 1000">
+      <use href="#L0back" transform="scale(5) translate(-640 -590)"/>
+      <rect y="850" width="1600" height="150" fill="#86b86f"/>
+      <polygon points="770,850 830,850 880,1000 720,1000" fill="#d9d4c7"/>
+      <rect x="520" y="560" width="560" height="290" fill="url(#siding)"/>
+      <rect x="575" y="636" width="130" height="104" fill="#9cc7e4" stroke="#fff" stroke-width="12"/><path d="M640 636 V740 M575 688 H705" stroke="#fff" stroke-width="6"/>
+      <rect x="895" y="636" width="130" height="104" fill="#9cc7e4" stroke="#fff" stroke-width="12"/><path d="M960 636 V740 M895 688 H1025" stroke="#fff" stroke-width="6"/>
+      <rect x="752" y="690" width="96" height="160" fill="#2f5d62"/><circle cx="830" cy="772" r="6" fill="#e9c46a"/>
+      <polygon points="470,588 1130,588 962,330 638,330" fill="url(#shSmall)"/>
+      <path d="M470 588 L638 330 H962 L1130 588" fill="none" stroke="#2d2f33" stroke-width="12" stroke-linejoin="round"/>
+      <rect x="980" y="300" width="62" height="150" fill="#a44a3f"/><rect x="972" y="288" width="78" height="16" fill="#6e3029"/><path d="M980 340 h62 M980 380 h62 M980 420 h62" stroke="#8a3b32" stroke-width="4"/>
+      <rect x="456" y="588" width="688" height="20" fill="#ececec"/><rect x="1112" y="606" width="16" height="244" fill="#e0e0e0"/>
+      <g fill="#5f9a5a"><circle cx="545" cy="842" r="34"/><circle cx="600" cy="850" r="26"/><circle cx="1055" cy="842" r="34"/><circle cx="1000" cy="850" r="26"/></g>
+      <g id="ladder" stroke="#c9a227" stroke-width="9" stroke-linecap="round"><path d="M1168 850 L1140 586 M1208 850 L1180 586"/><path d="M1165 820 h40 M1160 776 h40 M1156 732 h40 M1151 688 h40 M1146 644 h40 M1142 604 h40"/></g>
+      <g id="roofer" transform="translate(585 470)"><path d="M-10 20 q10 -40 26 -42 q14 4 12 40 z" fill="#2b4c7e"/><circle cx="14" cy="-34" r="15" fill="#e0b48f"/><path d="M-2 -38 a16 16 0 0 1 32 0 z" fill="#ff7a1a"/><path d="M26 0 l26 -8" stroke="#2b4c7e" stroke-width="10" stroke-linecap="round"/></g>
+      <use href="#L2" x="700" y="400" width="200" height="125"/>
+    </symbol>
+
+    <!-- 2 · The shingles, with a cutaway showing what's underneath -->
+    <symbol id="L2" viewBox="0 0 1600 1000">
+      <rect width="1600" height="1000" fill="url(#sh)"/>
+      <g id="granules"></g>
+      <g transform="translate(170 110)"><rect width="230" height="170" rx="10" fill="#33373c"/><rect x="18" y="24" width="194" height="12" rx="6" fill="#23262a"/><rect x="18" y="56" width="194" height="12" rx="6" fill="#23262a"/><rect x="18" y="88" width="194" height="12" rx="6" fill="#23262a"/><rect x="18" y="120" width="194" height="12" rx="6" fill="#23262a"/></g>
+      <path d="M1180 640 q60 -40 150 -20 l0 160 q-90 -20 -150 20 z" fill="var(--shingle)" stroke="#000" stroke-opacity=".35" stroke-width="6"/>
+      <rect x="654" y="544" width="292" height="194.5" fill="#000" opacity=".25"/>
+      <rect x="662" y="552" width="276" height="178.5" fill="#1b1d20"/>
+      <use href="#L3" x="670" y="560" width="260" height="162.5"/>
+    </symbol>
+
+    <!-- 3 · The layers of a roof -->
+    <symbol id="L3" viewBox="0 0 1600 1000">
+      <rect width="1600" height="1000" fill="#15171a"/>
+      <g class="ly" data-move="80">
+        <rect y="500" width="1600" height="500" fill="#f6c1cf"/>
+        <path d="M0 570 q50 -30 100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 M0 690 q50 -30 100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 M0 810 q50 -30 100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 M0 930 q50 -30 100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0 t100 0" fill="none" stroke="#e9a3b6" stroke-width="10"/>
+        <g fill="#c9975c"><rect x="130" y="500" width="90" height="500"/><rect x="755" y="500" width="90" height="500"/><rect x="1380" y="500" width="90" height="500"/></g>
+        <text x="800" y="566" text-anchor="middle" class="lab">Rafters &amp; insulation</text>
+      </g>
+      <g class="ly" data-move="35">
+        <rect y="360" width="1600" height="140" fill="#d8b37e"/>
+        <g id="flakes"></g>
+        <text x="800" y="446" text-anchor="middle" class="lab">Roof deck</text>
+      </g>
+      <g class="ly" data-move="0">
+        <rect y="300" width="1600" height="60" fill="#2e3646"/>
+        <text x="800" y="344" text-anchor="middle" class="lab lab-light">Ice &amp; water shield</text>
+      </g>
+      <g class="ly" data-move="-35">
+        <rect y="220" width="1600" height="80" fill="#e4e7ec"/>
+        <path d="M0 238 H1600 M0 262 H1600 M0 286 H1600" stroke="#c9ced6" stroke-width="3"/>
+        <text x="800" y="276" text-anchor="middle" class="lab">Synthetic underlayment</text>
+      </g>
+      <g class="ly" data-move="-70">
+        <rect y="0" width="1600" height="220" fill="url(#shTiny)"/>
+        <rect y="204" width="1600" height="16" fill="#000" opacity=".35"/>
+        <g stroke="#9aa0a8" stroke-width="9"><path d="M300 120 V420 M700 120 V420 M1100 120 V420 M1500 120 V420"/></g>
+        <text x="800" y="176" text-anchor="middle" class="lab lab-light">Architectural shingles</text>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="top" data-header data-header-hide>
+  <div class="wrap">
+    <a class="logo" href="#top" data-plug="brand"><span class="mark" data-plug="mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 19 L12 6 L22 19" fill="none" stroke="#fff" stroke-width="2.6" stroke-linejoin="round"/><path d="M7 19 L12 12.5 L17 19" fill="none" stroke="#ff8a4c" stroke-width="2.6" stroke-linejoin="round"/></svg></span><span data-plug="name">Summit Roofing</span></a>
+    <nav class="nav" id="nav" aria-label="Main"><a href="#services">Services</a><a href="#colours">Colours</a><a href="#process">How it works</a><a href="#quote">Quote</a></nav>
+    <a class="btn btn-solid" href="#quote" data-magnet="0.25">Free inspection</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle>Menu</button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="zoom" id="top" aria-label="Summit Roofing: we look closer">
+    <div class="zoom-pin" id="zoomPin">
+      <svg class="scene" id="scene" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A street of houses; the view zooms into one roof and the layers underneath it">
+        <g id="cam"><use id="view" href="#L0" width="1600" height="1000"/></g>
+      </svg>
+      <ol class="caps" id="caps">
+        <li class="cap">
+          <span class="over" data-reveal="fade" data-now>Roofers · Edmonton</span>
+          <h1 data-split="words" data-now data-delay=".2">We look <em>closer.</em></h1>
+          <p data-reveal="up" data-now data-delay=".5">Every quote starts with a full inspection, from the curb to the attic. Scroll down and we'll show you what we check.</p>
+          <div class="ctas" data-reveal="up" data-now data-delay=".7"><a class="btn btn-solid" href="#quote">Book a free inspection</a><a class="btn" href="#services">Services</a></div>
+          <svg class="thumb" viewBox="0 0 1600 1000" aria-hidden="true"><use href="#L0"/></svg>
+        </li>
+        <li class="cap"><span class="over">Your house</span><h2>Twelve things we check</h2><p>Ridge, valleys, flashing, vents, chimney, eavestroughs and every slope, with photos of anything that needs work.</p><svg class="thumb" viewBox="0 0 1600 1000" aria-hidden="true"><use href="#L1"/></svg></li>
+        <li class="cap"><span class="over">Your shingles</span><h2>Granules, nails, lifts</h2><p>Bare spots, curling tabs and lifted edges tell us how many winters your roof has left, so you can plan, not panic.</p><svg class="thumb" viewBox="0 0 1600 1000" aria-hidden="true"><use href="#L2"/></svg></li>
+        <li class="cap"><span class="over">Underneath</span><h2>Where leaks start</h2><p>Most leaks begin under the shingles: at the eaves, where ice dams back water up, and around anything that pokes through.</p><svg class="thumb" viewBox="0 0 1600 1000" aria-hidden="true"><use href="#L3"/></svg></li>
+        <li class="cap"><span class="over">Done right</span><h2>Five layers, every time</h2><p>Ice and water shield at the eaves, synthetic underlayment, new deck wherever it's soft, and shingles nailed to the maker's pattern.</p></li>
+      </ol>
+      <div class="zoom-bar" aria-hidden="true"><span><i></i></span><span><i></i></span><span><i></i></span><span><i></i></span></div>
+    </div>
+  </section>
+
+  <section id="services" aria-labelledby="sv-h">
+    <div class="wrap">
+      <span class="over">Services</span>
+      <h2 id="sv-h" style="margin-top:14px" data-split="words" data-split-anim="up">Top to <em>bottom.</em></h2>
+      <div class="svc" data-reveal-group="up">
+        <article data-spotlight data-tilt="5"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M4 30 L24 12 L44 30" fill="none" stroke="#c2410c" stroke-width="4" stroke-linejoin="round"/><path d="M10 30 v12 h28 v-12" fill="none" stroke="#1f2a33" stroke-width="4"/></svg><h3>Roof replacement</h3><p>Tear-off to the deck, new underlayment and ice shield, and a lifetime shingle warranty.</p><span class="pr">From $11,500</span></article>
+        <article data-spotlight data-tilt="5"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6 C16 18 12 24 12 30 a12 12 0 0 0 24 0 c0 -6 -4 -12 -12 -24 z" fill="none" stroke="#c2410c" stroke-width="4"/></svg><h3>Leaks &amp; repairs</h3><p>Missing shingles, lifted flashing and leaks found and fixed, usually in one visit.</p><span class="pr">From $395</span></article>
+        <article data-spotlight data-tilt="5"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M4 14 h40 v6 a6 6 0 0 1 -6 6 h-28 a6 6 0 0 1 -6 -6 z" fill="none" stroke="#c2410c" stroke-width="4"/><path d="M36 26 v16" stroke="#1f2a33" stroke-width="4"/></svg><h3>Eavestroughs</h3><p>Seamless aluminum eavestroughs, downspouts and guards in 20 colours.</p><span class="pr">From $14 / ft</span></article>
+        <article data-spotlight data-tilt="5"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="10" y="10" width="28" height="28" rx="3" fill="none" stroke="#c2410c" stroke-width="4"/><path d="M24 10 v28 M10 24 h28" stroke="#1f2a33" stroke-width="3"/></svg><h3>Skylights</h3><p>New skylights and re-flashing old ones, the most common source of slow leaks.</p><span class="pr">From $1,450</span></article>
+        <article data-spotlight data-tilt="5"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M4 22 h40 M4 30 h40" stroke="#c2410c" stroke-width="4"/><path d="M8 30 v10 M40 30 v10" stroke="#1f2a33" stroke-width="4"/></svg><h3>Flat roofs</h3><p>Two-ply SBS membranes for garages, additions and low-slope roofs.</p><span class="pr">From $9 / sq ft</span></article>
+        <article data-spotlight data-tilt="5"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="21" cy="21" r="12" fill="none" stroke="#c2410c" stroke-width="4"/><path d="M30 30 L42 42" stroke="#1f2a33" stroke-width="5" stroke-linecap="round"/></svg><h3>Inspections</h3><p>A written report with photos: for buyers, sellers, insurance, or peace of mind.</p><span class="pr">Free with a quote</span></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="pick" id="colours" aria-labelledby="pk-h">
+    <div class="wrap pick-grid">
+      <div>
+        <span class="over">Try a colour</span>
+        <h2 id="pk-h" style="margin-top:14px" data-split="words">See it <em>on the house.</em></h2>
+        <p>Tap a shingle colour. The house at the top of the page changes too.</p>
+        <div class="swatches" id="swatches" role="group" aria-label="Shingle colour">
+          <button type="button" data-shingle="#4a4f57" aria-pressed="true"><i style="--c:#4a4f57"></i>Charcoal</button>
+          <button type="button" data-shingle="#6e5a48" aria-pressed="false"><i style="--c:#6e5a48"></i>Weathered wood</button>
+          <button type="button" data-shingle="#8d8a80" aria-pressed="false"><i style="--c:#8d8a80"></i>Driftwood</button>
+          <button type="button" data-shingle="#3f5568" aria-pressed="false"><i style="--c:#3f5568"></i>Slate blue</button>
+          <button type="button" data-shingle="#7a3b31" aria-pressed="false"><i style="--c:#7a3b31"></i>Barn red</button>
+          <button type="button" data-shingle="#3e5240" aria-pressed="false"><i style="--c:#3e5240"></i>Forest</button>
+        </div>
+      </div>
+      <svg class="preview" viewBox="420 220 760 640" role="img" aria-label="The house with the chosen shingle colour" data-reveal="clip"><use href="#L1" width="1600" height="1000"/></svg>
+    </div>
+  </section>
+
+  <section id="process" aria-labelledby="pr-h">
+    <div class="wrap">
+      <span class="over">How it works</span>
+      <h2 id="pr-h" style="margin-top:14px" data-split="words">No surprises, <em>start to finish.</em></h2>
+      <div class="nums" data-reveal-group="up">
+        <div><b data-count="22">22</b><span>years on Edmonton roofs</span></div>
+        <div><b data-count="4100" data-suffix="+">4,100+</b><span>roofs replaced</span></div>
+        <div><b data-count="10" data-suffix=" yr">10 yr</b><span>workmanship warranty</span></div>
+        <div><b data-count="2" data-suffix=" days">2 days</b><span>for most replacements</span></div>
+      </div>
+      <ol class="steps" data-reveal-group="up">
+        <li><h3>Inspect</h3><p>A roofer looks at every slope and the attic, and takes photos.</p></li>
+        <li><h3>Quote</h3><p>A fixed price, in writing, with the options side by side.</p></li>
+        <li><h3>Roof</h3><p>Usually two days. Tarps over the gardens, magnets for the nails.</p></li>
+        <li><h3>Check</h3><p>We walk the job with you and send the warranty papers.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section style="padding-top:0" aria-labelledby="rv-h">
+    <div class="wrap">
+      <span class="over">Reviews</span>
+      <h2 id="rv-h" style="margin-top:14px" data-split="words">From the <em>neighbours.</em></h2>
+      <div class="reviews" data-reveal-group="up">
+        <figure class="review"><span class="stars" aria-label="5 out of 5">★★★★★</span><p>"They showed me photos of every problem before quoting. New roof in two days, and the yard was cleaner than before."</p><small>Brenda L., Mill Woods</small></figure>
+        <figure class="review"><span class="stars" aria-label="5 out of 5">★★★★★</span><p>"Ice dams every spring until Summit added proper ice shield and vents. Dry ever since."</p><small>Tom R., Glenora</small></figure>
+        <figure class="review"><span class="stars" aria-label="5 out of 5">★★★★★</span><p>"Found the skylight leak two other companies missed. Fair price, fast."</p><small>Anika S., Sherwood Park</small></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote" id="quote" aria-labelledby="qt-h">
+    <div class="wrap quote-grid">
+      <div>
+        <span class="over">Free inspection</span>
+        <h2 id="qt-h" style="margin-top:14px" data-split="words">Get a <em>quote.</em></h2>
+        <p style="margin-top:16px;color:var(--ink-2)">We'll call to book a time. Inspections take about an hour, and you don't need to be home for the outside.</p>
+        <div class="hrs" data-plug="hours">
+          <div data-plug-row><span data-plug-days>Mon – Fri</span><span data-plug-time>7 am – 6 pm</span></div>
+          <div data-plug-row><span data-plug-days>Saturday</span><span data-plug-time>8 am – 2 pm</span></div>
+        </div>
+        <div data-plug="contact" hidden></div>
+        <div class="faq" data-accordion>
+          <details><summary>Can you roof in winter?</summary><div class="acc-body"><p>Yes, down to about −10 °C with cold-weather shingles and hand-sealing. Repairs happen year-round.</p></div></details>
+          <details><summary>Do you deal with insurance?</summary><div class="acc-body"><p>We write hail and wind reports with photos and meet the adjuster on the roof if you'd like.</p></div></details>
+          <details><summary>How long does a roof last?</summary><div class="acc-body"><p>Architectural shingles usually give 25 to 30 years here, if the attic is vented and the eaves are protected from ice.</p></div></details>
+        </div>
+      </div>
+      <div class="form" data-reveal="up">
+        <form data-steps action="#" aria-label="Roofing quote">
+          <div class="meta"><span data-steps-count>Step 1 of 3</span><span>One minute</span></div>
+          <div data-steps-bar style="margin-bottom:22px"><i></i></div>
+          <fieldset data-step><legend>What's going on?</legend>
+            <div class="opts"><label><input type="radio" name="need" value="replace" required> New roof</label><label><input type="radio" name="need" value="leak"> A leak</label><label><input type="radio" name="need" value="damage"> Hail or wind damage</label><label><input type="radio" name="need" value="eaves"> Eavestroughs</label><label><input type="radio" name="need" value="inspect"> Just an inspection</label><label><input type="radio" name="need" value="other"> Something else</label></div>
+            <div class="rr"><button class="btn btn-solid" data-next>Continue</button></div>
+          </fieldset>
+          <fieldset data-step><legend>About the roof</legend>
+            <div class="pair"><div class="fs"><label for="r-age">Roof age</label><select id="r-age" name="age"><option>Under 10 years</option><option>10 – 20 years</option><option>Over 20 years</option><option>Not sure</option></select></div><div class="fs"><label for="r-type">Type</label><select id="r-type" name="type"><option>Asphalt shingles</option><option>Metal</option><option>Flat</option><option>Not sure</option></select></div></div>
+            <div class="fs"><label for="r-addr">Street address</label><input id="r-addr" name="address" required autocomplete="street-address"></div>
+            <div class="rr"><button class="btn" data-back>Back</button><button class="btn btn-solid" data-next>Continue</button></div>
+          </fieldset>
+          <fieldset data-step><legend>Your details</legend>
+            <div class="fs"><label for="r-name">Name</label><input id="r-name" name="name" required autocomplete="name"></div>
+            <div class="pair"><div class="fs"><label for="r-tel">Phone</label><input id="r-tel" type="tel" name="phone" required autocomplete="tel"></div><div class="fs"><label for="r-mail">Email</label><input id="r-mail" type="email" name="email" autocomplete="email"></div></div>
+            <div class="rr"><button class="btn" data-back>Back</button><button class="btn btn-solid" type="submit">Request inspection</button></div>
+            <p style="font-size:14px;margin-top:12px;color:var(--ink-2)">Sample form: nothing is sent.</p>
+          </fieldset>
+        </form>
+        <div class="done" data-steps-done hidden><h3>We're on it.</h3><p style="margin-top:8px;color:var(--ink-2)">On a real site, Summit would call within one business day to book your inspection.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="logo" href="#top"><span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 19 L12 6 L22 19" fill="none" stroke="#fff" stroke-width="2.6" stroke-linejoin="round"/></svg></span>Summit Roofing</a>
+    <span>99 Street, Edmonton · (780) 555-0129 · <span data-year>2026</span></span>
+    <span data-plug-text="Your preview: prices and reviews are still samples.">Sample business: everything here is made up.</span>
+    <button class="mt" type="button" data-motion-toggle>Motion: on</button>
+  </div>
+</footer>
+
+<!-- Plug & Show: this sample business, swapped for a visitor's own details (see kit/plug.js). -->
+<script type="application/json" id="plug-sample">{"template":"motion-roofing","label":"Summit Roofing","name":["Summit Roofing","SUMMIT ROOFING","Summit"],"owner":["Dale"],"phone":"(780) 555-0129","city":["Edmonton"],"address":["99 Street"],"phrases":[["99 Street, Edmonton","{address?}, {city}"],["Roofers · Edmonton","Roofers · {city}"],["years on Edmonton roofs","years on {city} roofs"]],"color":{"accent":["--accent"],"text":["--on-accent"],"link":["--accent"],"bg":"--paper"}}</script>
+<script src="../../kit/plug.js"></script>
+<!-- This page's own motion settings. The Motion editor in Studio Builder changes these. -->
+<script type="application/json" id="fx">{"perLevel": 1.2, "pause": 0.6, "clouds": 1, "explode": 1, "shingle": "#4a4f57"}</script>
+<script type="application/json" id="fx-knobs">[
+  {"key": "perLevel", "label": "Scroll per zoom (screens)", "min": 0.5, "max": 3, "step": 0.1, "reload": true},
+  {"key": "pause", "label": "Rest at each level", "min": 0, "max": 1, "step": 0.05},
+  {"key": "clouds", "label": "Cloud speed", "min": 0, "max": 4, "step": 0.1},
+  {"key": "explode", "label": "Layers pull apart", "min": 0, "max": 2, "step": 0.1},
+  {"key": "shingle", "label": "Shingle colour", "type": "color"}
+]</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>window.KIT = { ease: 'power3.out', dur: 0.9, stagger: 0.07, smooth: { lerp: 0.1 }, anchorOffset: 70, cursor: false, spark: { color: ['#c2410c', '#ffb38a'], selector: '.btn, .swatches button' } };</script>
+<script src="../../kit/art.js"></script>
+<script src="../../kit/kit.js"></script>
+<script>
+(() => {
+  const K = window.KIT;
+  const FX = (window.FX = JSON.parse(document.getElementById('fx').textContent));
+  const NS = 'http://www.w3.org/2000/svg';
+  const root = document.documentElement;
+
+  // Texture drawn once: granules on the shingles, flakes in the roof deck (same every time).
+  let seed = 7;
+  const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const add = (parent, tag, attrs) => { const el = document.createElementNS(NS, tag); for (const k in attrs) el.setAttribute(k, attrs[k]); parent.appendChild(el); return el; };
+  const gran = document.getElementById('granules');
+  for (let i = 0; i < 420; i++) add(gran, 'circle', { cx: (rnd() * 1600).toFixed(0), cy: (rnd() * 1000).toFixed(0), r: (2 + rnd() * 4).toFixed(1), fill: rnd() < 0.5 ? '#000' : '#fff', opacity: (0.08 + rnd() * 0.12).toFixed(2) });
+  const flakes = document.getElementById('flakes');
+  for (let i = 0; i < 160; i++) { const x = rnd() * 1600, y = 364 + rnd() * 130, w = 30 + rnd() * 70, h = 8 + rnd() * 14; add(flakes, 'rect', { x: x.toFixed(0), y: y.toFixed(0), width: w.toFixed(0), height: h.toFixed(0), fill: rnd() < 0.5 ? '#c79c62' : '#e5c693', transform: `rotate(${(rnd() * 40 - 20).toFixed(0)} ${x.toFixed(0)} ${y.toFixed(0)})` }); }
+  document.querySelectorAll('#L3 .lab').forEach((t) => { t.setAttribute('font-family', 'Barlow Condensed, sans-serif'); t.setAttribute('font-weight', '800'); t.setAttribute('font-size', '46'); t.setAttribute('letter-spacing', '3'); t.setAttribute('fill', t.classList.contains('lab-light') ? '#ffffff' : '#1f2a33'); t.setAttribute('opacity', '0'); });
+
+  // Shingle colour: the swatches, and the editor's colour knob.
+  let shingle = '';
+  const setShingle = (c) => { if (c === shingle) return; shingle = c; root.style.setProperty('--shingle', c); document.querySelectorAll('[data-shingle]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.shingle.toLowerCase() === c.toLowerCase()))); };
+  setShingle(FX.shingle);
+  document.getElementById('swatches').addEventListener('click', (e) => { const b = e.target.closest('[data-shingle]'); if (b) { FX.shingle = b.dataset.shingle; setShingle(FX.shingle); } });
+  if (!window.gsap) return;
+  gsap.ticker.add(() => setShingle(FX.shingle));
+
+  // Labels and layers in the cross-section.
+  const layers = [...document.querySelectorAll('#L3 .ly')], labels = [...document.querySelectorAll('#L3 .lab')];
+  const explode = (e) => {
+    layers.forEach((g) => g.setAttribute('transform', `translate(0 ${(+g.dataset.move * e * FX.explode).toFixed(1)})`));
+    labels.forEach((t) => t.setAttribute('opacity', Math.min(1, e * 1.6).toFixed(2)));
+  };
+  if (K.reduce) { explode(1); return; }
+
+  // The camera: the focus spot of each level (the next level is drawn right there).
+  const R = [[640, 590, 320, 200], [700, 400, 200, 125], [670, 560, 260, 162.5]];
+  const cam = document.getElementById('cam'), view = document.getElementById('view');
+  const caps = [...document.querySelectorAll('#caps .cap')], bars = [...document.querySelectorAll('.zoom-bar i')];
+  let shown = -1, cap = 0;
+  const smooth = (t) => t * t * (3 - 2 * t);
+  const render = (p) => {
+    const k = Math.min(Math.floor(p), 3);
+    if (k !== shown) { view.setAttribute('href', '#L' + k); shown = k; }
+    if (k >= 3) { cam.removeAttribute('transform'); explode(smooth(Math.min(1, p - 3))); }
+    else {
+      let t = p - k;
+      t += (smooth(smooth(t)) - t) * FX.pause;
+      const [x, y, w] = R[k], r = w / 1600, s = Math.pow(r, t);
+      cam.setAttribute('transform', `scale(${(1 / s).toFixed(5)}) translate(${(-(x / (1 - r)) * (1 - s)).toFixed(3)} ${(-(y / (1 - r)) * (1 - s)).toFixed(3)})`);
+      explode(0);
+    }
+    bars.forEach((b, i) => gsap.set(b, { scaleX: gsap.utils.clamp(0, 1, p - i) }));
+    const c = Math.min(caps.length - 1, Math.round(p));
+    if (c !== cap) {
+      gsap.to(caps[cap], { autoAlpha: 0, y: -20, duration: 0.3, overwrite: true });
+      gsap.fromTo(caps[c], { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.5, delay: 0.1, overwrite: true });
+      cap = c;
+    }
+  };
+
+  document.getElementById('zoomPin').classList.add('is-live');
+  gsap.set(caps.slice(1), { autoAlpha: 0 });
+  const state = { p: 0 };
+  gsap.to(state, {
+    p: 4, ease: 'none', onUpdate: () => render(state.p),
+    scrollTrigger: { trigger: '#zoomPin', start: 'top top', end: () => '+=' + 4 * FX.perLevel * innerHeight, pin: true, scrub: 0.8, invalidateOnRefresh: true },
+  });
+  render(0);
+
+  // Clouds drift across the sky (in the street and behind the house).
+  const clouds = [...document.querySelectorAll('#clouds .cloud')];
+  gsap.ticker.add((t) => clouds.forEach((c) => c.setAttribute('transform', `translate(${((+c.dataset.x + t * 14 * FX.clouds * +c.dataset.s) % 1900) - 150} 0)`)));
+})();
+</script>
+</body>
+</html>

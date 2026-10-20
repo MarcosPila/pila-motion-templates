@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sudsy Paws · Sample dog grooming site</title>
+<meta name="description" content="Sample website template for a dog groomer in Victoria, BC: services and prices, the bath, reviews and a booking form. Made-up business. Toys you can throw, bubbles that pop and treats that land on the price cards, on a small physics engine.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#fff8f0">
+<script>document.documentElement.classList.add('js');setTimeout(function(){var d=document.documentElement;if(!d.classList.contains('kit-ready'))d.classList.remove('js')},4000)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="../../kit/kit.css">
+<style>
+:root {
+  --paper: #fff8f0; --card: #ffffff; --ink: #1d2b4f; --ink-2: #55607a; --line: #f0dccb;
+  --accent: #ff6f61; --on-accent: #1d2b4f; --sun: #ffc93c; --mint: #49c6a8; --sky: #5aa9e6; --lilac: #b39ddb;
+  --display: 'Fredoka', 'Trebuchet MS', sans-serif; --body: 'Nunito', system-ui, sans-serif;
+  --cursor: #ff6f61; color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 18px/1.65 var(--body); overflow-x: clip; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); font-weight: 600; margin: 0; line-height: 1.02; }
+h1 { font-size: clamp(2.8rem, 1.5rem + 5vw, 6rem); }
+h2 { font-size: clamp(2.3rem, 1.4rem + 3.4vw, 4.2rem); }
+h1 em, h2 em { font-style: normal; color: var(--accent); }
+h3 { font-size: 1.5rem; }
+p { margin: 0; }
+.wrap { width: min(1160px, 100% - 32px); margin-inline: auto; }
+.over { display: inline-block; font: 600 14px/1 var(--display); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); background: var(--sun); padding: 8px 12px; border-radius: 999px; }
+section { padding: clamp(80px, 11vw, 140px) 0; }
+.btn { display: inline-flex; align-items: center; gap: 10px; min-height: 54px; padding: 0 26px; border-radius: 999px; font: 600 17px/1 var(--display); text-decoration: none; border: 3px solid var(--ink); background: var(--card); color: var(--ink); cursor: pointer; box-shadow: 0 5px 0 var(--ink); transition: transform .15s, box-shadow .15s; }
+.btn:hover { transform: translateY(2px); box-shadow: 0 3px 0 var(--ink); }
+.btn:active { transform: translateY(5px); box-shadow: 0 0 0 var(--ink); }
+.btn-solid { background: var(--accent); color: var(--on-accent); }
+
+/* Header */
+.top { position: fixed; inset: 0 0 auto; z-index: 50; padding: 14px 0; transition: background-color .3s, padding .3s, box-shadow .3s; }
+.top.is-scrolled { background: rgb(255 248 240 / .94); backdrop-filter: blur(10px); padding: 8px 0; box-shadow: 0 2px 0 var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 26px; }
+.logo { display: inline-flex; align-items: center; gap: 10px; font: 700 1.5rem/1 var(--display); text-decoration: none; }
+.logo .mark { width: 42px; height: 42px; border-radius: 50%; background: var(--accent); display: grid; place-items: center; border: 3px solid var(--ink); }
+.logo .mark svg { width: 24px; height: 24px; }
+.nav { display: flex; gap: 22px; margin-left: auto; }
+.nav a { font: 600 17px var(--display); text-decoration: none; }
+.nav a:hover { color: var(--accent); }
+.top .btn { min-height: 46px; padding: 0 20px; box-shadow: 0 4px 0 var(--ink); }
+.menu-btn { display: none; margin-left: auto; min-height: 46px; padding: 0 18px; border-radius: 999px; border: 3px solid var(--ink); background: var(--card); color: inherit; font: 600 16px var(--display); cursor: pointer; }
+@media (max-width: 899px) {
+  .menu-btn { display: block; } .top .btn { display: none; }
+  .nav { position: fixed; inset: 0; z-index: -1; flex-direction: column; justify-content: center; align-items: center; gap: 18px; background: var(--sun); visibility: hidden; opacity: 0; transition: opacity .3s, visibility .3s; }
+  .nav.is-open { visibility: visible; opacity: 1; }
+  .nav a { font-size: 2.6rem; }
+}
+
+/* Hero: a tub of toys you can grab and throw */
+.hero { position: relative; min-height: 100svh; padding: 0; overflow: hidden; background: radial-gradient(60% 50% at 80% 20%, #ffe7c2, transparent 70%), var(--paper); }
+.toybox { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; }
+.hero .wrap { position: relative; z-index: 1; padding: 130px 0 0; pointer-events: none; }
+.hero .wrap a, .hero .wrap button { pointer-events: auto; }
+.hero h1 { margin: 20px 0 20px; max-width: 12ch; }
+.hero p { max-width: 44ch; color: var(--ink-2); font-size: 1.15rem; }
+.hero .ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+.hint { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; font: 500 15px var(--display); color: var(--ink-2); }
+.hint::before { content: '👆'; }
+
+/* Marquee */
+.belt { background: var(--ink); color: var(--paper); padding: 18px 0; font: 600 clamp(1.4rem, 1rem + 1.6vw, 2.2rem)/1 var(--display); --mq-gap: 26px; }
+.belt span::after { content: '🐾'; margin-left: 26px; font-size: .7em; }
+
+/* Prices: treats drop onto the cards */
+.prices { position: relative; }
+.price-zone { position: relative; margin-top: 70px; padding-bottom: 10px; }
+.treats { position: absolute; left: 0; right: 0; top: -120px; bottom: 0; width: 100%; height: calc(100% + 120px); pointer-events: none; z-index: 2; }
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.pcard { background: var(--card); border: 3px solid var(--ink); border-radius: 26px; padding: 28px; display: grid; gap: 10px; align-content: start; box-shadow: 0 8px 0 var(--ink); }
+.pcard .tag { justify-self: start; font: 600 13px var(--display); text-transform: uppercase; letter-spacing: .06em; padding: 5px 10px; border-radius: 999px; background: var(--c, var(--mint)); }
+.pcard .pr { font: 700 2.6rem/1 var(--display); }
+.pcard .pr small { font: 500 15px var(--body); color: var(--ink-2); }
+.pcard p { color: var(--ink-2); font-size: 16.5px; }
+.pcard ul { margin: 4px 0 0; padding: 0 0 0 20px; color: var(--ink-2); font-size: 16px; }
+.extras { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 34px; }
+.extras span { font: 500 16px var(--display); padding: 10px 16px; border-radius: 999px; border: 2px dashed var(--ink-2); }
+@media (max-width: 899px) { .cards { grid-template-columns: 1fr; } }
+
+/* The bath: bubbles rise and pop */
+.bath { position: relative; background: linear-gradient(#e3f1fc, #d9f5ee); overflow: hidden; }
+.suds { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.bath .wrap { position: relative; z-index: 1; pointer-events: none; }
+.bath-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 50px; align-items: start; }
+.bath p.lead { color: var(--ink-2); margin-top: 18px; max-width: 40ch; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; counter-reset: s; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: auto 1fr; gap: 4px 18px; align-items: center; background: rgb(255 255 255 / .82); backdrop-filter: blur(4px); border: 3px solid var(--ink); border-radius: 22px; padding: 18px 22px; }
+.steps li::before { content: counter(s); grid-row: span 2; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: var(--sky); color: #fff; font: 700 1.3rem var(--display); border: 3px solid var(--ink); }
+.steps p { color: var(--ink-2); font-size: 16px; }
+@media (max-width: 899px) { .bath-grid { grid-template-columns: 1fr; } }
+
+/* Reviews */
+.rev-head { display: flex; justify-content: space-between; align-items: end; flex-wrap: wrap; gap: 20px; }
+.car-btns { display: flex; gap: 10px; }
+.car-btns button { width: 52px; height: 52px; border-radius: 50%; border: 3px solid var(--ink); background: var(--card); font: 600 20px var(--display); color: var(--ink); cursor: pointer; box-shadow: 0 4px 0 var(--ink); }
+.reviews { margin-top: 40px; --car-gap: 18px; padding-bottom: 10px; }
+.review { width: min(360px, 80vw); background: var(--card); border: 3px solid var(--ink); border-radius: 26px; padding: 26px; display: grid; gap: 14px; align-content: start; box-shadow: 0 6px 0 var(--ink); }
+.review .who { display: flex; gap: 12px; align-items: center; }
+.review .who [data-art] { width: 52px; height: 52px; border-radius: 50%; border: 3px solid var(--ink); flex: none; }
+.review small { display: block; color: var(--ink-2); font-size: 14px; }
+.review b { font: 600 17px var(--display); }
+.review .stars { color: #f5a400; letter-spacing: .15em; }
+
+/* Book */
+.book-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 50px; align-items: start; }
+.faq { margin-top: 26px; display: grid; gap: 10px; }
+.faq details { border: 3px solid var(--ink); border-radius: 20px; background: var(--card); padding: 0 20px; }
+.faq summary { display: flex; justify-content: space-between; gap: 14px; padding: 16px 0; font: 600 1.15rem var(--display); }
+.faq summary::after { content: '+'; font-size: 1.5rem; line-height: 1; transition: transform .3s; }
+.faq details.is-open summary::after { transform: rotate(45deg); }
+.faq .acc-body p { padding: 0 0 16px; color: var(--ink-2); }
+.hrs { margin-top: 26px; background: var(--card); border: 3px solid var(--ink); border-radius: 20px; padding: 6px 20px; }
+.hrs div { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 2px dashed var(--line); }
+.hrs div:last-child { border-bottom: 0; }
+.form { background: var(--card); border: 3px solid var(--ink); border-radius: 30px; padding: clamp(22px, 4vw, 38px); box-shadow: 0 10px 0 var(--ink); }
+.form legend { font: 600 2rem var(--display); padding: 0; margin-bottom: 16px; }
+.form .meta { display: flex; justify-content: space-between; font: 500 14px var(--display); color: var(--ink-2); margin-bottom: 10px; }
+.opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.opts label { display: flex; flex-direction: column; gap: 4px; align-items: center; text-align: center; padding: 14px 10px; border-radius: 18px; border: 3px solid var(--line); cursor: pointer; font: 600 16px var(--display); }
+.opts label small { font: 400 13px var(--body); color: var(--ink-2); }
+.opts input { accent-color: var(--accent); width: 18px; height: 18px; }
+.opts label:has(input:checked) { border-color: var(--ink); background: #fff0e8; }
+.fs { display: grid; gap: 6px; margin-bottom: 14px; }
+.fs label { font: 600 14px var(--display); color: var(--ink-2); }
+.fs input, .fs select { font: inherit; padding: 12px 16px; border-radius: 16px; border: 3px solid var(--line); background: var(--paper); color: var(--ink); width: 100%; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.rr { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+.done h3 { font-size: 2.4rem; color: var(--accent); }
+@media (max-width: 899px) { .book-grid { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .pair { grid-template-columns: 1fr; } }
+
+footer { background: var(--ink); color: #d4d9e6; padding: 46px 0 38px; font-size: 16px; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 14px 30px; justify-content: space-between; align-items: center; }
+footer .logo { color: #fff; }
+footer .mt { font: 600 14px var(--display); border-radius: 999px; padding: 8px 16px; border: 2px solid currentColor; background: transparent; color: inherit; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top" data-header>
+  <div class="wrap">
+    <a class="logo" href="#top" data-plug="brand"><span class="mark" data-plug="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="#1d2b4f"><ellipse cx="12" cy="16" rx="5.4" ry="4.4"/><circle cx="5.6" cy="10.4" r="2.3"/><circle cx="9.4" cy="6.6" r="2.3"/><circle cx="14.6" cy="6.6" r="2.3"/><circle cx="18.4" cy="10.4" r="2.3"/></svg></span><span data-plug="name">Sudsy Paws</span></a>
+    <nav class="nav" id="nav" aria-label="Main"><a href="#prices">Prices</a><a href="#bath">The bath</a><a href="#reviews">Reviews</a><a href="#book">Book</a></nav>
+    <a class="btn btn-solid" href="#book">Book a groom</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle>Menu</button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <canvas class="toybox" id="toybox" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <span class="over" data-reveal="pop" data-now>Dog grooming · Victoria, BC</span>
+      <h1 data-split="words" data-split-anim="wave" data-now data-delay=".2">Clean dogs, <em>happy tails.</em></h1>
+      <p data-reveal="up" data-now data-delay=".5">Baths, haircuts and nail trims, one dog at a time, with no cages and no rushing. Your dog goes home fluffy, calm and smelling great.</p>
+      <div class="ctas" data-reveal="up" data-now data-delay=".7"><a class="btn btn-solid" href="#book">Book a groom</a><a class="btn" href="#prices">See prices</a></div>
+      <span class="hint" id="hint" data-reveal="fade" data-now data-delay="1.4">Grab a toy and throw it.</span>
+    </div>
+  </section>
+
+  <div class="belt" data-marquee data-marquee-velocity aria-label="What a groom includes">
+    <div class="mq-track"><span>Bath</span><span>Brush</span><span>Trim</span><span>Nails</span><span>Ears</span><span>Teeth</span><span>Bandana</span><span>Treat</span></div>
+  </div>
+
+  <section class="prices" id="prices" aria-labelledby="pr-h">
+    <div class="wrap">
+      <span class="over">Prices</span>
+      <h2 id="pr-h" style="margin-top:18px" data-split="words" data-split-anim="drop">Simple <em>prices.</em></h2>
+      <div class="price-zone" id="priceZone">
+        <canvas class="treats" id="treats" aria-hidden="true"></canvas>
+        <div class="cards">
+          <article class="pcard" style="--c:#c9eee4"><span class="tag">Most popular</span><h3>Bath &amp; brush</h3><p class="pr">$55 <small>and up</small></p><ul><li>Warm bath and blow-dry</li><li>Brush-out and de-mat</li><li>Nails, ears and a bandana</li></ul></article>
+          <article class="pcard" style="--c:#ffd9d4"><span class="tag">The works</span><h3>Full groom</h3><p class="pr">$85 <small>and up</small></p><ul><li>Everything in Bath &amp; brush</li><li>Haircut in the style you like</li><li>Paw pads and sanitary tidy</li></ul></article>
+          <article class="pcard" style="--c:#fde7a9"><span class="tag">Under 6 months</span><h3>Puppy intro</h3><p class="pr">$40</p><ul><li>A short, gentle first groom</li><li>Lots of treats and breaks</li><li>Face and paw tidy</li></ul></article>
+        </div>
+      </div>
+      <div class="extras" data-reveal-group="pop"><span>Nail trim $18</span><span>Teeth brushing $12</span><span>De-shed treatment $30</span><span>Blueberry facial $10</span></div>
+    </div>
+  </section>
+
+  <section class="bath" id="bath" aria-labelledby="ba-h">
+    <canvas class="suds" id="suds" aria-hidden="true"></canvas>
+    <div class="wrap bath-grid">
+      <div>
+        <span class="over">The bath</span>
+        <h2 id="ba-h" style="margin-top:18px" data-split="words" data-split-anim="wave">Bubbles, <em>not stress.</em></h2>
+        <p class="lead" data-reveal="up">Calm music, warm water, gentle shampoo, and as many breaks as your dog needs. Pop a bubble or two while you read.</p>
+      </div>
+      <ol class="steps" data-reveal-group="right">
+        <li><h3>Brush out</h3><p>Tangles and loose undercoat come out first.</p></li>
+        <li><h3>Warm bath</h3><p>Oatmeal shampoo, or hypoallergenic for sensitive skin.</p></li>
+        <li><h3>Blow-dry</h3><p>Low and quiet, with a towel break for nervous pups.</p></li>
+        <li><h3>Trim &amp; tidy</h3><p>Haircut, nails, ears and paw pads.</p></li>
+        <li><h3>Bandana &amp; a treat</h3><p>Plus a photo for you when they're ready.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="reviews" aria-labelledby="rv-h">
+    <div class="wrap" data-carousel-wrap>
+      <div class="rev-head">
+        <div><span class="over">Reviews</span><h2 id="rv-h" style="margin-top:18px" data-split="words" data-split-anim="scale">Good dogs <em>agree.</em></h2></div>
+        <div class="car-btns"><button type="button" data-car-prev aria-label="Previous review">←</button><button type="button" data-car-next aria-label="Next review">→</button></div>
+      </div>
+      <div class="reviews" data-carousel>
+        <div class="car-track">
+          <figure class="review"><span class="stars" aria-label="5 out of 5">★★★★★</span><p>"Our rescue hates being handled. Jess took it slow and he came out wagging. First time ever."</p><div class="who"><div data-art="portrait" data-seed="501" data-palette="#ffd9d4,#ffb4a8,#1d2b4f,#c98b6b"></div><div><b>Priya &amp; Biscuit</b><small>Fernwood</small></div></div></figure>
+          <figure class="review"><span class="stars" aria-label="5 out of 5">★★★★★</span><p>"The best doodle cut we've had. Exactly what I asked for, and she smelled amazing for a week."</p><div class="who"><div data-art="portrait" data-seed="507" data-palette="#c9eee4,#9fdccb,#1d2b4f,#e0b48f"></div><div><b>Mark &amp; Juniper</b><small>Oak Bay</small></div></div></figure>
+          <figure class="review"><span class="stars" aria-label="5 out of 5">★★★★★</span><p>"No cages, they text a photo when he's ready, and the prices are exactly what the website says."</p><div class="who"><div data-art="portrait" data-seed="512" data-palette="#fde7a9,#f7d27a,#1d2b4f,#d9a07e"></div><div><b>Elena &amp; Pip</b><small>James Bay</small></div></div></figure>
+          <figure class="review"><span class="stars" aria-label="5 out of 5">★★★★★</span><p>"Puppy intro was perfect: short, lots of treats, no fear. Now he runs to the door."</p><div class="who"><div data-art="portrait" data-seed="518" data-palette="#e3f1fc,#bcdcf5,#1d2b4f,#c99a5b"></div><div><b>Sam &amp; Waffles</b><small>Saanich</small></div></div></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="book" aria-labelledby="bk-h" style="padding-top:20px">
+    <div class="wrap book-grid">
+      <div>
+        <span class="over">Book</span>
+        <h2 id="bk-h" style="margin-top:18px" data-split="words" data-split-anim="wave">Book a <em>groom.</em></h2>
+        <p style="margin-top:16px;color:var(--ink-2)">Most grooms take two to three hours. We'll text you when your dog is ready.</p>
+        <div class="hrs" data-plug="hours" data-reveal="up">
+          <div data-plug-row><span data-plug-days>Tue – Fri</span><span data-plug-time>8 am – 5 pm</span></div>
+          <div data-plug-row><span data-plug-days>Saturday</span><span data-plug-time>9 am – 3 pm</span></div>
+          <div data-plug-row><span data-plug-days>Sun – Mon</span><span data-plug-time>Closed</span></div>
+        </div>
+        <div data-plug="contact" hidden></div>
+        <div class="faq" data-accordion>
+          <details><summary>Do you use cages?</summary><div class="acc-body"><p>Never. Dogs wait in a gated lounge with a bed and water, or with us.</p></div></details>
+          <details><summary>What if my dog is nervous?</summary><div class="acc-body"><p>Book the quiet first slot of the day. We go slowly, take breaks, and stop if it's too much.</p></div></details>
+          <details><summary>Do you need vaccine records?</summary><div class="acc-body"><p>Yes: rabies and DHPP, from your vet, before the first visit.</p></div></details>
+        </div>
+      </div>
+      <div class="form" data-reveal="up">
+        <form data-steps action="#" aria-label="Book a dog groom">
+          <div class="meta"><span data-steps-count>Step 1 of 3</span><span>One minute</span></div>
+          <div data-steps-bar style="margin-bottom:22px"><i></i></div>
+          <fieldset data-step><legend>How big is your dog?</legend>
+            <div class="opts"><label><input type="radio" name="size" value="s" required> Small<small>under 10 kg</small></label><label><input type="radio" name="size" value="m"> Medium<small>10 – 25 kg</small></label><label><input type="radio" name="size" value="l"> Large<small>25 – 40 kg</small></label><label><input type="radio" name="size" value="xl"> Giant<small>over 40 kg</small></label></div>
+            <div class="rr"><button class="btn btn-solid" data-next>Continue</button></div>
+          </fieldset>
+          <fieldset data-step><legend>What and when?</legend>
+            <div class="fs"><label for="g-svc">Service</label><select id="g-svc" name="service"><option>Bath &amp; brush</option><option>Full groom</option><option>Puppy intro</option><option>Nail trim only</option></select></div>
+            <div class="pair"><div class="fs"><label for="g-date">Date</label><input id="g-date" type="date" name="date" required></div><div class="fs"><label for="g-dog">Dog's name</label><input id="g-dog" name="dog" required></div></div>
+            <div class="rr"><button class="btn" data-back>Back</button><button class="btn btn-solid" data-next>Continue</button></div>
+          </fieldset>
+          <fieldset data-step><legend>About you</legend>
+            <div class="fs"><label for="g-name">Your name</label><input id="g-name" name="name" required autocomplete="name"></div>
+            <div class="pair"><div class="fs"><label for="g-tel">Phone</label><input id="g-tel" type="tel" name="phone" required autocomplete="tel"></div><div class="fs"><label for="g-mail">Email</label><input id="g-mail" type="email" name="email" autocomplete="email"></div></div>
+            <div class="rr"><button class="btn" data-back>Back</button><button class="btn btn-solid" type="submit">Request a time</button></div>
+            <p style="font-size:14px;margin-top:12px;color:var(--ink-2)">Sample form: nothing is sent.</p>
+          </fieldset>
+        </form>
+        <div class="done" data-steps-done hidden><h3>Woof! 🐶</h3><p style="margin-top:8px;color:var(--ink-2)">On a real site, Sudsy Paws would text you to confirm the time.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="logo" href="#top"><span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="#1d2b4f"><ellipse cx="12" cy="16" rx="5.4" ry="4.4"/><circle cx="5.6" cy="10.4" r="2.3"/><circle cx="9.4" cy="6.6" r="2.3"/><circle cx="14.6" cy="6.6" r="2.3"/><circle cx="18.4" cy="10.4" r="2.3"/></svg></span>Sudsy Paws</a>
+    <span>Fort St, Victoria · (250) 555-0186 · <span data-year>2026</span></span>
+    <span data-plug-text="Your preview: prices and reviews are still samples.">Sample business: everything here is made up.</span>
+    <button class="mt" type="button" data-motion-toggle>Motion: on</button>
+  </div>
+</footer>
+
+<!-- Plug & Show: this sample business, swapped for a visitor's own details (see kit/plug.js). -->
+<script type="application/json" id="plug-sample">{"template":"motion-pet-grooming","label":"Sudsy Paws","name":["Sudsy Paws Grooming","Sudsy Paws"],"owner":["Jess"],"phone":"(250) 555-0186","city":["Victoria"],"address":["Fort Street","Fort St"],"phrases":[["Fort St, Victoria","{address?}, {city}"],["Dog grooming · Victoria, BC","Dog grooming · {city}"]],"color":{"accent":["--accent"],"text":["--on-accent"],"bg":"--paper"}}</script>
+<script src="../../kit/plug.js"></script>
+<!-- This page's own motion settings. The Motion editor in Studio Builder changes these. -->
+<script type="application/json" id="fx">{"gravity": 1, "bounce": 0.45, "toys": 24, "toss": 1, "shake": 1, "bubbles": 22, "rise": 1, "treats": 16}</script>
+<script type="application/json" id="fx-knobs">[
+  {"key": "gravity", "label": "Gravity", "min": 0, "max": 3, "step": 0.05},
+  {"key": "bounce", "label": "Bounciness", "min": 0, "max": 0.95, "step": 0.05},
+  {"key": "toys", "label": "Toys in the hero", "min": 6, "max": 60, "step": 1, "reload": true},
+  {"key": "toss", "label": "Throw strength", "min": 0.2, "max": 3, "step": 0.1},
+  {"key": "shake", "label": "Jump when scrolling", "min": 0, "max": 3, "step": 0.1},
+  {"key": "bubbles", "label": "Bubbles in the bath", "min": 0, "max": 60, "step": 1, "reload": true},
+  {"key": "rise", "label": "Bubble speed", "min": 0.1, "max": 3, "step": 0.1},
+  {"key": "treats", "label": "Treats on the price cards", "min": 0, "max": 40, "step": 1, "reload": true}
+]</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Draggable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/InertiaPlugin.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>window.KIT = { ease: 'back.out(1.7)', dur: 0.8, stagger: 0.06, smooth: { lerp: 0.12 }, anchorOffset: 70, cursor: false, spark: { color: ['#ff6f61', '#ffc93c', '#49c6a8', '#5aa9e6'], kind: 'confetti', count: 20, selector: '.btn' } };</script>
+<script src="../../kit/art.js"></script>
+<script src="../../kit/kit.js"></script>
+<script>
+(() => {
+  const K = window.KIT;
+  const FX = (window.FX = JSON.parse(document.getElementById('fx').textContent));
+  if (!window.gsap) return;
+
+  /* A small physics world: round bodies, gravity, bounces, walls and boxes to land on. */
+  function world(cv, o = {}) {
+    const ctx = cv.getContext('2d');
+    const W = { ctx, bodies: [], boxes: [], w: 0, h: 0, dpr: 1, held: null, px: 0, py: 0 };
+    W.size = () => { W.dpr = Math.min(devicePixelRatio || 1, 2); W.w = cv.clientWidth; W.h = cv.clientHeight; cv.width = W.w * W.dpr; cv.height = W.h * W.dpr; };
+    W.size();
+    W.step = (dt) => {
+      const n = 4, h = Math.min(dt, 1 / 30) / n, g = (o.gravity ? o.gravity() : FX.gravity) * 2200, e = FX.bounce;
+      for (let s = 0; s < n; s++) {
+        for (const b of W.bodies) {
+          if (b === W.held) { b.vx = ((W.px - b.x) / h) * 0.18; b.vy = ((W.py - b.y) / h) * 0.18; }
+          else { b.vy += g * (b.lift ?? 1) * h; if (b.wobble) b.vx += Math.sin(b.y / 40 + b.ph) * b.wobble * h; }
+          b.vx *= 0.9995; b.vy *= 0.9995;
+          b.x += b.vx * h; b.y += b.vy * h;
+        }
+        const B = W.bodies;
+        for (let i = 0; i < B.length; i++) for (let j = i + 1; j < B.length; j++) {
+          const a = B[i], b = B[j], dx = b.x - a.x, dy = b.y - a.y, rr = a.r + b.r, d2 = dx * dx + dy * dy;
+          if (d2 >= rr * rr || d2 < 1e-6) continue;
+          const d = Math.sqrt(d2), nx = dx / d, ny = dy / d, ov = rr - d;
+          const ma = a === W.held ? 0 : 1, mb = b === W.held ? 0 : 1, tot = ma + mb || 1;
+          a.x -= (nx * ov * ma) / tot; a.y -= (ny * ov * ma) / tot; b.x += (nx * ov * mb) / tot; b.y += (ny * ov * mb) / tot;
+          const rv = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny;
+          if (rv < 0) { const k = (-(1 + e * (o.soft ?? 1)) * rv) / tot; a.vx -= k * nx * ma; a.vy -= k * ny * ma; b.vx += k * nx * mb; b.vy += k * ny * mb; }
+        }
+        for (const b of B) {
+          for (const x of W.boxes) {
+            const cx = Math.max(x.x, Math.min(b.x, x.x + x.w)), cy = Math.max(x.y, Math.min(b.y, x.y + x.h));
+            let dx = b.x - cx, dy = b.y - cy, d2 = dx * dx + dy * dy;
+            if (d2 >= b.r * b.r) continue;
+            if (d2 < 1e-6) { dx = 0; dy = -1; d2 = 1; }
+            const d = Math.sqrt(d2), nx = dx / d, ny = dy / d;
+            b.x = cx + nx * b.r; b.y = cy + ny * b.r;
+            const vn = b.vx * nx + b.vy * ny;
+            if (vn < 0) { b.vx -= (1 + e) * vn * nx; b.vy -= (1 + e) * vn * ny; b.vx *= 0.97; }
+          }
+          if (b.x < b.r) { b.x = b.r; if (b.vx < 0) b.vx = -b.vx * e; }
+          if (b.x > W.w - b.r) { b.x = W.w - b.r; if (b.vx > 0) b.vx = -b.vx * e; }
+          if (o.floor !== false && b.y > W.h - b.r) { b.y = W.h - b.r; if (b.vy > 0) b.vy = -b.vy * e; b.vx *= 0.985; }
+        }
+      }
+      for (const b of W.bodies) b.a += (b.vx * Math.min(dt, 1 / 30)) / b.r;
+    };
+    W.at = (x, y) => { for (let i = W.bodies.length - 1; i >= 0; i--) { const b = W.bodies[i]; if ((b.x - x) ** 2 + (b.y - y) ** 2 < b.r * b.r) return b; } return null; };
+    W.clear = () => { ctx.setTransform(W.dpr, 0, 0, W.dpr, 0, 0); ctx.clearRect(0, 0, W.w, W.h); };
+    return W;
+  }
+
+  /* Drawing: stickers with a word or an icon, tennis balls, bones, bubbles. */
+  const INK = '#1d2b4f';
+  const paw = (c, s, col) => { c.fillStyle = col; c.beginPath(); c.ellipse(0, s * 0.28, s * 0.42, s * 0.34, 0, 0, 7); c.fill(); [[-0.5, -0.18], [-0.2, -0.5], [0.2, -0.5], [0.5, -0.18]].forEach(([x, y]) => { c.beginPath(); c.arc(x * s, y * s, s * 0.17, 0, 7); c.fill(); }); };
+  const bone = (c, s, col) => { c.fillStyle = col; c.strokeStyle = INK; c.lineWidth = Math.max(2, s * 0.08); c.beginPath(); c.roundRect(-s * 0.62, -s * 0.18, s * 1.24, s * 0.36, s * 0.1); [[-0.62, -0.2], [-0.62, 0.2], [0.62, -0.2], [0.62, 0.2]].forEach(([x, y]) => c.arc(x * s, y * s, s * 0.24, 0, 7)); c.fill(); };
+  const drawBody = (c, b) => {
+    c.save(); c.translate(b.x, b.y); c.rotate(b.a);
+    if (b.kind === 'ball') {
+      c.fillStyle = '#c8e04a'; c.beginPath(); c.arc(0, 0, b.r, 0, 7); c.fill();
+      c.strokeStyle = '#fff'; c.lineWidth = b.r * 0.12; c.beginPath(); c.arc(-b.r * 1.05, 0, b.r * 0.8, -1, 1); c.stroke(); c.beginPath(); c.arc(b.r * 1.05, 0, b.r * 0.8, 2.14, 4.14); c.stroke();
+      c.strokeStyle = INK; c.lineWidth = 3; c.beginPath(); c.arc(0, 0, b.r - 1.5, 0, 7); c.stroke();
+    } else if (b.kind === 'treat') {
+      bone(c, b.r * 1.15, b.col);
+    } else {
+      c.fillStyle = b.col; c.beginPath(); c.arc(0, 0, b.r, 0, 7); c.fill();
+      c.strokeStyle = INK; c.lineWidth = 3; c.stroke();
+      if (b.kind === 'paw') paw(c, b.r * 0.95, INK);
+      else if (b.kind === 'bone') { c.rotate(-0.6); bone(c, b.r * 0.85, '#fff'); c.lineWidth = 2.5; c.stroke(); }
+      else { c.fillStyle = INK; c.font = `600 ${Math.round(b.r * 0.42)}px Fredoka, sans-serif`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(b.label, 0, 1); }
+    }
+    c.restore();
+  };
+  const bubble = (c, b, t) => {
+    const g = c.createRadialGradient(b.x - b.r * 0.35, b.y - b.r * 0.35, b.r * 0.1, b.x, b.y, b.r);
+    g.addColorStop(0, 'rgba(255,255,255,.95)'); g.addColorStop(0.3, 'rgba(255,255,255,.2)'); g.addColorStop(0.8, 'rgba(255,255,255,.3)'); g.addColorStop(1, 'rgba(255,255,255,.9)');
+    c.fillStyle = g; c.beginPath(); c.arc(b.x, b.y, b.r, 0, 7); c.fill();
+    c.strokeStyle = `hsla(${(t * 40 + b.ph * 60) % 360}, 75%, 62%, .8)`; c.lineWidth = 2.5; c.stroke();
+  };
+
+  const COLS = ['#ff6f61', '#ffc93c', '#49c6a8', '#5aa9e6', '#b39ddb', '#ff9eb5', '#ffffff'];
+  const WORDS = ['Bath', 'Brush', 'Nails', 'Teeth', 'Ears', 'Trim', 'Fluff', 'Bows', 'Treat', 'Good dog'];
+  const pick = (a) => a[(Math.random() * a.length) | 0];
+  const scale = () => gsap.utils.clamp(0.55, 1, Math.min(innerWidth / 1200, innerHeight / 850));
+
+  /* 1 · The hero toy box */
+  const toyCv = document.getElementById('toybox'), toys = world(toyCv);
+  const makeToys = () => {
+    const s = scale();
+    toys.bodies = Array.from({ length: FX.toys }, (_, i) => {
+      const kind = i % 7 === 3 ? 'ball' : i % 7 === 5 ? 'paw' : i % 7 === 6 ? 'bone' : 'word';
+      const label = WORDS[i % WORDS.length];
+      const r = (kind === 'word' ? 30 + label.length * 3.6 : kind === 'ball' ? 28 : 34) * s;
+      return { kind, label, r, col: kind === 'ball' ? '' : COLS[i % COLS.length], x: r + Math.random() * (toys.w - 2 * r), y: -r - Math.random() * toys.h * 0.6, vx: 0, vy: 300, a: (Math.random() - 0.5) * 0.6 };
+    });
+  };
+  const drawToys = () => { toys.clear(); for (const b of toys.bodies) drawBody(toys.ctx, b); };
+  makeToys();
+
+  /* 2 · Treats that land on the price cards */
+  const zone = document.getElementById('priceZone'), treatCv = document.getElementById('treats'), treats = world(treatCv);
+  const cardBoxes = () => {
+    const c = treatCv.getBoundingClientRect();
+    treats.boxes = [...zone.querySelectorAll('.pcard')].map((el) => { const r = el.getBoundingClientRect(); return { x: r.left - c.left, y: r.top - c.top, w: r.width, h: r.height }; });
+  };
+  const dropTreats = () => {
+    const s = scale();
+    treats.bodies = Array.from({ length: FX.treats }, (_, i) => { const r = (14 + Math.random() * 6) * s; return { kind: 'treat', r, col: pick(['#e9b77c', '#d9935a', '#f2cf9b']), x: r + Math.random() * (treats.w - 2 * r), y: -r - i * 34, vx: (Math.random() - 0.5) * 80, vy: 0, a: Math.random() * 6 }; });
+  };
+  const drawTreats = () => { treats.clear(); for (const b of treats.bodies) drawBody(treats.ctx, b); };
+
+  /* 3 · Bubbles in the bath */
+  const sudsCv = document.getElementById('suds'), suds = world(sudsCv, { floor: false, soft: 0.3, gravity: () => -0.12 * FX.rise });
+  const newBubble = (b, below) => { const s = scale(); b.r = (14 + Math.random() * 34) * s; b.x = b.r + Math.random() * (suds.w - 2 * b.r); b.y = below ? suds.h + b.r + Math.random() * suds.h * 0.6 : Math.random() * suds.h; b.vx = 0; b.vy = 0; b.ph = Math.random() * 6; b.wobble = 40; b.lift = 1; b.a = 0; return b; };
+  suds.bodies = Array.from({ length: FX.bubbles }, () => newBubble({}, false));
+  const drawSuds = (t) => { suds.clear(); for (const b of suds.bodies) bubble(suds.ctx, b, t); };
+
+  // Reduced motion: everything settles first, then is drawn once.
+  if (K.reduce) {
+    toys.bodies.forEach((b, i) => (b.y = toys.h - b.r - (i % 3) * b.r));
+    for (let i = 0; i < 360; i++) toys.step(1 / 60);
+    drawToys(); drawSuds(0);
+    document.getElementById('hint').hidden = true;
+    return;
+  }
+
+  // Grab and throw (mouse); on touch, a tap makes a toy jump. A click on empty space pushes toys away.
+  if (!K.fine) document.getElementById('hint').textContent = 'Tap a toy.';
+  const local = (e) => { const r = toyCv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+  toyCv.addEventListener('pointerdown', (e) => {
+    const [x, y] = local(e), b = toys.at(x, y);
+    if (b && e.pointerType === 'mouse') { toys.held = b; toys.px = x; toys.py = y; toyCv.setPointerCapture(e.pointerId); toyCv.style.cursor = 'grabbing'; e.preventDefault(); return; }
+    if (b) { b.vy = -900 - Math.random() * 400; b.vx = (Math.random() - 0.5) * 500; return; }
+    for (const t of toys.bodies) { const dx = t.x - x, dy = t.y - y, d = Math.hypot(dx, dy) || 1; if (d < 260) { const f = (1 - d / 260) * 1400; t.vx += (dx / d) * f; t.vy += (dy / d) * f - 200; } }
+  });
+  toyCv.addEventListener('pointermove', (e) => {
+    const [x, y] = local(e);
+    if (toys.held) { toys.px = x; toys.py = y; return; }
+    if (e.pointerType === 'mouse') toyCv.style.cursor = toys.at(x, y) ? 'grab' : 'default';
+  });
+  const release = () => {
+    const b = toys.held;
+    if (!b) return;
+    toys.held = null; toyCv.style.cursor = 'default';
+    const sp = Math.hypot(b.vx, b.vy), max = 3200;
+    b.vx *= FX.toss; b.vy *= FX.toss;
+    if (sp * FX.toss > max) { b.vx *= max / (sp * FX.toss); b.vy *= max / (sp * FX.toss); }
+  };
+  toyCv.addEventListener('pointerup', release);
+  toyCv.addEventListener('pointercancel', release);
+
+  // Pop bubbles by touching them.
+  const popAt = (cx, cy) => {
+    const r = sudsCv.getBoundingClientRect(), b = suds.at(cx - r.left, cy - r.top);
+    if (!b) return;
+    K.burst(cx, cy, { color: ['#ffffff', '#5aa9e6', '#b39ddb'], count: 10, size: b.r * 0.6 });
+    newBubble(b, true);
+  };
+  document.getElementById('bath').addEventListener('pointermove', (e) => { if (e.pointerType === 'mouse') popAt(e.clientX, e.clientY); });
+  document.getElementById('bath').addEventListener('pointerdown', (e) => popAt(e.clientX, e.clientY));
+
+  // Fast scrolling makes the toys jump.
+  let lastKick = 0;
+  const shake = (t) => {
+    const v = Math.abs(K.velocity);
+    if (FX.shake > 0 && v > 900 && t - lastKick > 0.25) {
+      lastKick = t;
+      const k = Math.min(v / 3000, 1) * 700 * FX.shake;
+      for (const b of toys.bodies) if (b !== toys.held && b.y > toys.h - b.r * 3) { b.vy -= k * (0.6 + Math.random() * 0.6); b.vx += (Math.random() - 0.5) * k * 0.5; }
+    }
+  };
+
+  // Run each world only while it's on screen.
+  const on = new Set();
+  const io = new IntersectionObserver((es) => es.forEach((e) => (e.isIntersecting ? on.add(e.target) : on.delete(e.target))), { rootMargin: '100px' });
+  [toyCv, treatCv, sudsCv].forEach((c) => io.observe(c));
+  ScrollTrigger.create({ trigger: zone, start: 'top 75%', once: true, onEnter: () => { cardBoxes(); dropTreats(); } });
+
+  gsap.ticker.add((t, dms) => {
+    const dt = dms / 1000;
+    if (on.has(toyCv)) { shake(t); toys.step(dt); drawToys(); }
+    if (on.has(treatCv) && treats.bodies.length) { treats.step(dt); drawTreats(); }
+    if (on.has(sudsCv)) {
+      suds.step(dt);
+      for (const b of suds.bodies) if (b.y < -b.r * 2) newBubble(b, true);
+      drawSuds(t);
+    }
+  });
+
+  addEventListener('resize', () => {
+    toys.size(); treats.size(); suds.size(); cardBoxes();
+    for (const b of toys.bodies) b.x = Math.min(b.x, toys.w - b.r);
+  });
+  ScrollTrigger.addEventListener('refresh', cardBoxes);
+})();
+</script>
+</body>
+</html>

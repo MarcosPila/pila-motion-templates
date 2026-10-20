@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cold Snap Brewing · Sample brewery and taproom site</title>
+<meta name="description" content="Sample website template for a craft brewery and taproom in Halifax: what's on tap, events, tours and a booking form. Made-up business. Kinetic type: letters swell, stretch, roll and fill with beer.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1d1813">
+<script>document.documentElement.classList.add('js');setTimeout(function(){var d=document.documentElement;if(!d.classList.contains('kit-ready'))d.classList.remove('js')},4000)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,100..900&family=DM+Sans:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../../kit/kit.css">
+<style>
+:root {
+  --paper: #f2e8d5; --card: #fbf5e9; --ink: #1d1813; --ink-2: #5d5246; --line: #dccdb2;
+  --accent: #e89a2c; --red: #b8321f; --on-accent: #1d1813; --foam: #fffaf0; --dark: #1d1813;
+  --display: 'Anybody', 'Arial Narrow', system-ui, sans-serif; --body: 'DM Sans', system-ui, sans-serif;
+  --cursor: #b8321f; color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.65 var(--body); overflow-x: clip; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); margin: 0; line-height: .92; text-transform: uppercase; font-variation-settings: 'wght' 850, 'wdth' 100; font-weight: 850; }
+h2 { font-size: clamp(2.6rem, 1.4rem + 5vw, 6rem); font-variation-settings: 'wght' 850, 'wdth' 80; }
+h2 em { font-style: normal; color: var(--red); }
+h3 { font-size: 1.6rem; font-variation-settings: 'wght' 800, 'wdth' 90; }
+p { margin: 0; }
+.wrap { width: min(1200px, 100% - 32px); margin-inline: auto; }
+.over { font: 700 12.5px/1 var(--body); letter-spacing: .24em; text-transform: uppercase; color: var(--red); }
+section { padding: clamp(80px, 11vw, 140px) 0; }
+.btn { display: inline-flex; align-items: center; gap: 10px; min-height: 54px; padding: 0 26px; border-radius: 999px; font: 800 15px/1 var(--display); font-variation-settings: 'wght' 800, 'wdth' 110; letter-spacing: .04em; text-transform: uppercase; text-decoration: none; border: 2px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; transition: background-color .25s, color .25s, font-variation-settings .35s; }
+.btn:hover { background: var(--ink); color: var(--paper); font-variation-settings: 'wght' 900, 'wdth' 140; }
+.btn-solid { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn-solid:hover { background: var(--ink); border-color: var(--ink); color: var(--accent); }
+
+/* Header */
+.top { position: fixed; inset: 0 0 auto; z-index: 50; padding: 16px 0; transition: background-color .3s, padding .3s; }
+.top.is-scrolled { background: rgb(242 232 213 / .92); backdrop-filter: blur(10px); padding: 10px 0; border-bottom: 2px solid var(--ink); }
+.top .wrap { display: flex; align-items: center; gap: 26px; }
+.logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font: 900 1.35rem/1 var(--display); font-variation-settings: 'wght' 900, 'wdth' 120; text-transform: uppercase; }
+.logo .mark { width: 38px; height: 38px; display: grid; place-items: center; }
+.logo .mark svg { width: 100%; height: 100%; }
+.nav { display: flex; gap: 24px; margin-left: auto; }
+.nav a { font: 700 14px var(--body); letter-spacing: .1em; text-transform: uppercase; text-decoration: none; }
+.nav a:hover { color: var(--red); }
+.menu-btn { display: none; margin-left: auto; min-height: 42px; padding: 0 18px; border-radius: 999px; border: 2px solid var(--ink); background: none; color: inherit; font: 700 13px var(--body); letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+@media (max-width: 899px) {
+  .menu-btn { display: block; } .top .btn { display: none; }
+  .nav { position: fixed; inset: 0; z-index: -1; flex-direction: column; justify-content: center; align-items: center; gap: 18px; background: var(--accent); visibility: hidden; opacity: 0; transition: opacity .3s, visibility .3s; }
+  .nav.is-open { visibility: visible; opacity: 1; }
+  .nav a { font: 900 3rem/1 var(--display); font-variation-settings: 'wght' 900, 'wdth' 70; }
+}
+
+/* Hero: three lines of type that fill the width and swell near the cursor */
+.hero { min-height: 100svh; display: grid; align-content: center; padding: 110px 0 60px; overflow: hidden; }
+.kin { margin: 0; font-family: var(--display); text-transform: uppercase; line-height: .84; }
+.kin .line { display: block; width: max-content; white-space: nowrap; font-variation-settings: 'wght' 850, 'wdth' 100; font-size: clamp(4rem, 17vw, 16rem); transform-origin: 0 50%; }
+.kin .line:nth-child(2) { color: var(--red); }
+.kin .line:nth-child(3) { font-variation-settings: 'wght' 850, 'wdth' 60; }
+.kin .ch { display: inline-block; font-variation-settings: inherit; will-change: font-variation-settings; }
+.hero-foot { display: grid; grid-template-columns: 1.2fr .8fr; gap: 30px; align-items: end; margin-top: 30px; }
+.hero-foot p { font-size: 1.15rem; max-width: 46ch; color: var(--ink-2); }
+.hero-foot .ctas { display: flex; flex-wrap: wrap; gap: 12px; justify-content: end; }
+@media (max-width: 799px) { .hero-foot { grid-template-columns: 1fr; } .hero-foot .ctas { justify-content: start; } }
+
+/* Styles marquee */
+.styles { background: var(--dark); color: var(--accent); padding: 22px 0; --mq-gap: 30px; font: 900 clamp(2rem, 1.4rem + 2.4vw, 3.4rem)/1 var(--display); font-variation-settings: 'wght' 900, 'wdth' 130; text-transform: uppercase; }
+.styles span::after { content: '✦'; margin-left: 30px; color: var(--foam); font-size: .6em; vertical-align: middle; }
+
+/* On tap: names roll like slot reels */
+.taps { margin-top: 50px; border-top: 2px solid var(--ink); }
+.tap { display: grid; grid-template-columns: 1.4fr 1fr auto auto; gap: 20px; align-items: center; padding: 22px 0; border-bottom: 2px solid var(--ink); cursor: default; }
+.tap .name { font: 900 clamp(2rem, 1.2rem + 3.4vw, 4.2rem)/1 var(--display); font-variation-settings: 'wght' 900, 'wdth' 85; text-transform: uppercase; }
+.reel { position: relative; display: inline-block; height: 1em; overflow: hidden; vertical-align: top; }
+.reel .ghost { visibility: hidden; }
+.reel .strip { position: absolute; left: 0; right: 0; top: 0; display: flex; flex-direction: column; align-items: center; }
+.reel .strip span { display: block; height: 1em; line-height: 1; }
+.tap .style { color: var(--ink-2); font-weight: 500; }
+.tap .abv { font: 800 1.4rem var(--display); font-variation-settings: 'wght' 800, 'wdth' 110; }
+.tap .pr { font: 800 1.1rem var(--display); background: var(--accent); padding: 8px 14px; border-radius: 999px; }
+.tap:hover .name { color: var(--red); }
+@media (max-width: 699px) { .tap { grid-template-columns: 1fr auto; } .tap .style { grid-column: 1 / -1; grid-row: 2; } .tap .pr { display: none; } }
+
+/* Stretch: a pinned word that pulls and ripples */
+.stretch { background: var(--accent); padding: 0; overflow: hidden; }
+.stretch-pin { min-height: 100svh; display: grid; align-content: center; justify-items: center; gap: 24px; padding: 80px 0; }
+.stretch .fresh { margin: 0; font: 900 clamp(4rem, 18vw, 16rem)/.8 var(--display); text-transform: uppercase; display: flex; align-items: flex-end; height: .9em; }
+.fresh .ch { display: inline-block; transform-origin: 50% 100%; font-variation-settings: 'wght' 900, 'wdth' 100; }
+.stretch p:not(.fresh) { font: 700 clamp(1.1rem, .9rem + .8vw, 1.5rem) var(--body); text-align: center; max-width: 30ch; }
+
+/* The brewery */
+.story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+.story-grid p { color: var(--ink-2); margin-top: 18px; font-size: 1.08rem; }
+.pics { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.pics [data-art] { aspect-ratio: 3 / 4; border-radius: 22px; border: 2px solid var(--ink); }
+.pics [data-art]:nth-child(2) { margin-top: 60px; }
+.nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 30px; }
+.nums div { border-top: 2px solid var(--ink); padding-top: 12px; }
+.nums b { display: block; font: 900 2.8rem/1 var(--display); font-variation-settings: 'wght' 900, 'wdth' 80; }
+.nums span { color: var(--ink-2); font-size: 14px; }
+@media (max-width: 899px) { .story-grid { grid-template-columns: 1fr; } }
+
+/* Taproom: words travel along a wave */
+.taproom { background: var(--dark); color: var(--foam); overflow: hidden; }
+.taproom .over { color: var(--accent); }
+.taproom h2 em { color: var(--accent); }
+.wave-text { width: 100%; height: auto; display: block; margin: 20px 0 30px; overflow: visible; }
+.wave-text text { font: 900 64px var(--display); font-variation-settings: 'wght' 900, 'wdth' 110; text-transform: uppercase; fill: var(--accent); }
+.tap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.tap-grid p { color: #d9cdb8; }
+.hrs { border-top: 2px solid #4b4036; }
+.hrs div { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 2px solid #4b4036; }
+.hrs span:first-child { font-weight: 700; }
+@media (max-width: 799px) { .tap-grid { grid-template-columns: 1fr; } }
+
+/* Pour: the word fills with beer as you scroll */
+.pour { padding: clamp(60px, 9vw, 110px) 0; }
+.pour-svg { display: block; width: 100%; height: auto; }
+.pour-txt { font: 900 300px var(--display); font-variation-settings: 'wght' 900, 'wdth' 118; }
+.pour-outline { fill: none; stroke: var(--ink); stroke-width: 5; }
+.pour p { text-align: center; color: var(--ink-2); font-size: 1.1rem; margin-top: 10px; }
+
+/* Events: stacked cards */
+.events { margin-top: 50px; --stack-top: 110px; }
+.stack-card { display: grid; grid-template-columns: auto 1fr auto; gap: 28px; align-items: center; padding: clamp(22px, 4vw, 40px); border-radius: 28px; border: 2px solid var(--ink); background: var(--card); margin-bottom: 18px; min-height: 220px; }
+.stack-card:nth-child(2) { background: #f6d7a4; }
+.stack-card:nth-child(3) { background: #e8b9a7; }
+.stack-card .day { font: 900 clamp(3rem, 2rem + 4vw, 6rem)/.8 var(--display); font-variation-settings: 'wght' 900, 'wdth' 60; text-transform: uppercase; }
+.stack-card p { color: var(--ink-2); margin-top: 8px; }
+.stack-card .when { font: 800 1rem var(--display); text-transform: uppercase; white-space: nowrap; }
+@media (max-width: 699px) { .stack-card { grid-template-columns: 1fr; gap: 10px; } }
+
+/* Tours and FAQ */
+.book-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start; }
+.faq { margin-top: 30px; border-top: 2px solid var(--ink); }
+.faq details { border-bottom: 2px solid var(--ink); }
+.faq summary { display: flex; justify-content: space-between; gap: 16px; padding: 18px 0; font: 800 1.25rem var(--display); font-variation-settings: 'wght' 800, 'wdth' 95; text-transform: uppercase; }
+.faq summary::after { content: '+'; font-size: 1.6rem; line-height: 1; transition: transform .3s; }
+.faq details.is-open summary::after { transform: rotate(45deg); }
+.faq .acc-body p { padding: 0 0 18px; color: var(--ink-2); }
+.form { background: var(--card); border: 2px solid var(--ink); border-radius: 28px; padding: clamp(22px, 4vw, 38px); }
+.form legend { font: 900 2rem var(--display); font-variation-settings: 'wght' 900, 'wdth' 85; text-transform: uppercase; padding: 0; margin-bottom: 16px; }
+.form .meta { display: flex; justify-content: space-between; font: 700 12.5px var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 10px; }
+.opts { display: grid; gap: 8px; }
+.opts label { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 14px 16px; border-radius: 16px; border: 2px solid var(--line); cursor: pointer; font-weight: 500; }
+.opts label span { display: flex; gap: 10px; align-items: center; }
+.opts input { accent-color: var(--red); width: 18px; height: 18px; }
+.opts label:has(input:checked) { border-color: var(--ink); background: #f6e3c1; }
+.fs { display: grid; gap: 6px; margin-bottom: 14px; }
+.fs label { font: 700 12.5px var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); }
+.fs input, .fs select { font: inherit; padding: 13px 16px; border-radius: 14px; border: 2px solid var(--line); background: var(--paper); color: var(--ink); width: 100%; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.rr { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+.done h3 { font-size: 2.6rem; color: var(--red); }
+@media (max-width: 899px) { .book-grid { grid-template-columns: 1fr; } }
+
+footer { background: var(--dark); color: #d9cdb8; padding: 40px 0 34px; overflow: hidden; }
+.giant { margin: 0 0 20px; color: var(--accent); }
+.giant .line { font-size: clamp(4rem, 19vw, 18rem); }
+.foot-row { display: flex; flex-wrap: wrap; gap: 14px 28px; justify-content: space-between; align-items: center; font-size: 15px; }
+footer .mt { font: 700 12px var(--body); letter-spacing: .1em; text-transform: uppercase; border-radius: 999px; padding: 8px 14px; border: 2px solid currentColor; background: transparent; color: inherit; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top" data-header>
+  <div class="wrap">
+    <a class="logo" href="#top" data-plug="brand"><span class="mark" data-plug="mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 1 l3.2 4.4 5.2-1.6 .6 5.4 5.4.6 -1.6 5.2 4.4 3.2 -4.4 3.2 1.6 5.2 -5.4.6 -.6 5.4 -5.2-1.6 L20 39 l-3.2-4.4 -5.2 1.6 -.6-5.4 -5.4-.6 1.6-5.2 L1 20 l4.4-3.2 -1.6-5.2 5.4-.6 .6-5.4 5.2 1.6 Z" fill="#b8321f"/><circle cx="20" cy="20" r="10.5" fill="#f2e8d5"/><path d="M20 13v14M14 16.5l12 7M26 16.5l-12 7" stroke="#1d1813" stroke-width="2.2" stroke-linecap="round"/></svg></span><span data-plug="name">Cold Snap</span></a>
+    <nav class="nav" id="nav" aria-label="Main"><a href="#on-tap">On tap</a><a href="#taproom">Taproom</a><a href="#events">Events</a><a href="#tours">Tours</a></nav>
+    <a class="btn btn-solid" href="#tours" data-magnet="0.25">Book a tour</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu-toggle>Menu</button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="wrap">
+      <h1 class="kin" data-kinetic aria-label="Cold Snap Brewing Co.">
+        <span class="line" aria-hidden="true">Cold</span>
+        <span class="line" aria-hidden="true">Snap</span>
+        <span class="line" aria-hidden="true">Brewing Co.</span>
+      </h1>
+      <div class="hero-foot">
+        <p data-reveal="up" data-now data-delay="1">Small-batch beer brewed on Agricola Street in Halifax. Twelve taps, a dog-friendly patio and tours every weekend.</p>
+        <div class="ctas" data-reveal="up" data-now data-delay="1.2"><a class="btn btn-solid" href="#on-tap">What's on tap</a><a class="btn" href="#tours">Book a tour</a></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="styles" data-marquee data-marquee-velocity data-marquee-skew data-marquee-flip aria-label="Styles we brew">
+    <div class="mq-track"><span>Crisp</span><span>Hazy</span><span>Dark</span><span>Sour</span><span>Fresh</span><span>Local</span></div>
+  </div>
+
+  <section id="on-tap" aria-labelledby="tap-h">
+    <div class="wrap">
+      <span class="over">On tap this week</span>
+      <h2 id="tap-h" style="margin-top:14px" data-split="chars" data-split-anim="drop">Pour <em>decisions.</em></h2>
+      <div class="taps" id="taps">
+        <div class="tap"><span class="name" data-reel>Whiteout</span><span class="style">Hazy IPA · citrus, oats</span><span class="abv"><span data-count="6.5" data-decimals="1">6.5</span>%</span><span class="pr">$8</span></div>
+        <div class="tap"><span class="name" data-reel>Ice Fog</span><span class="style">Pilsner · crisp, floral</span><span class="abv"><span data-count="4.8" data-decimals="1">4.8</span>%</span><span class="pr">$7</span></div>
+        <div class="tap"><span class="name" data-reel>Nor'easter</span><span class="style">Red ale · toffee, rye</span><span class="abv"><span data-count="5.6" data-decimals="1">5.6</span>%</span><span class="pr">$7</span></div>
+        <div class="tap"><span class="name" data-reel>Black Ice</span><span class="style">Oatmeal stout · coffee, cocoa</span><span class="abv"><span data-count="7.2" data-decimals="1">7.2</span>%</span><span class="pr">$8</span></div>
+        <div class="tap"><span class="name" data-reel>Sea Smoke</span><span class="style">Smoked porter · peat, vanilla</span><span class="abv"><span data-count="6" data-decimals="1">6.0</span>%</span><span class="pr">$8</span></div>
+        <div class="tap"><span class="name" data-reel>Thaw</span><span class="style">Sour · rhubarb, haskap</span><span class="abv"><span data-count="4.2" data-decimals="1">4.2</span>%</span><span class="pr">$7</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stretch" aria-label="Kegged fresh">
+    <div class="stretch-pin" id="stretchPin">
+      <p class="fresh" id="fresh" aria-label="Fresh">Fresh</p>
+      <p>Kegged on Tuesday. In your glass by Friday. Never more than three weeks old.</p>
+    </div>
+  </section>
+
+  <section id="brewery" aria-labelledby="br-h">
+    <div class="wrap story-grid">
+      <div>
+        <span class="over">The brewery</span>
+        <h2 id="br-h" style="margin-top:14px" data-split="lines">Brewed <em>by the harbour.</em></h2>
+        <p data-reveal="up">Moira started Cold Snap in a garage in 2017 with a ten-gallon kettle and a lot of opinions about pilsner. Now it's a twenty-barrel brewhouse, a taproom with twelve lines, and the same opinions.</p>
+        <p data-reveal="up">Malt from Nova Scotia farms when we can get it, hops from New Brunswick, and water straight from the city tap.</p>
+        <div class="nums" data-reveal-group="up">
+          <div><b data-count="20">20</b><span>barrel brewhouse</span></div>
+          <div><b data-count="140" data-suffix="+">140+</b><span>beers brewed</span></div>
+          <div><b data-count="12">12</b><span>taps, always changing</span></div>
+        </div>
+      </div>
+      <div class="pics" aria-hidden="true">
+        <div data-art="building" data-seed="31" data-palette="#e8b9a7,#5d5246,#1d1813,#e89a2c" data-reveal="clip" data-parallax="-0.1"></div>
+        <div data-art="product" data-seed="34" data-palette="#f6d7a4,#e89a2c,#1d1813,#b8321f" data-reveal="clip" data-parallax="0.12"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="taproom" id="taproom" aria-labelledby="tr-h">
+    <div class="wrap">
+      <span class="over">The taproom</span>
+      <h2 id="tr-h" style="margin-top:14px" data-split="words" data-split-anim="wave">Pull up <em>a stool.</em></h2>
+    </div>
+    <svg class="wave-text" viewBox="0 0 1200 190" aria-hidden="true"><path id="wavePath" d="M-40,110 C110,30 260,190 410,110 S710,30 860,110 S1110,190 1260,110" fill="none"/><text><textPath href="#wavePath" id="waveText">Brewed in Halifax ✦ Poured fresh ✦ Dogs welcome on the patio ✦ Brewed in Halifax ✦ Poured fresh ✦ Dogs welcome on the patio ✦ Brewed in Halifax ✦ Poured fresh ✦ Dogs welcome on the patio ✦</textPath></text></svg>
+    <div class="wrap tap-grid">
+      <div>
+        <p data-reveal="up">Twelve taps, flights of four, cans to go and growler fills. Food trucks park out front Thursday to Sunday, and you're welcome to bring your own snacks any day.</p>
+        <p data-reveal="up" style="margin-top:16px">2410 Agricola Street, Halifax. Two blocks from the North End market.</p>
+      </div>
+      <div class="hrs" data-plug="hours" data-reveal-group="left">
+        <div data-plug-row><span data-plug-days>Mon – Wed</span><span data-plug-time>3 pm – 10 pm</span></div>
+        <div data-plug-row><span data-plug-days>Thu – Sat</span><span data-plug-time>Noon – 11 pm</span></div>
+        <div data-plug-row><span data-plug-days>Sunday</span><span data-plug-time>Noon – 8 pm</span></div>
+      </div>
+      <div data-plug="contact" hidden></div>
+    </div>
+  </section>
+
+  <section class="pour" aria-label="Pour">
+    <div class="wrap">
+      <svg class="pour-svg" id="pourSvg" viewBox="0 0 1000 330" role="img" aria-label="Pour">
+        <defs><clipPath id="pourClip"><text class="pour-txt" x="500" y="285" text-anchor="middle">Pour</text></clipPath></defs>
+        <g clip-path="url(#pourClip)">
+          <rect width="1000" height="330" fill="var(--card)"/>
+          <path id="beer" fill="var(--accent)" d="M0 330 H1000 V330 H0 Z"/>
+          <path id="foam" fill="var(--foam)" d="M0 330 H1000 V330 H0 Z"/>
+          <g id="bubbles" fill="#fff3d6" opacity=".85"></g>
+        </g>
+        <text class="pour-txt pour-outline" x="500" y="285" text-anchor="middle">Pour</text>
+      </svg>
+      <p>Keep scrolling. We'll top you up.</p>
+    </div>
+  </section>
+
+  <section id="events" aria-labelledby="ev-h" style="padding-top:20px">
+    <div class="wrap">
+      <span class="over">Every week</span>
+      <h2 id="ev-h" style="margin-top:14px" data-split="chars" data-split-anim="flip">Something <em>on.</em></h2>
+      <div class="events" data-stack>
+        <article class="stack-card"><span class="day">Tue</span><div><h3>Trivia night</h3><p>Teams of up to six. Winners drink free for the rest of the night.</p></div><span class="when">7 pm</span></article>
+        <article class="stack-card"><span class="day">Thu</span><div><h3>Live on the patio</h3><p>Local bands, no cover. Moves inside when it's cold, which is often.</p></div><span class="when">8 pm</span></article>
+        <article class="stack-card"><span class="day">Sat</span><div><h3>Brewery tours</h3><p>An hour in the brewhouse with a brewer, then a tasting flight.</p></div><span class="when">1 &amp; 3 pm</span></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="tours" aria-labelledby="to-h" style="padding-top:20px">
+    <div class="wrap book-grid">
+      <div>
+        <span class="over">Tours</span>
+        <h2 id="to-h" style="margin-top:14px" data-split="words" data-split-anim="drop">See how <em>it's made.</em></h2>
+        <p style="margin-top:18px;color:var(--ink-2)">Saturday tours at 1 and 3 pm, and private tours for groups of eight or more. Guests on the tasting tours need to be 19 or older.</p>
+        <div class="faq" data-accordion>
+          <details><summary>Can I bring the kids?</summary><div class="acc-body"><p>Yes, until 8 pm, in the taproom and on the patio. We have root beer on tap for them.</p></div></details>
+          <details><summary>Are dogs allowed?</summary><div class="acc-body"><p>On the patio, always. There's a water bowl by the door and biscuits behind the bar.</p></div></details>
+          <details><summary>Do you fill growlers?</summary><div class="acc-body"><p>Any clean growler, any tap except the casks. Glass ones are for sale at the bar too.</p></div></details>
+          <details><summary>Is there food?</summary><div class="acc-body"><p>Food trucks Thursday to Sunday, pretzels and pickles every day, and you can bring your own.</p></div></details>
+        </div>
+      </div>
+      <div class="form" data-reveal="up">
+        <form data-steps action="#" aria-label="Book a brewery tour">
+          <div class="meta"><span data-steps-count>Step 1 of 3</span><span>One minute</span></div>
+          <div data-steps-bar style="margin-bottom:22px"><i></i></div>
+          <fieldset data-step><legend>Pick a tour</legend>
+            <div class="opts"><label><span><input type="radio" name="tour" value="classic" required> Brewhouse tour</span><small>$25</small></label><label><span><input type="radio" name="tour" value="flight"> Tour and tasting flight</span><small>$40</small></label><label><span><input type="radio" name="tour" value="private"> Private group (8+)</span><small>from $300</small></label></div>
+            <div class="rr"><button class="btn btn-solid" data-next>Continue</button></div>
+          </fieldset>
+          <fieldset data-step><legend>When?</legend>
+            <div class="pair"><div class="fs"><label for="b-date">Date</label><input id="b-date" type="date" name="date" required></div><div class="fs"><label for="b-time">Time</label><select id="b-time" name="time"><option>1 pm</option><option>3 pm</option></select></div></div>
+            <div class="fs"><label for="b-size">How many?</label><select id="b-size" name="size"><option>1</option><option>2</option><option>3 – 4</option><option>5 – 7</option><option>8 or more</option></select></div>
+            <div class="rr"><button class="btn" data-back>Back</button><button class="btn btn-solid" data-next>Continue</button></div>
+          </fieldset>
+          <fieldset data-step><legend>Your details</legend>
+            <div class="fs"><label for="b-name">Name</label><input id="b-name" name="name" required autocomplete="name"></div>
+            <div class="fs"><label for="b-mail">Email</label><input id="b-mail" type="email" name="email" required autocomplete="email"></div>
+            <div class="rr"><button class="btn" data-back>Back</button><button class="btn btn-solid" type="submit">Book it</button></div>
+            <p style="font-size:13px;margin-top:12px;color:var(--ink-2)">Sample form: nothing is sent.</p>
+          </fieldset>
+        </form>
+        <div class="done" data-steps-done hidden><h3>Cheers!</h3><p style="margin-top:8px;color:var(--ink-2)">On a real site you'd get a confirmation email with your tour time.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="kin giant" data-kinetic aria-label="Cold Snap"><span class="line" aria-hidden="true">Cold Snap</span></p>
+    <div class="foot-row"><span>Agricola St, Halifax · (902) 555-0167 · <span data-year>2026</span></span><span data-plug-text="Your preview: beers, prices and events are still samples.">Sample business: everything here is made up.</span><button class="mt" type="button" data-motion-toggle>Motion: on</button></div>
+  </div>
+</footer>
+
+<!-- Plug & Show: this sample business, swapped for a visitor's own details (see kit/plug.js). -->
+<script type="application/json" id="plug-sample">{"template":"motion-brewery","label":"Cold Snap","name":["Cold Snap Brewing Co.","Cold Snap Brewing","Cold Snap"],"owner":["Moira"],"phone":"(902) 555-0167","city":["Halifax"],"address":["2410 Agricola Street","Agricola Street","Agricola St"],"phrases":[["Agricola St, Halifax","{address?}, {city}"],["2410 Agricola Street, Halifax.","{address?}, {city}."],["brewed on Agricola Street in Halifax","brewed in {city}"],["Brewed in Halifax","Brewed in {city}"]],"color":{"accent":["--accent"],"text":["--on-accent"],"bg":"--paper"}}</script>
+<script src="../../kit/plug.js"></script>
+<!-- This page's own motion settings. The Motion editor in Studio Builder changes these. -->
+<script type="application/json" id="fx">{"radius": 220, "swell": 1, "stretch": 1, "roll": 1.2, "wave": 14, "pathSpeed": 1}</script>
+<script type="application/json" id="fx-knobs">[
+  {"key": "radius", "label": "Cursor reach", "min": 60, "max": 500, "step": 10},
+  {"key": "swell", "label": "Letters swell near the cursor", "min": 0, "max": 2, "step": 0.1},
+  {"key": "stretch", "label": "Squash when scrolling fast", "min": 0, "max": 2, "step": 0.1},
+  {"key": "roll", "label": "Tap list roll (seconds)", "min": 0.4, "max": 3, "step": 0.1},
+  {"key": "wave", "label": "Beer wave height", "min": 0, "max": 40, "step": 1},
+  {"key": "pathSpeed", "label": "Words along the wave", "min": 0, "max": 3, "step": 0.1}
+]</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>window.KIT = { ease: 'back.out(1.6)', dur: 0.8, stagger: 0.05, smooth: { lerp: 0.12 }, anchorOffset: 70, cursor: 'dot', spark: { color: ['#e89a2c', '#b8321f'], kind: 'confetti', count: 18, selector: '.btn' } };</script>
+<script src="../../kit/art.js"></script>
+<script src="../../kit/kit.js"></script>
+<script>
+(() => {
+  const K = window.KIT;
+  const FX = (window.FX = JSON.parse(document.getElementById('fx').textContent));
+  if (!window.gsap) return;
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const splitChars = (el) => { el.innerHTML = [...el.textContent].map((c) => (c === ' ' ? ' ' : `<span class="ch">${c}</span>`)).join(''); return $$('.ch', el); };
+
+  // The name split over lines can't be swapped line by line (Plug & Show, Studio Builder), but
+  // its aria-label is: when that holds a different name, the lines are made again from it.
+  $$('[data-kinetic][aria-label]').forEach((k) => {
+    const name = k.getAttribute('aria-label').trim(), now = $$('.line', k).map((l) => l.textContent.trim()).join(' ');
+    if (!name || name === now) return;
+    const words = name.split(/\s+/), rows = Math.min($$('.line', k).length, words.length), per = Math.ceil(words.length / rows);
+    k.innerHTML = Array.from({ length: Math.ceil(words.length / per) }, (_, i) => `<span class="line" aria-hidden="true">${words.slice(i * per, i * per + per).join(' ').replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c])}</span>`).join('');
+  });
+
+  // Kinetic lines: each fills the width; letters swell (weight and width) near the cursor,
+  // and every line squashes and leans when you scroll fast.
+  const lines = $$('[data-kinetic] .line');
+  const chars = lines.map(splitChars);
+  const kinetic = chars.map((cs, li) => ({ line: lines[li], cs, start: li === 2 ? 60 : 100, base: 100, giant: lines[li].closest('.giant') }));
+  // Each line fills the width: sized to fit, but no taller than a quarter of the screen;
+  // a short word is then widened (the font's width axis) until it fills the line.
+  const setW = (k, w) => k.cs.forEach((c) => (c.style.fontVariationSettings = `'wght' 850, 'wdth' ${w}`));
+  const fit = () => kinetic.forEach((k) => {
+    const l = k.line, room = l.parentElement.clientWidth * 0.9, cap = innerHeight * (k.giant ? 0.3 : 0.25);
+    setW(k, k.start);
+    l.style.fontSize = '100px';
+    let size = (100 * room) / l.scrollWidth;
+    k.base = k.start;
+    if (size > cap) {
+      size = cap;
+      l.style.fontSize = size + 'px';
+      let lo = k.start, hi = 150;
+      for (let n = 0; n < 8; n++) { const mid = (lo + hi) / 2; setW(k, mid); if (l.scrollWidth > room) hi = mid; else lo = mid; }
+      k.base = lo;
+      setW(k, lo);
+    }
+    l.style.fontSize = size + 'px';
+  });
+  fit();
+  document.fonts?.ready.then(fit);
+  addEventListener('resize', fit);
+
+  // Tap list: each name becomes a row of slot reels.
+  const reels = $$('[data-reel]').map((el) => {
+    const name = el.textContent;
+    el.setAttribute('aria-label', name);
+    const ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    el.innerHTML = [...name.toUpperCase()].map((c) => (/[A-Z]/.test(c) ? `<span class="reel" aria-hidden="true"><span class="ghost">${c}</span><span class="strip">${Array.from({ length: 7 }, () => `<span>${ABC[(Math.random() * 26) | 0]}</span>`).join('')}<span>${c}</span></span></span>` : `<span aria-hidden="true">${c === ' ' ? '&nbsp;' : c}</span>`)).join('');
+    return $$('.strip', el);
+  });
+  if (K.reduce) {
+    reels.flat().forEach((s) => gsap.set(s, { yPercent: -87.5 }));
+    document.getElementById('beer').setAttribute('d', 'M0 110 H1000 V330 H0 Z');
+    document.getElementById('foam').setAttribute('d', 'M0 90 H1000 V112 H0 Z');
+    return;
+  }
+
+  const roll = (strips) => gsap.fromTo(strips, { yPercent: 0 }, { yPercent: -87.5, duration: FX.roll, ease: 'back.out(1.1)', stagger: 0.04, overwrite: true });
+  $$('#taps .tap').forEach((row, i) => {
+    ScrollTrigger.create({ trigger: row, start: 'top 88%', once: true, onEnter: () => gsap.delayedCall(i * 0.08, () => roll(reels[i])) });
+    row.addEventListener('pointerenter', () => roll(reels[i]));
+  });
+  reels.flat().forEach((s) => gsap.set(s, { yPercent: 0 }));
+
+  // Hero letters drop in and ink up from thin to heavy.
+  gsap.from(chars[0].concat(chars[1], chars[2]), { yPercent: -130, rotation: () => gsap.utils.random(-25, 25), autoAlpha: 0, duration: 1.1, ease: 'bounce.out', stagger: 0.035, delay: 0.15 });
+
+  let mx = -9999, my = -9999, lastMove = 0;
+  addEventListener('pointermove', (e) => { mx = e.clientX; my = e.clientY; lastMove = performance.now(); }, { passive: true });
+  const vis = new Set();
+  const io = new IntersectionObserver((es) => es.forEach((e) => (e.isIntersecting ? vis.add(e.target) : vis.delete(e.target))));
+  lines.forEach((l) => io.observe(l));
+  gsap.ticker.add((time) => {
+    const v = gsap.utils.clamp(-1, 1, K.velocity / 2200), sq = Math.abs(v) * 40 * FX.stretch;
+    // No mouse (phones), or a resting mouse: a soft light sweeps across instead.
+    const idle = !K.fine || performance.now() - lastMove > 4000;
+    for (const k of kinetic) {
+      if (!vis.has(k.line)) continue;
+      const lr = k.line.getBoundingClientRect();
+      const px = idle ? lr.left + ((Math.sin(time * 0.6) + 1) / 2) * lr.width : mx, py = idle ? lr.top + lr.height / 2 : my;
+      for (const c of k.cs) {
+        const r = c.getBoundingClientRect(), d = Math.hypot(r.left + r.width / 2 - px, r.top + r.height / 2 - py);
+        const p = Math.max(0, 1 - d / FX.radius), e = p * p * (3 - 2 * p);
+        const wdth = gsap.utils.clamp(50, 150, k.base - sq + FX.swell * 38 * e), wght = gsap.utils.clamp(100, 900, 850 - sq * 4 + 50 * e);
+        c.style.fontVariationSettings = `'wght' ${wght.toFixed(0)}, 'wdth' ${wdth.toFixed(1)}`;
+      }
+      // Swollen letters never push a line off the edge: it narrows a touch instead.
+      const fitX = Math.min(1, k.line.parentElement.clientWidth / k.line.scrollWidth);
+      k.line.style.transform = `skewX(${(-v * 10 * FX.stretch).toFixed(2)}deg) scaleX(${fitX.toFixed(3)})`;
+    }
+  });
+
+  // Fresh: a pinned word whose letters pull up and ripple as you scroll.
+  const fresh = splitChars(document.getElementById('fresh'));
+  ScrollTrigger.create({
+    trigger: '#stretchPin', start: 'top top', end: '+=140%', pin: true, scrub: true,
+    onUpdate: ({ progress: p }) => fresh.forEach((c, i) => {
+      const w = 0.5 + 0.5 * Math.sin(p * Math.PI * 3 - i * 0.9), lift = Math.sin(p * Math.PI);
+      c.style.transform = `scaleY(${(1 + w * lift).toFixed(3)})`;
+      c.style.fontVariationSettings = `'wght' ${(300 + 600 * Math.min(1, p * 1.6)).toFixed(0)}, 'wdth' ${(60 + 80 * w * lift + 20 * (1 - lift)).toFixed(1)}`;
+    }),
+  });
+
+  // Words travel along the wave, faster when you scroll.
+  const tp = document.getElementById('waveText');
+  let off = 0, third = 1;
+  document.fonts?.ready.then(() => (third = tp.parentElement.getComputedTextLength() / 3 || 1));
+  gsap.ticker.add((t, dt) => { off = (off + (dt / 1000) * (40 + Math.abs(K.velocity) * 0.25) * FX.pathSpeed) % third; tp.setAttribute('startOffset', -off); });
+
+  // Pour: the beer rises with scroll, with a moving foam line and bubbles.
+  const beer = document.getElementById('beer'), foam = document.getElementById('foam'), bub = document.getElementById('bubbles');
+  let level = 0;
+  ScrollTrigger.create({ trigger: '#pourSvg', start: 'top 85%', end: 'bottom 30%', scrub: 0.6, onUpdate: (s) => (level = s.progress) });
+  const bubbles = Array.from({ length: 26 }, () => { const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); bub.appendChild(c); return { c, x: Math.random() * 1000, y: 330 + Math.random() * 300, r: 2 + Math.random() * 5, s: 30 + Math.random() * 60 }; });
+  let pourOn = false;
+  new IntersectionObserver(([e]) => (pourOn = e.isIntersecting)).observe(document.getElementById('pourSvg'));
+  gsap.ticker.add((t, dt) => {
+    if (!pourOn) return;
+    const top = 330 - level * 300, A = FX.wave;
+    let d = `M0 ${top}`, f = `M0 ${top - 16}`;
+    for (let x = 0; x <= 1000; x += 25) {
+      const y = top + Math.sin(x / 70 + t * 2.4) * A * 0.5 + Math.sin(x / 31 - t * 1.7) * A * 0.25;
+      d += ` L${x} ${y.toFixed(1)}`; f += ` L${x} ${(y - 18 - Math.sin(x / 45 + t * 3) * 4).toFixed(1)}`;
+    }
+    beer.setAttribute('d', d + ' L1000 330 L0 330 Z');
+    let back = '';
+    for (let x = 1000; x >= 0; x -= 25) back += ` L${x} ${(top + Math.sin(x / 70 + t * 2.4) * A * 0.5 + Math.sin(x / 31 - t * 1.7) * A * 0.25).toFixed(1)}`;
+    foam.setAttribute('d', f + back + ' Z');
+    for (const b of bubbles) {
+      b.y -= (b.s * dt) / 1000;
+      if (b.y < top) { b.y = 335 + Math.random() * 40; b.x = Math.random() * 1000; }
+      b.c.setAttribute('cx', (b.x + Math.sin(b.y / 12) * 3).toFixed(1)); b.c.setAttribute('cy', b.y.toFixed(1)); b.c.setAttribute('r', b.r);
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -74,6 +74,12 @@ footer { font: 400 13px 'JetBrains Mono', monospace; color: var(--ink-3); border
     <div class="cards" id="remixes"></div>
   </section>
 
+  <section aria-labelledby="types-h">
+    <h2 id="types-h">New kinds of motion</h2>
+    <p class="lede" style="margin:-4px 0 20px">Four sites, each built around a kind of motion the others don't use: particles, kinetic type, an infinite zoom and real physics. Each keeps its effect's settings in one small <code>#fx</code> block, so they're easy to tune.</p>
+    <div class="cards" id="types"></div>
+  </section>
+
   <section aria-labelledby="scroll-h">
     <h2 id="scroll-h">3D scroll scenes</h2>
     <div class="filters" id="filters" role="group" aria-label="Filter by look"></div>
@@ -138,6 +144,13 @@ const R = [
   ['law-firm', 'Hartley & Sato LLP', 'Law firm', 'A typed promise over a brass net, and a pinned case file that lights up stage by stage.', ['Real estate', 'Accounting', 'Automotive'], '#b08d57'],
   ['music-venue', 'Northern Static', 'Live music venue', 'An equalizer that jumps with scroll speed, a zoom through "LOUD", and tickets that fly into your wallet.', ['Gym', 'Automotive', 'Online store', 'Café'], '#ff3ea5'],
 ];
+const N = [
+  ['electrician', 'Brightwire Electric', 'Electrician', 'Thousands of particles form a lightning bolt, a bulb, a breaker panel, an EV plug and a house as you scroll. Push them around with the cursor.', ['Particles', 'Canvas', 'Pinned'], '#ffd60a'],
+  ['brewery', 'Cold Snap Brewing', 'Brewery & taproom', 'Letters swell near the cursor, beer names roll like slot reels, a word stretches and ripples, and another fills with beer.', ['Kinetic type', 'Variable font', 'SVG'], '#e89a2c'],
+  ['roofing', 'Summit Roofing', 'Roofing', "Scrolling dives from the street into one house, onto the shingles, then through a cutaway into the roof's layers, which pull apart with labels.", ['Infinite zoom', 'SVG', 'Colour picker'], '#c2410c'],
+  ['pet-grooming', 'Sudsy Paws', 'Dog grooming', 'Grab and throw the toys in the hero, pop the bubbles in the bath, and watch treats land on the price cards.', ['Physics', 'Canvas', 'Throw'], '#ff6f61'],
+];
+document.getElementById('types').innerHTML = N.map(([dir, name, ind, desc, tags, col]) => `<a class="card" href="./sites/${dir}/"><span class="top"><span>${esc(ind)}</span><span class="dot" style="--c:${col}"></span></span><h3>${esc(name)}</h3><p>${esc(desc)}</p><span class="tags">${tags.map((t) => `<span>${esc(t)}</span>`).join('')}</span><span class="go">Open →</span></a>`).join('');
 document.getElementById('remixes').innerHTML = R.map(([dir, name, ind, desc, mix, col]) => `<a class="card" href="./sites/${dir}/"><span class="top"><span>${esc(ind)}</span><span class="dot" style="--c:${col}"></span></span><h3>${esc(name)}</h3><p>${esc(desc)}</p><span class="tags"><span>Mix of:</span>${mix.map((t) => `<span>${esc(t)}</span>`).join('')}</span><span class="go">Open →</span></a>`).join('');
 document.getElementById('sites').innerHTML = S.map(([dir, name, ind, desc, tags, col]) => `<a class="card" href="./sites/${dir}/"><span class="top"><span>${esc(ind)}</span><span class="dot" style="--c:${col}"></span></span><h3>${esc(name)}</h3><p>${esc(desc)}</p><span class="tags">${tags.map((t) => `<span>${esc(t)}</span>`).join('')}</span><span class="go">Open →</span></a>`).join('');
 document.getElementById('scenes').innerHTML = T.map(([dir, name, ind, desc, lk, lay, sp, col]) => `<a class="card" href="./${dir}/" data-look="${lk}"><span class="top"><span>${esc(ind)}</span><span class="dot" style="--c:${col}"></span></span><h3>${esc(name)}</h3><p>${esc(desc)}</p><span class="tags"><span>${lk}</span><span>${lay}</span><span>${sp}</span></span><span class="go">Open →</span></a>`).join('');
